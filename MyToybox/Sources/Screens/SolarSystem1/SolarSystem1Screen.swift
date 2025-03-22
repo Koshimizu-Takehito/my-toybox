@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SolarSystem1View: View {
+struct SolarSystem1Screen: View {
     @State var start: Date = .now
 
     var body: some View {
@@ -60,5 +60,5 @@ private struct Sphere: View {
 }
 
 #Preview {
-    SolarSystem1View()
+    SolarSystem1Screen()
 }

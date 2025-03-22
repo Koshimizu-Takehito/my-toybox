@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SolarSystem2View: View {
+struct SolarSystem2Screen: View {
     let start: Date = .now
     @State var faith = 0.0
 
@@ -214,5 +214,5 @@ extension CGPoint {
 }
 
 #Preview {
-    SolarSystem2View()
+    SolarSystem2Screen()
 }

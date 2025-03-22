@@ -10,14 +10,16 @@ struct Screen: Identifiable, Codable, Hashable {
 extension Screen: View {
     var body: some View {
         switch id {
+        case .gradientPolygon:
+            GradientPolygonScreen()
         case .collisionColorChange:
             CollisionColorChangeScreen()
         case .solarSystemAnimationView:
-            SolarSystem2View()
+            SolarSystem2Screen()
         case .pixelBasedColorToggleView:
-            PixelBasedColorChangeView()
+            PixelBasedColorChangeScreen()
         case .heliocentricAnimationView:
-            SolarSystem1View()
+            SolarSystem1Screen()
         default:
             EmptyView()
         }

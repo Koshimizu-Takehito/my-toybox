@@ -1,13 +1,13 @@
 import SwiftUI
 
 #if os(macOS)
-struct PixelBasedColorChangeView: View {
+struct PixelBasedColorChangeScreen: View {
     var body: some View {
         EmptyView()
     }
 }
 #else
-struct PixelBasedColorChangeView: View {
+struct PixelBasedColorChangeScreen: View {
     @State private var image = UIImage()
     @State private var buttonRect = CGRect()
     @State private var contentRect = CGRect()
@@ -288,5 +288,5 @@ extension UIImage {
 #endif
 
 #Preview {
-    PixelBasedColorChangeView()
+    PixelBasedColorChangeScreen()
 }

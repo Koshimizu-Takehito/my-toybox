@@ -5,6 +5,7 @@ extension ScreenID: Identifiable {
 }
 
 enum ScreenID: String, Codable, CaseIterable {
+    case gradientPolygon
     case collisionColorChange
     case solarSystemAnimationView
     case pixelBasedColorToggleView
