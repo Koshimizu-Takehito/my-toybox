@@ -12,6 +12,8 @@ extension Screen: View {
         switch id {
         case .collisionColorChange:
             CollisionColorChangeScreen()
+        case .solarSystemAnimationView:
+            SolarSystem2View()
         default:
             EmptyView()
         }
