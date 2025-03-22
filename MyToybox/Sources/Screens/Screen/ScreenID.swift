@@ -13,8 +13,8 @@ enum ScreenID: String, Codable, CaseIterable {
     case countdownAnimation
     case infinitescroll
     case horizontalPicker
-    case circlesdf2view
-    case circlesdfview
+    case circleSDF1
+    case circleSDF2
     case wavingtextview
     case typingtextview
     case colornavigationview
