@@ -11,7 +11,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case pixelBasedColorToggleView
     case heliocentricAnimationView
     case countdownAnimation
-    case infinitescrollview
+    case infinitescroll
     case horizontalpickerview
     case circlesdf2view
     case circlesdfview

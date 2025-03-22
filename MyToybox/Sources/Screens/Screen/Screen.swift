@@ -22,6 +22,8 @@ extension Screen: View {
             SolarSystem1Screen()
         case .countdownAnimation:
             CountdownAnimationScreen()
+        case .infinitescroll:
+            InfiniteScrollScreen()
         default:
             EmptyView()
         }
