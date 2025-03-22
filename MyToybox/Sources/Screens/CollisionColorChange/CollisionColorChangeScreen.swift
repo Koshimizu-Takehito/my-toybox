@@ -36,6 +36,7 @@ private struct CollisionAnimationView: View {
         .padding(.vertical, item.height / 2)
         .background(Color(white: 28 / 255))
         .clipped()
+        .padding()
     }
 
     func itemColor() -> Color {
