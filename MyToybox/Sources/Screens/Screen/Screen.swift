@@ -24,6 +24,8 @@ extension Screen: View {
             CountdownAnimationScreen()
         case .infinitescroll:
             InfiniteScrollScreen()
+        case .horizontalPicker:
+            HorizontalPickerScreen()
         default:
             EmptyView()
         }
