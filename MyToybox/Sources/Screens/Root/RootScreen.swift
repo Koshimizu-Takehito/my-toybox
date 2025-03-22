@@ -24,6 +24,7 @@ extension RootScreen {
                         .font(.subheadline)
                         .foregroundStyle(.foreground.secondary)
                 }
+                .padding(.bottom)
             }
         }
     }
