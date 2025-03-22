@@ -14,6 +14,8 @@ extension Screen: View {
             CollisionColorChangeScreen()
         case .solarSystemAnimationView:
             SolarSystem2View()
+        case .pixelBasedColorToggleView:
+            PixelBasedColorChangeView()
         default:
             EmptyView()
         }
