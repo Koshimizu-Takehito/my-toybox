@@ -16,6 +16,8 @@ extension Screen: View {
             SolarSystem2View()
         case .pixelBasedColorToggleView:
             PixelBasedColorChangeView()
+        case .heliocentricAnimationView:
+            SolarSystem1View()
         default:
             EmptyView()
         }

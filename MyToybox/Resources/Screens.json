@@ -6,6 +6,12 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/f443719d9c49d106e53e7fc7f7ce3e2f"
   },
   {
+    "id": "heliocentricAnimationView",
+    "title": "Heliocentric Animation",
+    "description": "地動説っぽいアニメーション",
+    "html": "https://gist.github.com/Koshimizu-Takehito/e8e5b92677f44241699825f51aa5c994"
+  },
+  {
     "id": "solarSystemAnimationView",
     "title": "Solar System Animation",
     "description": "地動説と天動説のアニメーション",
@@ -16,12 +22,6 @@
     "title": "Pixel Based Color Toggle",
     "description": "表示中のピクセルデータからボタンの色を切り替える",
     "html": "https://gist.github.com/Koshimizu-Takehito/cc3d48d0177181f75c40b3779af37a7c"
-  },
-  {
-    "id": "heliocentricAnimationView",
-    "title": "Heliocentric Animation",
-    "description": "地動説っぽいアニメーション",
-    "html": "https://gist.github.com/Koshimizu-Takehito/e8e5b92677f44241699825f51aa5c994"
   },
   {
     "id": "countdownAnimationView",
