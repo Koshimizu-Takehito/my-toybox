@@ -20,6 +20,8 @@ extension Screen: View {
             PixelBasedColorChangeScreen()
         case .heliocentricAnimationView:
             SolarSystem1Screen()
+        case .countdownAnimation:
+            CountdownAnimationScreen()
         default:
             EmptyView()
         }
