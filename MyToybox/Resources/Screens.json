@@ -48,16 +48,16 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/27cf2f40302ff5f46194f26b5d2b4676"
   },
   {
-    "id": "circleSDF2",
-    "title": "Circle SDF2",
-    "description": "Circle SDF2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/9b67e5c91cb1440344c8708ae5a12430"
-  },
-  {
     "id": "circleSDF1",
     "title": "Circle SDF1",
     "description": "Circle SDF",
     "html": "https://gist.github.com/Koshimizu-Takehito/d1de708e3c4820e4bf759bea14cf08ad"
+  },
+  {
+    "id": "circleSDF2",
+    "title": "Circle SDF2",
+    "description": "Circle SDF2",
+    "html": "https://gist.github.com/Koshimizu-Takehito/9b67e5c91cb1440344c8708ae5a12430"
   },
   {
     "id": "wavingtextview",

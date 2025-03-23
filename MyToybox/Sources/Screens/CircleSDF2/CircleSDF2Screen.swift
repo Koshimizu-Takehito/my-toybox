@@ -16,9 +16,11 @@ struct CircleSDF2Screen: View {
             }
             .frame(maxHeight: .infinity, alignment: .bottom)
             .padding()
+            .padding(.bottom)
         }
         .animation(.default, value: k)
         .animation(.default, value: time)
+        .ignoresSafeArea(edges: .all.subtracting(.top))
     }
 
     private var shader: Shader {

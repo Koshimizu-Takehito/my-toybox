@@ -26,9 +26,9 @@ extension Screen: View {
             InfiniteScrollScreen()
         case .horizontalPicker:
             HorizontalPickerScreen()
-        case .circleSDF2:
-            CircleSDF2Screen()
         case .circleSDF1:
+            CircleSDF1Screen()
+        case .circleSDF2:
             CircleSDF2Screen()
         default:
             EmptyView()
