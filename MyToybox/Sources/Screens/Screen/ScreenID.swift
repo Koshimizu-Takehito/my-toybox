@@ -15,17 +15,14 @@ enum ScreenID: String, Codable, CaseIterable {
     case horizontalPicker
     case circleSDF1
     case circleSDF2
-    case wavingtextview
-    case typingtextview
-    case colornavigationview
-    case colornavigation
-    case coloredMapView
-    case monotonemap
-    case msl
-    case reverseListView
+    case wavingText
+    case coloredMap
+    case monotoneMap
+    case waveParticle
+    case reverseList
     case viewIdentity
     case progressiveblur
-    case shaderMosaicView
+    case shaderMosaic
     case shaderTileView
     case shaderSpiralView
     case primeSpiralView

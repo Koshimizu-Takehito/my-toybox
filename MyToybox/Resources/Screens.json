@@ -60,49 +60,31 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/9b67e5c91cb1440344c8708ae5a12430"
   },
   {
-    "id": "wavingtextview",
+    "id": "wavingText",
     "title": "Waving Text",
     "description": "Waving Text",
     "html": "https://gist.github.com/Koshimizu-Takehito/201fab6e85710d46abed97c0aa5de2ab"
   },
   {
-    "id": "typingtextview",
-    "title": "Typing Text",
-    "description": "Typing Text",
-    "html": "https://gist.github.com/Koshimizu-Takehito/9aea2fda75a1b7c2f3260de5e633cf24"
-  },
-  {
-    "id": "colornavigationview",
-    "title": "Color Navigation",
-    "description": "ColorNavigation2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/8a624af1e8b0f40be917dc00340e1d56"
-  },
-  {
-    "id": "colornavigation",
-    "title": "Color Navigation",
-    "description": "Color Navigation",
-    "html": "https://gist.github.com/Koshimizu-Takehito/a102e16d0f401bde4e6d3f792a237276"
-  },
-  {
-    "id": "coloredMapView",
+    "id": "coloredMap",
     "title": "Colored Map",
     "description": "色付きマップ",
     "html": "https://gist.github.com/Koshimizu-Takehito/28c190f3995093c9d75926fd42abde17"
   },
   {
-    "id": "monotonemap",
-    "title": "Monotonemap",
-    "description": "MonotoneMap",
+    "id": "monotoneMap",
+    "title": "Monotone Map",
+    "description": "モノクロのマップ",
     "html": "https://gist.github.com/Koshimizu-Takehito/27827403ba21528f19727d4953572da8"
   },
   {
-    "id": "msl",
-    "title": "Msl",
+    "id": "waveParticle",
+    "title": "WaveParticle",
     "description": "MSLでパーティクル",
     "html": "https://gist.github.com/Koshimizu-Takehito/5ce2a862edd0553bc991354b01561e1f"
   },
   {
-    "id": "reverseListView",
+    "id": "reverseList",
     "title": "ReverseListView",
     "description": "逆向きのリスト",
     "html": "https://gist.github.com/Koshimizu-Takehito/7fe0e27b5c4df930c9c5c622db1325d2"
@@ -115,13 +97,13 @@
   },
   {
     "id": "progressiveblur",
-    "title": "Progressiveblur",
+    "title": "Progressive Blur",
     "description": "ProgressiveBlur",
     "html": "https://gist.github.com/Koshimizu-Takehito/0a8bd5123fcd081d082081ba1a48489f"
   },
   {
-    "id": "shaderMosaicView",
-    "title": "ShaderMosaicView",
+    "id": "shaderMosaic",
+    "title": "Shader Mosaic",
     "description": "シェーダー関数でモザイク",
     "html": "https://gist.github.com/Koshimizu-Takehito/6823c17ee460797154bf99cf2d8f751a"
   },

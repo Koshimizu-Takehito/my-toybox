@@ -30,6 +30,22 @@ extension Screen: View {
             CircleSDF1Screen()
         case .circleSDF2:
             CircleSDF2Screen()
+        case .wavingText:
+            WavingTextScreen()
+        case .coloredMap:
+            ColoredMapScreen()
+        case .monotoneMap:
+            MonotoneMapScreen()
+        case .waveParticle:
+            WaveParticleScreen()
+        case .reverseList:
+            ReverseListScreen()
+        case .viewIdentity:
+            ViewIdentityAnimationScreen()
+        case .progressiveblur:
+            ProgressiveBlurScreen()
+        case .shaderMosaic:
+            MosaicScreen()
         default:
             EmptyView()
         }
