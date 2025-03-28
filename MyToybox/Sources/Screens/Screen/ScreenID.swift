@@ -29,7 +29,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case archimedesSpiral
     case motions4
     case matchTopWidth
-    case ui
+    case authCode
     case animation2
     case modifier
     case swingAnimationView

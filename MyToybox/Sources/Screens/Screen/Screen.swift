@@ -58,6 +58,8 @@ extension Screen: View {
             Motions4Screen()
         case .matchTopWidth:
             MatchTopWidthScreen()
+        case .authCode:
+            AuthCodeScreen()
         default:
             EmptyView()
         }

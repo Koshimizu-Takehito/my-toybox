@@ -144,8 +144,8 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/af14066e1fc33ef74310c2072fe496ac"
   },
   {
-    "id": "ui",
-    "title": "Ui",
+    "id": "authCode",
+    "title": "Auth code UI",
     "description": "認証コード入力っぽいUI",
     "html": "https://gist.github.com/Koshimizu-Takehito/7bf085dce404c7fff3ca3c371c8e12e0"
   },
