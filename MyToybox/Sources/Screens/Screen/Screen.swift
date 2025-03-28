@@ -50,6 +50,10 @@ extension Screen: View {
             TileShaderScreen()
         case .shaderSpiral:
             SpiralShaderScreen()
+        case .primeSpiral:
+            PrimeSpiralScreen()
+        case .archimedesSpiral:
+            ArchimedesSpiralScreen()
         default:
             EmptyView()
         }

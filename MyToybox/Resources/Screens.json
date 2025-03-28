@@ -120,14 +120,14 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/2317e4b6f7dd9a50d15df5c83f2ed2d2"
   },
   {
-    "id": "primeSpiralView",
-    "title": "PrimeSpiralView",
+    "id": "primeSpiral",
+    "title": "Prime Spiral",
     "description": "素数のアルキメデスの螺旋",
     "html": "https://gist.github.com/Koshimizu-Takehito/17b1597bf05294d7cbbb1f90d985a6b7"
   },
   {
-    "id": "archimedesSpiralView",
-    "title": "ArchimedesSpiralView",
+    "id": "archimedesSpiral",
+    "title": "Archimedes Spiral",
     "description": "アルキメデスのらせん",
     "html": "https://gist.github.com/Koshimizu-Takehito/82b63ec2d06ffda23c1475730d68683f"
   },
