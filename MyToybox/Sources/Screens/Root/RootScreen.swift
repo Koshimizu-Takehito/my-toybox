@@ -1,14 +1,22 @@
 import SwiftUI
 
 struct RootScreen: View {
+    @State private var viewModel = RootScreenViewModel()
     @State private var selection: Screen?
-    @State private var viewModel = RootScreenModel()
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
         NavigationSplitView(sidebar: sidebarView, detail: detailView)
-            .task { await viewModel.fetch() }
             .tint(.white)
-            .preferredColorScheme(.dark)
+            .task {
+                await viewModel.fetch()
+            }
+            .onChange(of: viewModel.screens, initial: true) { _, screens in
+                if horizontalSizeClass != .compact {
+                    selection = screens.first
+                }
+            }
+            .environment(\.colorScheme, .dark)
     }
 }
 
