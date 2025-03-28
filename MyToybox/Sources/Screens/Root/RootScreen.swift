@@ -7,6 +7,7 @@ struct RootScreen: View {
     var body: some View {
         NavigationSplitView(sidebar: sidebarView, detail: detailView)
             .task { await viewModel.fetch() }
+            .tint(.white)
             .preferredColorScheme(.dark)
     }
 }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ShaderTileScreen: View {
+struct TileShaderScreen: View {
     @State private var start = Date.now
 
     var body: some View {
@@ -9,7 +9,7 @@ struct ShaderTileScreen: View {
             let scale = 1 + 10 * (sin(time) + 1)
             Rectangle()
                 .colorEffect(shader(scale: scale))
-                .foregroundStyle(.white)
+                .foregroundStyle(.blue.mix(with: .white, by: 0.3))
                 .ignoresSafeArea()
         }
     }
@@ -17,12 +17,12 @@ struct ShaderTileScreen: View {
     func shader(scale: Double) -> Shader {
         let function = ShaderFunction(
             library: .default,
-            name: "ShaderTile::main"
+            name: "TileShader::main"
         )
         return function(.boundingRect, .float(scale))
     }
 }
 
 #Preview {
-    ShaderTileScreen()
+    TileShaderScreen()
 }

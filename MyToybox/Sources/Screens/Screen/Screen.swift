@@ -47,7 +47,9 @@ extension Screen: View {
         case .shaderMosaic:
             MosaicScreen()
         case .shaderTile:
-            ShaderTileScreen()
+            TileShaderScreen()
+        case .shaderSpiral:
+            SpiralShaderScreen()
         default:
             EmptyView()
         }
