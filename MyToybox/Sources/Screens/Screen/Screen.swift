@@ -54,6 +54,10 @@ extension Screen: View {
             PrimeSpiralScreen()
         case .archimedesSpiral:
             ArchimedesSpiralScreen()
+        case .motions4:
+            Motions4Screen()
+        case .matchTopWidth:
+            MatchTopWidthScreen()
         default:
             EmptyView()
         }
