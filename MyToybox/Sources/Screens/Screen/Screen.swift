@@ -46,6 +46,8 @@ extension Screen: View {
             ProgressiveBlurScreen()
         case .shaderMosaic:
             MosaicScreen()
+        case .shaderTile:
+            ShaderTileScreen()
         default:
             EmptyView()
         }

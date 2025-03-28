@@ -108,8 +108,8 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/6823c17ee460797154bf99cf2d8f751a"
   },
   {
-    "id": "shaderTileView",
-    "title": "ShaderTileView",
+    "id": "shaderTile",
+    "title": "Shader Tile",
     "description": "シェーダー関数でタイル",
     "html": "https://gist.github.com/Koshimizu-Takehito/4314dc875d4e0fcc8ae70447f827177a"
   },

@@ -23,7 +23,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case viewIdentity
     case progressiveblur
     case shaderMosaic
-    case shaderTileView
+    case shaderTile
     case shaderSpiralView
     case primeSpiralView
     case archimedesSpiralView
