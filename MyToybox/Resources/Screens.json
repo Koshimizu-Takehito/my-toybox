@@ -198,8 +198,8 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/7e6a6654f88963d94ba927a778771cbf"
   },
   {
-    "id": "appearanceModeAnimationView",
-    "title": "AppearanceModeAnimationView",
+    "id": "colorSchemeAnimation",
+    "title": "Color Scheme Animation",
     "description": "外観モードの変更にアニメーションをつける",
     "html": "https://gist.github.com/Koshimizu-Takehito/e19b4600b145d01177b38004739e586e"
   },

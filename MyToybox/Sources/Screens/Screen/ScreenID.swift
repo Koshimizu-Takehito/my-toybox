@@ -38,7 +38,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case dateformatstyle
     case scaledmetric
     case dynamictype
-    case appearanceModeAnimationView
+    case colorSchemeAnimation
     case uiviewcontrollerrepresentable
     case enumpicker
     case ringslider

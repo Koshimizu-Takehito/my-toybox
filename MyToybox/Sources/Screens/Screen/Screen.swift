@@ -90,6 +90,10 @@ extension Screen: View {
             DynamicTypeScalingScreen()
         case .dynamictype:
             DynamicTypeScreen()
+        case .colorSchemeAnimation:
+            ColorSchemeAnimationScreen()
+        case .uiviewcontrollerrepresentable:
+            ViewcontrollerRepresentableScreen()
         default:
             EmptyView()
         }
