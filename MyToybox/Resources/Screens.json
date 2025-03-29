@@ -234,9 +234,9 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/0695697bf80e16b02f044f0865b941f8"
   },
   {
-    "id": "coloranimation",
-    "title": "Coloranimation",
-    "description": "Color animation",
+    "id": "colorHexAnimation",
+    "title": "ColorCircleAnimation",
+    "description": "Color HEX Animation",
     "html": "https://gist.github.com/Koshimizu-Takehito/62f5f17614e5431e7cf8d8614109ef72"
   },
   {

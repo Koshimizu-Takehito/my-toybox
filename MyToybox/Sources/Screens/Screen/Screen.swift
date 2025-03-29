@@ -102,6 +102,8 @@ extension Screen: View {
             UnevenRoundedRectangle1Screen()
         case .unevenRoundedRectang2:
             UnevenRoundedRectangle2Screen()
+        case .colorHexAnimation:
+            ColorHexAnimationScreen()
         default:
             EmptyView()
         }

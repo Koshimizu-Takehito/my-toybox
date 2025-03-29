@@ -44,7 +44,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case ringSlider
     case unevenRoundedRectang1
     case unevenRoundedRectang2
-    case coloranimation
+    case colorHexAnimation
     case swiftuiglowtext
     case ringanimation
     case progressring
