@@ -32,7 +32,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case authCode
     case tileAnimation3D
     case tileAnimation
-    case glslMsl
+    case shineShader
     case waveAnimationView
     case rectangleAnimationView
     case dateformatstyle

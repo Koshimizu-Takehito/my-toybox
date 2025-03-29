@@ -78,6 +78,8 @@ extension Screen: View {
             TileAnimationScreen()
         case .tileAnimation3D:
             TileAnimation3DScreen()
+        case .shineShader:
+            ShineScreen()
         default:
             EmptyView()
         }
