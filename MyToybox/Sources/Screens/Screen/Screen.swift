@@ -96,6 +96,8 @@ extension Screen: View {
             ViewcontrollerRepresentableScreen()
         case .enumpicker:
             EnumPickerScreen()
+        case .ringSlider:
+            RingSliderScreen()
         default:
             EmptyView()
         }
