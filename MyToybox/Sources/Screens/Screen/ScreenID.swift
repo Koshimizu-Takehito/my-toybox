@@ -33,10 +33,9 @@ enum ScreenID: String, Codable, CaseIterable {
     case tileAnimation3D
     case tileAnimation
     case shineShader
-    case waveAnimationView
-    case rectangleAnimationView
+    case waveCircle
+    case rectangleAnimation
     case dateformatstyle
-    case uikitdatepicker
     case dynamicTypeScalingView
     case scaledmetricDynamictypesize
     case appearanceModeAnimationView

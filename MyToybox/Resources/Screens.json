@@ -164,18 +164,18 @@
   {
     "id": "shineShader",
     "title": "Shine Shader",
-    "description": "つぶやきGLSL を MSL に",
+    "description": "シェーダーを使った光アニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/354b52775c13426605bd069d85e5606b"
   },
   {
-    "id": "waveAnimationView",
-    "title": "WaveAnimationView",
+    "id": "waveCircle",
+    "title": "Wave Circle",
     "description": "波アニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/5a246578bf4463bb838fd70cc402f7ad"
   },
   {
-    "id": "rectangleAnimationView",
-    "title": "RectangleAnimationView",
+    "id": "rectangleAnimation",
+    "title": "RectangleAnimation",
     "description": "長方形アニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/406cc24623cf09e805bf60805817a2d5"
   },
@@ -184,12 +184,6 @@
     "title": "Dateformatstyle",
     "description": "Date.FormatStyle の出力サンプル",
     "html": "https://gist.github.com/Koshimizu-Takehito/39d59eaaac6794d726ef0739b099cd8a"
-  },
-  {
-    "id": "uikitdatepicker",
-    "title": "Uikitdatepicker",
-    "description": "UIKitDatePicker",
-    "html": "https://gist.github.com/Koshimizu-Takehito/e148411960e14188d75a8d9ed636e85b"
   },
   {
     "id": "dynamicTypeScalingView",

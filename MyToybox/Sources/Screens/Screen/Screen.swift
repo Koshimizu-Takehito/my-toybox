@@ -80,6 +80,10 @@ extension Screen: View {
             TileAnimation3DScreen()
         case .shineShader:
             ShineScreen()
+        case .waveCircle:
+            WaveCircleScreen()
+        case .rectangleAnimation:
+            RectangleAnimationScreen()
         default:
             EmptyView()
         }
