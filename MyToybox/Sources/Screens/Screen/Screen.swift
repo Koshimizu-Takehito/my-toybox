@@ -84,6 +84,8 @@ extension Screen: View {
             WaveCircleScreen()
         case .rectangleAnimation:
             RectangleAnimationScreen()
+        case .dateformatstyle:
+            DateformatStyleScreen()
         default:
             EmptyView()
         }
