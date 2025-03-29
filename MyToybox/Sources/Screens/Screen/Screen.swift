@@ -86,6 +86,10 @@ extension Screen: View {
             RectangleAnimationScreen()
         case .dateformatstyle:
             DateformatStyleScreen()
+        case .scaledmetric:
+            DynamicTypeScalingScreen()
+        case .dynamictype:
+            DynamicTypeScreen()
         default:
             EmptyView()
         }

@@ -186,14 +186,14 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/39d59eaaac6794d726ef0739b099cd8a"
   },
   {
-    "id": "dynamicTypeScalingView",
-    "title": "DynamicTypeScalingView",
+    "id": "scaledmetric",
+    "title": "Dynamic Type Scaling",
     "description": "ダイナミックタイプを利用した場合の標準フォントのスケール",
     "html": "https://gist.github.com/Koshimizu-Takehito/5613d0a05e7266f998bad825dc3da3b2"
   },
   {
-    "id": "scaledmetricDynamictypesize",
-    "title": "ScaledmetricDynamictypesize",
+    "id": "dynamictype",
+    "title": "Scaledmetric Dynamictype",
     "description": "ScaledMetric と DynamicTypeSizeでフォントサイズを変更するサンプル",
     "html": "https://gist.github.com/Koshimizu-Takehito/7e6a6654f88963d94ba927a778771cbf"
   },
