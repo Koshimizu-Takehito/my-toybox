@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - View
 struct ViewIdentityAnimationScreen: View {
-    @State private var model = Model(row: 4, column: 4)
+    @State private var model = ViewIdentityAnimationScreenModel(row: 4, column: 4)
 
     var body: some View {
         VStack(spacing: 20) {
@@ -99,11 +99,11 @@ private struct QuarterArc: Shape {
     }
 }
 
-// MARK: - Model
+// MARK: - ViewIdentityAnimationScreenViewModel
 
 @MainActor
 @Observable
-private final class Model {
+private final class ViewIdentityAnimationScreenModel {
     var angles: [[Angle]]
 
     init(row: Int, column: Int) {

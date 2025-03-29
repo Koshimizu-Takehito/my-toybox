@@ -4,14 +4,14 @@ import SwiftUI
 // MARK: - TileAnimation3DScreen
 
 struct TileAnimation3DScreen: View {
-    @State private var model: TileAnimation3DScreenViewModel?
+    @State private var viewModel: ViewModel?
     @State var lineWidth: Double?
 
     var body: some View {
         Group {
-            if let model, let lineWidth {
-                TileAnimation3DScreenContent(model: model, lineWidth: lineWidth)
-                    .id([model.row, model.column])
+            if let viewModel, let lineWidth {
+                TileAnimation3DScreenContent(viewModel: viewModel, lineWidth: lineWidth)
+                    .id([viewModel.row, viewModel.column])
             } else {
                 Color.clear
             }
@@ -19,7 +19,7 @@ struct TileAnimation3DScreen: View {
         .onGeometryChange(for: CGSize.self, of: \.size) { _, size in
             let column = 10
             let row = max(Int(ceil(Double(column) * size.height / size.width)), column)
-            self.model = TileAnimation3DScreenViewModel(row: row, column: column)
+            self.viewModel = ViewModel(row: row, column: column)
             self.lineWidth = min(size.height, size.width) / Double(min(row, column)) / 5
         }
         .ignoresSafeArea()
@@ -29,7 +29,7 @@ struct TileAnimation3DScreen: View {
 // MARK: - TileAnimation3DScreenContent
 
 private struct TileAnimation3DScreenContent: View {
-    var model: TileAnimation3DScreenViewModel
+    var viewModel: TileAnimation3DScreen.ViewModel
     var lineWidth: Double
     @State var lastUpdateDate = Date.now
 
@@ -38,7 +38,7 @@ private struct TileAnimation3DScreenContent: View {
             let date = context.date
             let interval = date.timeIntervalSince(lastUpdateDate)
             Grid(horizontalSpacing: 0, verticalSpacing: 0) {
-                let rotations = model.rotations
+                let rotations = viewModel.rotations
                 ForEach(0..<rotations.count, id: \.self) { i in
                     GridRow {
                         ForEach(0..<rotations[i].count, id: \.self) { j in
@@ -52,11 +52,11 @@ private struct TileAnimation3DScreenContent: View {
             .padding(.horizontal, -200)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .rotation3DEffect(.radians(0.4 * .pi), axis: (1, 0, 0), anchor: .top)
-            .animation(.linear(duration: 1.3), value: model.rotations)
+            .animation(.linear(duration: 1.3), value: viewModel.rotations)
             .onChange(of: interval, initial: true) { _, interval in
                 if interval > 0.1 {
                     lastUpdateDate = date
-                    model.rotate()
+                    viewModel.rotate()
                 }
             }
         }

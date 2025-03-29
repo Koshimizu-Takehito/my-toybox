@@ -31,8 +31,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case matchTopWidth
     case authCode
     case tileAnimation3D
-    case modifier
-    case swingAnimationView
+    case tileAnimation
     case glslMsl
     case waveAnimationView
     case rectangleAnimationView

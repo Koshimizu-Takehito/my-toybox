@@ -1,37 +1,34 @@
-//
-//  TileAnimation3DScreenViewModel.swift
-//  MyToybox
-//
-//  Created by Takehito Koshimizu on 2025/03/29.
-//
-
 import Foundation
 import Observation
 
-// MARK: - TileAnimation3DScreenViewModel
+// MARK: - TileAnimation3DScreen+ViewModel
 
-@MainActor
-@Observable
-final class TileAnimation3DScreenViewModel {
-    private(set) var row: Int
-    private(set) var column: Int
-    private(set) var rotations: [[Int]]
-    private(set) var positions: [IndexPath]
+extension TileAnimation3DScreen {
+    @MainActor
+    @Observable
+    final class ViewModel {
+        private(set) var row: Int
+        private(set) var column: Int
+        private(set) var rotations: [[Int]]
+        private(set) var positions: [IndexPath]
 
-    init(row: Int, column: Int) {
-        self.row = row
-        self.column = column
-        let rotations = (0..<row).map { _ in
-            (0..<column).map { _ in Int.random(in: 0..<4) }
+        init(row: Int, column: Int) {
+            self.row = row
+            self.column = column
+            let rotations = (0..<row).map { _ in
+                (0..<column).map { _ in Int.random(in: 0..<4) }
+            }
+            self.rotations = rotations
+
+            var position: IndexPath {
+                [(0..<row).randomElement()!, (0..<column).randomElement()!]
+            }
+            self.positions = [position, position, position]
         }
-        self.rotations = rotations
-
-        var position: IndexPath {
-            [(0..<row).randomElement()!, (0..<column).randomElement()!]
-        }
-        self.positions = [position, position, position]
     }
+}
 
+extension TileAnimation3DScreen.ViewModel {
     func rotate() {
         for i in 0..<positions.count {
             var movements = [IndexPath]()

@@ -74,6 +74,8 @@ extension Screen: View {
             MatchTopWidthScreen()
         case .authCode:
             AuthCodeScreen()
+        case .tileAnimation:
+            TileAnimationScreen()
         case .tileAnimation3D:
             TileAnimation3DScreen()
         default:
