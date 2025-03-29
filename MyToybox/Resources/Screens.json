@@ -222,16 +222,16 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/09e9fea1325b1c5ef01d53b2fb532c78"
   },
   {
-    "id": "unevenroundedrectanglesample2",
-    "title": "Unevenroundedrectanglesample2",
-    "description": "UnevenRoundedRectangle Sample 2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/0695697bf80e16b02f044f0865b941f8"
-  },
-  {
-    "id": "unevenroundedrectanglesample",
-    "title": "Unevenroundedrectanglesample",
+    "id": "unevenRoundedRectang1",
+    "title": "Uneven Rounded Rectangle 1",
     "description": "UnevenRoundedRectangle Sample",
     "html": "https://gist.github.com/Koshimizu-Takehito/1a2be566c4889c3074ccc9bb01ea5143"
+  },
+  {
+    "id": "unevenRoundedRectang2",
+    "title": "Uneven Rounded Rectangle 2",
+    "description": "UnevenRoundedRectangle Sample 2",
+    "html": "https://gist.github.com/Koshimizu-Takehito/0695697bf80e16b02f044f0865b941f8"
   },
   {
     "id": "coloranimation",

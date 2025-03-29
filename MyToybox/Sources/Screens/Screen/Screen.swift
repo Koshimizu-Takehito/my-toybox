@@ -98,6 +98,10 @@ extension Screen: View {
             EnumPickerScreen()
         case .ringSlider:
             RingSliderScreen()
+        case .unevenRoundedRectang1:
+            UnevenRoundedRectangle1Screen()
+        case .unevenRoundedRectang2:
+            UnevenRoundedRectangle2Screen()
         default:
             EmptyView()
         }

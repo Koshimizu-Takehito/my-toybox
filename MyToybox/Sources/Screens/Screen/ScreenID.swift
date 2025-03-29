@@ -42,8 +42,8 @@ enum ScreenID: String, Codable, CaseIterable {
     case uiviewcontrollerrepresentable
     case enumpicker
     case ringSlider
-    case unevenroundedrectanglesample2
-    case unevenroundedrectanglesample
+    case unevenRoundedRectang1
+    case unevenRoundedRectang2
     case coloranimation
     case swiftuiglowtext
     case ringanimation
