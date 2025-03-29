@@ -1,8 +1,12 @@
 import SwiftUI
 
+// MARK: - HorizontalPickerScreen
+
+/// A demo screen showcasing a horizontal 3D-style picker built with `HPicker`.
+/// Users can scroll through numbered items, and the currently selected item is highlighted.
 struct HorizontalPickerScreen: View {
     @State var selection: Int?
-    let items = (0..<20).map(\.self)
+    let items = Array(0..<20)
 
     var body: some View {
         HPicker(items: items, selection: $selection, numberOfDisplays: 9) { item in
@@ -12,12 +16,25 @@ struct HorizontalPickerScreen: View {
     }
 }
 
+// MARK: - HPicker
+
+/// A horizontally scrolling picker view with 3D-style rotation and center selection.
+///
+/// Items are displayed in a horizontal scroll view and rotate based on their distance from the center.
+/// The item closest to the center is treated as selected, and tapping an item scrolls it into the center.
+///
+/// - Parameters:
+///   - items: The collection of selectable values.
+///   - selection: A binding to the currently selected value.
+///   - numberOfDisplays: Approximate number of visible items (default is 7).
+///   - content: A view builder for rendering each item.
 struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Content: View {
     private var items: [SelectionValue]
     private var numberOfDisplays: Int
     private var content: (SelectionValue) -> Content
+
     @Binding private var selection: SelectionValue?
-    @State private var contentOffset: Double = 0
+    @State private var scrollOffset: Double = 0
     @State private var itemWidth: Double = 100.0
 
     init(
@@ -34,41 +51,48 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
 
     var body: some View {
         GeometryReader { proxy in
-            let numberOfDisplays = Double(numberOfDisplays) - 2
-            let itemWidth = proxy.size.width / numberOfDisplays
-            let margins = (proxy.size.width - itemWidth) / 2.0
+            // Calculate item width based on total width and number of displays
+            let visibleCount = Double(numberOfDisplays) - 2
+            let widthPerItem = proxy.size.width / visibleCount
+            let sideMargin = (proxy.size.width - widthPerItem) / 2.0
+
             ScrollView(.horizontal) {
                 ScrollViewReader { scrollView in
                     HStack(spacing: 0) {
                         ForEach(0..<items.count, id: \.self) { index in
-                            let offset = (Double(index) - contentOffset / itemWidth)
-                            let x0 = numberOfDisplays/2
-                            let x1 = min(max(offset/x0, -6), 6) * .pi/3
-                            let ε = 0.001
-                            let x2 = min(max(x1, -(.pi/2 - ε)), (.pi/2 - ε))
+                            // Determine item's distance from the scroll center
+                            let offset = (Double(index) - scrollOffset / widthPerItem)
+                            // Convert offset to rotation angle
+                            let rotationLimit = min(max(offset / (visibleCount / 2), -6), 6)
+                            let angle = rotationLimit * .pi / 3
+                            let clampedAngle = min(max(angle, -(.pi/2 - 0.001)), .pi/2 - 0.001)
+
                             let item = items[index]
                             content(item)
-                                .frame(width: itemWidth, height: itemWidth)
+                                .frame(width: widthPerItem, height: widthPerItem)
                                 .clipShape(.rect(cornerRadius: 4))
-                                .rotation3DEffect(.radians(x2), axis: (0, 1, 0), perspective: 0)
-                                .offset(x: -Double(offset) * itemWidth)
-                                .offset(x: x0 * itemWidth * sin(x2))
+                                .rotation3DEffect(.radians(clampedAngle), axis: (0, 1, 0), perspective: 0)
+                                .offset(x: -offset * widthPerItem)
+                                .offset(x: (visibleCount / 2) * widthPerItem * sin(clampedAngle))
                                 .onGeometryChange(for: CGRect.self) {
                                     $0.frame(in: .scrollView)
                                 } action: { frame in
-                                    if abs(frame.origin.x) <= itemWidth/2.0 {
+                                    // Detect if this item is centered and set selection
+                                    if abs(frame.origin.x) <= widthPerItem / 2 {
                                         selection = item
                                     }
                                 }
                                 .onTapGesture {
+                                    // Scroll tapped item into center
                                     withAnimation {
                                         scrollView.scrollTo(index, anchor: .center)
                                     }
                                 }
-                                .allowsHitTesting(abs(x2) < 1)
+                                .allowsHitTesting(abs(clampedAngle) < 1)
                         }
-                        .onChange(of: numberOfDisplays, initial: true) { _, displayItems in
-                            if let selection, let index = items.firstIndex(where: { $0 ==  selection}) {
+                        .onChange(of: visibleCount, initial: true) { _, _ in
+                            // Scroll selected item into center on mount
+                            if let selection, let index = items.firstIndex(of: selection) {
                                 scrollView.scrollTo(index, anchor: .center)
                             }
                         }
@@ -77,17 +101,17 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
                     .onGeometryChange(for: CGRect.self) {
                         $0.frame(in: .scrollView)
                     } action: { frame in
-                        contentOffset = -frame.origin.x
+                        scrollOffset = -frame.origin.x
                     }
                 }
             }
-            .frame(height: itemWidth)
+            .frame(height: widthPerItem)
             .scrollTargetBehavior(.viewAligned)
             .scrollIndicators(.hidden)
-            .contentMargins(.horizontal, margins)
+            .contentMargins(.horizontal, sideMargin)
             .mask {
-                // LinearGradient
-                let count = Int(numberOfDisplays)
+                // Mask edge items with gradient for visual focus
+                let count = Int(visibleCount)
                 LinearGradient(
                     colors: [.clear] + Array(repeating: .black, count: count) + [.clear],
                     startPoint: .leading,
@@ -95,14 +119,14 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
                 )
             }
             .overlay {
-                // Border of the currently selected item.
+                // Frame outline for the centered (selected) item
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(Color(red: 229/255, green: 229/255, blue: 234/255), lineWidth: 4)
                     .scaledToFit()
                     .shadow(radius: 2, x: 0, y: 2)
             }
-            .onChange(of: itemWidth, initial: true) { _, itemWidth in
-                self.itemWidth = itemWidth
+            .onChange(of: widthPerItem, initial: true) { _, newValue in
+                itemWidth = newValue
             }
         }
         .frame(height: itemWidth)
@@ -112,6 +136,12 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
     }
 }
 
+
+// MARK: - ItemView
+
+/// A view representing a selectable item in the horizontal picker.
+///
+/// Highlights the selected item with bold yellow text.
 private struct ItemView: View {
     var item: Int
     var isSelected: Bool
@@ -127,6 +157,7 @@ private struct ItemView: View {
             }
     }
 }
+
 
 #Preview {
     HorizontalPickerScreen()

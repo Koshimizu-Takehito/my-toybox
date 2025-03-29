@@ -1,9 +1,15 @@
+// https://x.com/okazz_/status/1870807939944243631
 import SwiftUI
 
 // MARK: - ContentView
 
-// https://x.com/okazz_/status/1870807939944243631
+/// A screen that showcases four distinct animations side-by-side using a shared spring animation.
+///
+/// Each animated view demonstrates a different visual transformation, from geometry changes
+/// to transformations and path-based drawing, all driven by a single shared progress value.
 struct Motions4Screen: View {
+    /// The animation progress value, ranging from 0 to 1.
+    /// It is updated on appear and drives all subview animations.
     @State private var progress: Double = 0
 
     var body: some View {
@@ -17,6 +23,7 @@ struct Motions4Screen: View {
         .onAppear { progress = 1 }
     }
 
+    /// A repeating spring animation used to animate all subviews.
     var animation : Animation {
         .spring(duration: 1).repeatForever()
     }
@@ -24,6 +31,11 @@ struct Motions4Screen: View {
 
 // MARK: - MyGroup
 
+/// A custom layout container that arranges views into a flexible grid.
+///
+/// - Parameters:
+///   - numberOfColumns: Number of columns in the grid layout.
+///   - content: The content views to be laid out.
 private struct MyGroup<Content: View>: View {
     var numberOfColumns: Int
     var content: () -> Content
@@ -59,6 +71,9 @@ private struct MyGroup<Content: View>: View {
 
 // MARK: - SubContentView
 
+/// A protocol for animated subviews that conform to both `View` and `Animatable`.
+///
+/// Provides a unified `progress` value that drives the animation state.
 private protocol SubContentView: View, Animatable {
     nonisolated var progress: Double { get set }
     nonisolated var animatableData: Double { get set }
@@ -78,22 +93,37 @@ private extension SubContentView {
 
 // MARK: - Content01
 
+/// A view that demonstrates three simple geometric animations:
+/// - A rectangle that slides vertically from the top
+/// - A rectangle that slides horizontally from the left
+/// - A rounded rectangle that animates both corner radius and padding
+///
+/// All animations are driven by the `progress` value (from 0 to 1).
 private struct Content01: SubContentView {
     var color1, color2: Color
     var progress: Double
 
     var body: some View {
         GeometryReader { geometry in
+            // Get the size of the current view's container.
             let (width, height) = (geometry.size.width, geometry.size.height)
+
+            // Compute a base radius based on the smaller dimension.
             let radius = min(width, height) / 4
+
+            // First rectangle: slides vertically downward as `progress` increases.
             Rectangle()
                 .frame(height: height / 2)
                 .offset(y: progress * height / 2)
                 .foregroundStyle(color1)
+
+            // Second rectangle: slides horizontally to the right.
             Rectangle()
                 .frame(width: width / 2)
                 .offset(x: progress * width / 2)
                 .foregroundStyle(color2)
+
+            // Rounded rectangle: animates corner radius and padding.
             RoundedRectangle(cornerRadius: progress * radius)
                 .foregroundStyle(color1)
                 .padding(.all, progress * radius / 2)
@@ -105,32 +135,52 @@ private struct Content01: SubContentView {
 
 // MARK: - Content02
 
+/// A view that animates three rectangles in distinct ways:
+/// - A center rectangle rotates 180 degrees
+/// - A bottom rectangle slides vertically upward
+/// - A top-right rectangle slides diagonally downward
+///
+/// These animations create a dynamic, criss-crossing visual using rotation and movement.
 private struct Content02: SubContentView {
     var color1, color2: Color
     var progress: Double
 
     var body: some View {
         GeometryReader { geometry in
+            // Get width and height of the view's container.
             let (width, height) = (geometry.size.width, geometry.size.height)
+
+            // Rotating rectangle in the center.
             Rectangle()
                 .rotationEffect(.radians(progress * .pi))
                 .frame(width: width / 3, height: height / 3)
                 .offset(x: width / 3, y: height / 3)
                 .foregroundStyle(color2)
+
+            // Bottom rectangle: slides upward as progress increases.
             Rectangle()
                 .frame(width: width / 3, height: height / 3)
                 .offset(y: (1 - progress) * (2.0 / 3.0) * height)
                 .foregroundStyle(color1)
+
+            // Top-right rectangle: slides diagonally downward.
             Rectangle()
                 .frame(width: width / 3, height: height / 3)
                 .offset(x: (2.0 / 3.0) * width, y: progress * (2.0 / 3.0) * height)
                 .foregroundStyle(color1)
         }
+
     }
 }
 
 // MARK: - Content03
 
+/// A view that demonstrates complex affine transformations:
+/// - A slanted rectangle that rotates and scales from the top-left corner
+/// - Two trapezoidal shapes constructed via multiple transforms
+///   (including shear, flip, and mirror) that slide upward
+///
+/// This example shows how to use CGAffineTransform to achieve custom shape deformations.
 private struct Content03: SubContentView {
     var color1, color2: Color
     var progress: Double
@@ -138,32 +188,51 @@ private struct Content03: SubContentView {
     var body: some View {
         GeometryReader { geometry in
             let (width, height) = (geometry.size.width, geometry.size.height)
+
+            // Compute vertical offset to align transformed shapes visually.
             let offset = (height / 2) - tan(.pi / 8) * (width / 2)
+
+            // Slanted rectangle using rotation + scale + shear.
             Rectangle()
                 .transformEffect(CGAffineTransform(a: 1, b: 0, c: cos(.pi / 4), d: sin(.pi / 4), tx: 0, ty: 0))
                 .rotationEffect(.radians(-.pi / 8), anchor: .topLeading)
                 .scaleEffect(1 / (2 * cos(.pi / 8)), anchor: .topLeading)
                 .offset(y: offset + ((1 - progress) * (height / 2)))
                 .foregroundStyle(color1)
+
+            // First flipped trapezoid sliding upward.
             Rectangle()
+                // skew x
                 .transformEffect(CGAffineTransform(a: 1, b: 0, c: tan(.pi / 8), d: 1, tx: 0, ty: 0))
+                // flip diagonally
                 .transformEffect(CGAffineTransform(a: 0, b: 1, c: 1, d: 0, tx: 0, ty: 0))
                 .frame(width: progress * width / 2, height: height / 2)
                 .offset(y: offset + ((1 - progress) * (height / 2)))
                 .foregroundStyle(color2)
+
+            // Second mirrored trapezoid sliding upward on the right.
             Rectangle()
+                // skew x
                 .transformEffect(CGAffineTransform(a: 1, b: 0, c: tan(.pi / 8), d: 1, tx: 0, ty: 0))
+                // flip diagonally
                 .transformEffect(CGAffineTransform(a: 0, b: 1, c: 1, d: 0, tx: 0, ty: 0))
+                // mirror horizontally
                 .transformEffect(CGAffineTransform(a: -1, b: 0, c: 0, d: 1, tx: 0, ty: 0))
                 .frame(width: progress * width / 2, height: height / 2)
                 .offset(x: width, y: offset + ((1 - progress) * (height / 2)))
                 .foregroundStyle(color2)
         }
+
     }
 }
 
 // MARK: - Content04
 
+/// A view that builds a symmetrical motion using arcs and circles:
+/// - The left and right halves each draw a semi-circular arc and a moving circle
+/// - As `progress` increases, the arcs expand outward and the circles move diagonally
+///
+/// This creates a flower-like blooming animation with two mirrored sides.
 private struct Content04: SubContentView {
     var color1, color2: Color
     var progress: Double
@@ -171,7 +240,9 @@ private struct Content04: SubContentView {
     var body: some View {
         GeometryReader { geometry in
             let (width, height) = (geometry.size.width, geometry.size.height)
+
             Group {
+                // Left arc and circle moving up and left.
                 Path { path in
                     path.addArc(
                         center: CGPoint(x: width / 2 - progress * width / 4, y: height / 2),
@@ -182,16 +253,16 @@ private struct Content04: SubContentView {
                     )
                     path.closeSubpath()
                 }
+
                 Circle()
-                    .frame(
-                        width: progress * width / 4, height: progress * height / 4, alignment: .center
-                    )
+                    .frame(width: progress * width / 4, height: progress * height / 4)
                     .offset(x: progress * width / 4, y: progress * -height / 4)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }
             .foregroundStyle(color1)
 
             Group {
+                // Right arc and circle moving down and right.
                 Path { path in
                     path.addArc(
                         center: CGPoint(x: width / 2 + progress * width / 4, y: height / 2),
@@ -202,10 +273,9 @@ private struct Content04: SubContentView {
                     )
                     path.closeSubpath()
                 }
+
                 Circle()
-                    .frame(
-                        width: progress * width / 4, height: progress * height / 4, alignment: .center
-                    )
+                    .frame(width: progress * width / 4, height: progress * height / 4)
                     .offset(x: progress * -width / 4, y: progress * height / 4)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }

@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - PixelBasedColorChangeScreen
+
 #if os(macOS)
 struct PixelBasedColorChangeScreen: View {
     var body: some View {
@@ -7,6 +9,13 @@ struct PixelBasedColorChangeScreen: View {
     }
 }
 #else
+
+/// A screen that detects whether the background behind a floating button
+/// is bright or dark by analyzing pixel data from a live image.
+///
+/// The background image is rendered from a vertically scrollable view
+/// and passed to a brightness detection function, which updates
+/// the button's appearance based on the underlying content.
 struct PixelBasedColorChangeScreen: View {
     @State private var image = UIImage()
     @State private var buttonRect = CGRect()
@@ -63,6 +72,12 @@ struct PixelBasedColorChangeScreen: View {
     }
 }
 
+// MARK: - MyButton
+
+/// A circular floating button with an "X" symbol that adapts its color scheme
+/// depending on whether the underlying content is bright or dark.
+///
+/// This view uses `.environment(\.colorScheme, ...)` to switch appearance.
 private struct MyButton: View {
     var isBrightBackground: Bool
     var action: () -> Void
@@ -84,6 +99,8 @@ private struct MyButton: View {
     }
 }
 
+// MARK: - ItemView
+
 private struct ItemView: View, Hashable {
     var body: some View {
         Color(
@@ -98,6 +115,12 @@ private struct ItemView: View, Hashable {
     }
 }
 
+// MARK: - MyScrollView
+
+/// A vertically scrolling list of randomly colored items that also
+/// captures its rendered image to detect background brightness.
+///
+/// The scroll offset is tracked in real time and used by a background renderer.
 private struct MyScrollView: View {
     @State private var offset: CGPoint = .zero
     @Binding var image: UIImage
@@ -121,6 +144,12 @@ private struct MyScrollView: View {
     }
 }
 
+// MARK: - UIScrollViewImageRenderer
+
+/// A view controller wrapper that captures a snapshot of the visible
+/// portion of the UIScrollView based on the current content offset.
+///
+/// The rendered image is passed back to SwiftUI via a binding.
 private struct UIScrollViewImageRenderer: UIViewControllerRepresentable {
     var offset: CGPoint = .zero
     @Binding var image: UIImage
@@ -193,11 +222,17 @@ private struct UIScrollViewImageRenderer: UIViewControllerRepresentable {
     }
 }
 
+// MARK: - UIImage
+
 extension UIImage {
 
-    /// 指定した矩形領域のピクセルを読み込み、平均輝度を求める
-    /// - Parameter cropRect: 切り抜く領域（画像内座標）
-    /// - Returns: ピクセルの平均輝度（0.0〜255.0）
+    /// Calculates the average luminance (brightness) of the specified cropped area in the image.
+    ///
+    /// This function reads pixel data manually and computes luminance using the standard formula:
+    /// `0.299 * R + 0.587 * G + 0.114 * B`
+    ///
+    /// - Parameter cropRect: A CGRect defining the region to sample (in image coordinates).
+    /// - Returns: The average luminance as a Double (0.0–255.0), or `nil` on failure.
     fileprivate func averageLuminance(in cropRect: CGRect) -> Double? {
 
         // 画像の CGImage を取り出す
@@ -273,11 +308,13 @@ extension UIImage {
         return averageLuminance
     }
 
-    /// 指定した矩形領域が「明るい」と判定できるか
+    /// Determines whether the given cropped area of the image is considered "bright"
+    /// based on a luminance threshold (default: 128).
+    ///
     /// - Parameters:
-    ///   - cropRect: 切り抜く領域
-    ///   - threshold: 平均輝度がこの値を超えたら「明るい」とみなす。0〜255の範囲で設定。
-    /// - Returns: 平均輝度が閾値を超えるかどうか
+    ///   - cropRect: The region to analyze.
+    ///   - threshold: A luminance threshold from 0 to 255.
+    /// - Returns: `true` if the average
     fileprivate func isBrightArea(in cropRect: CGRect, threshold: Double = 128.0) -> Bool? {
         guard let avgLum = averageLuminance(in: cropRect) else {
             return nil

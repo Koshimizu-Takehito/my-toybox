@@ -8,7 +8,7 @@ struct InfiniteScrollScreen: View {
 
     var body: some View {
         ZStack {
-            InfiniteScrollView(items, numberOfDisplay: numberOfDisplays, spacing: spacing) { index in
+            InfiniteScrollView(items, numberOfDisplays: numberOfDisplays, spacing: spacing) { index in
                 ItemView(number: index)
             }
             .frame(maxHeight: 300)
@@ -43,9 +43,17 @@ struct InfiniteScrollScreen: View {
 
 // MARK: - InfiniteScrollView
 
+/// A horizontally scrolling view that displays a given number of items at once.
+/// This view wraps a custom infinite-scrolling `UIScrollView` implementation behind a SwiftUI interface.
+///
+/// - Parameters:
+///   - items: The data items to display.
+///   - numberOfDisplays: The number of items to show at once.
+///   - spacing: The spacing between items.
+///   - content: A view builder to create the content for each item.
 private struct InfiniteScrollView<Item: Hashable, Content: View>: View {
     private var items: [Item]
-    private var numberOfDisplay: Int
+    private var numberOfDisplays: Int
     private var spacing: Double
     private var content: (Item) -> Content
     @State private var itemWidth: Double = 0.0
@@ -60,21 +68,22 @@ private struct InfiniteScrollView<Item: Hashable, Content: View>: View {
             containerWidth = width
             updateItemSize()
         }
-        .onChange(of: numberOfDisplay, initial: false) { _, newValue in
+        .onChange(of: numberOfDisplays, initial: false) { _, newValue in
             updateItemSize()
         }
         .frame(height: itemWidth)
     }
 
+    /// Updates the item width based on available container width and number of visible items.
     private func updateItemSize() {
-        let count = Double(max(numberOfDisplay, 1))
+        let count = Double(max(numberOfDisplays, 1))
         self.itemWidth = (containerWidth - (count + 1) * spacing) / count
     }
 }
 
 extension InfiniteScrollView {
-    init(_ items: [Item], numberOfDisplay: Int, spacing: Double = 16.0, @ViewBuilder content: @escaping (Item) -> Content) {
-        self.init(items: items, numberOfDisplay: numberOfDisplay, spacing: spacing, content: content)
+    init(_ items: [Item], numberOfDisplays: Int, spacing: Double = 16.0, @ViewBuilder content: @escaping (Item) -> Content) {
+        self.init(items: items, numberOfDisplays: numberOfDisplays, spacing: spacing, content: content)
     }
 }
 
@@ -124,9 +133,16 @@ extension InfiniteUIScrollView.Representable {
 
 // MARK: - UIScrollView
 
+/// A custom `UIScrollView` subclass that simulates infinite horizontal scrolling
+/// by recentering content and reusing views as they move in and out of the visible area.
 private final class InfiniteUIScrollView: UIScrollView {
+    /// Builder that returns a new UIView containing the desired content.
     var contentBuilder: (() -> UIView)!
+
+    /// Currently visible views on screen.
     private var visibleContents = [UIView]()
+
+    /// A fixed container view that holds the visible content views.
     private let containerView = UIView()
 
     override var frame: CGRect {
@@ -154,6 +170,7 @@ private final class InfiniteUIScrollView: UIScrollView {
         setup()
     }
 
+    /// Initial setup for the scroll view.
     private func setup() {
         self.containerView.isUserInteractionEnabled = false
         self.addSubview(containerView)
@@ -173,7 +190,8 @@ private final class InfiniteUIScrollView: UIScrollView {
         tileContents(fromMinX: minimumVisibleX, toMaxX: maximumVisibleX)
     }
 
-    /// スクロールが大きく中央からずれた時に、コンテンツオフセットを中央付近へ補正して無限に見えるようにする
+    /// Re-centers content offset when the user scrolls far from the center.
+    /// This gives the illusion of infinite scrolling.
     private func recenterIfNecessary() {
         let currentOffset = contentOffset
         let contentWidth = contentSize.width
@@ -196,7 +214,7 @@ private final class InfiniteUIScrollView: UIScrollView {
 
     // MARK: - コンテンツの配置
 
-    /// containerView に追加すべき View を生成する
+    /// Generates and sizes a content view from the builder.
     private func makeContent() -> UIView {
         let view = contentBuilder()
         view.sizeToFit()
@@ -295,7 +313,7 @@ private struct ItemView: View {
 
 #Preview("InfiniteScrollView") {
     let numbers = (1...5).map(\.self)
-    InfiniteScrollView(numbers, numberOfDisplay: 5) {
+    InfiniteScrollView(numbers, numberOfDisplays: 5) {
         ItemView(number: $0)
     }
     .scrollIndicators(.visible)
