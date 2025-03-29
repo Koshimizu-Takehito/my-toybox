@@ -94,6 +94,8 @@ extension Screen: View {
             ColorSchemeAnimationScreen()
         case .uiviewcontrollerrepresentable:
             ViewcontrollerRepresentableScreen()
+        case .enumpicker:
+            EnumPickerScreen()
         default:
             EmptyView()
         }
