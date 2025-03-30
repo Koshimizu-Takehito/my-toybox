@@ -7,7 +7,6 @@ import SwiftUI
 struct CircleSDF2Screen: View {
     /// The smoothing factor used in the `smoothMin` function inside the shader.
     @State private var k: Double = 0.36
-
     /// The phase of the animation (time value in radians).
     @State private var time: Double = .pi
 

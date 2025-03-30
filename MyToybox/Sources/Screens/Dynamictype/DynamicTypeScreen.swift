@@ -6,7 +6,6 @@ import SwiftUI
 /// and manually scaled font sizes using `@ScaledMetric`.
 struct DynamicTypeScreen: View {
     @State private var dynamicTypeIndex: Double = 4.0
-
     // Sample text reused for layout clarity
     private let sampleText = Text("Hello")
 

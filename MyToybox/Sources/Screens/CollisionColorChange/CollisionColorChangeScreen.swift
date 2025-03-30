@@ -15,16 +15,12 @@ struct CollisionColorChangeScreen: View {
 private struct CollisionAnimationView: View {
     /// The movement speed vector (points per second).
     var speed: CGVector
-
     /// The time when the animation started.
     private let startTime: Date = .now
-
     /// The number of collisions that have occurred.
     @State private var collision: Int = 0
-
     /// The size of the item being animated.
     @State private var itemSize: CGSize = .zero
-
     /// The current velocity vector (difference in position per frame).
     @State private var velocity: CGPoint = .zero
 

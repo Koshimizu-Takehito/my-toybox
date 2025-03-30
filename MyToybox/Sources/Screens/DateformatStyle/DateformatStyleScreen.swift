@@ -2,71 +2,73 @@ import SwiftUI
 
 // MARK: - DateformatStyleScreen
 
-/// A screen that allows users to explore how date formatting is affected
-/// by calendar, locale, and time zone settings using `Date.FormatStyle`.
+/// A screen that demonstrates how a date is formatted using
+/// different combinations of calendar, locale, and time zone,
+/// via `Date.FormatStyle`.
 struct DateformatStyleScreen: View {
-    /// Sample date used for previewing format styles
-    @State private var date = ISO8601DateFormatter().date(from: "2025-01-01T00:00:00+09:00")!
-    /// User-selected locale (language)
+    /// A sample date to be formatted and displayed.
+    @State private var sampleDate = ISO8601DateFormatter().date(from: "2025-01-01T00:00:00+09:00")!
+    /// The currently selected locale (language).
     @State private var selectedLanguage: LanguageCode = .japanese
-    /// User-selected time zone
+    /// The currently selected time zone.
     @State private var selectedTimeZone: TimeZoneID = .jst
-    /// User-selected calendar type
+    /// The currently selected calendar.
     @State private var selectedCalendar: CalendarName = .gregorian
 
     var body: some View {
         NavigationStack {
             List {
-                // Output Section
+                // Output preview
                 Section("出力") {
-                    DateCell($date, style: fullStyle)
-                    DateCell($date, style: compactStyle)
+                    DateCell($sampleDate, style: fullStyle)
+                    DateCell($sampleDate, style: compactStyle)
                 }
 
-                // Calendar Section
+                // Calendar selection
                 Section("暦法") {
                     ForEach(CalendarName.allCases, id: \.self) {
                         SelectionCell($selectedCalendar, value: $0)
                     }
                 }
 
-                // Locale Section
+                // Locale (language) selection
                 Section("ロケール") {
                     ForEach(LanguageCode.allCases, id: \.self) {
                         SelectionCell($selectedLanguage, value: $0)
                     }
                 }
 
-                // Time Zone Section
+                // Time zone selection
                 Section("タイムゾーン") {
                     ForEach(TimeZoneID.allCases, id: \.self) {
                         SelectionCell($selectedTimeZone, value: $0)
                     }
                 }
             }
-            .contentTransition(.numericText(countsDown: false))
-            .animation(.default, value: date)
-            .animation(.default, value: selectedLanguage)
-            .animation(.default, value: selectedTimeZone)
-            .animation(.default, value: selectedCalendar)
-            // Inject user-selected settings into the environment
+            // Apply selected values into the environment
             .environment(\.locale, Locale(identifier: selectedLanguage.rawValue))
             .environment(\.timeZone, TimeZone(selectedTimeZone))
             .environment(\.calendar, Calendar(identifier: selectedCalendar.identifier))
+            .animation(.default, value: sampleDate)
+            .animation(.default, value: selectedLanguage)
+            .animation(.default, value: selectedTimeZone)
+            .animation(.default, value: selectedCalendar)
             .tint(.orange)
+            .navigationTitle("Date Format Style")
         }
     }
 
-    /// A detailed style including date and time components
+    /// A verbose date and time format.
     private var fullStyle: Date.FormatStyle {
         .dateTime.year().month().day().hour().minute().second()
     }
 
-    /// A compact style using two-digit month/day values
+    /// A compact style using two-digit month/day.
     private var compactStyle: Date.FormatStyle {
         .dateTime.year().month(.twoDigits).day(.twoDigits)
     }
 }
+
 
 // MARK: - DateCell
 

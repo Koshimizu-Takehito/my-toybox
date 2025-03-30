@@ -22,13 +22,10 @@ struct AuthCodeScreen: View {
 private struct AuthCodeInput: View {
     /// A zero-width space used as a placeholder for empty fields.
     private static let space = "\u{200B}"
-
     /// A binding to the digits array from the parent view.
     @Binding private var digits: [Int]
-
     /// The raw text values displayed in each text field.
     @State private var values: [String]
-
     /// The currently focused text field index.
     @FocusState private var focusedIndex: Int?
 

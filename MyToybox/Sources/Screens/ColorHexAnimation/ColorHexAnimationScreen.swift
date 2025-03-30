@@ -6,7 +6,6 @@ import SwiftUI
 struct ColorHexAnimationScreen: View {
     /// The currently displayed color.
     @State private var currentColor: Color = .random
-
     /// The timestamp of the last color change.
     @State private var lastColorChangeDate: Date = .now
 

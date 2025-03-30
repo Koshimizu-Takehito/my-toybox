@@ -9,7 +9,6 @@ import SwiftUI
 struct GradientPolygonScreen: View {
     /// The number of vertices of the polygon (e.g., 3 for triangle, 6 for hexagon).
     @State var vertex = 6
-
     /// The smoothness of the polygon's corners, ranging from 0 (sharp) to 1 (fully rounded).
     @State var roundness: Double = 0.5
 
