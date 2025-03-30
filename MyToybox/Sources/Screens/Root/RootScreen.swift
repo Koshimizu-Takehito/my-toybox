@@ -1,17 +1,41 @@
 import SwiftUI
 
+// MARK: - RootScreen
+
+/// The main entry view that displays a list of available screens
+/// in a `NavigationSplitView` layout.
+///
+/// - On regular width (iPad or landscape), it shows a sidebar and detail panel.
+/// - On compact width (iPhone), the detail view appears after selection.
+/// - Automatically loads available screen metadata from a local JSON file.
 struct RootScreen: View {
+    /// The view model that handles fetching available screens.
+    @State private var viewModel = RootScreenViewModel()
+    /// The currently selected screen from the sidebar.
     @State private var selection: Screen?
-    @State private var viewModel = RootScreenModel()
+    /// The current horizontal size class (e.g., `.compact`, `.regular`).
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
         NavigationSplitView(sidebar: sidebarView, detail: detailView)
-            .task { await viewModel.fetch() }
-            .preferredColorScheme(.dark)
+            .tint(.white)
+            .task {
+                // Load screens when the view appears.
+                await viewModel.fetch()
+            }
+            .onChange(of: viewModel.screens, initial: true) { _, screens in
+                // Preselect the first screen if not in compact mode (e.g., iPad).
+                if horizontalSizeClass != .compact {
+                    selection = screens.first
+                }
+            }
+            // Force dark mode appearance 😎
+            .environment(\.colorScheme, .dark)
     }
 }
 
 extension RootScreen {
+    /// The sidebar view that displays a list of available screens.
     @ViewBuilder
     fileprivate func sidebarView() -> some View {
         List(viewModel.screens, selection: $selection) { screen in
@@ -24,16 +48,18 @@ extension RootScreen {
                         .font(.subheadline)
                         .foregroundStyle(.foreground.secondary)
                 }
+                .padding(.bottom)
             }
         }
     }
 
+    /// The detail view that renders the selected screen.
     @ViewBuilder
     fileprivate func detailView() -> some View {
         NavigationStack {
             Group {
                 if let selection {
-                    selection
+                    selection // Render the selected screen
                 } else {
                     Text("Please select a screen")
                         .foregroundStyle(.secondary)
@@ -44,6 +70,7 @@ extension RootScreen {
         }
     }
 }
+
 
 #Preview {
     RootScreen()

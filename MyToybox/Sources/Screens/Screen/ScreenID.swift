@@ -5,51 +5,46 @@ extension ScreenID: Identifiable {
 }
 
 enum ScreenID: String, Codable, CaseIterable {
+    case gradientPolygon
     case collisionColorChange
     case solarSystemAnimationView
     case pixelBasedColorToggleView
     case heliocentricAnimationView
-    case countdownAnimationView
-    case infinitescrollview
-    case horizontalpickerview
-    case circlesdf2view
-    case circlesdfview
-    case wavingtextview
-    case typingtextview
-    case colornavigationview
-    case colornavigation
-    case coloredMapView
-    case monotonemap
-    case msl
-    case reverseListView
+    case countdownAnimation
+    case infinitescroll
+    case horizontalPicker
+    case circleSDF1
+    case circleSDF2
+    case wavingText
+    case coloredMap
+    case monotoneMap
+    case waveParticle
+    case reverseList
     case viewIdentity
     case progressiveblur
-    case shaderMosaicView
-    case shaderTileView
-    case shaderSpiralView
-    case primeSpiralView
-    case archimedesSpiralView
-    case tasksleep
-    case motions
-    case hstackView
-    case ui
-    case animation2
-    case modifier
-    case swingAnimationView
-    case glslMsl
-    case waveAnimationView
-    case rectangleAnimationView
+    case shaderMosaic
+    case shaderTile
+    case shaderSpiral
+    case primeSpiral
+    case archimedesSpiral
+    case motions4
+    case matchTopWidth
+    case authCode
+    case tileAnimation3D
+    case tileAnimation
+    case shineShader
+    case waveCircle
+    case rectangleAnimation
     case dateformatstyle
-    case uikitdatepicker
-    case dynamicTypeScalingView
-    case scaledmetricDynamictypesize
-    case appearanceModeAnimationView
+    case scaledmetric
+    case dynamictype
+    case colorSchemeAnimation
     case uiviewcontrollerrepresentable
     case enumpicker
-    case ringslider
-    case unevenroundedrectanglesample2
-    case unevenroundedrectanglesample
-    case coloranimation
+    case ringSlider
+    case unevenRoundedRectang1
+    case unevenRoundedRectang2
+    case colorHexAnimation
     case swiftuiglowtext
     case ringanimation
     case progressring

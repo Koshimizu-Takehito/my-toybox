@@ -1,9 +1,21 @@
 [
   {
+    "id": "gradientPolygon",
+    "title": "Gradient Polygon",
+    "description": "多角形のグラデーション塗りつぶし",
+    "html": "https://gist.github.com/Koshimizu-Takehito/64f06dcd1bd11387f934a68fdf3abd0c"
+  },
+  {
     "id": "collisionColorChange",
     "title": "Collision Color Change",
     "description": "壁にぶつかったら色が変わるやつ",
     "html": "https://gist.github.com/Koshimizu-Takehito/f443719d9c49d106e53e7fc7f7ce3e2f"
+  },
+  {
+    "id": "heliocentricAnimationView",
+    "title": "Heliocentric Animation",
+    "description": "地動説っぽいアニメーション",
+    "html": "https://gist.github.com/Koshimizu-Takehito/e8e5b92677f44241699825f51aa5c994"
   },
   {
     "id": "solarSystemAnimationView",
@@ -18,85 +30,61 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/cc3d48d0177181f75c40b3779af37a7c"
   },
   {
-    "id": "heliocentricAnimationView",
-    "title": "Heliocentric Animation",
-    "description": "地動説っぽいアニメーション",
-    "html": "https://gist.github.com/Koshimizu-Takehito/e8e5b92677f44241699825f51aa5c994"
-  },
-  {
-    "id": "countdownAnimationView",
+    "id": "countdownAnimation",
     "title": "Countdown Animation",
     "description": "カウントダウンアニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/f30712ddea1230a58062594b86ad6ef3"
   },
   {
-    "id": "infinitescrollview",
+    "id": "infinitescroll",
     "title": "Infinite Scroll",
     "description": "ページング無しの循環スクロールビュー",
     "html": "https://gist.github.com/Koshimizu-Takehito/c0b29b8dd8da58636eaf276b8869dc6a"
   },
   {
-    "id": "horizontalpickerview",
+    "id": "horizontalPicker",
     "title": "Horizontal Picker",
     "description": "水平方向のピッカー",
     "html": "https://gist.github.com/Koshimizu-Takehito/27cf2f40302ff5f46194f26b5d2b4676"
   },
   {
-    "id": "circlesdf2view",
+    "id": "circleSDF1",
+    "title": "Circle SDF1",
+    "description": "Circle SDF",
+    "html": "https://gist.github.com/Koshimizu-Takehito/d1de708e3c4820e4bf759bea14cf08ad"
+  },
+  {
+    "id": "circleSDF2",
     "title": "Circle SDF2",
     "description": "Circle SDF2",
     "html": "https://gist.github.com/Koshimizu-Takehito/9b67e5c91cb1440344c8708ae5a12430"
   },
   {
-    "id": "circlesdfview",
-    "title": "Circle SDF",
-    "description": "Circle SDF",
-    "html": "https://gist.github.com/Koshimizu-Takehito/d1de708e3c4820e4bf759bea14cf08ad"
-  },
-  {
-    "id": "wavingtextview",
+    "id": "wavingText",
     "title": "Waving Text",
     "description": "Waving Text",
     "html": "https://gist.github.com/Koshimizu-Takehito/201fab6e85710d46abed97c0aa5de2ab"
   },
   {
-    "id": "typingtextview",
-    "title": "Typing Text",
-    "description": "Typing Text",
-    "html": "https://gist.github.com/Koshimizu-Takehito/9aea2fda75a1b7c2f3260de5e633cf24"
-  },
-  {
-    "id": "colornavigationview",
-    "title": "Color Navigation",
-    "description": "ColorNavigation2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/8a624af1e8b0f40be917dc00340e1d56"
-  },
-  {
-    "id": "colornavigation",
-    "title": "Color Navigation",
-    "description": "Color Navigation",
-    "html": "https://gist.github.com/Koshimizu-Takehito/a102e16d0f401bde4e6d3f792a237276"
-  },
-  {
-    "id": "coloredMapView",
+    "id": "coloredMap",
     "title": "Colored Map",
     "description": "色付きマップ",
     "html": "https://gist.github.com/Koshimizu-Takehito/28c190f3995093c9d75926fd42abde17"
   },
   {
-    "id": "monotonemap",
-    "title": "Monotonemap",
-    "description": "MonotoneMap",
+    "id": "monotoneMap",
+    "title": "Monotone Map",
+    "description": "モノクロのマップ",
     "html": "https://gist.github.com/Koshimizu-Takehito/27827403ba21528f19727d4953572da8"
   },
   {
-    "id": "msl",
-    "title": "Msl",
+    "id": "waveParticle",
+    "title": "WaveParticle",
     "description": "MSLでパーティクル",
     "html": "https://gist.github.com/Koshimizu-Takehito/5ce2a862edd0553bc991354b01561e1f"
   },
   {
-    "id": "reverseListView",
+    "id": "reverseList",
     "title": "ReverseListView",
     "description": "逆向きのリスト",
     "html": "https://gist.github.com/Koshimizu-Takehito/7fe0e27b5c4df930c9c5c622db1325d2"
@@ -109,127 +97,109 @@
   },
   {
     "id": "progressiveblur",
-    "title": "Progressiveblur",
+    "title": "Progressive Blur",
     "description": "ProgressiveBlur",
     "html": "https://gist.github.com/Koshimizu-Takehito/0a8bd5123fcd081d082081ba1a48489f"
   },
   {
-    "id": "shaderMosaicView",
-    "title": "ShaderMosaicView",
+    "id": "shaderMosaic",
+    "title": "Shader Mosaic",
     "description": "シェーダー関数でモザイク",
     "html": "https://gist.github.com/Koshimizu-Takehito/6823c17ee460797154bf99cf2d8f751a"
   },
   {
-    "id": "shaderTileView",
-    "title": "ShaderTileView",
+    "id": "shaderTile",
+    "title": "Shader Tile",
     "description": "シェーダー関数でタイル",
     "html": "https://gist.github.com/Koshimizu-Takehito/4314dc875d4e0fcc8ae70447f827177a"
   },
   {
-    "id": "shaderSpiralView",
-    "title": "ShaderSpiralView",
+    "id": "shaderSpiral",
+    "title": "Shader Spiral",
     "description": "シェーダー関数で螺旋",
     "html": "https://gist.github.com/Koshimizu-Takehito/2317e4b6f7dd9a50d15df5c83f2ed2d2"
   },
   {
-    "id": "primeSpiralView",
-    "title": "PrimeSpiralView",
+    "id": "primeSpiral",
+    "title": "Prime Spiral",
     "description": "素数のアルキメデスの螺旋",
     "html": "https://gist.github.com/Koshimizu-Takehito/17b1597bf05294d7cbbb1f90d985a6b7"
   },
   {
-    "id": "archimedesSpiralView",
-    "title": "ArchimedesSpiralView",
+    "id": "archimedesSpiral",
+    "title": "Archimedes Spiral",
     "description": "アルキメデスのらせん",
     "html": "https://gist.github.com/Koshimizu-Takehito/82b63ec2d06ffda23c1475730d68683f"
   },
   {
-    "id": "tasksleep",
-    "title": "Tasksleep",
-    "description": "Task.sleep は現在のスレッドをブロックしない",
-    "html": "https://gist.github.com/Koshimizu-Takehito/4ff3591931c83c8ffc205eca51847b68"
-  },
-  {
-    "id": "motions",
-    "title": "4motions",
-    "description": "アニメーション素振り4 motions",
+    "id": "motions4",
+    "title": "4 motions",
+    "description": "4 motions",
     "html": "https://gist.github.com/Koshimizu-Takehito/4dcb4617f12267f5d4ad84adb0e2b3b5"
   },
   {
-    "id": "hstackView",
-    "title": "HstackView",
+    "id": "matchTopWidth",
+    "title": "Match top width",
     "description": "上のHStackの幅に下のViewの幅を揃える",
     "html": "https://gist.github.com/Koshimizu-Takehito/af14066e1fc33ef74310c2072fe496ac"
   },
   {
-    "id": "ui",
-    "title": "Ui",
+    "id": "authCode",
+    "title": "Auth code UI",
     "description": "認証コード入力っぽいUI",
     "html": "https://gist.github.com/Koshimizu-Takehito/7bf085dce404c7fff3ca3c371c8e12e0"
   },
   {
-    "id": "animation2",
-    "title": "Animation2",
-    "description": "アニメーション素振り2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/a36682eba811395a2871ef09f6495435"
-  },
-  {
-    "id": "modifier",
-    "title": "Modifier",
-    "description": "アラートを表示するModifier",
-    "html": "https://gist.github.com/Koshimizu-Takehito/a74987614a5a0284b7c0a679baba20b2"
-  },
-  {
-    "id": "swingAnimationView",
-    "title": "SwingAnimationView",
-    "description": "アニメーション素振り",
+    "id": "tileAnimation",
+    "title": "Tile Animation",
+    "description": "タイルアニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/42d0450cec7ec5995fa3d61d9a81cd9e"
   },
   {
-    "id": "glslMsl",
-    "title": "GlslMsl",
-    "description": "つぶやきGLSL を MSL に",
+    "id": "tileAnimation3D",
+    "title": "Tile Animation 3D",
+    "description": "タイルアニメーション 3D",
+    "html": "https://gist.github.com/Koshimizu-Takehito/a36682eba811395a2871ef09f6495435"
+  },
+  {
+    "id": "shineShader",
+    "title": "Shine Shader",
+    "description": "シェーダーを使った光アニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/354b52775c13426605bd069d85e5606b"
   },
   {
-    "id": "waveAnimationView",
-    "title": "WaveAnimationView",
+    "id": "waveCircle",
+    "title": "Wave Circle",
     "description": "波アニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/5a246578bf4463bb838fd70cc402f7ad"
   },
   {
-    "id": "rectangleAnimationView",
-    "title": "RectangleAnimationView",
+    "id": "rectangleAnimation",
+    "title": "RectangleAnimation",
     "description": "長方形アニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/406cc24623cf09e805bf60805817a2d5"
   },
   {
     "id": "dateformatstyle",
-    "title": "Dateformatstyle",
+    "title": "Dateformat Style",
     "description": "Date.FormatStyle の出力サンプル",
     "html": "https://gist.github.com/Koshimizu-Takehito/39d59eaaac6794d726ef0739b099cd8a"
   },
   {
-    "id": "uikitdatepicker",
-    "title": "Uikitdatepicker",
-    "description": "UIKitDatePicker",
-    "html": "https://gist.github.com/Koshimizu-Takehito/e148411960e14188d75a8d9ed636e85b"
-  },
-  {
-    "id": "dynamicTypeScalingView",
-    "title": "DynamicTypeScalingView",
+    "id": "scaledmetric",
+    "title": "Dynamic Type Scaling",
     "description": "ダイナミックタイプを利用した場合の標準フォントのスケール",
     "html": "https://gist.github.com/Koshimizu-Takehito/5613d0a05e7266f998bad825dc3da3b2"
   },
   {
-    "id": "scaledmetricDynamictypesize",
-    "title": "ScaledmetricDynamictypesize",
+    "id": "dynamictype",
+    "title": "Scaledmetric Dynamictype",
     "description": "ScaledMetric と DynamicTypeSizeでフォントサイズを変更するサンプル",
     "html": "https://gist.github.com/Koshimizu-Takehito/7e6a6654f88963d94ba927a778771cbf"
   },
   {
-    "id": "appearanceModeAnimationView",
-    "title": "AppearanceModeAnimationView",
+    "id": "colorSchemeAnimation",
+    "title": "Color Scheme Animation",
     "description": "外観モードの変更にアニメーションをつける",
     "html": "https://gist.github.com/Koshimizu-Takehito/e19b4600b145d01177b38004739e586e"
   },
@@ -246,27 +216,27 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/1508cc4915f5fd46607c5d4c965c4fe4"
   },
   {
-    "id": "ringslider",
-    "title": "Ringslider",
+    "id": "ringSlider",
+    "title": "Ring Slider",
     "description": "RingSlider",
     "html": "https://gist.github.com/Koshimizu-Takehito/09e9fea1325b1c5ef01d53b2fb532c78"
   },
   {
-    "id": "unevenroundedrectanglesample2",
-    "title": "Unevenroundedrectanglesample2",
-    "description": "UnevenRoundedRectangle Sample 2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/0695697bf80e16b02f044f0865b941f8"
-  },
-  {
-    "id": "unevenroundedrectanglesample",
-    "title": "Unevenroundedrectanglesample",
+    "id": "unevenRoundedRectang1",
+    "title": "Uneven Rounded Rectangle 1",
     "description": "UnevenRoundedRectangle Sample",
     "html": "https://gist.github.com/Koshimizu-Takehito/1a2be566c4889c3074ccc9bb01ea5143"
   },
   {
-    "id": "coloranimation",
-    "title": "Coloranimation",
-    "description": "Color animation",
+    "id": "unevenRoundedRectang2",
+    "title": "Uneven Rounded Rectangle 2",
+    "description": "UnevenRoundedRectangle Sample 2",
+    "html": "https://gist.github.com/Koshimizu-Takehito/0695697bf80e16b02f044f0865b941f8"
+  },
+  {
+    "id": "colorHexAnimation",
+    "title": "ColorCircleAnimation",
+    "description": "Color HEX Animation",
     "html": "https://gist.github.com/Koshimizu-Takehito/62f5f17614e5431e7cf8d8614109ef72"
   },
   {

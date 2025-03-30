@@ -1,47 +1,75 @@
 import SwiftUI
 
-struct SolarSystem2View: View {
+// MARK: - 🪐 SolarSystem2Screen
+
+/// A SwiftUI view that simulates a solar system with adjustable perspective between
+/// the geocentric and heliocentric models using a faith slider.
+struct SolarSystem2Screen: View {
     let start: Date = .now
     @State var faith = 0.0
 
     var body: some View {
+        // The main container overlays multiple views:
+        // 1. Planet orbit paths (OrbitsView)
+        // 2. Planet animations (SolarSystemView in TimelineView)
+        // 3. Slider control for changing the "faith" parameter
         ZStack {
+            // Draws orbital paths that morph based on "faith"
             OrbitsView(faith: faith)
 
+            // Continuously animates the solar system over time
             TimelineView(.animation) {
                 let time = $0.date.timeIntervalSince(start) / 10
                 SolarSystemView(faith: faith, time: time)
             }
 
+            // Slider to interactively adjust the "faith" value
             FaithSlider(faith: $faith)
         }
+        // Smoothly animate changes to "faith"
         .animation(.linear, value: faith)
+        // Make the view take up the full available space
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        // Set a dark background color
         .background(Color(white: 28 / 255))
     }
 }
 
+// MARK: - 🎚️ FaithSlider
+
+/// A slider UI to control the `faith` parameter, which linearly interpolates between
+/// geocentric (0.0) and heliocentric (1.0) planetary motion models.
 private struct FaithSlider: View {
     @Binding var faith: Double
 
     var body: some View {
+        // A horizontal layout containing a slider and a dynamic percentage label
         HStack {
+            // Slider to control the faith value (0.0 to 1.0), with animation
             Slider(value: $faith.animation(.linear), in: 0.0...1.0)
 
+            // Percentage label aligned to the right
             ZStack(alignment: .trailing) {
+                // Hidden label to reserve layout space for consistent alignment
                 Text(1.00.formatted(.percent.rounded(rule: .up, increment: 1)))
                     .hidden()
+                // Actual visible percentage that updates with faith value
                 Text(faith.formatted(.percent.rounded(rule: .up, increment: 1)))
             }
-            .contentTransition(.numericText())
-            .foregroundStyle(.white)
-            .monospacedDigit()
+            .contentTransition(.numericText())  // Smooth numeric transition
+            .foregroundStyle(.white)  // White text color
+            .monospacedDigit()  // Monospaced digits for stable layout
         }
+        // Position the slider at the bottom of the screen
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         .padding()
     }
 }
 
+// MARK: - 🌍 SolarSystemView
+
+/// A view that displays all planets and the sun as animated circular bodies,
+/// orbiting based on the `faith` value and elapsed time.
 private struct SolarSystemView: View {
     let faith: Double
     let time: TimeInterval
@@ -72,6 +100,10 @@ private struct SolarSystemView: View {
     }
 }
 
+// MARK: - 🌀 OrbitsView
+
+/// A background visualization of the orbital paths of each celestial body.
+/// The appearance and motion depend on the `faith` parameter.
 private struct OrbitsView: View {
     let faith: Double
 
@@ -96,43 +128,67 @@ private struct OrbitsView: View {
     }
 }
 
-private struct Orbit: Shape {
-    var faith = 1.0
-    var insetAmount = 0.0
-    var radius: CGFloat
-    var index: Int
-    var target: Star
+// MARK: - 💫 Orbit
 
+/// A `Shape` that draws the orbital path of a celestial body
+/// by computing positions over time using the given model (`faith`).
+private struct Orbit: Shape {
+    /// Faith value determining heliocentric (1.0) or geocentric (0.0) view
+    var faith = 1.0
+    /// Base orbit radius
+    var radius: CGFloat
+    /// Planet index (e.g., 0 for Mercury, 1 for Venus, etc.)
+    var index: Int
+    /// The planet/star to render the orbit for
+    var target: Star
+    /// Required to animate the `faith` property smoothly
     var animatableData: Double {
         get { faith }
         set { faith = min(max(newValue, 0), 1) }
     }
 
     func path(in rect: CGRect) -> Path {
+        /// Computes the offset from the center for the given index
         let offset: (_ index: Int) -> CGFloat = { index in
             (4 + 3 * CGFloat(index)) * radius / 2
         }
+        /// The center point of the canvas
         let mid = CGPoint(x: rect.midX, y: rect.midY)
+
         return Path { path in
+            // Compute the initial Earth position at time = 0
             let earth = Sphere(star: .earth, offset: offset(2), time: 0)
+            // Compute the target planet's position relative to Earth
             let planet = Sphere(
                 faith: faith, star: target, center: earth, offset: offset(index), time: 0)
+            // Calculate the orbit start point, adjusted based on faith
             let point = planet.point - planet.faith * planet.center
+            // Move the path's start point to the computed position
             path.move(to: point + mid)
-
-            let maxVaule = target.speed > 1 ? target.speed : 1 / target.speed
-            for time in 0...Int(360.0 * maxVaule) {
-                let time = Double(time) / 360.0
+            // Determine the appropriate number of samples based on orbit speed
+            let maxSpeed = target.speed > 1 ? target.speed : 1 / target.speed
+            // Iterate to simulate orbit progression across time (0 to ~1 second)
+            for step in 0...Int(360.0 * maxSpeed) {
+                // Normalize step into a time value between 0.0 and 1.0
+                let time = Double(step) / 360.0
+                // Recalculate Earth's position at this time
                 let earth = Sphere(star: .earth, offset: offset(2), time: time)
-                let planet = Sphere(
-                    faith: faith, star: target, center: earth, offset: offset(index), time: time)
+                // Recalculate planet's position at this time
+                let planet = Sphere(faith: faith, star: target, center: earth, offset: offset(index), time: time)
+                // Adjust position based on faith (centered around Earth or Sun)
                 let point = planet.point - planet.faith * planet.center
+                // Add a line from the previous point to the current one
                 path.addLine(to: point + mid)
             }
         }
     }
 }
 
+// MARK: - 🌕 Sphere
+
+/// A geometric and visual representation of a celestial body (planet or star).
+/// When used as a View, it renders itself as a circle offset from its center,
+/// simulating orbital motion.
 private struct Sphere {
     var color: Color = .clear
     var center: CGPoint = .zero
@@ -140,6 +196,7 @@ private struct Sphere {
     var radians = 0.0
     var faith = 0.0
 
+    /// Computes the screen position of this sphere based on its radius and angle.
     var point: CGPoint {
         CGPoint(x: offset * cos(radians), y: offset * sin(radians))
     }
@@ -176,6 +233,9 @@ extension Sphere: Animatable {
     }
 }
 
+// MARK: - 🌟 Star
+
+/// A model representing a star or planet in the solar system, including its color and orbital speed.
 private struct Star: Hashable, Identifiable {
     var id = UUID()
     var color: Color
@@ -214,5 +274,5 @@ extension CGPoint {
 }
 
 #Preview {
-    SolarSystem2View()
+    SolarSystem2Screen()
 }
