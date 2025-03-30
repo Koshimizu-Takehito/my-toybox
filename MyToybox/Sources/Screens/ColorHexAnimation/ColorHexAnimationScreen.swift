@@ -35,6 +35,7 @@ private struct ColorCircleView: Animatable {
     /// The color to display and animate.
     var color: Color
     var environment: EnvironmentValues
+    @State var fontSizde: CGFloat = 30
 
     // Animate by interpolating the resolved color's components
     var animatableData: Color.Resolved.AnimatableData {
@@ -55,18 +56,21 @@ extension ColorCircleView: View {
             // Background circle with the current color
             color
                 .clipShape(.circle)
-                .padding()
-                .padding()
+                .onGeometryChange(for: CGSize.self, of: \.size) { size in
+                    fontSizde = min(size.width, size.height) / 7
+                }
 
             // Foreground hex color label
             Text(description)
-                .font(.largeTitle)
+                .font(.system(size: fontSizde))
                 .bold()
                 .monospaced()
                 .contentTransition(.numericText(countsDown: true))
                 .animation(.default, value: color)
                 .foregroundStyle(textColor)
         }
+        .padding()
+        .padding()
     }
 
     /// Converts the current resolved color into a `#RRGGBB` uppercase hex string.
@@ -91,8 +95,8 @@ extension ColorCircleView: View {
 }
 
 /// Provides a convenient way to generate bright, saturated random colors.
-private extension Color {
-    static var random: Self {
+extension Color {
+    fileprivate static var random: Self {
         Color(
             hue: .random(in: 0..<1),
             saturation: .random(in: 0.9..<1),
