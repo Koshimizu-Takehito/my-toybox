@@ -39,7 +39,7 @@ struct MosaicScreen: View {
             library: .default,
             name: "Mosaic::main"
         )
-        return function(.float(scale))
+        return function(.float(scale), .boundingRect)
     }
 }
 
