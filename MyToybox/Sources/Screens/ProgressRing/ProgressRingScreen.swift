@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - ProgressRingScreen
+
 /// The main view that displays two animated progress rings side by side.
 /// Each ring shows the same progress value but uses a different text style (`Text1` and `Text2`).
 /// There's also a control panel overlay for starting, pausing, and resetting the progress.
@@ -9,37 +11,98 @@ struct ProgressRingScreen: View {
 
     var body: some View {
         GeometryReader { geometry in
+            let width = min(geometry.size.width, geometry.size.height)
             VStack(spacing: 0) {
-                VStack(spacing: 0) {
-                    Group {
-                        // First progress ring uses Text1 for the percentage display.
-                        ProgressRing(value: viewModel.progress, text: Text1.init)
+                rings(width: width)
+                controls(width: width)
+            }
+        }
+        .background {
+            verticalLine()
+        }
+    }
 
-                        // Second progress ring uses Text2 for the percentage display.
-                        ProgressRing(value: viewModel.progress, text: Text2.init)
-                    }
-                    .scaledToFit()
+    /// Creates two progress rings (one with `Text1`, one with `Text2`) and sizes them.
+    /// - Parameter width: The smallest dimension of the available space.
+    /// - Returns: A view containing both progress rings.
+    private func rings(width: Double) -> some View {
+        VStack(spacing: 0) {
+            Group {
+                // First progress ring uses Text1 for the percentage display.
+                ProgressRing(value: viewModel.progress, text: Text1.init)
+
+                // Second progress ring uses Text2 for the percentage display.
+                ProgressRing(value: viewModel.progress, text: Text2.init)
+            }
+            .scaledToFit()
+            .padding()
+        }
+        .frame(width: width * 0.5)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    /// Renders a slider and control panel for managing the progress.
+    /// - Parameter width: The smallest dimension of the available space.
+    /// - Returns: A view containing the slider and control buttons.
+    private func controls(width: Double) -> some View {
+        ViewThatFits {
+            HStack {
+                // Use the slider to manually set or pause progress.
+                ProgressSlider(viewModel: viewModel)
+                    .frame(minWidth: width * 0.5)
                     .padding()
-                }
-                .frame(width: geometry.size.width * 0.5)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                 // A floating control panel with "Start", "Pause/Resume", and "Reset" actions.
                 ProgressControl(viewModel: viewModel)
                     .fixedSize()
-                    .frame(maxWidth: .infinity, alignment: .bottomTrailing)
                     .padding()
             }
-        }
-        .background {
-            // A thin red rectangle for a simple background style
-            Rectangle()
-                .fill(Color.red)
-                .frame(width: 2)
-                .ignoresSafeArea()
+            // Alternatively, let the control panel float to the bottom/trailing edge if space is constrained.
+            ProgressControl(viewModel: viewModel)
+                .fixedSize()
+                .frame(maxWidth: .infinity, alignment: .bottomTrailing)
+                .padding(.horizontal)
         }
     }
+
+    /// A thin vertical red line used as a simple background accent.
+    /// - Returns: A red rectangle of fixed width.
+    private func verticalLine() -> some View {
+        Rectangle()
+            .fill(Color.red)
+            .frame(width: 2)
+            .ignoresSafeArea()
+    }
 }
+
+// MARK: - ProgressSlider
+
+/// A slider view for manually adjusting the progress value.
+/// Pauses the animation when the user drags the slider, preventing conflicts with the ongoing animation.
+private struct ProgressSlider: View {
+    var viewModel: ProgressRingViewModel
+
+    /// Binds to the `progress` property of the view model, pausing animation on user input.
+    private var progressBinding: Binding<Double> {
+        Binding {
+            viewModel.progress
+        } set: { newProgress in
+            viewModel.pause()
+            viewModel.progress = newProgress
+        }
+    }
+
+    var body: some View {
+        @Bindable var viewModel = viewModel
+
+        Slider(value: progressBinding.animation(), in: 0...1)
+            .padding(12)
+            .background(.ultraThinMaterial)
+            .clipShape(.rect(cornerRadius: 12))
+    }
+}
+
+// MARK: - ProgressControl
 
 /// A simple control panel view for managing the progress state.
 /// It provides buttons to Start, Pause/Resume, and Reset the progress.
@@ -54,12 +117,15 @@ private struct ProgressControl: View {
 
             // Start / Pause / Resume Button
             Button {
-                canStart ? viewModel.start() : isPaused ? viewModel.resume() : viewModel.pause()
+                canStart
+                    ? viewModel.start()
+                    : isPaused
+                        ? viewModel.resume()
+                        : viewModel.pause()
             } label: {
                 ZStack {
                     // A hidden label to reserve layout space so the button won't resize when toggling text.
                     PlaceholderLabel()
-                    // Start or Reset
                     Label(action: canStart ? .start : canResume ? .resume : .pause)
                 }
             }
@@ -73,7 +139,6 @@ private struct ProgressControl: View {
                 ZStack {
                     // A hidden label to reserve layout space so the button won't resize when toggling text.
                     PlaceholderLabel()
-                    // Start or Reset
                     Label(action: .reset)
                 }
             }
@@ -86,10 +151,13 @@ private struct ProgressControl: View {
     }
 }
 
+// MARK: - ProgressRing
+
 /// A customizable circular progress ring that animates its trim value based on `value`.
 /// - `value` is clamped to 0.0...1.0
 /// - `text` is a ViewBuilder that receives the current progress value (0.0...1.0) and returns any View to overlay on the ring.
 private struct ProgressRing<ProgressText: View>: Animatable {
+
     /// The current progress value (0.0 to 1.0).
     var value = 0.0
 
@@ -113,10 +181,9 @@ private struct ProgressRing<ProgressText: View>: Animatable {
     }
 }
 
-/// The View conformance for `ProgressRing`.
-/// - Renders two circles: a background circle and a trimmed circle to show progress.
-/// - Applies a gradient fill for the progress circle, rotating it so it starts from the top.
 extension ProgressRing: View {
+    /// Renders a circular progress indicator with a background ring,
+    /// a foreground ring for the progress portion, and an overlaid text view.
     var body: some View {
         ZStack {
             // Background ring
@@ -150,11 +217,13 @@ extension ProgressRing: View {
     }
 }
 
+// MARK: - Text1
+
 /// A simple text view that displays the progress as a percentage (e.g., "85%").
 /// Uses an `HStack` with `.bottom` alignment plus extra padding on the percent sign.
-/// This approach is simpler if you only need a baseline alignment and a consistent font size.
+/// This approach is simpler if you only need baseline alignment and a consistent font size.
 private struct Text1: View {
-    var value = 0.0
+    var value = 0.0  // Optionally: rename to progressValue
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
@@ -167,6 +236,8 @@ private struct Text1: View {
     }
 }
 
+// MARK: - Text2
+
 /// A more precise text view that uses `GeometryReader` to measure the actual width/height of the text.
 /// The percent sign is then overlaid at a position calculated from the measured size.
 ///
@@ -174,7 +245,7 @@ private struct Text1: View {
 ///   and the "%" is placed relative to the number's actual dimensions.
 /// - It also adapts better to varying font sizes (e.g., Dynamic Type).
 private struct Text2: View {
-    var value = 0.0
+    var value = 0.0  // Optionally: rename to progressValue
 
     var body: some View {
         Text("\(Int(value * 100))")
@@ -198,6 +269,8 @@ private struct Text2: View {
             }
     }
 }
+
+// MARK: - Label
 
 extension Label<Text, Image> {
     fileprivate enum Action: CaseIterable {
@@ -233,10 +306,13 @@ extension Label<Text, Image> {
         }
     }
 
+    /// Creates a `Label` with a title and system image based on the given action type.
     fileprivate init(action: Action) {
         self = Label(action.title, systemImage: action.symbol)
     }
 }
+
+// MARK: - PlaceholderLabel
 
 /// A hidden label to reserve layout space so the button won't resize when toggling text.
 private struct PlaceholderLabel: View {
