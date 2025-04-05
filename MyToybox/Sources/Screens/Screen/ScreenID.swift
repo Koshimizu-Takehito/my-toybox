@@ -49,7 +49,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case ringanimation
     case progressring
     case button
-    case scrollviewlazyvstack
+    case lostRowAnimation
     case swiftuiwalletcardtransition
     case hierarchicalshapestyle
     case uicollectionlayoutlistconfiguration

@@ -108,6 +108,8 @@ extension Screen: View {
             RinganimationScreen()
         case .progressring:
             ProgressRingScreen()
+        case .lostRowAnimation:
+            LostRowAnimationScreen()
         default:
             EmptyView()
         }

@@ -252,22 +252,10 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/f589657bcf26474bff1a840455b5c695"
   },
   {
-    "id": "button",
-    "title": "Button",
-    "description": "Buttonがセルになるサンプル",
-    "html": "https://gist.github.com/Koshimizu-Takehito/e8e4ad74c04c584bea5f7d1092e26dfe"
-  },
-  {
-    "id": "scrollviewlazyvstack",
-    "title": "Scrollviewlazyvstack",
+    "id": "lostRowAnimation",
+    "title": "Lost Row Animation",
     "description": "ScrollView + LazyVStack アニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/7f6b46a916530b5afe25c2d3ddfc338d"
-  },
-  {
-    "id": "swiftuiwalletcardtransition",
-    "title": "Swiftuiwalletcardtransition",
-    "description": "SwiftUI: Wallet Card Transition",
-    "html": "https://gist.github.com/Koshimizu-Takehito/274df8895f607d6a7dea0dfe80c5d907"
   },
   {
     "id": "hierarchicalshapestyle",
