@@ -106,6 +106,8 @@ extension Screen: View {
             ColorHexAnimationScreen()
         case .ringanimation:
             RinganimationScreen()
+        case .progressring:
+            ProgressRingScreen()
         default:
             EmptyView()
         }
