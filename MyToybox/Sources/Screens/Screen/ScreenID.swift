@@ -54,7 +54,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case hierarchicalShapeStyle
     case uicollectionlayoutlistconfiguration
     case uitableviewpractice
-    case aldousbroderalgorithm
+    case mazeGenerator
     case meshgradient2
     case meshgradient
     case visualeffect2

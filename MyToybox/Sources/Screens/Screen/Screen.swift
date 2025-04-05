@@ -112,6 +112,8 @@ extension Screen: View {
             LostRowAnimationScreen()
         case .hierarchicalShapeStyle:
             HierarchicalShapeStyleScreen()
+        case .mazeGenerator:
+            MazeGeneratorScreen()
         default:
             EmptyView()
         }

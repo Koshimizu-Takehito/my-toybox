@@ -264,21 +264,9 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/70277e0a6d636b5e819f0b9d5e13bf96"
   },
   {
-    "id": "uicollectionlayoutlistconfiguration",
-    "title": "Uicollectionlayoutlistconfiguration",
-    "description": "UICollectionLayoutListConfiguration",
-    "html": "https://gist.github.com/Koshimizu-Takehito/4d09350f55962c599856771a583f22cd"
-  },
-  {
-    "id": "uitableviewpractice",
-    "title": "Uitableviewpractice",
-    "description": "UITableViewPractice",
-    "html": "https://gist.github.com/Koshimizu-Takehito/f4e1dd90dfa5e9bcb93e7a56e23e83d5"
-  },
-  {
-    "id": "aldousbroderalgorithm",
-    "title": "Aldousbroderalgorithm",
-    "description": "穴掘り法（Aldous-Broder Algorithm）を使用した迷路生成ロジック",
+    "id": "mazeGenerator",
+    "title": "Maze Generator",
+    "description": "迷路生成ロジック",
     "html": "https://gist.github.com/Koshimizu-Takehito/cce43b17f91bc71b0ef855c279b69316"
   },
   {
