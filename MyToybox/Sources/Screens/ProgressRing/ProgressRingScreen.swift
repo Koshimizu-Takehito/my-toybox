@@ -10,18 +10,26 @@ struct ProgressRingScreen: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                Group {
-                    // First progress ring uses Text1 for the percentage display.
-                    ProgressRing(value: viewModel.progress, text: Text1.init)
+                VStack(spacing: 0) {
+                    Group {
+                        // First progress ring uses Text1 for the percentage display.
+                        ProgressRing(value: viewModel.progress, text: Text1.init)
 
-                    // Second progress ring uses Text2 for the percentage display.
-                    ProgressRing(value: viewModel.progress, text: Text2.init)
+                        // Second progress ring uses Text2 for the percentage display.
+                        ProgressRing(value: viewModel.progress, text: Text2.init)
+                    }
+                    .scaledToFit()
+                    .padding()
                 }
-                .scaledToFit()
-                .padding()
+                .frame(width: geometry.size.width * 0.5)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                // A floating control panel with "Start", "Pause/Resume", and "Reset" actions.
+                ProgressControl(viewModel: viewModel)
+                    .fixedSize()
+                    .frame(maxWidth: .infinity, alignment: .bottomTrailing)
+                    .padding()
             }
-            .frame(width: geometry.size.width * 0.5)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .background {
             // A thin red rectangle for a simple background style
@@ -29,13 +37,6 @@ struct ProgressRingScreen: View {
                 .fill(Color.red)
                 .frame(width: 2)
                 .ignoresSafeArea()
-        }
-        .overlay {
-            // A floating control panel with "Start", "Pause/Resume", and "Reset" actions.
-            ProgressControl(viewModel: viewModel)
-                .fixedSize()
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding()
         }
     }
 }
@@ -130,9 +131,11 @@ extension ProgressRing: View {
                     style: StrokeStyle(lineWidth: 18, lineCap: .round, lineJoin: .round)
                 )
                 .foregroundStyle(
-                    LinearGradient(colors: [.cyan, .blue],
-                                   startPoint: .top,
-                                   endPoint: .bottom)
+                    LinearGradient(
+                        colors: [.cyan, .blue],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
                 )
                 // Rotate so that 0% is at the top, not the trailing side
                 .rotationEffect(.degrees(-90.0 + (360.0 * value)))
@@ -179,7 +182,7 @@ private struct Text2: View {
             .overlay {
                 GeometryReader { geometry1 in
                     Text("%")
-                        .hidden() // Hidden placeholder to measure '%'
+                        .hidden()  // Hidden placeholder to measure '%'
                         .overlay {
                             GeometryReader { geometry2 in
                                 Text("%")
@@ -196,8 +199,8 @@ private struct Text2: View {
     }
 }
 
-private extension Label<Text, Image> {
-    enum Action: CaseIterable {
+extension Label<Text, Image> {
+    fileprivate enum Action: CaseIterable {
         case start
         case reset
         case resume
@@ -230,7 +233,7 @@ private extension Label<Text, Image> {
         }
     }
 
-    init(action: Action) {
+    fileprivate init(action: Action) {
         self = Label(action.title, systemImage: action.symbol)
     }
 }
