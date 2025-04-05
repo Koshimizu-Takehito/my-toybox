@@ -110,6 +110,8 @@ extension Screen: View {
             ProgressRingScreen()
         case .lostRowAnimation:
             LostRowAnimationScreen()
+        case .hierarchicalShapeStyle:
+            HierarchicalShapeStyleScreen()
         default:
             EmptyView()
         }

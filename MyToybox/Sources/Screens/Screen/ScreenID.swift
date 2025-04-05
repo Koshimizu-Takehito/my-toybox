@@ -51,7 +51,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case button
     case lostRowAnimation
     case swiftuiwalletcardtransition
-    case hierarchicalshapestyle
+    case hierarchicalShapeStyle
     case uicollectionlayoutlistconfiguration
     case uitableviewpractice
     case aldousbroderalgorithm
