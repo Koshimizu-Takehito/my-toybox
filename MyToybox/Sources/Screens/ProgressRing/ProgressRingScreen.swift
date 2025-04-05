@@ -47,37 +47,36 @@ private struct ProgressControl: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            let canStart = viewModel.progress <= 0
+            let canStart = viewModel.progress <= 0 || viewModel.progress >= 1
             let isPaused = viewModel.isPaused
             let canResume = (!canStart && isPaused)
 
-            // Start/Reset Button
+            // Start / Pause / Resume Button
             Button {
-                canStart ? viewModel.start() : viewModel.reset()
+                canStart ? viewModel.start() : isPaused ? viewModel.resume() : viewModel.pause()
             } label: {
                 ZStack {
                     // A hidden label to reserve layout space so the button won't resize when toggling text.
                     PlaceholderLabel()
                     // Start or Reset
-                    Label(action: canStart ? .start : .reset)
+                    Label(action: canStart ? .start : canResume ? .resume : .pause)
                 }
             }
 
             Divider()
 
-            // Pause/Resume Button
+            // Reset Button
             Button {
-                isPaused ? viewModel.resume() : viewModel.pause()
+                viewModel.reset()
             } label: {
                 ZStack {
                     // A hidden label to reserve layout space so the button won't resize when toggling text.
                     PlaceholderLabel()
-                    // Resume or Pause
-                    Label(action: canResume ? .resume : .pause)
+                    // Start or Reset
+                    Label(action: .reset)
                 }
             }
-            // Disabled if progress is 0% or already 100%.
-            .disabled(viewModel.progress <= 0 || viewModel.progress >= 1)
+            .disabled(canStart)
         }
         .font(.body.bold())
         .padding()
