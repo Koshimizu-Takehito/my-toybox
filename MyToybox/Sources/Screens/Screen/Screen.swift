@@ -114,6 +114,8 @@ extension Screen: View {
             HierarchicalShapeStyleScreen()
         case .mazeGenerator:
             MazeGeneratorScreen()
+        case .meshgradient:
+            Meshgradient2Screen()
         default:
             EmptyView()
         }

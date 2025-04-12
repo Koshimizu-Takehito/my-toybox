@@ -270,16 +270,10 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/cce43b17f91bc71b0ef855c279b69316"
   },
   {
-    "id": "meshgradient2",
-    "title": "Meshgradient2",
-    "description": "MeshGradient サンプル2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/72e538549021e1de52b889ce629e5e2b"
-  },
-  {
     "id": "meshgradient",
-    "title": "Meshgradient",
+    "title": "Mesh Gradient",
     "description": "MeshGradient サンプル",
-    "html": "https://gist.github.com/Koshimizu-Takehito/2253fcba7a2c817131969fd69ba4bb12"
+    "html": "https://gist.github.com/Koshimizu-Takehito/72e538549021e1de52b889ce629e5e2b"
   },
   {
     "id": "visualeffect2",
