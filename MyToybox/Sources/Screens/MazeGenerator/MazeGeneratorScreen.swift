@@ -26,10 +26,10 @@ struct MazeGeneratorScreen: View {
     /// ViewModel の迷路データをグリッド状に可視化したビューです。
     var mazeGrid: some View {
         Grid(alignment: .center, horizontalSpacing: 0, verticalSpacing: 0) {
-            ForEach(0..<viewModel.grid.count, id: \.self) { i in
+            ForEach(0..<viewModel.tiles.count, id: \.self) { i in
                 GridRow(alignment: .center) {
-                    ForEach(0..<viewModel.grid[i].count, id: \.self) { j in
-                        viewModel.grid[i][j] ? Color.white : Color.black
+                    ForEach(0..<viewModel.tiles[i].count, id: \.self) { j in
+                        MazeTileView(tile: viewModel.tiles[i][j])
                     }
                 }
             }
@@ -55,6 +55,28 @@ struct MazeGeneratorScreen: View {
         // Disable the button while the maze is generating.
         // 迷路生成中はボタンを無効化します。
         .disabled(viewModel.isGenerating)
+    }
+}
+
+private struct MazeTileView: View {
+    var tile: MazeTile
+
+    var body: some View {
+        Rectangle()
+            .foregroundStyle(shapeStyle)
+    }
+
+    private var shapeStyle: some ShapeStyle {
+        switch tile {
+        case .start:
+            AnyShapeStyle(.red)
+        case .path:
+            AnyShapeStyle(.foreground)
+        case .wall:
+            AnyShapeStyle(.background)
+        case .goal:
+            AnyShapeStyle(.green)
+        }
     }
 }
 

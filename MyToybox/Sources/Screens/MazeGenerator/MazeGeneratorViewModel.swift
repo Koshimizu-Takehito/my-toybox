@@ -1,6 +1,18 @@
 import Foundation
 import Observation
 
+/// `MazeTile` は迷路内に存在するさまざまなタイルの種類を表す
+enum MazeTile {
+    /// 迷路の開始地点
+    case start
+    /// 通路
+    case path
+    /// 壁
+    case wall
+    /// ゴール地点
+    case goal
+}
+
 // MARK: - MazeGeneratorViewModel (ViewModel)
 
 /// A view model responsible for managing the maze generation and holding the current grid state.
@@ -11,10 +23,7 @@ import Observation
 @MainActor
 @Observable
 final class MazeGeneratorViewModel {
-
-    /// A two-dimensional array representing the maze's cells (true = open path, false = wall).
-    /// 迷路を表す 2 次元配列 (true = 通路、false = 壁) です。
-    private(set) var grid = [[Bool]]()
+    private(set) var tiles = [[MazeTile]]()
 
     /// Indicates whether the maze is currently generating (true) or finished (false).
     /// 迷路の生成中 (true) か、完了 (false) かを示します。
@@ -22,7 +31,7 @@ final class MazeGeneratorViewModel {
 
     /// The actor that handles maze generation logic.
     /// 迷路生成ロジックを扱う actor。
-    private let mazeActor: MazeGenerator
+    private let mazeModel: MazeGenerator
 
     /// The Task responsible for subscribing to the maze's snapshots and updating the ViewModel properties.
     /// 迷路のスナップショットを購読し、ViewModel のプロパティを更新するタスクです。
@@ -43,25 +52,43 @@ final class MazeGeneratorViewModel {
     init(width: Int, height: Int) {
         let width = (width / 2) * 2 + 1
         let height = (height / 2) * 2 + 1
-        self.mazeActor = MazeGenerator(width: width, height: height)
+        self.mazeModel = MazeGenerator(width: width, height: height)
         setUp()
     }
 
     /// Asynchronously triggers the maze generation in the actor.
     /// actor での迷路生成を非同期的に呼び出します。
     func generate() async {
-        await mazeActor.generate()
+        await mazeModel.generate()
     }
 
     /// Sets up a task to subscribe to the actor's snapshot stream.
     /// actor のスナップショットストリームを購読するタスクを設定します。
     private func setUp() {
-        mazeSnapshotTask = Task { [weak self, mazeActor] in
-            for await snapshot in await mazeActor.snapshots {
+        mazeSnapshotTask = Task { [weak self, mazeModel] in
+            for await snapshot in await mazeModel.snapshots {
                 guard let self else { break }
-                self.grid = snapshot.grid
+                try? await Task.sleep(for: .milliseconds(30))
+                self.tiles = await makeTiles(snapshot: snapshot)
                 self.isGenerating = snapshot.isGenerating
             }
         }
     }
+}
+
+private func makeTiles(snapshot: MazeGenerator.Snapshot) async -> [[MazeTile]] {
+    await Task.detached {
+        let isGenerating = snapshot.isGenerating
+        var tiles: [[MazeTile]] = snapshot.grid.map { row in
+            row.map { $0 ? .path : .wall }
+        }
+        if isGenerating, tiles.count > 1, tiles[1].count > 1 {
+            return tiles
+        } else {
+            tiles[1][1] = .start
+            tiles[snapshot.grid.count - 2][snapshot.grid[1].count - 2] = .goal
+            return tiles
+        }
+    }
+    .value
 }
