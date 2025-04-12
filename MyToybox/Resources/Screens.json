@@ -276,16 +276,10 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/72e538549021e1de52b889ce629e5e2b"
   },
   {
-    "id": "visualeffect2",
-    "title": "Visualeffect2",
-    "description": "VisualEffect2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/0efa70d63d2ca8c87565c05964597cb3"
-  },
-  {
     "id": "visualeffect",
     "title": "Visualeffect",
-    "description": "VisualEffect",
-    "html": "https://gist.github.com/Koshimizu-Takehito/8eb8afb5425d564eb14df8a076ef51f8"
+    "description": "VisualEffect サンプル",
+    "html": "https://gist.github.com/Koshimizu-Takehito/0efa70d63d2ca8c87565c05964597cb3"
   },
   {
     "id": "contenttransition",

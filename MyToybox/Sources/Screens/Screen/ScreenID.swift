@@ -56,7 +56,6 @@ enum ScreenID: String, Codable, CaseIterable {
     case uitableviewpractice
     case mazeGenerator
     case meshgradient
-    case visualeffect2
     case visualeffect
     case contenttransition
     case flowlayout

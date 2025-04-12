@@ -116,6 +116,8 @@ extension Screen: View {
             MazeGeneratorScreen()
         case .meshgradient:
             Meshgradient2Screen()
+        case .visualeffect:
+            VisualeffectScreen()
         default:
             EmptyView()
         }
