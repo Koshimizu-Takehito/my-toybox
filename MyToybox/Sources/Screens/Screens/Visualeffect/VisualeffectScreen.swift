@@ -5,7 +5,7 @@ struct VisualeffectScreen: View {
         GeometryReader { geometry in
             let scrollViewFrame = geometry.frame(in: .local)
             ScrollView {
-                ForEach(0..<1000) { offset in
+                ForEach(0..<100) { offset in
                     RowContent(offset: offset, scrollViewFrame: scrollViewFrame)
                         .frame(height: scrollViewFrame.height / 8.0)
                 }
