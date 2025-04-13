@@ -61,9 +61,8 @@ enum ScreenID: String, Codable, CaseIterable {
     case flowLayout
     case layoutProtocolSample
     case scrollRotation
-    case gradientAnimationView
-    case editmodesample
-    case juliasetview
+    case gradientAnimation
+    case juliaSet
     case squreflowview
     case smoothmin2d
     case customloadinganimation2

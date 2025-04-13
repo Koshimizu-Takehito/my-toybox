@@ -306,21 +306,15 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/5c13a01de3f30b6073ad847672f72dfb"
   },
   {
-    "id": "gradientAnimationView",
-    "title": "GradientAnimationView",
+    "id": "gradientAnimation",
+    "title": "GradientAnimation",
     "description": "グラデーションアニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/d3b2c4d78a77870c8d6f5a19ef3084d1"
   },
   {
-    "id": "editmodesample",
-    "title": "Editmodesample",
-    "description": "EditMode Sample",
-    "html": "https://gist.github.com/Koshimizu-Takehito/98abbbc3da709de9f23104abf0a1676b"
-  },
-  {
-    "id": "juliasetview",
-    "title": "Juliasetview",
-    "description": "JuliaSetView",
+    "id": "juliaSet",
+    "title": "Julia Set",
+    "description": "Julia Set",
     "html": "https://gist.github.com/Koshimizu-Takehito/dff57477bc5c01442cf6a1704a2e2ef2"
   },
   {

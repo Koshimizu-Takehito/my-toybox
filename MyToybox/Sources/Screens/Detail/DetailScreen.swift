@@ -107,6 +107,10 @@ struct DetailScreen: View {
             LayoutProtocolSampleScreen()
         case .scrollRotation:
             ScrollYRotationScreen()
+        case .gradientAnimation:
+            GradientAnimationScreen()
+        case .juliaSet:
+            JuliaSetScreen()
         default:
             EmptyView()
         }
