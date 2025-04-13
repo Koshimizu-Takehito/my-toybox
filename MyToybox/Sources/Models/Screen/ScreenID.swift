@@ -57,7 +57,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case mazeGenerator
     case meshgradient
     case visualeffect
-    case contenttransition
+    case contentTransition
     case flowlayout
     case viewLayout
     case hackertexteffectswiftuiios16Ios17

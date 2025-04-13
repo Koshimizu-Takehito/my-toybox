@@ -99,6 +99,8 @@ struct DetailScreen: View {
             Meshgradient2Screen()
         case .visualeffect:
             VisualeffectScreen()
+        case .contentTransition:
+            EmptyView()
         default:
             EmptyView()
         }
