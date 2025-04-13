@@ -103,6 +103,10 @@ struct DetailScreen: View {
             ContentTransitionScreen()
         case .flowLayout:
             FlowLayoutScreen()
+        case .layoutProtocolSample:
+            LayoutProtocolSampleScreen()
+        case .scrollRotation:
+            ScrollYRotationScreen()
         default:
             EmptyView()
         }

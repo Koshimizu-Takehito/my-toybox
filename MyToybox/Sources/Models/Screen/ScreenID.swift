@@ -59,9 +59,8 @@ enum ScreenID: String, Codable, CaseIterable {
     case visualeffect
     case contentTransition
     case flowLayout
-    case viewLayout
-    case hackertexteffectswiftuiios16Ios17
-    case y
+    case layoutProtocolSample
+    case scrollRotation
     case gradientAnimationView
     case editmodesample
     case juliasetview

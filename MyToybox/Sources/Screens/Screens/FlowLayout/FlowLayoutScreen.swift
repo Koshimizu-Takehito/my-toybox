@@ -32,7 +32,7 @@ struct FlowLayoutScreen: View {
                 }
             }
             .frame(maxWidth: width)
-            .background(.pink.opacity(0.2))
+            .background(.pink.mix(with: .white, by: 0.5))
         }
         .padding(20)
     }

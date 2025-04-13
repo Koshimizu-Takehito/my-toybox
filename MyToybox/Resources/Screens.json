@@ -294,20 +294,14 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/03c1302dbe0283c5b01eaee770afdba1"
   },
   {
-    "id": "viewLayout",
-    "title": "ViewLayout",
+    "id": "layoutProtocolSample",
+    "title": "Layout Protocol Sample",
     "description": "グリッドのマスと隙間に View を配置する Layout プロトコルのサンプル実装",
     "html": "https://gist.github.com/Koshimizu-Takehito/5c799dc5f56e7c951e609a5e183d111f"
   },
   {
-    "id": "hackertexteffectswiftuiios16Ios17",
-    "title": "Hackertexteffectswiftuiios16Ios17",
-    "description": "Hacker Text Effect - SwiftUI - iOS 16 & iOS 17",
-    "html": "https://gist.github.com/Koshimizu-Takehito/7486f95975a08d6720d49d6519170b8b"
-  },
-  {
-    "id": "y",
-    "title": "Y",
+    "id": "scrollRotation",
+    "title": "Y-Axis Rotation",
     "description": "スクロール位置に応じてY軸回転",
     "html": "https://gist.github.com/Koshimizu-Takehito/5c13a01de3f30b6073ad847672f72dfb"
   },
