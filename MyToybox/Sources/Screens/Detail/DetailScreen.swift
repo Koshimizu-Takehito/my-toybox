@@ -100,7 +100,9 @@ struct DetailScreen: View {
         case .visualeffect:
             VisualeffectScreen()
         case .contentTransition:
-            EmptyView()
+            ContentTransitionScreen()
+        case .flowLayout:
+            FlowLayoutScreen()
         default:
             EmptyView()
         }
