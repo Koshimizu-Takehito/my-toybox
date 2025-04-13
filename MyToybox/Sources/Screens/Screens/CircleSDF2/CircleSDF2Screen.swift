@@ -30,6 +30,7 @@ struct CircleSDF2Screen: View {
             .frame(maxHeight: .infinity, alignment: .bottom)
             .padding()
             .padding(.bottom)
+            .tint(.blue)
         }
         .animation(.default, value: k)
         .animation(.default, value: time)
