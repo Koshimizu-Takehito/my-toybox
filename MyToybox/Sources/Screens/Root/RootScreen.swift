@@ -16,6 +16,8 @@ struct RootScreen: View {
     /// The current horizontal size class (e.g., `.compact`, `.regular`).
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
+    @Environment(\.openURL) var openURL
+
     var body: some View {
         NavigationSplitView(sidebar: sidebarView, detail: detailView)
             .tint(.white)
@@ -67,6 +69,13 @@ extension RootScreen {
                 }
             }
             .navigationTitle(selection?.title ?? "")
+            .toolbar {
+                Button("Sorce Code", systemImage: "safari") {
+                    if let url = selection?.html {
+                        openURL(url)
+                    }
+                }
+            }
             .toolbarTitleDisplayMode(.inline)
         }
     }
