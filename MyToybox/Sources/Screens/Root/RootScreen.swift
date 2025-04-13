@@ -59,7 +59,8 @@ extension RootScreen {
         NavigationStack {
             Group {
                 if let selection {
-                    selection // Render the selected screen
+                    // Render the selected screen
+                    DetailScreen(id: selection.id)
                 } else {
                     Text("Please select a screen")
                         .foregroundStyle(.secondary)

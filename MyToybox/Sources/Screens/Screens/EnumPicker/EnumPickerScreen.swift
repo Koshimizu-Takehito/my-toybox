@@ -34,7 +34,7 @@ struct EnumPickerScreen: View {
 /// - Parameters:
 ///   - selection: The currently selected enum value.
 ///   - allEnumCases: All possible enum cases to be displayed.
-private struct EnumPicker<Enum>: View where Enum: Hashable {
+struct EnumPicker<Enum>: View where Enum: Hashable {
     @Binding var selectedValue: Enum
     var allEnumCases: [Enum]
 
