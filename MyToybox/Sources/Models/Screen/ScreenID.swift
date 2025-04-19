@@ -65,8 +65,8 @@ enum ScreenID: String, Codable, CaseIterable {
     case juliaSet
     case squreflow
     case smoothMin
+    case loadingAnimation1
     case customloadinganimation2
-    case customloadinganimation
     case homeIconShakeView
     case customanimation
     case loadingAnimationView1

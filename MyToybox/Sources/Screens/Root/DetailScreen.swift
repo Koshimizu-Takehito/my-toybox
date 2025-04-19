@@ -115,6 +115,8 @@ struct DetailScreen: View {
             SqureflowScreen()
         case .smoothMin:
             SmoothMinScreen()
+        case .loadingAnimation1:
+            LoadingAnimationScreen1()
         default:
             EmptyView()
         }
