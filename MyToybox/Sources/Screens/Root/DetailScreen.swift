@@ -111,6 +111,10 @@ struct DetailScreen: View {
             GradientAnimationScreen()
         case .juliaSet:
             JuliaSetScreen()
+        case .squreflow:
+            SqureflowScreen()
+        case .smoothMin:
+            SmoothMinScreen()
         default:
             EmptyView()
         }
