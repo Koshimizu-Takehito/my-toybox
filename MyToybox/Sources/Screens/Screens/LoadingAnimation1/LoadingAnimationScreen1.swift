@@ -1,20 +1,46 @@
 import SwiftUI
 
 struct LoadingAnimationScreen1: View {
-    let start = Date.now
-    let colors: [Color] = [.purple, .red, .yellow, .blue, .green]
+    @State var count: Int = 5
+    let colors: [Color] = [.purple, .red, .yellow, .blue, .green, .brown, .cyan, .orange, .pink]
+
+    var body: some View {
+        VStack {
+            LoadingView(colors: Array(colors[0..<count]))
+                .frame(maxHeight: .infinity)
+            Stepper(value: $count, in: 1...9) {
+                Text("Colors")
+            }
+            .padding()
+            .background(.ultraThinMaterial)
+            .clipShape(.rect(cornerRadius: 12))
+            .padding()
+        }
+    }
+}
+
+struct LoadingView: View {
+    var colors: [Color]
+    var start = Date.now
 
     var body: some View {
         TimelineView(.animation) { context in
             ZStack {
-                ForEach(0..<colors.count, id: \.self) { index in
+                let count = colors.count
+                ForEach(0..<count, id: \.self) { index in
                     let theta = 3 * context.date.timeIntervalSince(start)
-                    let offset: Double = Double(index) * (2 * .pi) / Double(colors.count)
-                    Dot(theta: theta, offset: offset, color: colors[index], reverse: true)
-                    Dot(theta: theta, offset: offset, color: colors[index], reverse: false)
+                    let offset1: Double = Double(index) * (2 * .pi) / Double(count)
+                    let offset2 = offset1 + (count % 2 == 0 ? Double.pi / Double(count) : Double.zero)
+                    Dot(theta: theta, offset: offset1, color: colors[index], reverse: false)
+                    Dot(theta: theta, offset: offset2, color: colors[index], reverse: true)
                 }
             }
         }
+        .padding()
+        .frame(width: 340, height: 340)
+        .background(.ultraThinMaterial)
+        .clipShape(.rect(cornerRadius: 60))
+        .scaledToFit()
     }
 }
 
