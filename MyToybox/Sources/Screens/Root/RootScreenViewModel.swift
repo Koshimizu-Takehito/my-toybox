@@ -10,7 +10,7 @@ import Observation
 @MainActor
 final class RootScreenViewModel {
     /// The use case responsible for fetching screen data.
-    private let useCase = RootScreenUseCase()
+    private let useCase = ScreenUseCase()
 
     /// The list of screens fetched from the JSON file.
     private(set) var screens: [Screen] = []
@@ -22,20 +22,5 @@ final class RootScreenViewModel {
         } catch {
             print(error)
         }
-    }
-}
-
-// MARK: - RootScreenUseCase
-
-/// A simple use case that loads `Screen` data from a bundled JSON file named `Screens.json`.
-///
-/// This runs in an actor to ensure safe concurrency.
-actor RootScreenUseCase {
-    /// Loads and decodes the list of available screens from the bundle.
-    func fetch() async throws -> [Screen] {
-        guard let url = Bundle.main.url(forResource: "Screens", withExtension: "json") else {
-            return []
-        }
-        return try JSONDecoder().decode([Screen].self, from: Data(contentsOf: url))
     }
 }

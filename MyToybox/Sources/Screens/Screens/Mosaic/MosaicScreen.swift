@@ -18,15 +18,18 @@ struct MosaicScreen: View {
 
             // Compute the scale value for the mosaic effect.
             // Scale oscillates smoothly using a sine wave.
-            let scale = 1 + 30 * (sin(time) + 1)
-
+            let scale = scale(phase: time)
             Image("waterwheel")
                 .resizable()
+                .padding(-scale / 2)
                 .scaledToFit()
                 .layerEffect(
                     mosaic(scale: scale),
-                    maxSampleOffset: .zero
+                    maxSampleOffset: .init(width: scale, height: scale)
                 )
+                .mask {
+                    Rectangle()
+                }
         }
     }
 
@@ -39,7 +42,11 @@ struct MosaicScreen: View {
             library: .default,
             name: "Mosaic::main"
         )
-        return function(.float(scale))
+        return function(.float(scale), .boundingRect)
+    }
+
+    func scale(phase: Double) -> Double {
+        1 + 30 * (sin(phase) + 1) / 2
     }
 }
 

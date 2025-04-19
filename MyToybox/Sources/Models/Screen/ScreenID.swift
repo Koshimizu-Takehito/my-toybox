@@ -49,28 +49,24 @@ enum ScreenID: String, Codable, CaseIterable {
     case ringanimation
     case progressring
     case button
-    case scrollviewlazyvstack
+    case lostRowAnimation
     case swiftuiwalletcardtransition
-    case hierarchicalshapestyle
+    case hierarchicalShapeStyle
     case uicollectionlayoutlistconfiguration
     case uitableviewpractice
-    case aldousbroderalgorithm
-    case meshgradient2
+    case mazeGenerator
     case meshgradient
-    case visualeffect2
     case visualeffect
-    case contenttransition
-    case flowlayout
-    case viewLayout
-    case hackertexteffectswiftuiios16Ios17
-    case y
-    case gradientAnimationView
-    case editmodesample
-    case juliasetview
-    case squreflowview
-    case smoothmin2d
+    case contentTransition
+    case flowLayout
+    case layoutProtocolSample
+    case scrollRotation
+    case gradientAnimation
+    case juliaSet
+    case squreflow
+    case smoothMin
+    case loadingAnimation1
     case customloadinganimation2
-    case customloadinganimation
     case homeIconShakeView
     case customanimation
     case loadingAnimationView1
