@@ -240,160 +240,106 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/62f5f17614e5431e7cf8d8614109ef72"
   },
   {
-    "id": "swiftuiglowtext",
-    "title": "Swiftuiglowtext",
-    "description": "SwiftUI Glow Text",
-    "html": "https://gist.github.com/Koshimizu-Takehito/55b83b21060a75d9c23049ea93a8266e"
-  },
-  {
     "id": "ringanimation",
     "title": "Ringanimation",
-    "description": "RingAnimation",
+    "description": "Ring Animation",
     "html": "https://gist.github.com/Koshimizu-Takehito/0dcd2c79248673b84ad6b56c7fc1460d"
   },
   {
     "id": "progressring",
-    "title": "Progressring",
-    "description": "ProgressRing",
+    "title": "Progress Ring",
+    "description": "Progress Ring",
     "html": "https://gist.github.com/Koshimizu-Takehito/f589657bcf26474bff1a840455b5c695"
   },
   {
-    "id": "button",
-    "title": "Button",
-    "description": "Buttonがセルになるサンプル",
-    "html": "https://gist.github.com/Koshimizu-Takehito/e8e4ad74c04c584bea5f7d1092e26dfe"
-  },
-  {
-    "id": "scrollviewlazyvstack",
-    "title": "Scrollviewlazyvstack",
+    "id": "lostRowAnimation",
+    "title": "Lost Row Animation",
     "description": "ScrollView + LazyVStack アニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/7f6b46a916530b5afe25c2d3ddfc338d"
   },
   {
-    "id": "swiftuiwalletcardtransition",
-    "title": "Swiftuiwalletcardtransition",
-    "description": "SwiftUI: Wallet Card Transition",
-    "html": "https://gist.github.com/Koshimizu-Takehito/274df8895f607d6a7dea0dfe80c5d907"
-  },
-  {
-    "id": "hierarchicalshapestyle",
-    "title": "Hierarchicalshapestyle",
-    "description": "HierarchicalShapeStyle",
+    "id": "hierarchicalShapeStyle",
+    "title": "Hierarchical Style",
+    "description": "Hierarchical ShapeStyle",
     "html": "https://gist.github.com/Koshimizu-Takehito/70277e0a6d636b5e819f0b9d5e13bf96"
   },
   {
-    "id": "uicollectionlayoutlistconfiguration",
-    "title": "Uicollectionlayoutlistconfiguration",
-    "description": "UICollectionLayoutListConfiguration",
-    "html": "https://gist.github.com/Koshimizu-Takehito/4d09350f55962c599856771a583f22cd"
-  },
-  {
-    "id": "uitableviewpractice",
-    "title": "Uitableviewpractice",
-    "description": "UITableViewPractice",
-    "html": "https://gist.github.com/Koshimizu-Takehito/f4e1dd90dfa5e9bcb93e7a56e23e83d5"
-  },
-  {
-    "id": "aldousbroderalgorithm",
-    "title": "Aldousbroderalgorithm",
-    "description": "穴掘り法（Aldous-Broder Algorithm）を使用した迷路生成ロジック",
+    "id": "mazeGenerator",
+    "title": "Maze Generator",
+    "description": "迷路生成ロジック",
     "html": "https://gist.github.com/Koshimizu-Takehito/cce43b17f91bc71b0ef855c279b69316"
   },
   {
-    "id": "meshgradient2",
-    "title": "Meshgradient2",
-    "description": "MeshGradient サンプル2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/72e538549021e1de52b889ce629e5e2b"
-  },
-  {
     "id": "meshgradient",
-    "title": "Meshgradient",
+    "title": "Mesh Gradient",
     "description": "MeshGradient サンプル",
-    "html": "https://gist.github.com/Koshimizu-Takehito/2253fcba7a2c817131969fd69ba4bb12"
-  },
-  {
-    "id": "visualeffect2",
-    "title": "Visualeffect2",
-    "description": "VisualEffect2",
-    "html": "https://gist.github.com/Koshimizu-Takehito/0efa70d63d2ca8c87565c05964597cb3"
+    "html": "https://gist.github.com/Koshimizu-Takehito/72e538549021e1de52b889ce629e5e2b"
   },
   {
     "id": "visualeffect",
     "title": "Visualeffect",
-    "description": "VisualEffect",
-    "html": "https://gist.github.com/Koshimizu-Takehito/8eb8afb5425d564eb14df8a076ef51f8"
+    "description": "VisualEffect サンプル",
+    "html": "https://gist.github.com/Koshimizu-Takehito/0efa70d63d2ca8c87565c05964597cb3"
   },
   {
-    "id": "contenttransition",
-    "title": "Contenttransition",
-    "description": "ContentTransition",
+    "id": "contentTransition",
+    "title": "Content Transition",
+    "description": "Content Transition",
     "html": "https://gist.github.com/Koshimizu-Takehito/c91755537fb7f4a20b1f0faed7551e60"
   },
   {
-    "id": "flowlayout",
-    "title": "Flowlayout",
+    "id": "flowLayout",
+    "title": "Flow Layout",
     "description": "改行を考慮した FlowLayout",
     "html": "https://gist.github.com/Koshimizu-Takehito/03c1302dbe0283c5b01eaee770afdba1"
   },
   {
-    "id": "viewLayout",
-    "title": "ViewLayout",
+    "id": "layoutProtocolSample",
+    "title": "Layout Protocol Sample",
     "description": "グリッドのマスと隙間に View を配置する Layout プロトコルのサンプル実装",
     "html": "https://gist.github.com/Koshimizu-Takehito/5c799dc5f56e7c951e609a5e183d111f"
   },
   {
-    "id": "hackertexteffectswiftuiios16Ios17",
-    "title": "Hackertexteffectswiftuiios16Ios17",
-    "description": "Hacker Text Effect - SwiftUI - iOS 16 & iOS 17",
-    "html": "https://gist.github.com/Koshimizu-Takehito/7486f95975a08d6720d49d6519170b8b"
-  },
-  {
-    "id": "y",
-    "title": "Y",
+    "id": "scrollRotation",
+    "title": "Y-Axis Rotation",
     "description": "スクロール位置に応じてY軸回転",
     "html": "https://gist.github.com/Koshimizu-Takehito/5c13a01de3f30b6073ad847672f72dfb"
   },
   {
-    "id": "gradientAnimationView",
-    "title": "GradientAnimationView",
+    "id": "gradientAnimation",
+    "title": "GradientAnimation",
     "description": "グラデーションアニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/d3b2c4d78a77870c8d6f5a19ef3084d1"
   },
   {
-    "id": "editmodesample",
-    "title": "Editmodesample",
-    "description": "EditMode Sample",
-    "html": "https://gist.github.com/Koshimizu-Takehito/98abbbc3da709de9f23104abf0a1676b"
-  },
-  {
-    "id": "juliasetview",
-    "title": "Juliasetview",
-    "description": "JuliaSetView",
+    "id": "juliaSet",
+    "title": "Julia Set",
+    "description": "Julia Set",
     "html": "https://gist.github.com/Koshimizu-Takehito/dff57477bc5c01442cf6a1704a2e2ef2"
   },
   {
-    "id": "squreflowview",
+    "id": "squreflow",
     "title": "Squreflowview",
     "description": "SqureFlowView",
     "html": "https://gist.github.com/Koshimizu-Takehito/aafe14864ef6e9a058e7a459e8fadfab"
   },
   {
-    "id": "smoothmin2d",
+    "id": "smoothMin",
     "title": "Smoothmin2d",
     "description": "SmoothMin2d",
     "html": "https://gist.github.com/Koshimizu-Takehito/7bb4a983ae02c1db5f5750aa42550143"
+  },
+  {
+    "id": "loadingAnimation1",
+    "title": "Loading Animation",
+    "description": "カスタムローディングアニメーション",
+    "html": "https://gist.github.com/Koshimizu-Takehito/e164578f6a8603d33eba6e1bc0a5fe08"
   },
   {
     "id": "customloadinganimation2",
     "title": "Customloadinganimation2",
     "description": "CustomLoadingAnimation2",
     "html": "https://gist.github.com/Koshimizu-Takehito/66c22f4f0e144ebee2bb40b232ac950f"
-  },
-  {
-    "id": "customloadinganimation",
-    "title": "Customloadinganimation",
-    "description": "CustomLoadingAnimation",
-    "html": "https://gist.github.com/Koshimizu-Takehito/e164578f6a8603d33eba6e1bc0a5fe08"
   },
   {
     "id": "homeIconShakeView",

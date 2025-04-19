@@ -17,7 +17,6 @@ struct ColorHexAnimationScreen: View {
             let date = context.date
             ColorCircleView(color: currentColor, environment: environment)
                 .animation(.linear(duration: 1), value: currentColor)
-                .ignoresSafeArea()
                 .onChange(of: date, initial: true) { _, date in
                     // If 1.8 seconds have passed, update the color
                     if date.timeIntervalSince(lastColorChangeDate) > 1.8 {
