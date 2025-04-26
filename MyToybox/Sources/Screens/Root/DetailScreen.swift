@@ -117,6 +117,8 @@ struct DetailScreen: View {
             SmoothMinScreen()
         case .loadingAnimation1:
             DotsSpinnerDemoScreen()
+        case .loadingAnimation2:
+            OrbitingDotsLoaderDemoScreen()
         default:
             EmptyView()
         }

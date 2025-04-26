@@ -331,14 +331,14 @@
   },
   {
     "id": "loadingAnimation1",
-    "title": "Loading Animation",
+    "title": "Loading Animation 1",
     "description": "カスタムローディングアニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/e164578f6a8603d33eba6e1bc0a5fe08"
   },
   {
-    "id": "customloadinganimation2",
-    "title": "Customloadinganimation2",
-    "description": "CustomLoadingAnimation2",
+    "id": "loadingAnimation2",
+    "title": "Loading Animation 2",
+    "description": "カスタムローディングアニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/66c22f4f0e144ebee2bb40b232ac950f"
   },
   {
