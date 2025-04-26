@@ -1,5 +1,11 @@
 [
   {
+    "id": "strokeModifier",
+    "title": "Stroke modifier",
+    "description": "ビューに枠線を引く",
+    "html": "https://gist.github.com/Koshimizu-Takehito/a48bce95143e8ef124804bc472142f33"
+  },
+  {
     "id": "gradientPolygon",
     "title": "Gradient Polygon",
     "description": "多角形のグラデーション塗りつぶし",

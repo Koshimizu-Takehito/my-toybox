@@ -5,6 +5,8 @@ struct DetailScreen: View {
 
     var body: some View {
         switch id {
+        case .strokeModifier:
+            StrokeModifierDemoScreen()
         case .gradientPolygon:
             GradientPolygonScreen()
         case .collisionColorChange:
