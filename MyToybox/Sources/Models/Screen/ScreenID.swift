@@ -6,6 +6,7 @@ extension ScreenID: Identifiable {
 
 enum ScreenID: String, Codable, CaseIterable {
     case strokeModifier
+    case metaball2D
     case gradientPolygon
     case collisionColorChange
     case solarSystemAnimationView
@@ -74,7 +75,6 @@ enum ScreenID: String, Codable, CaseIterable {
     case loadingAnimationView2
     case loadingAnimationView3
     case segmentedControlView
-    case metaball
     case localizeddateformat
     case zip3
     case semanticversion

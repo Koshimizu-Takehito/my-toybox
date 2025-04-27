@@ -7,6 +7,8 @@ struct DetailScreen: View {
         switch id {
         case .strokeModifier:
             StrokeModifierDemoScreen()
+        case .metaball2D:
+            RandomMetaballDemoScreen()
         case .gradientPolygon:
             GradientPolygonScreen()
         case .collisionColorChange:
