@@ -11,6 +11,8 @@ struct DetailScreen: View {
             RandomMetaballDemoScreen()
         case .capsule:
             BadgeDemoScreen()
+        case .homeIconShakeView:
+            HomeIconDemoScreen()
         case .gradientPolygon:
             GradientPolygonScreen()
         case .collisionColorChange:

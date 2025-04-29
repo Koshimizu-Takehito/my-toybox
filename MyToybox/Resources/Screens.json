@@ -18,6 +18,12 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/9844880fdbca9a8b60a1a8831441e1e5"
   },
   {
+    "id": "homeIconShakeView",
+    "title": "HomeIconShakeView",
+    "description": "ホームスクリーンのアイコンのブルブルするやつ",
+    "html": "https://gist.github.com/Koshimizu-Takehito/8196f0a6860ab789a15dd5b7efc05449"
+  },
+  {
     "id": "gradientPolygon",
     "title": "Gradient Polygon",
     "description": "多角形のグラデーション塗りつぶし",
@@ -358,12 +364,6 @@
     "title": "Loading Animation 2",
     "description": "カスタムローディングアニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/66c22f4f0e144ebee2bb40b232ac950f"
-  },
-  {
-    "id": "homeIconShakeView",
-    "title": "HomeIconShakeView",
-    "description": "ホームスクリーンのアイコンのブルブルするやつ",
-    "html": "https://gist.github.com/Koshimizu-Takehito/8196f0a6860ab789a15dd5b7efc05449"
   },
   {
     "id": "customanimation",
