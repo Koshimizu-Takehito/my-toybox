@@ -9,6 +9,8 @@ struct DetailScreen: View {
             StrokeModifierDemoScreen()
         case .metaball2D:
             RandomMetaballDemoScreen()
+        case .capsule:
+            BadgeDemoScreen()
         case .gradientPolygon:
             GradientPolygonScreen()
         case .collisionColorChange:

@@ -6,6 +6,12 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/a48bce95143e8ef124804bc472142f33"
   },
   {
+    "id": "capsule",
+    "title": "Capsule",
+    "description": "Capsuleを使ったバッジサンプル",
+    "html": "https://gist.github.com/Koshimizu-Takehito/9844880fdbca9a8b60a1a8831441e1e5"
+  },
+  {
     "id": "metaball2D",
     "title": "Random Metaball 2D",
     "description": "Canvasをつかった 2D Metaball",
