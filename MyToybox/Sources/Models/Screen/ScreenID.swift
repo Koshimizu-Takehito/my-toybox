@@ -75,7 +75,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case loadingAnimationView1
     case loadingAnimationView2
     case loadingAnimationView3
-    case segmentedControlView
+    case segmentedControl
     case localizeddateformat
     case zip3
     case semanticversion

@@ -13,6 +13,8 @@ struct DetailScreen: View {
             BadgeDemoScreen()
         case .homeIconShakeView:
             HomeIconDemoScreen()
+        case .segmentedControl:
+            ColorSegmentedControlDemoScreen()
         case .gradientPolygon:
             GradientPolygonScreen()
         case .collisionColorChange:

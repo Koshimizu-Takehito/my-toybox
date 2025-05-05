@@ -24,6 +24,12 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/8196f0a6860ab789a15dd5b7efc05449"
   },
   {
+    "id": "segmentedControl",
+    "title": "Segmented Control",
+    "description": "カスタムなセグメントコントロール",
+    "html": "https://gist.github.com/Koshimizu-Takehito/688f57c8f447f46bea7492f09c72d5be"
+  },
+  {
     "id": "gradientPolygon",
     "title": "Gradient Polygon",
     "description": "多角形のグラデーション塗りつぶし",
@@ -382,12 +388,6 @@
     "title": "LoadingAnimationView3",
     "description": "おしゃれなローディングアニメーション",
     "html": "https://gist.github.com/Koshimizu-Takehito/93c5891e89d65eadf2164351ca1f2d76"
-  },
-  {
-    "id": "segmentedControlView",
-    "title": "SegmentedControlView",
-    "description": "カスタムなセグメントコントロール",
-    "html": "https://gist.github.com/Koshimizu-Takehito/688f57c8f447f46bea7492f09c72d5be"
   },
   {
     "id": "localizeddateformat",
