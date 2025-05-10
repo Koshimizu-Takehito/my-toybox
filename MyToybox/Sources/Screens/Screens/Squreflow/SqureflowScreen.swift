@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SqureflowScreen: View {
-    private let holder = SquresHolder()
+    @State private var holder = SquresHolder()
 
     var body: some View {
         TimelineView(.animation) { timeline in
