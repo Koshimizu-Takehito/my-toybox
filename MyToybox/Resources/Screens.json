@@ -390,15 +390,9 @@
     "html": "https://gist.github.com/Koshimizu-Takehito/93c5891e89d65eadf2164351ca1f2d76"
   },
   {
-    "id": "playstationlogo",
-    "title": "Playstationlogo",
-    "description": "PlayStationLogo",
-    "html": "https://gist.github.com/Koshimizu-Takehito/43e5986319aa444b7ce66b0b659d7efa"
-  },
-  {
     "id": "applelogo",
-    "title": "Applelogo",
-    "description": "AppleLogo",
+    "title": "Apple Logo",
+    "description": "Canvas を 画像でクリップ",
     "html": "https://gist.github.com/Koshimizu-Takehito/737381f5e55678e691205fe11fe16e93"
   }
 ]

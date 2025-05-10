@@ -129,6 +129,8 @@ struct DetailScreen: View {
             DotsSpinnerDemoScreen()
         case .loadingAnimation2:
             OrbitingDotsLoaderDemoScreen()
+        case .applelogo:
+            AppleLogoScreen()
         default:
             EmptyView()
         }

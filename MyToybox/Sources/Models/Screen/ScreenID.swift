@@ -76,42 +76,5 @@ enum ScreenID: String, Codable, CaseIterable {
     case loadingAnimationView2
     case loadingAnimationView3
     case segmentedControl
-    case localizeddateformat
-    case zip3
-    case semanticversion
-    case userdefaultsclient
-    case preferencesCgsizeViewmodifier
-    case swiftuiView
-    case dynamicpropertyUideviceorientation
-    case swiftuiSwinject
-    case asyncQueueComparisonView
-    case dataRaceDemoView
-    case stateobjectWrappedvalue
-    case observableobject
-    case swiftuiStateobject
-    case playstationlogo
     case applelogo
-    case asyncstreamwrapper
-    case uitableview
-    case withthrowingtaskgroup
-    case timerasyncstream
-    case stopwatchswift
-    case dataScienceIntroView
-    case easinganimationview
-    case optionalcollection
-    case dynamicprogramming21view
-    case dynamicprogramming15view
-    case dynamicprogramming14view
-    case dynamicprogramming13view
-    case anyrawvaluesenum
-    case datasourceCellprovider
-    case uicollectionview
-    case nslayoutconstraintactivate
-    case animatablevector
-    case memoize
-    case laobject
-    case result
-    case either
-    case splitsignalsignalproducer
-    case readalargetextfilelinebylineswift3
 }
