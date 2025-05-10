@@ -5,6 +5,9 @@ extension ScreenID: Identifiable {
 }
 
 enum ScreenID: String, Codable, CaseIterable {
+    case strokeModifier
+    case capsule
+    case metaball2D
     case gradientPolygon
     case collisionColorChange
     case solarSystemAnimationView
@@ -66,50 +69,12 @@ enum ScreenID: String, Codable, CaseIterable {
     case squreflow
     case smoothMin
     case loadingAnimation1
-    case customloadinganimation2
+    case loadingAnimation2
     case homeIconShakeView
     case customanimation
     case loadingAnimationView1
     case loadingAnimationView2
     case loadingAnimationView3
-    case segmentedControlView
-    case metaball
-    case localizeddateformat
-    case zip3
-    case semanticversion
-    case userdefaultsclient
-    case preferencesCgsizeViewmodifier
-    case swiftuiView
-    case dynamicpropertyUideviceorientation
-    case swiftuiSwinject
-    case asyncQueueComparisonView
-    case dataRaceDemoView
-    case stateobjectWrappedvalue
-    case observableobject
-    case swiftuiStateobject
-    case playstationlogo
+    case segmentedControl
     case applelogo
-    case asyncstreamwrapper
-    case uitableview
-    case withthrowingtaskgroup
-    case timerasyncstream
-    case stopwatchswift
-    case dataScienceIntroView
-    case easinganimationview
-    case optionalcollection
-    case dynamicprogramming21view
-    case dynamicprogramming15view
-    case dynamicprogramming14view
-    case dynamicprogramming13view
-    case anyrawvaluesenum
-    case datasourceCellprovider
-    case uicollectionview
-    case nslayoutconstraintactivate
-    case animatablevector
-    case memoize
-    case laobject
-    case result
-    case either
-    case splitsignalsignalproducer
-    case readalargetextfilelinebylineswift3
 }

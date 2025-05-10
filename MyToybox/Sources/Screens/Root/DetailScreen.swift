@@ -5,6 +5,16 @@ struct DetailScreen: View {
 
     var body: some View {
         switch id {
+        case .strokeModifier:
+            StrokeModifierDemoScreen()
+        case .metaball2D:
+            RandomMetaballDemoScreen()
+        case .capsule:
+            BadgeDemoScreen()
+        case .homeIconShakeView:
+            HomeIconDemoScreen()
+        case .segmentedControl:
+            ColorSegmentedControlDemoScreen()
         case .gradientPolygon:
             GradientPolygonScreen()
         case .collisionColorChange:
@@ -116,7 +126,11 @@ struct DetailScreen: View {
         case .smoothMin:
             SmoothMinScreen()
         case .loadingAnimation1:
-            LoadingAnimationScreen1()
+            DotsSpinnerDemoScreen()
+        case .loadingAnimation2:
+            OrbitingDotsLoaderDemoScreen()
+        case .applelogo:
+            AppleLogoScreen()
         default:
             EmptyView()
         }
