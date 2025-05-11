@@ -11,7 +11,7 @@ It acts as a sandbox or "toybox" of interactive screens where you can explore di
 
 - **Languages & Frameworks**: Swift, SwiftUI, Metal  
 - **Project Format**: Xcode project (`MyToybox.xcodeproj`)  
-- **Platform**: iOS (iPhone/iPad), recommended with Xcode 16.2 or later  
+- **Platform**: iOS (iPhone/iPad), recommended with Xcode 16.3 or later  
 
 The app displays a list of sample screens (referred to as "screens") on launch. Each screen demonstrates a unique animation or visual effect.  
 Screens are loaded dynamically from a bundled JSON file and rendered using SwiftUI and, in some cases, custom Metal shaders.
