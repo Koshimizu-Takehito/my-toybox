@@ -1,5 +1,9 @@
 # my-toybox
 
+![Platform](https://img.shields.io/badge/platform-iOS-blue.svg)
+![Swift](https://img.shields.io/badge/swift-6.1-orange.svg)
+![MIT](https://img.shields.io/badge/license-MIT-black)
+
 **my-toybox** は、SwiftUI と Metal を活用したさまざまなアニメーションや描画のサンプルを集めた iOS アプリプロジェクトです。  
 複数の画面（Screen）が用意されており、各画面では個性的な UI エフェクトやアニメーションを試すことができます。
 
@@ -42,9 +46,8 @@ my-toybox/
   │   │   ├─ App/
   │   │   │   └─ App.swift       # @main アプリエントリーポイント
   │   │   ├─ Screens/
-  │   │   │   ├─ Screen/         # Screen.swift / ScreenID.swift
-  │   │   │   ├─ Root/           # アプリ起点画面 (RootScreen + ViewModel)
-  │   │   │   ├─ ...             # 他多数のサンプル画面
+  │   │   │   ├─ Root/          # アプリ起点画面 (RootScreen + ViewModel)
+  │   │   │   ├─ Screens/       # サンプル画面
   │   │   └─ ...                # アプリ固有の他のソースコード
   │   └─ ...
   └─ ...
