@@ -3,6 +3,7 @@
 ![Platform](https://img.shields.io/badge/platform-iOS-blue.svg)
 ![Swift](https://img.shields.io/badge/swift-6.1-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
 
 **my-toybox** は、SwiftUI と Metal を活用したさまざまなアニメーションや描画のサンプルを集めた iOS アプリプロジェクトです。  
 複数の画面（Screen）が用意されており、各画面では個性的な UI エフェクトやアニメーションを試すことができます。
