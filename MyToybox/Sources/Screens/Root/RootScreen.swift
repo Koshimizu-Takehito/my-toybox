@@ -11,6 +11,8 @@ import SwiftUI
 struct RootScreen: View {
     /// The view model that handles fetching available screens.
     @State private var viewModel = RootScreenViewModel()
+
+    @State private var tags = TagSelectionModel()
     /// The currently selected screen from the sidebar.
     @State private var selection: Screen?
     /// The current horizontal size class (e.g., `.compact`, `.regular`).
@@ -32,7 +34,8 @@ struct RootScreen: View {
                 }
             }
             // Force dark mode appearance 😎
-            .environment(\.colorScheme, .dark)
+            .preferredColorScheme(.dark)
+            .environment(viewModel.tags)
     }
 }
 
@@ -40,7 +43,10 @@ extension RootScreen {
     /// The sidebar view that displays a list of available screens.
     @ViewBuilder
     fileprivate func sidebarView() -> some View {
-        List(viewModel.screens, selection: $selection) { screen in
+        List(
+            viewModel.filterdScreens(),
+            selection: $selection
+        ) { screen in
             NavigationLink(value: screen) {
                 VStack(alignment: .leading) {
                     Text(screen.title)
@@ -53,6 +59,11 @@ extension RootScreen {
                 .padding(.bottom)
             }
         }
+        .toolbar {
+            TagPicker()
+        }
+        .navigationBarTitle("MyToybox")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     /// The detail view that renders the selected screen.

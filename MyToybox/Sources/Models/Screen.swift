@@ -16,6 +16,8 @@ struct Screen: Identifiable, Codable, Hashable {
     /// A short description of what the screen shows or does.
     var description: String
 
+    var tags: [Tag]
+
     /// A URL pointing to an associated HTML documentation file.
     /// This might be used for external links.
     var html: URL
