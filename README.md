@@ -3,6 +3,7 @@
 ![Platform](https://img.shields.io/badge/platform-iOS-blue.svg)
 ![Swift](https://img.shields.io/badge/swift-6.1-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
 
 ![Simulator Screenshot - iPad Pro 13-inch (M4) - 2025-05-11 at 15 32 02](https://github.com/user-attachments/assets/8b5ecc14-1224-4de7-9160-622aee2fb723)
 
