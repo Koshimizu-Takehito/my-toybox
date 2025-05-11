@@ -1,5 +1,9 @@
 # my-toybox
 
+![Platform](https://img.shields.io/badge/platform-iOS-blue.svg)
+![Swift](https://img.shields.io/badge/swift-6.1-orange.svg)
+![MIT](https://img.shields.io/badge/license-MIT-black)
+
 **my-toybox** is an experimental iOS app project that showcases a wide variety of SwiftUI and Metal-based visual effects and animations.  
 It acts as a sandbox or "toybox" of interactive screens where you can explore different UI techniques and graphics rendering approaches.
 
@@ -44,8 +48,7 @@ my-toybox/
   │   │   │   └─ App.swift       # Entry point of the app
   │   │   ├─ Screens/
   │   │   │   ├─ Root/           # Root screen and view model
-  │   │   │   ├─ Screen/         # Screen.swift / ScreenID.swift
-  │   │   │   ├─ <...>           # Dozens of animation screens
+  │   │   │   ├─ Screens/         # Dozens of animation screens
   │   │   └─ ...
 ```
 
