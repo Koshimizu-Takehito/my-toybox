@@ -146,7 +146,8 @@ private struct BadgeValueControl: View {
 
     var body: some View {
         VStack {
-            Stepper("", value: $model.number, in: -1...1000)
+            Stepper("Count \(model.number)", value: $model.number, in: -1...1000)
+                .frame(maxWidth: .infinity, alignment: .trailing)
             Slider(value: $model.slider, in: -1...1000)
 
             Button("Reset") {

@@ -57,8 +57,10 @@ extension RootScreen {
         .toolbar {
             TagPicker()
         }
+#if os(iOS)
         .navigationBarTitle("MyToybox")
         .navigationBarTitleDisplayMode(.inline)
+#endif
     }
 
     /// The detail view that renders the selected screen.
