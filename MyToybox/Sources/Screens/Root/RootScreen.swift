@@ -11,8 +11,6 @@ import SwiftUI
 struct RootScreen: View {
     /// The view model that handles fetching available screens.
     @State private var viewModel = RootScreenViewModel()
-
-    @State private var tags = TagSelectionModel()
     /// The currently selected screen from the sidebar.
     @State private var selection: Screen?
     /// The current horizontal size class (e.g., `.compact`, `.regular`).
@@ -43,10 +41,7 @@ extension RootScreen {
     /// The sidebar view that displays a list of available screens.
     @ViewBuilder
     fileprivate func sidebarView() -> some View {
-        List(
-            viewModel.filterdScreens(),
-            selection: $selection
-        ) { screen in
+        List(viewModel.filterdScreens(), selection: $selection) { screen in
             NavigationLink(value: screen) {
                 VStack(alignment: .leading) {
                     Text(screen.title)
