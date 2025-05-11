@@ -86,6 +86,7 @@ private struct PickerPopover: View {
         .animation(.default, value: selectedTags)
         .frame(idealWidth: 300)
         .padding(.vertical)
+        .background(.ultraThinMaterial)
         .presentationCompactAdaptation(.popover)
     }
 
@@ -110,11 +111,27 @@ private struct PickerPopover: View {
 private struct PickerToggle: View {
     /// Binding to an individual tag’s selection state.
     @Binding var selection: TagSelectionModel.Selection
+    @State private var isOn: Bool
+
+    init(selection: Binding<TagSelectionModel.Selection>) {
+        _selection = selection
+        _isOn = State(initialValue: selection.wrappedValue.isSelected)
+    }
 
     var body: some View {
-        Toggle(String(describing: selection.tag), isOn: $selection.isSelected.animation())
+        Toggle(String(describing: selection.tag).capitalized, isOn: $isOn)
             .toggleStyle(.button)
             .tint(selection.color)
+            .onChange(of: selection.isSelected, initial: true) { _, isSelected in
+                withAnimation {
+                    isOn = isSelected
+                }
+            }
+            .onChange(of: isOn, initial: true) { _, isOn in
+                withAnimation {
+                    selection.isSelected = isOn
+                }
+            }
     }
 }
 
