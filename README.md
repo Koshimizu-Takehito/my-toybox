@@ -4,6 +4,10 @@
 ![Swift](https://img.shields.io/badge/swift-6.1-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
 
+![Simulator Screenshot - iPad Pro 13-inch (M4) - 2025-05-11 at 15 32 02](https://github.com/user-attachments/assets/8b5ecc14-1224-4de7-9160-622aee2fb723)
+
+
+
 **my-toybox** is an experimental iOS app project that showcases a wide variety of SwiftUI and Metal-based visual effects and animations.  
 It acts as a sandbox or "toybox" of interactive screens where you can explore different UI techniques and graphics rendering approaches.
 
