@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if os(iOS)
 private let gradationColors: [Color] = [
     .black,
     .blue,
@@ -261,3 +262,7 @@ private extension SIMD2<Float> {
 #Preview {
     Meshgradient2Screen()
 }
+
+#elseif os(macOS)
+typealias Meshgradient2Screen = EmptyView
+#endif

@@ -20,7 +20,7 @@ struct HomeIconDemoScreen: View {
 /// Tapping **Edit / Done** in the toolbar toggles jiggle mode.
 struct HomeIconView: View {
     /// `true` while the user is in edit (jiggle) mode.
-    @State private var isEditingMode = false
+    @State private var isEditingMode = true
     @State private var model = HomeIconModel(numberOfColumn: 4)
 
     var body: some View {

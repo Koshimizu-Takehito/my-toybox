@@ -1,5 +1,7 @@
 import SwiftUI
 
+#if os(iOS)
+
 // MARK: - ViewControllerRepresentableScreen
 
 /// A SwiftUI screen that demonstrates the integration of a UIKit UIViewController
@@ -87,3 +89,7 @@ final class SampleViewController: UIViewController {
 #Preview {
     ViewcontrollerRepresentableScreen()
 }
+
+#elseif os(macOS)
+typealias ViewcontrollerRepresentableScreen = EmptyView
+#endif

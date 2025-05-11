@@ -1,6 +1,7 @@
 // https://x.com/okazz_/status/1870807939944243631
 import SwiftUI
 
+#if os(iOS)
 // MARK: - ContentView
 
 /// A screen that showcases four distinct animations side-by-side using a shared spring animation.
@@ -289,3 +290,7 @@ private struct Content04: SubContentView {
 #Preview {
     Motions4Screen()
 }
+
+#elseif os(macOS)
+typealias Motions4Screen = EmptyView
+#endif

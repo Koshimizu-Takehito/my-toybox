@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if os(iOS)
 struct InfiniteScrollScreen: View {
     private var items: [Int] = (1...5).map(\.self)
     @State private var numberOfDisplays = 5
@@ -318,3 +319,7 @@ private struct ItemView: View {
     }
     .scrollIndicators(.visible)
 }
+
+#elseif os(macOS)
+typealias InfiniteScrollScreen = EmptyView
+#endif
