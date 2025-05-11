@@ -29,9 +29,22 @@
 		3A682AAA2D8D471100B110AC /* MyToyboxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyToyboxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3AED71DC2DD072FC00D95672 /* Exceptions for "MyToybox" folder in "MyToybox" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			platformFiltersByRelativePath = {
+				Sources/Screens/Screens/ViewcontrollerRepresentable/SampleViewController.xib = (ios, );
+			};
+			target = 3A682A8E2D8D471000B110AC /* MyToybox */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3A682A912D8D471000B110AC /* MyToybox */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3AED71DC2DD072FC00D95672 /* Exceptions for "MyToybox" folder in "MyToybox" target */,
+			);
 			path = MyToybox;
 			sourceTree = "<group>";
 		};

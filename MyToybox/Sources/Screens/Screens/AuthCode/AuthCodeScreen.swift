@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if os(iOS)
 /// A screen that presents an authentication code (OTP) input interface.
 ///
 /// Displays six input fields for numeric digits. The entered code is printed to the console whenever it changes.
@@ -102,3 +103,7 @@ private struct AuthCodeInput: View {
 #Preview {
     AuthCodeScreen()
 }
+
+#elseif os(macOS)
+typealias AuthCodeScreen = EmptyView
+#endif
