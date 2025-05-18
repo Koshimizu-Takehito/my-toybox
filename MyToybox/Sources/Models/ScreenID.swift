@@ -9,6 +9,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case capsule
     case metaball2D
     case voronoi
+    case voronoi2
     case gradientPolygon
     case collisionColorChange
     case solarSystemAnimationView

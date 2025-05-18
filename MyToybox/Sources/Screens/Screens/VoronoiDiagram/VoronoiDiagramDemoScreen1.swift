@@ -1,36 +1,27 @@
 import SwiftUI
 
-// MARK: - VoronoiDiagramDemoScreen
+// MARK: - VoronoiDiagramDemoScreen1
 
 /// A demo screen that displays a real-time animated Voronoi diagram
 /// using a custom Metal shader.
 /// The diagram is rendered with an overlayed title.
-struct VoronoiDiagramDemoScreen: View {
-    var body: some View {
-        VoronoiDiagramView()
-    }
-}
-
-// MARK: - VoronoiDiagramView
-
-/// A view that renders a Voronoi diagram using an animatable shader.
-/// This view is internal to the demo screen.
-private struct VoronoiDiagramView: View {
+struct VoronoiDiagramDemoScreen1: View {
     var body: some View {
         AnimatableShaderView(
             title: "Hello, voronoi diagram.",
-            shader: shader(time:)
+            nameSpace: "VoronoiDiagramShadeder1"
         )
     }
+}
 
-    /// Returns a Shader configured with the current animation time.
-    /// - Parameter time: The elapsed time in seconds since the animation started.
-    /// - Returns: A `Shader` instance used for rendering the Voronoi diagram.
-    private func shader(time: TimeInterval) -> Shader {
-        // The Metal shader function name is intentionally "VoronoiDiagramShadeder::main".
-        // Please ensure this name matches the function in your Metal library.
-        let function = ShaderFunction(library: .default, name: "VoronoiDiagramShadeder::main")
-        return function(.boundingRect, .float(time))
+// MARK: - VoronoiDiagramDemoScreen2
+
+struct VoronoiDiagramDemoScreen2: View {
+    var body: some View {
+        AnimatableShaderView(
+            title: "Hello, metric space.",
+            nameSpace: "VoronoiDiagramShadeder2"
+        )
     }
 }
 
@@ -42,7 +33,7 @@ private struct AnimatableShaderView: View {
     /// The title displayed over the animation.
     var title: String
     /// A closure that generates a `Shader` for a given elapsed time.
-    var shader: (_ time: TimeInterval) -> Shader
+    var nameSpace: String
 
     /// The reference date when the animation started.
     @State private var start = Date()
@@ -51,7 +42,7 @@ private struct AnimatableShaderView: View {
         TimelineView(.animation) { context in
             let time = context.date.timeIntervalSince(start)
             Rectangle()
-                .colorEffect(shader(time))
+                .colorEffect(shader(time: time))
                 .overlay {
                     Text(title)
                         .font(.largeTitle)
@@ -70,10 +61,22 @@ private struct AnimatableShaderView: View {
                 .ignoresSafeArea()
         }
     }
+
+    /// Returns a Shader configured with the current animation time.
+    /// - Parameter time: The elapsed time in seconds since the animation started.
+    /// - Returns: A `Shader` instance used for rendering the Voronoi diagram.
+    private func shader(time: TimeInterval) -> Shader {
+        let function = ShaderFunction(library: .default, name: "\(nameSpace)::main")
+        return function(.boundingRect, .float(time))
+    }
 }
 
 // MARK: - Preview
 
-#Preview {
-    VoronoiDiagramDemoScreen()
+#Preview("Voronoi Diagram") {
+    VoronoiDiagramDemoScreen1()
+}
+
+#Preview("Custom Metric Space") {
+    VoronoiDiagramDemoScreen2()
 }

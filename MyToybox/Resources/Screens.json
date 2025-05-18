@@ -23,7 +23,14 @@
   {
     "id": "voronoi",
     "title": "VoronoiDiagram",
-    "description": "Voronoi図",
+    "description": "ボロノイ図",
+    "tags": ["animation", "metal"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/VoronoiDiagram/VoronoiDiagramDemoScreen.swift"
+  },
+  {
+    "id": "voronoi2",
+    "title": "VoronoiDiagram",
+    "description": "距離空間を変更したボロノイ図",
     "tags": ["animation", "metal"],
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/VoronoiDiagram/VoronoiDiagramDemoScreen.swift"
   },
