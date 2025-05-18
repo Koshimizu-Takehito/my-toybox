@@ -61,6 +61,10 @@ private struct AnimatableShaderView: View {
                         .padding(30)
                         .background(.ultraThinMaterial)
                         .clipShape(.rect(cornerRadius: 30))
+                        .shadow(radius: 1)
+                        .shadow(radius: 2)
+                        .shadow(radius: 3)
+                        .shadow(radius: 4)
                         .shadow(radius: 5)
                 }
                 .ignoresSafeArea()
