@@ -21,6 +21,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/RandomMetaball2D/RandomMetaballDemoScreen.swift"
   },
   {
+    "id": "lissajousCurve",
+    "title": "LissajousCurve",
+    "description": "リサージュ曲線",
+    "tags": ["animation"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/LissajousCurve/LissajousCurveScreen.swift"
+  },
+  {
     "id": "voronoi",
     "title": "VoronoiDiagram",
     "description": "ボロノイ図",
