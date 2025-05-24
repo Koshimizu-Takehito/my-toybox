@@ -11,6 +11,8 @@ struct DetailScreen: View {
             RandomMetaballDemoScreen()
         case .capsule:
             BadgeDemoScreen()
+        case .lissajousCurve:
+            LissajousCurveDemoScreen()
         case .voronoi:
             VoronoiDiagramDemoScreen1()
         case .voronoi2:
