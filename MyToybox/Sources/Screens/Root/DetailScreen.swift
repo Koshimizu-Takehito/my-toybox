@@ -15,6 +15,8 @@ struct DetailScreen: View {
             LissajousCurveDemoScreen1()
         case .lissajousCurve2:
             LissajousCurveDemoScreen2()
+        case .pipCard:
+            PipCardDemoScreen()
         case .voronoi:
             VoronoiDiagramDemoScreen1()
         case .voronoi2:

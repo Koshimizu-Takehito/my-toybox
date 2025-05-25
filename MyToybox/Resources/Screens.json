@@ -35,6 +35,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/LissajousCurve/LissajousCurveScreen2.swift"
   },
   {
+    "id": "pipCard",
+    "title": "PipCardAnimation",
+    "description": "PiPアニメーション",
+    "tags": ["animation", "layout"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/PipCardDemo/PipCardDemoScreen.swift"
+  },
+  {
     "id": "voronoi",
     "title": "VoronoiDiagram",
     "description": "ボロノイ図",
