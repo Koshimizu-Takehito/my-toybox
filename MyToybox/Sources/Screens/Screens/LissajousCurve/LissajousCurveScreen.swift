@@ -3,46 +3,58 @@ import SwiftUI
 
 // MARK: - LissajousCurve
 
-/// An observable data model representing the parameters of a Lissajous curve,
-/// used to control the animation and appearance of the curve in SwiftUI views.
+/// Encapsulates all parameters necessary to define and animate a Lissajous curve.
 ///
-/// - Note: This model is intended to be shared between multiple views and updated interactively.
-///
-@Observable
-final class LissajousCurve {
-    /// Frequency multiplier for the x-axis. Determines how many times the curve oscillates horizontally.
+/// The Lissajous curve is mathematically represented as:
+///     x = cos(k * t + phase)
+///     y = sin(l * t)
+/// where `k` and `l` determine the frequency of oscillation in x and y, and `phase` animates the curve.
+struct LissajousCurve {
+    /// Frequency multiplier for the x-axis (number of horizontal lobes).
     var k: Double = 2
 
-    /// Frequency multiplier for the y-axis. Determines how many times the curve oscillates vertically.
+    /// Frequency multiplier for the y-axis (number of vertical lobes).
     var l: Double = 3
 
-    /// The current phase offset (in radians) applied to the x component.
-    /// This value is animated over time to produce continuous motion.
+    /// Phase offset in radians applied to the x component. This is animated in real time.
     var phase: Double = 0.0
 
-    /// The number of sample points used to generate the curve's path.
-    /// A higher value results in a smoother curve, but may decrease performance on low-end devices.
+    /// Number of sample points along the curve. Higher values yield smoother curves.
     var samples: Int = 5000
+
+    /// Computes a point on the Lissajous curve for the given sample index.
+    /// - Parameters:
+    ///   - index: The sample point index along the curve (0...samples).
+    ///   - center: The center point of the drawing area.
+    ///   - radius: The curve's maximum radius from the center.
+    /// - Returns: The computed CGPoint on the curve.
+    func point(at index: Int, center: CGPoint, radius: CGFloat) -> CGPoint {
+        let t = 2 * .pi * Double(index) / Double(samples)
+        // Use rounded-down k and l for integer-based periodicity.
+        let xValue = cos(k.rounded(.down) * t + phase)
+        let yValue = sin(l.rounded(.down) * t)
+        return CGPoint(x: radius * xValue + center.x, y: radius * yValue + center.y)
+    }
 }
 
 // MARK: - LissajousCurveDemoScreen
 
-/// The main demo screen that displays an animated Lissajous curve
-/// and provides interactive controls for users to adjust its parameters in real time.
+/// The main screen displaying the animated Lissajous curve with interactive controls.
+/// Users can adjust parameters and observe their effects in real time.
 struct LissajousCurveDemoScreen: View {
-    /// The shared state model holding all parameters for the Lissajous curve.
-    @State var model = LissajousCurve()
+    /// State model holding all curve parameters.
+    @State var curve = LissajousCurve()
 
     var body: some View {
         VStack(spacing: 16) {
             Text("Lissajous Curve")
                 .font(.title)
                 .bold()
-            LissajousCurveAnimationView(model: model)
+            LissajousCurveAnimationView(curve: $curve)
                 .background(.thinMaterial)
                 .clipShape(.rect(cornerRadius: 24))
                 .shadow(radius: 6)
-            LissajousCurveControlView(model: model)
+            LissajousCurveControlView(curve: $curve)
         }
         .padding()
     }
@@ -50,28 +62,26 @@ struct LissajousCurveDemoScreen: View {
 
 // MARK: - LissajousCurveAnimationView
 
-/// A view that animates the phase property of the Lissajous curve in real time,
-/// creating a smoothly moving visualization.
-///
+/// A view that animates the phase parameter of the Lissajous curve,
+/// resulting in continuous motion.
 private struct LissajousCurveAnimationView: View {
-    /// The data model providing parameters for the curve.
-    var model: LissajousCurve
+    /// Binding to the shared curve parameter model.
+    @Binding var curve: LissajousCurve
 
-    /// The reference date used as the zero point for the animation timer.
-    var referenceDate = Date.now
+    /// Reference date used as the starting point for the animation timer.
+    private let animationStartDate = Date.now
 
     var body: some View {
         TimelineView(.animation) { context in
-            // Calculate the elapsed time in seconds since the reference date,
-            // mapped to the range [0, 2π).
+            // Calculate elapsed time since animation started, mapped to [0, 2π).
             let time = context.date
-                .timeIntervalSince(referenceDate)
+                .timeIntervalSince(animationStartDate)
                 .truncatingRemainder(dividingBy: 2 * .pi)
 
-            // Update the model's phase, which triggers the curve animation.
-            LissajousCurveView(model: model)
-                .onChange(of: time, initial: true) { _, time in
-                    model.phase = time
+            // Update the phase parameter, animating the curve.
+            LissajousCurveView(curve: curve)
+                .onChange(of: time, initial: true) { _, newTime in
+                    curve.phase = newTime
                 }
         }
     }
@@ -79,21 +89,20 @@ private struct LissajousCurveAnimationView: View {
 
 // MARK: - LissajousCurveView
 
-/// A view that renders the Lissajous curve using SwiftUI's Canvas API.
-/// The stroke color is dynamically blended from the parameter values,
-/// making the visualization more expressive.
+/// Renders the Lissajous curve using SwiftUI's Canvas API.
+/// The stroke color is dynamically computed based on the current parameters.
 private struct LissajousCurveView: View {
     /// The parameter model providing all values needed to draw the curve.
-    var model: LissajousCurve
+    var curve: LissajousCurve
 
     var body: some View {
         Canvas { context, size in
             // Build the path for the current parameter values.
-            let path = LissajousCurveShape(model: model)
+            let path = LissajousCurveShape(curve: curve)
                 .path(in: CGRect(origin: .zero, size: size))
 
-            // Stroke the curve path with a blended color.
-            context.stroke(path, with: .color(.color(model)), lineWidth: 4)
+            // Stroke the curve path with a dynamically blended color.
+            context.stroke(path, with: .color(.color(curve)), lineWidth: 4)
         }
         .scaledToFit()
     }
@@ -101,53 +110,25 @@ private struct LissajousCurveView: View {
 
 // MARK: - LissajousCurveShape
 
-/// A SwiftUI Shape that generates a Lissajous curve using mathematical parameters.
-///
-/// The classic Lissajous curve is defined parametrically as:
-///     x = cos(k * t + phase)
-///     y = sin(l * t)
+/// A Shape that generates a Lissajous curve path using the supplied parameters.
+/// The curve is sampled at a specified number of points and centered in the provided rectangle.
 private struct LissajousCurveShape: Shape {
-    /// Frequency multiplier for the x-axis.
-    var k: Double
-    /// Frequency multiplier for the y-axis.
-    var l: Double
-    /// Phase shift (radians) for the x-axis.
-    var phase: Double
-    /// Number of sample points to use for the curve.
-    var samples: Int
-
-    /// Initializes a new LissajousCurveShape from the provided parameter model.
-    /// - Parameter model: The LissajousCurve model providing parameters.
-    init(model: LissajousCurve) {
-        k = model.k
-        l = model.l
-        phase = model.phase
-        samples = model.samples
-    }
+    /// The parameter model, which provides frequency multipliers, phase, and sample count.
+    var curve: LissajousCurve
 
     /// Generates the path for the Lissajous curve, scaled and centered within the provided rectangle.
+    /// - Parameter rect: Drawing bounds for the curve.
+    /// - Returns: The path representing the Lissajous curve.
     func path(in rect: CGRect) -> Path {
         Path { path in
-            // Determine the drawing bounds and center.
-            let s = min(rect.width, rect.height)
-            let center = CGPoint(x: rect.width / 2, y: rect.height / 2)
-            let radius = s * 0.4
+            let sideLength = min(rect.width, rect.height)
+            let center = CGPoint(x: rect.midX, y: rect.midY)
+            let radius = sideLength * 0.4
 
             // Sample points along t in [0, 2π] and construct the curve.
-            for i in 0...samples {
-                let t = 2 * .pi * Double(i) / Double(samples)
-                // Use rounded-down k and l for integer-based periodicity.
-                let x = cos(k.rounded(.down) * t + phase)
-                let y = sin(l.rounded(.down) * t)
-                let point = CGPoint(
-                    x: center.x + CGFloat(x) * radius,
-                    y: center.y - CGFloat(y) * radius
-                )
-                if i == 0 {
-                    path.move(to: point)
-                } else {
-                    path.addLine(to: point)
-                }
+            path.move(to: curve.point(at: 0, center: center, radius: radius))
+            for i in 1...curve.samples {
+                path.addLine(to: curve.point(at: i, center: center, radius: radius))
             }
         }
     }
@@ -155,35 +136,44 @@ private struct LissajousCurveShape: Shape {
 
 // MARK: - LissajousCurveControlView
 
-/// A control panel for interactively adjusting the Lissajous curve parameters.
-///
-/// Users can modify the 'k' and 'l' frequency multipliers using sliders,
-/// and see the updated curve equation in real time.
+/// UI panel for interactively adjusting the Lissajous curve's k and l parameters.
+/// Provides sliders and a real-time preview of the curve's mathematical equation.
 private struct LissajousCurveControlView: View {
-    /// Bindable reference to the shared curve parameter model.
-    @Bindable var model: LissajousCurve
+    /// Binding to the shared curve parameter model.
+    @Binding var curve: LissajousCurve
 
     var body: some View {
         VStack {
-            // Display the curve's formula with the current parameters (rounded to integers).
-            Text("x = cos(\(Int(model.k))t), y = sin(\(Int(model.l))t)")
-                .font(.custom("Times New Roman", size: 28, relativeTo: .title2))
+            VStack(alignment: .leading) {
+                // Show current equation and phase (as multiples of π, rounded for clarity).
+                let phaseString = (curve.phase / .pi).formatted(.number.precision(.fractionLength(3)))
+                HStack(spacing: 0) {
+                    Text("x = cos(\(Int(curve.k))t")
+                    Text(" + \(phaseString)π)")
+                }
+                .flipsForRightToLeftLayoutDirection(false)
+                Text("y = sin(\(Int(curve.l))t)")
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal)
+            .fontDesign(.serif)
+
             Grid(horizontalSpacing: 8, verticalSpacing: 4) {
                 GridRow {
                     ZStack(alignment: .trailing) {
-                        Text("99").hidden()  // Placeholder to align the numbers.
-                        Text("\(Int(model.k))")
+                        Text("99").hidden()  // Alignment placeholder.
+                        Text("\(Int(curve.k))")
                     }
-                    Slider(value: $model.k.animation(), in: 1...10)
-                        .tint(.colorX(model))
+                    Slider(value: $curve.k.animation(), in: 1...10)
+                        .tint(.colorX(curve))
                 }
                 GridRow {
                     ZStack(alignment: .trailing) {
                         Text("99").hidden()
-                        Text("\(Int(model.l))")
+                        Text("\(Int(curve.l))")
                     }
-                    Slider(value: $model.l.animation(), in: 1...10)
-                        .tint(.colorY(model))
+                    Slider(value: $curve.l.animation(), in: 1...10)
+                        .tint(.colorY(curve))
                 }
             }
         }
@@ -191,32 +181,29 @@ private struct LissajousCurveControlView: View {
         .monospacedDigit()
         .contentTransition(.numericText())
         .frame(maxWidth: .infinity, alignment: .trailing)
-        // Animate changes to the slider values smoothly.
-        .animation(.default, value: model.k)
-        .animation(.default, value: model.l)
+        .animation(.default, value: curve.k)
+        .animation(.default, value: curve.l)
     }
 }
 
 // MARK: - Color Extensions
 
 extension Color {
-    /// Returns a blended color based on the Lissajous curve's parameters,
-    /// used as the stroke color for the curve.
+    /// Returns a blended color based on the Lissajous curve's k and l parameters,
+    /// for use as the stroke color of the curve.
     fileprivate static func color(_ curve: LissajousCurve) -> Color {
         colorX(curve).mix(with: colorY(curve), by: 0.5)
     }
 
-    /// Returns a hue-based color for the 'k' parameter.
-    /// The color cycles as 'k' is varied.
+    /// Generates a color based on the k parameter.
     fileprivate static func colorX(_ curve: LissajousCurve) -> Color {
-        let x = (1.0 + cos(curve.k * (2 * .pi / 20.0))) / 2.0
+        let x = (1.0 + sin(curve.k * (2 * .pi / 20.0))) / 2.0
         return Color(hue: x, saturation: 1, brightness: 1)
     }
 
-    /// Returns a hue-based color for the 'l' parameter.
-    /// The color cycles as 'l' is varied.
+    /// Generates a color based on the l parameter.
     fileprivate static func colorY(_ curve: LissajousCurve) -> Color {
-        let y = (1.0 + cos(curve.l * (2 * .pi / 20.0))) / 2.0
+        let y = (1.0 + sin(curve.l * (2 * .pi / 20.0))) / 2.0
         return Color(hue: y, saturation: 1, brightness: 1)
     }
 }
