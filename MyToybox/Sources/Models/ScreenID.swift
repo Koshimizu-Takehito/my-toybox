@@ -8,7 +8,8 @@ enum ScreenID: String, Codable, CaseIterable {
     case strokeModifier
     case capsule
     case metaball2D
-    case lissajousCurve
+    case lissajousCurve1
+    case lissajousCurve2
     case voronoi
     case voronoi2
     case gradientPolygon
