@@ -1,7 +1,7 @@
 import Observation
 import SwiftUI
 
-// MARK: - LissajousCurve
+// MARK: - LissajousCurve1
 
 /// Encapsulates all parameters necessary to define and animate a Lissajous curve.
 ///
@@ -9,7 +9,7 @@ import SwiftUI
 ///     x = cos(k * t + phase)
 ///     y = sin(l * t)
 /// where `k` and `l` determine the frequency of oscillation in x and y, and `phase` animates the curve.
-struct LissajousCurve {
+struct LissajousCurve1 {
     /// Frequency multiplier for the x-axis (number of horizontal lobes).
     var k: Double = 2
 
@@ -37,13 +37,13 @@ struct LissajousCurve {
     }
 }
 
-// MARK: - LissajousCurveDemoScreen
+// MARK: - LissajousCurveDemoScreen1
 
 /// The main screen displaying the animated Lissajous curve with interactive controls.
 /// Users can adjust parameters and observe their effects in real time.
-struct LissajousCurveDemoScreen: View {
+struct LissajousCurveDemoScreen1: View {
     /// State model holding all curve parameters.
-    @State var curve = LissajousCurve()
+    @State var curve = LissajousCurve1()
 
     var body: some View {
         VStack(spacing: 16) {
@@ -66,7 +66,7 @@ struct LissajousCurveDemoScreen: View {
 /// resulting in continuous motion.
 private struct LissajousCurveAnimationView: View {
     /// Binding to the shared curve parameter model.
-    @Binding var curve: LissajousCurve
+    @Binding var curve: LissajousCurve1
 
     /// Reference date used as the starting point for the animation timer.
     private let animationStartDate = Date.now
@@ -93,7 +93,7 @@ private struct LissajousCurveAnimationView: View {
 /// The stroke color is dynamically computed based on the current parameters.
 private struct LissajousCurveView: View {
     /// The parameter model providing all values needed to draw the curve.
-    var curve: LissajousCurve
+    var curve: LissajousCurve1
 
     var body: some View {
         Canvas { context, size in
@@ -114,7 +114,7 @@ private struct LissajousCurveView: View {
 /// The curve is sampled at a specified number of points and centered in the provided rectangle.
 private struct LissajousCurveShape: Shape {
     /// The parameter model, which provides frequency multipliers, phase, and sample count.
-    var curve: LissajousCurve
+    var curve: LissajousCurve1
 
     /// Generates the path for the Lissajous curve, scaled and centered within the provided rectangle.
     /// - Parameter rect: Drawing bounds for the curve.
@@ -140,7 +140,7 @@ private struct LissajousCurveShape: Shape {
 /// Provides sliders and a real-time preview of the curve's mathematical equation.
 private struct LissajousCurveControlView: View {
     /// Binding to the shared curve parameter model.
-    @Binding var curve: LissajousCurve
+    @Binding var curve: LissajousCurve1
 
     var body: some View {
         VStack {
@@ -154,9 +154,8 @@ private struct LissajousCurveControlView: View {
                 .flipsForRightToLeftLayoutDirection(false)
                 Text("y = sin(\(Int(curve.l))t)")
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal)
-            .fontDesign(.serif)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .fontDesign(.monospaced)
 
             Grid(horizontalSpacing: 8, verticalSpacing: 4) {
                 GridRow {
@@ -191,18 +190,18 @@ private struct LissajousCurveControlView: View {
 extension Color {
     /// Returns a blended color based on the Lissajous curve's k and l parameters,
     /// for use as the stroke color of the curve.
-    fileprivate static func color(_ curve: LissajousCurve) -> Color {
+    fileprivate static func color(_ curve: LissajousCurve1) -> Color {
         colorX(curve).mix(with: colorY(curve), by: 0.5)
     }
 
     /// Generates a color based on the k parameter.
-    fileprivate static func colorX(_ curve: LissajousCurve) -> Color {
+    fileprivate static func colorX(_ curve: LissajousCurve1) -> Color {
         let x = (1.0 + sin(curve.k * (2 * .pi / 20.0))) / 2.0
         return Color(hue: x, saturation: 1, brightness: 1)
     }
 
     /// Generates a color based on the l parameter.
-    fileprivate static func colorY(_ curve: LissajousCurve) -> Color {
+    fileprivate static func colorY(_ curve: LissajousCurve1) -> Color {
         let y = (1.0 + sin(curve.l * (2 * .pi / 20.0))) / 2.0
         return Color(hue: y, saturation: 1, brightness: 1)
     }
@@ -211,5 +210,5 @@ extension Color {
 // MARK: - Preview
 
 #Preview {
-    LissajousCurveDemoScreen()
+    LissajousCurveDemoScreen1()
 }
