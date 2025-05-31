@@ -21,6 +21,8 @@ struct DetailScreen: View {
             VoronoiDiagramDemoScreen1()
         case .voronoi2:
             VoronoiDiagramDemoScreen2()
+        case .cosmicWeb:
+            CosmicWebScreen()
         case .homeIconShakeView:
             HomeIconDemoScreen()
         case .segmentedControl:

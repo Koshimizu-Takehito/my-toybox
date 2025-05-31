@@ -56,6 +56,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/VoronoiDiagram/VoronoiDiagramDemoScreen.swift"
   },
   {
+    "id": "cosmicWeb",
+    "title": "CosmicWeb",
+    "description": "コズミックウェブ",
+    "tags": ["animation", "metal"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/CosmicWeb/CosmicWebScreen.swift"
+  },
+  {
     "id": "homeIconShakeView",
     "title": "HomeIconShakeView",
     "description": "ホームスクリーンのアイコンのブルブルするやつ",
