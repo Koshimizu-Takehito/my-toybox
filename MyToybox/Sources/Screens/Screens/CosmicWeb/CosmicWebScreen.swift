@@ -32,7 +32,7 @@ struct CosmicWebScreen: View {
             let time = context.date.timeIntervalSinceReferenceDate
             Rectangle()
                 .ignoresSafeArea()
-                .layerEffect(.mosaic(time: time), maxSampleOffset: .zero)
+                .layerEffect(.cosmicWeb(time: time), maxSampleOffset: .zero)
         }
     }
 }
@@ -43,7 +43,7 @@ private extension Shader {
     /// Returns a Shader configured to generate the cosmic web effect.
     /// - Parameter time: The current animation time (seconds).
     /// - Returns: The configured Shader instance.
-    static func mosaic(time: Double) -> Shader {
+    static func cosmicWeb(time: Double) -> Shader {
         var time = time
         time = time.truncatingRemainder(dividingBy: (2 * .pi))
         let function = ShaderFunction(library: .default, name: "CosmicWeb::main")
