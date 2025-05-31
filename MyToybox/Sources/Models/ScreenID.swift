@@ -13,6 +13,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case pipCard
     case voronoi
     case voronoi2
+    case cosmicWeb
     case gradientPolygon
     case collisionColorChange
     case solarSystemAnimationView
