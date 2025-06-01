@@ -35,6 +35,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/LissajousCurve/LissajousCurveScreen2.swift"
   },
   {
+    "id": "autoScrolledTextField",
+    "title": "AutoScrolledTextField",
+    "description": "テキスト入力でスクロール位置更新",
+    "tags": ["animation"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/AutoScrolledTextField/AutoScrolledTextField.swift"
+  },
+  {
     "id": "pipCard",
     "title": "PipCardAnimation",
     "description": "PiPアニメーション",

@@ -15,6 +15,8 @@ struct DetailScreen: View {
             LissajousCurveDemoScreen1()
         case .lissajousCurve2:
             LissajousCurveDemoScreen2()
+        case .autoScrolledTextField:
+            AutoScrolledTextFieldDemoScreen()
         case .pipCard:
             PipCardDemoScreen()
         case .voronoi:
