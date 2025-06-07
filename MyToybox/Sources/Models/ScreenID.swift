@@ -15,6 +15,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case voronoi2
     case cosmicWeb
     case autoScrolledTextField
+    case flipTransition
     case gradientPolygon
     case collisionColorChange
     case solarSystemAnimationView
