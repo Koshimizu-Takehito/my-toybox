@@ -42,6 +42,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/AutoScrolledTextField/AutoScrolledTextField.swift"
   },
   {
+    "id": "flipTransition",
+    "title": "FlipTransition",
+    "description": "カードの裏返しトランジション",
+    "tags": ["animation"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/FlipTransition/FlipTransitionDemoScreen.swift"
+  },
+  {
     "id": "pipCard",
     "title": "PipCardAnimation",
     "description": "PiPアニメーション",
