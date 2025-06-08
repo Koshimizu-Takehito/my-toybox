@@ -59,7 +59,6 @@ struct AutoScrolledTextField: View {
             // Always show the vertical scroll indicator for clarity.
             .scrollIndicators(.visible, axes: .vertical)
             .navigationTitle("Scroll to new line")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
