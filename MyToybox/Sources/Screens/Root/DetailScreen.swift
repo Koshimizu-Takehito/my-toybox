@@ -19,6 +19,8 @@ struct DetailScreen: View {
             AutoScrolledTextFieldDemoScreen()
         case .flipTransition:
             FlipTransitionDemoScreen()
+        case .spiralLayout:
+            SpiralLayoutDemoScreen()
         case .pipCard:
             PipCardDemoScreen()
         case .voronoi:
