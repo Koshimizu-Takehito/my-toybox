@@ -49,6 +49,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/FlipTransition/FlipTransitionDemoScreen.swift"
   },
   {
+    "id": "spiralLayout",
+    "title": "SpiralLayout",
+    "description": "螺旋レイアウト",
+    "tags": ["animation", "layout"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/SpiralLayout/SpiralLayoutDemoScreen.swift"
+  },
+  {
     "id": "pipCard",
     "title": "PipCardAnimation",
     "description": "PiPアニメーション",
