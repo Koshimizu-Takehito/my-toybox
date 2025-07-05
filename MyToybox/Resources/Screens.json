@@ -42,6 +42,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/AutoScrolledTextField/AutoScrolledTextField.swift"
   },
   {
+    "id": "autoScrolledTextField2",
+    "title": "AutoScrolledTextField2",
+    "description": "テキスト入力でスクロール位置更新2",
+    "tags": ["animation"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/AutoScrolledTextField2/AutoScrolledTextField2.swift"
+  },
+  {
     "id": "flipTransition",
     "title": "FlipTransition",
     "description": "カードの裏返しトランジション",

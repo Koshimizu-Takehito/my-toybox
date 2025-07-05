@@ -17,6 +17,8 @@ struct DetailScreen: View {
             LissajousCurveDemoScreen2()
         case .autoScrolledTextField:
             AutoScrolledTextFieldDemoScreen()
+        case .autoScrolledTextField2:
+            AutoScrolledTextFieldDemoScreen2()
         case .flipTransition:
             FlipTransitionDemoScreen()
         case .spiralLayout:
