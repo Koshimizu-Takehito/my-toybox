@@ -7,14 +7,21 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up Xcode 16.3
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.3'
+
       - name: Build with xcodebuild
         run: |
           xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
             CODE_SIGNING_ALLOWED=NO clean build
+
       - name: Run Xcode tests
         run: |
           xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
