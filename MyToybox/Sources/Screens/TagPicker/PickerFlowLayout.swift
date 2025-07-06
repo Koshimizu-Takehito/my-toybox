@@ -113,15 +113,18 @@ struct PickerFlowLayout: Layout {
 
             for (index, subview) in zip(subviews.indices, subviews) {
                 let size = subview.sizeThatFits(.unspecified)
-                let widthWithSpacing = size.width + spacingBefore(index: index)
+                var spacingBeforeCurrent = spacingBefore(index: index)
+                var widthWithSpacing = size.width + spacingBeforeCurrent
 
                 // If this item doesn't fit, finalize the current row
                 if index != 0 && widthWithSpacing > remainingWidth {
                     finalizeRow(at: index - 1)
+                    spacingBeforeCurrent = spacingBefore(index: index)
+                    widthWithSpacing = size.width + spacingBeforeCurrent
                 }
 
                 // Add to current row
-                xOffsets.append(maxPossibleWidth - remainingWidth + spacingBefore(index: index))
+                xOffsets.append(maxPossibleWidth - remainingWidth + spacingBeforeCurrent)
                 remainingWidth -= widthWithSpacing
                 rowHeight = max(rowHeight, size.height)
                 itemsInRow += 1
