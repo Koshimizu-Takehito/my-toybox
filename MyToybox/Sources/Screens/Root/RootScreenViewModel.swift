@@ -31,7 +31,7 @@ final class RootScreenViewModel {
     /// Returns screens that match any of the selected tags.
     ///
     /// - If no tags are selected, returns all screens.
-    func filterdScreens() -> [Screen] {
+    func filteredScreens() -> [Screen] {
         // Build a set of selected tags
         let selectedTags = Set(tags.selections.filter(\.isSelected).map(\.tag))
         // Return all if no selection

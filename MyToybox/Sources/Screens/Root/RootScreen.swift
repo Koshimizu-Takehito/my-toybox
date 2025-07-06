@@ -41,7 +41,7 @@ extension RootScreen {
     /// The sidebar view that displays a list of available screens.
     @ViewBuilder
     fileprivate func sidebarView() -> some View {
-        List(viewModel.filterdScreens(), selection: $selection) { screen in
+        List(viewModel.filteredScreens(), selection: $selection) { screen in
             NavigationLink(value: screen) {
                 VStack(alignment: .leading) {
                     Text(screen.title)
@@ -78,7 +78,7 @@ extension RootScreen {
             }
             .navigationTitle(selection?.title ?? "")
             .toolbar {
-                Button("Sorce Code", systemImage: "safari") {
+                Button("Source Code", systemImage: "safari") {
                     if let url = selection?.html {
                         openURL(url)
                     }
