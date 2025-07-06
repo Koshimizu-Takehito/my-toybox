@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  pull_request_target:
+    branches: [ develop ]
+    types: [ opened ]
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+      - name: Build with xcodebuild
+        run: |
+          xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            CODE_SIGNING_ALLOWED=NO clean build
+      - name: Run Swift tests
+        run: swift test
