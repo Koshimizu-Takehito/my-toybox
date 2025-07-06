@@ -16,14 +16,17 @@ jobs:
         with:
           xcode-version: '16.2'
 
+      - name: List available simulators
+        run: xcrun simctl list devices
+
       - name: Build with xcodebuild
         run: |
           xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
             CODE_SIGNING_ALLOWED=NO clean build
 
       - name: Run Xcode tests
         run: |
           xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
             CODE_SIGNING_ALLOWED=NO test
