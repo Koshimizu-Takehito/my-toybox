@@ -78,7 +78,7 @@ my-toybox/
 
 ## ライセンス
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/Koshimizu-Takehito/my-toybox/blob/main/LICENSE) file for details.
+このプロジェクトは MIT ライセンスの下で公開されています。詳細は [LICENSE](https://github.com/Koshimizu-Takehito/my-toybox/blob/main/LICENSE) をご覧ください。
 
 ## 作者
 
