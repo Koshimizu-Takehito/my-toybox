@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ develop ]
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  build-and-test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Xcode 16.2
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.2'
+
+      - name: Install xcpretty
+        run: gem install xcpretty
+
+      - name: List available simulators
+        run: xcrun simctl list devices
+
+      - name: Build with xcodebuild
+        run: |
+          xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+            CODE_SIGNING_ALLOWED=NO clean build | xcpretty
+
+      - name: Run Xcode tests
+        run: |
+          xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+            CODE_SIGNING_ALLOWED=NO test | xcpretty --test
