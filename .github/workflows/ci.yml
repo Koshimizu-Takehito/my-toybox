@@ -1,9 +1,9 @@
 name: CI
 
 on:
-  pull_request_target:
+  pull_request:
     branches: [ develop ]
-    types: [ opened ]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   build-and-test:
@@ -22,6 +22,8 @@ jobs:
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
             CODE_SIGNING_ALLOWED=NO clean build
 
-      - name: Run Swift tests
+      - name: Run Xcode tests
         run: |
-          swift test
+          xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            CODE_SIGNING_ALLOWED=NO test
