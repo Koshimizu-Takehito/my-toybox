@@ -69,6 +69,8 @@ struct DetailScreen: View {
             ViewIdentityAnimationScreen()
         case .progressiveblur:
             ProgressiveBlurScreen()
+        case .shaderKuwahara:
+            KuwaharaScreen()
         case .shaderMosaic:
             MosaicScreen()
         case .shaderTile:

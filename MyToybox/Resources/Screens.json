@@ -7,6 +7,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/StrokeModifier/StrokeModifier.swift"
   },
   {
+    "id": "shaderKuwahara",
+    "title": "Kuwahara filter",
+    "description": "Kuwahara filter",
+    "tags": ["animation", "metal"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/KuwaharaFilter/KuwaharaScreen.swift"
+  },
+  {
     "id": "capsule",
     "title": "Capsule",
     "description": "Capsuleを使ったバッジサンプル",
