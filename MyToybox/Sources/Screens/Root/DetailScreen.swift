@@ -23,6 +23,8 @@ struct DetailScreen: View {
             FlipTransitionDemoScreen()
         case .spiralLayout:
             SpiralLayoutDemoScreen()
+        case .multiHelix:
+            MultiHelixScreen()
         case .pipCard:
             PipCardDemoScreen()
         case .voronoi:
