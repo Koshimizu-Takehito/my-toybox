@@ -134,12 +134,12 @@ struct SpiralLayout: Layout {
 
 // MARK: - Utilities
 
-extension CGRect {
+nonisolated extension CGRect {
     /// Returns the center point of the rectangle.
     fileprivate var center: CGPoint { CGPoint(x: midX, y: midY) }
 }
 
-extension CGPoint {
+nonisolated extension CGPoint {
     fileprivate init(_ value: CGFloat) {
         self.init(x: value, y: value)
     }
