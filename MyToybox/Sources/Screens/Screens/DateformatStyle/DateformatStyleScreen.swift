@@ -130,7 +130,7 @@ private struct SelectionCell<T: Equatable>: View {
             selection = value
         } label: {
             HStack {
-                Text("\(value)")
+                Text(String(describing: value))
                 Spacer()
                 Image(systemName: "checkmark")
                     .opacity(selection == value ? 1 : 0)
