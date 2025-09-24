@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-struct HomeIcon: Hashable, Identifiable {
+nonisolated struct HomeIcon: Hashable, Identifiable {
     var id = UUID()
     var symbol: String
     var color: Color

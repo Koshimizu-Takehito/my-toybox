@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum CustomGridItem: LayoutValueKey, Hashable {
+nonisolated enum CustomGridItem: LayoutValueKey, Hashable {
     enum Bar: Hashable {
         case vertical
         case horizontal

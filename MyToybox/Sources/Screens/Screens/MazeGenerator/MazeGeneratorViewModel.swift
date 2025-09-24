@@ -77,7 +77,7 @@ final class MazeGeneratorViewModel {
 }
 
 private func makeTiles(snapshot: MazeGenerator.Snapshot) async -> [[MazeTile]] {
-    await Task.detached {
+    await Task.detached { @concurrent in
         let isGenerating = snapshot.isGenerating
         var tiles: [[MazeTile]] = snapshot.grid.map { row in
             row.map { $0 ? .path : .wall }

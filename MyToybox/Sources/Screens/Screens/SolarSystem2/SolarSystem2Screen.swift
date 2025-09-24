@@ -189,7 +189,7 @@ private struct Orbit: Shape {
 /// A geometric and visual representation of a celestial body (planet or star).
 /// When used as a View, it renders itself as a circle offset from its center,
 /// simulating orbital motion.
-private struct Sphere {
+nonisolated private struct Sphere {
     var color: Color = .clear
     var center: CGPoint = .zero
     var offset = 0.0
@@ -202,7 +202,7 @@ private struct Sphere {
     }
 }
 
-extension Sphere {
+nonisolated extension Sphere {
     fileprivate init(
         faith: Double = 0,
         star: Star,
@@ -236,7 +236,7 @@ extension Sphere: Animatable {
 // MARK: - 🌟 Star
 
 /// A model representing a star or planet in the solar system, including its color and orbital speed.
-private struct Star: Hashable, Identifiable {
+nonisolated private struct Star: Hashable, Identifiable {
     var id = UUID()
     var color: Color
     var speed: Double
@@ -259,7 +259,7 @@ private struct Star: Hashable, Identifiable {
     ]
 }
 
-extension CGPoint {
+nonisolated extension CGPoint {
     fileprivate static func + (_ lhs: Self, _ rhs: Self) -> Self {
         self.init(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
