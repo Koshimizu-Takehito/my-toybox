@@ -41,7 +41,7 @@ struct EnumPicker<Enum>: View where Enum: Hashable {
     var body: some View {
         Picker(String(describing: Enum.self), selection: $selectedValue) {
             ForEach(allEnumCases, id: \.self) { value in
-                Text("\(value)")
+                Text(String(describing: value))
                     .tag(value)
             }
         }

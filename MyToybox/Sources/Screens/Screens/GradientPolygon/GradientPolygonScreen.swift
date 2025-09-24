@@ -114,7 +114,7 @@ private struct PolygonShape: Shape {
 
 // MARK: - CGPoint
 
-extension CGPoint {
+nonisolated extension CGPoint {
     /// Creates a point on a circle with the given radius and angle (in radians).
     fileprivate init(radius: CGFloat, theta radians: Double) {
         self.init(x: radius * cos(radians), y: radius * sin(radians))

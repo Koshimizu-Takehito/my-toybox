@@ -43,7 +43,7 @@ struct PixelBasedColorChangeScreen: View {
                     var buttonRect = buttonRect
                     buttonRect.origin.x -= contentRect.origin.x
                     let (isBright, bounds) = (isBrightBackground, buttonRect)
-                    Task.detached {
+                    Task.detached { @concurrent in
                         let isBright = image.isBrightArea(in: bounds) ?? isBright
                         Task { @MainActor in
                             self.isBrightBackground = isBright
@@ -195,7 +195,7 @@ private struct UIScrollViewImageRenderer: UIViewControllerRepresentable {
                 let bounds = view.bounds
                 let offset = scrollView.contentOffset
                 let layer = scrollView.layer
-                Task.detached {
+                Task.detached { @concurrent in
                     let renderer = UIGraphicsImageRenderer(size: bounds.size)
                     var image = renderer.image { context in
                         context.cgContext.translateBy(x: -offset.x, y: -offset.y)
@@ -224,7 +224,7 @@ private struct UIScrollViewImageRenderer: UIViewControllerRepresentable {
 
 // MARK: - UIImage
 
-extension UIImage {
+nonisolated extension UIImage {
 
     /// Calculates the average luminance (brightness) of the specified cropped area in the image.
     ///
