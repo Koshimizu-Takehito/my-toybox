@@ -9,7 +9,7 @@ import SwiftUI
 ///     x = cos(k * t + phase)
 ///     y = sin(l * t)
 /// where `k` and `l` determine the frequency of oscillation in x and y, and `phase` animates the curve.
-struct LissajousCurve1 {
+nonisolated struct LissajousCurve1 {
     /// Frequency multiplier for the x-axis (number of horizontal lobes).
     var k: Double = 2
 

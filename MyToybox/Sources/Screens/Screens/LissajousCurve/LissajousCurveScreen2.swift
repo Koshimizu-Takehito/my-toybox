@@ -69,7 +69,7 @@ private struct LissajousCurveAnimationView: View {
  - Supports animation via the Animatable protocol.
  - Use this view wherever you need a visual representation of a Lissajous curve.
  */
-private struct LissajousCurveView: View, Animatable {
+private struct LissajousCurveView: View, @MainActor Animatable {
     /// Parameter model containing all values needed to draw the curve.
     var curve: LissajousCurve2
 
@@ -248,7 +248,7 @@ extension Color {
  - Conforms to VectorArithmetic for seamless animation with SwiftUI.
  - Provides both discrete (integer) and smooth (floating-point) sampling for visual smoothness and periodicity.
  */
-struct LissajousCurve2: Hashable, VectorArithmetic {
+nonisolated struct LissajousCurve2: Hashable, VectorArithmetic {
     /// Frequency multiplier for the x-axis (number of horizontal lobes).
     var k: Double = 2
 

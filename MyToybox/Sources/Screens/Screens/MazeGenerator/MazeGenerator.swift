@@ -133,7 +133,7 @@ actor MazeGenerator {
 
 // MARK: - MazeGenerator.Snapshot
 
-extension MazeGenerator {
+nonisolated extension MazeGenerator {
     /// Represents the current maze state, including its grid and whether it's still generating.
     /// 迷路の現在の状態を表し、グリッドと生成中かどうかの情報を含みます。
     struct Snapshot {
@@ -147,7 +147,7 @@ extension MazeGenerator {
     }
 }
 
-extension MazeGenerator.Snapshot {
+nonisolated extension MazeGenerator.Snapshot {
     /// Initializes a snapshot with the specified grid dimensions, all cells set to false.
     /// 指定したサイズのグリッドを全て壁(false)として初期化します。
     init(width: Int, height: Int) {
@@ -156,14 +156,14 @@ extension MazeGenerator.Snapshot {
 
     /// Marks the snapshot as finished (no longer generating).
     /// スナップショットを生成完了（生成中ではない）とマークします。
-    mutating func finish() {
+    nonisolated mutating func finish() {
         isGenerating = false
     }
 }
 
 // MARK: - SIMD2 Extension
 
-private extension SIMD2<Int> {
+nonisolated private extension SIMD2<Int> {
     /// Adds two SIMD2<Int> values.
     /// 2 つの SIMD2<Int> 値を加算します。
     static func + (_ lhs: Self, _ rhs: Self) -> Self {
@@ -179,7 +179,7 @@ private extension SIMD2<Int> {
 
 // MARK: - Array Extension
 
-private extension [[Bool]] {
+nonisolated private extension [[Bool]] {
     /// Accesses a 2D Boolean array using a SIMD2<Int> coordinate.
     /// SIMD2<Int> 座標を使用して 2 次元ブール配列にアクセスします。
     subscript(_ p: SIMD2<Int>) -> Bool {
