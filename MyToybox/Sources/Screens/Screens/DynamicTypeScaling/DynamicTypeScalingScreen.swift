@@ -17,7 +17,7 @@ struct DynamicTypeScalingScreen: View {
                 .contentTransition(.numericText())
 
             // Displays the name of the current `DynamicTypeSize`
-            Text("\(DynamicTypeSize.allCases[Int(dynamicTypeSizeIndex)])")
+            Text(String(describing: DynamicTypeSize.allCases[Int(dynamicTypeSizeIndex)]))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentTransition(.identity)
 

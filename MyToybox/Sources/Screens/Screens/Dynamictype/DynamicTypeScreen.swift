@@ -30,7 +30,7 @@ struct DynamicTypeScreen: View {
             .environment(\.dynamicTypeSize, .allCases[Int(dynamicTypeIndex)])
 
             // Shows the name of the current DynamicTypeSize
-            Text("\(DynamicTypeSize.allCases[Int(dynamicTypeIndex)])")
+            Text(String(describing: DynamicTypeSize.allCases[Int(dynamicTypeIndex)]))
                 .font(.title)
                 .contentTransition(.interpolate)
 
