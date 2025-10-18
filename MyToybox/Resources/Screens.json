@@ -7,6 +7,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/StrokeModifier/StrokeModifier.swift"
   },
   {
+    "id": "implicitEquation",
+    "title": "Implicit Equation",
+    "description": "陰関数 SDF",
+    "tags": ["animation", "metal"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ImplicitEquation/ImplicitEquationScreen.swift"
+  },
+  {
     "id": "multiHelix",
     "title": "Multi helix",
     "description": "多重らせん",
