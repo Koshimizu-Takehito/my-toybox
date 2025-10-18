@@ -6,7 +6,7 @@
 1. 現在のブランチと派生元ブランチを確認する
    - `git branch --show-current` で現在のブランチを確認
    - `git remote -v` でリモートリポジトリを確認
-   - `BASE=$(git merge-base --fork-point origin/main HEAD 2>/dev/null || echo origin/main)` で基点を設定
+   - `BASE=$(git merge-base --fork-point origin/develop HEAD 2>/dev/null || echo origin/develop)` で基点を設定
    - `git log --oneline "$BASE"..HEAD --graph --decorate` でコミット履歴を確認
    - `git diff "$BASE"..HEAD` で差分を確認
 
@@ -31,7 +31,7 @@
    - Why this change was necessary
    - What problem it solves
    - How it improves the codebase" \
-     --base main
+     --base develop
    ```
 
 4. 作成されたプルリクエストのURLを表示する
