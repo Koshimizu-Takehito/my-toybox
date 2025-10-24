@@ -23,6 +23,8 @@ struct DetailScreen: View {
             FlipTransitionDemoScreen()
         case .spiralLayout:
             SpiralLayoutDemoScreen()
+        case .radialLayout:
+            RadialLayoutScreen()
         case .implicitEquation:
             ImplicitEquationScreen()
         case .multiHelix:

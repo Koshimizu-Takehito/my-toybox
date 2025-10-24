@@ -14,6 +14,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ImplicitEquation/ImplicitEquationScreen.swift"
   },
   {
+    "id": "radialLayout",
+    "title": "RadialLayout",
+    "description": "Radial Layout",
+    "tags": ["animation", "layout"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/RadialLayout/RadialLayoutScreen.swift"
+  },
+  {
     "id": "multiHelix",
     "title": "Multi helix",
     "description": "多重らせん",
