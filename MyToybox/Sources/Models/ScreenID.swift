@@ -20,6 +20,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case spiralLayout
     case radialLayout
     case implicitEquation
+    case flowDistortion
     case multiHelix
     case gradientPolygon
     case collisionColorChange

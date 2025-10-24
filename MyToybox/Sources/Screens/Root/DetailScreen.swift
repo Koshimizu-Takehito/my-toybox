@@ -27,6 +27,8 @@ struct DetailScreen: View {
             RadialLayoutScreen()
         case .implicitEquation:
             ImplicitEquationScreen()
+        case .flowDistortion:
+            FlowDistortionScreen()
         case .multiHelix:
             MultiHelixScreen()
         case .pipCard:
