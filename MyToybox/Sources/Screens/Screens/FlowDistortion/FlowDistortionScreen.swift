@@ -13,9 +13,9 @@ struct FlowDistortionScreen: View {
                     .aspectRatio(1, contentMode: .fit)
                     .layerEffect(shader(time: time), maxSampleOffset: .zero)
             }
+            Control(model: $model.animation())
+                .padding()
         }
-        Control(model: $model.animation())
-            .padding()
     }
 
     func shader(time: TimeInterval) -> Shader {
@@ -30,7 +30,6 @@ struct FlowDistortionScreen: View {
 }
 
 private extension FlowDistortionScreen {
-    /// パラメータを保持するモデル構造体
     struct Model {
         /// 歪みの強度。値が大きいほどflowの影響が強くなる
         var distortionStrength = 0.021
@@ -40,8 +39,6 @@ private extension FlowDistortionScreen {
         var noiseScale = 2.0
     }
 
-    /// パラメータ調整のためのコントロールView。
-    /// スライダーとリセットボタンでインタラクティブに操作。
     struct Control: View {
         @Binding var model: Model
 
