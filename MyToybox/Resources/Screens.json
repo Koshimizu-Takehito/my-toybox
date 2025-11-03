@@ -28,6 +28,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/FlowDistortion/FlowDistortionScreen.swift"
   },
   {
+    "id": "gameOfLife",
+    "title": "Game Of Life",
+    "description": "コンウェイのライフゲーム",
+    "tags": ["animation", "metal"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/GameOfLife/GameOfLifeScreen.swift"
+  },
+  {
     "id": "multiHelix",
     "title": "Multi helix",
     "description": "多重らせん",
