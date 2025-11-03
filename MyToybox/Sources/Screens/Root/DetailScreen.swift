@@ -15,6 +15,8 @@ struct DetailScreen: View {
             LissajousCurveDemoScreen1()
         case .lissajousCurve2:
             LissajousCurveDemoScreen2()
+        case .gameOfLife:
+            GameOfLifeScreen()
         case .autoScrolledTextField:
             AutoScrolledTextFieldDemoScreen()
         case .autoScrolledTextField2:
