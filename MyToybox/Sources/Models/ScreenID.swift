@@ -10,6 +10,7 @@ enum ScreenID: String, Codable, CaseIterable {
     case metaball2D
     case lissajousCurve1
     case lissajousCurve2
+    case gameOfLife
     case pipCard
     case voronoi
     case voronoi2
@@ -18,6 +19,9 @@ enum ScreenID: String, Codable, CaseIterable {
     case autoScrolledTextField2
     case flipTransition
     case spiralLayout
+    case radialLayout
+    case implicitEquation
+    case flowDistortion
     case multiHelix
     case gradientPolygon
     case collisionColorChange

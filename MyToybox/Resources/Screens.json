@@ -7,6 +7,34 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/StrokeModifier/StrokeModifier.swift"
   },
   {
+    "id": "implicitEquation",
+    "title": "Implicit Equation",
+    "description": "陰関数 SDF",
+    "tags": ["animation", "metal"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ImplicitEquation/ImplicitEquationScreen.swift"
+  },
+  {
+    "id": "radialLayout",
+    "title": "RadialLayout",
+    "description": "Radial Layout",
+    "tags": ["animation", "layout"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/RadialLayout/RadialLayoutScreen.swift"
+  },
+  {
+    "id": "flowDistortion",
+    "title": "FlowDistortion",
+    "description": "Flow Distortion",
+    "tags": ["animation", "metal"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/FlowDistortion/FlowDistortionScreen.swift"
+  },
+  {
+    "id": "gameOfLife",
+    "title": "Game Of Life",
+    "description": "コンウェイのライフゲーム",
+    "tags": ["animation", "metal"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/GameOfLife/GameOfLifeScreen.swift"
+  },
+  {
     "id": "multiHelix",
     "title": "Multi helix",
     "description": "多重らせん",

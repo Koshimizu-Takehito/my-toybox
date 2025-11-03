@@ -15,6 +15,8 @@ struct DetailScreen: View {
             LissajousCurveDemoScreen1()
         case .lissajousCurve2:
             LissajousCurveDemoScreen2()
+        case .gameOfLife:
+            GameOfLifeScreen()
         case .autoScrolledTextField:
             AutoScrolledTextFieldDemoScreen()
         case .autoScrolledTextField2:
@@ -23,6 +25,12 @@ struct DetailScreen: View {
             FlipTransitionDemoScreen()
         case .spiralLayout:
             SpiralLayoutDemoScreen()
+        case .radialLayout:
+            RadialLayoutScreen()
+        case .implicitEquation:
+            ImplicitEquationScreen()
+        case .flowDistortion:
+            FlowDistortionScreen()
         case .multiHelix:
             MultiHelixScreen()
         case .pipCard:
