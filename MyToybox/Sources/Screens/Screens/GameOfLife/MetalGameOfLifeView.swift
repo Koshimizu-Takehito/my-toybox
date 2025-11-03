@@ -7,7 +7,7 @@ import simd
 // MARK: - MTKView Representable
 
 /// Metal による Game of Life の描画ビュー（`UIViewRepresentable`）。
-struct MetalGameOfLifeView: UIViewRepresentable {
+struct MetalGameOfLifeView: PlatformAgnosticViewRepresentable {
     // MARK: Coordinator
 
     /// `MTKViewDelegate` 実装と Metal パイプラインの管理。
@@ -203,7 +203,7 @@ struct MetalGameOfLifeView: UIViewRepresentable {
         return Coordinator(viewModel: viewModel, device: device)
     }
 
-    func makeUIView(context: Context) -> MTKView {
+    func makePlatformView(context: Context) -> MTKView {
         let device = context.coordinator.device
         let view = MTKView(frame: .zero, device: device)
         view.enableSetNeedsDisplay = false
@@ -214,7 +214,7 @@ struct MetalGameOfLifeView: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: MTKView, context: Context) {
+    func updatePlatformView(_ platformView: PlatformViewType, context: Context) {
     }
 }
 

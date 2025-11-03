@@ -129,8 +129,13 @@ struct GameOfLifeScreen: View {
 
     @ToolbarContentBuilder
     private func toolbar() -> some ToolbarContent {
+#if os(iOS) || os(tvOS)
+        let placement: ToolbarItemPlacement = .bottomBar
+#elseif os(macOS)
+        let placement: ToolbarItemPlacement = .automatic
+#endif
         // ズーム用コントロール
-        ToolbarItemGroup(placement: .bottomBar) {
+        ToolbarItemGroup(placement: placement) {
             Button {
                 viewModel.decrementScale()
             } label: {
