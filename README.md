@@ -25,7 +25,9 @@ Screens are loaded dynamically from a bundled JSON file and rendered using Swift
 
 ### 🔹 Dozens of Sample Screens
 Each screen lives under `Sources/Screens/` and showcases a specific animation, layout, or rendering technique.  
-The screen list is defined using `Screen.swift`, `ScreenID.swift`, and loaded from a `Screens.json` file.
+The screen list is defined using `Screen.swift` and a `Screens.json` file.  
+From `Screens.json`, `Scripts/generate_screen_id.sh` automatically generates `Sources/Generated/ScreenID.swift`, which is then turned into a `View` by the local Swift package `ScreenMacros` via the `@ScreenRegistry` macro.  
+Each `"id"` in `Screens.json` is used directly as an `enum ScreenID` case name, so it **must be a valid Swift identifier in lowerCamelCase (e.g. `gameOfLifeScreen`)**.
 
 ### 🔹 Metal Shaders
 Some effects (like mosaic or particle waves) are implemented with `.metal` shader files using SwiftUI’s shader support.
@@ -50,17 +52,18 @@ my-toybox/
   │   │   └─ Assets.xcassets/    # App icons and image assets
   │   ├─ Sources/
   │   │   ├─ App/
-  │   │   │   └─ App.swift       # Entry point of the app
+  │   │   │   └─ App.swift         # Entry point of the app
+  │   │   ├─ Generated/            # Auto-generated sources (e.g. ScreenID.swift)
   │   │   ├─ Screens/
-  │   │   │   ├─ Root/           # Root screen and view model
-  │   │   │   ├─ Screens/         # Dozens of animation screens
+  │   │   │   ├─ Root/             # Root screen and view model
+  │   │   │   ├─ Screens/          # Dozens of animation screens
   │   │   └─ ...
 ```
 
 - `App.swift`: The app's `@main` entry point, launching the `RootScreen`.
 - `RootScreen.swift`: The master-detail view listing all available screens.
 - `RootScreenViewModel.swift`: Handles loading and storing screen data.
-- `Screens.json`: A static metadata file describing available screens (ID, title, description, etc.).
+- `Screens.json`: A static metadata file describing available screens (ID, title, description, etc.). From this JSON, `Scripts/generate_screen_id.sh` generates `Sources/Generated/ScreenID.swift` (you never edit `ScreenID` manually).
 
 ## Getting Started
 

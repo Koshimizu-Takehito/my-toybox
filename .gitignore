@@ -131,3 +131,9 @@ fastlane/test_output
 ## User settings
 xcuserdata/
 .DS_Store
+
+# Auto-generated files
+# Generated/ folder contains files created by build scripts
+# See: Scripts/generate_screen_id.sh
+MyToybox/Sources/Generated/*
+!MyToybox/Sources/Generated/.gitkeep
