@@ -13,6 +13,60 @@ import SwiftSyntaxMacros
 /// 2. Generates an extension that conforms to the `View` protocol (ExtensionMacro)
 public struct ScreenRegistryMacro {}
 
+// MARK: - CaseInfo
+
+/// Represents information about an enum case for code generation.
+private struct CaseInfo {
+    /// The name of the case (e.g., "detail").
+    let caseName: String
+
+    /// The View type to instantiate (e.g., "DetailView").
+    let viewType: String
+
+    /// Associated value parameters, if any.
+    /// Each tuple contains (label, name) where label is the external name and name is the internal name.
+    /// For example, `case detail(id: Int)` would have `[("id", "id")]`.
+    let parameters: [(label: String?, name: String)]
+
+    /// Whether this case has associated values.
+    var hasAssociatedValues: Bool {
+        !parameters.isEmpty
+    }
+
+    /// Generates the pattern for the switch case.
+    /// e.g., ".detail" or ".detail(let id)" or ".userProfile(let userId, let showEdit)"
+    func switchPattern() -> String {
+        if parameters.isEmpty {
+            return ".\(caseName)"
+        }
+
+        let bindings = parameters.map { param -> String in
+            if let label = param.label {
+                return "\(label): let \(param.name)"
+            } else {
+                return "let \(param.name)"
+            }
+        }.joined(separator: ", ")
+
+        return ".\(caseName)(\(bindings))"
+    }
+
+    /// Generates the View initializer call.
+    /// e.g., "DetailView()" or "DetailView(id: id)" or "UserProfileView(userId: userId, showEdit: showEdit)"
+    func viewInitializer() -> String {
+        if parameters.isEmpty {
+            return "\(viewType)()"
+        }
+
+        let args = parameters.map { param -> String in
+            let argLabel = param.label ?? param.name
+            return "\(argLabel): \(param.name)"
+        }.joined(separator: ", ")
+
+        return "\(viewType)(\(args))"
+    }
+}
+
 // MARK: - MemberAttributeMacro
 
 extension ScreenRegistryMacro: MemberAttributeMacro {
@@ -73,8 +127,8 @@ extension ScreenRegistryMacro: ExtensionMacro {
             throw ScreenMacroError.notAnEnum
         }
 
-        // Collect each case and its corresponding View type
-        var cases: [(caseName: String, viewType: String)] = []
+        // Collect information about each case
+        var caseInfos: [CaseInfo] = []
 
         for member in enumDecl.memberBlock.members {
             guard let caseDecl = EnumCaseDeclSyntax(member.decl) else {
@@ -84,23 +138,26 @@ extension ScreenRegistryMacro: ExtensionMacro {
             for element in caseDecl.elements {
                 let caseName = element.name.text
 
-                // Cases with associated values are not supported
-                if element.parameterClause != nil {
-                    throw ScreenMacroError.associatedValueNotSupported(caseName: caseName)
-                }
-
                 // Resolve the View type
                 let viewType = try resolveViewType(
                     from: caseDecl.attributes,
                     caseName: caseName
                 )
-                cases.append((caseName, viewType))
+
+                // Extract associated value parameters
+                let parameters = extractParameters(from: element.parameterClause)
+
+                caseInfos.append(CaseInfo(
+                    caseName: caseName,
+                    viewType: viewType,
+                    parameters: parameters
+                ))
             }
         }
 
         // Generate each case in the switch statement
-        let switchCases = cases.map { caseName, viewType -> String in
-            return "        case .\(caseName): \(viewType)()"
+        let switchCases = caseInfos.map { info -> String in
+            return "        case \(info.switchPattern()): \(info.viewInitializer())"
         }.joined(separator: "\n")
 
         // Generate the extension that conforms to the View protocol
@@ -120,6 +177,31 @@ extension ScreenRegistryMacro: ExtensionMacro {
         }
 
         return [extensionDeclSyntax]
+    }
+
+    /// Extracts parameter information from an enum case's associated value clause.
+    ///
+    /// For `case detail(id: Int)`, returns `[("id", "id")]`.
+    /// For `case example(value: String, count: Int)`, returns `[("value", "value"), ("count", "count")]`.
+    private static func extractParameters(
+        from parameterClause: EnumCaseParameterClauseSyntax?
+    ) -> [(label: String?, name: String)] {
+        guard let clause = parameterClause else {
+            return []
+        }
+
+        return clause.parameters.enumerated().map { index, param in
+            // Use firstName (external label) if available, otherwise generate a name
+            if let firstName = param.firstName {
+                let label = firstName.text
+                // Use secondName if available (internal name), otherwise use firstName
+                let name = param.secondName?.text ?? label
+                return (label: label, name: name)
+            } else {
+                // Unlabeled parameter - generate a name like "param0", "param1", etc.
+                return (label: nil, name: "param\(index)")
+            }
+        }
     }
 
     /// Resolves the View type name.
@@ -193,7 +275,6 @@ extension String {
 enum ScreenMacroDiagnostic: String, DiagnosticMessage {
     case notAnEnum
     case invalidScreenAttribute
-    case associatedValueNotSupported
 
     var severity: DiagnosticSeverity {
         .error
@@ -205,23 +286,11 @@ enum ScreenMacroDiagnostic: String, DiagnosticMessage {
             return "@ScreenRegistry can only be applied to an enum"
         case .invalidScreenAttribute:
             return "@Screen requires a View type argument (e.g., @Screen(MyView.self))"
-        case .associatedValueNotSupported:
-            return "@ScreenRegistry does not support enum cases with associated values"
         }
     }
 
     var diagnosticID: MessageID {
         MessageID(domain: "ScreenMacros", id: rawValue)
-    }
-
-    /// Helper to build an error message that includes a case name.
-    func withCaseName(_ caseName: String) -> String {
-        switch self {
-        case .associatedValueNotSupported:
-            return "\(message) (case: \(caseName))"
-        default:
-            return message
-        }
     }
 }
 
@@ -233,7 +302,6 @@ enum ScreenMacroDiagnostic: String, DiagnosticMessage {
 enum ScreenMacroError: Error, CustomStringConvertible {
     case notAnEnum
     case invalidScreenAttribute
-    case associatedValueNotSupported(caseName: String)
 
     var description: String {
         switch self {
@@ -241,8 +309,6 @@ enum ScreenMacroError: Error, CustomStringConvertible {
             return ScreenMacroDiagnostic.notAnEnum.message
         case .invalidScreenAttribute:
             return ScreenMacroDiagnostic.invalidScreenAttribute.message
-        case .associatedValueNotSupported(let caseName):
-            return ScreenMacroDiagnostic.associatedValueNotSupported.withCaseName(caseName)
         }
     }
 
@@ -252,8 +318,6 @@ enum ScreenMacroError: Error, CustomStringConvertible {
             return .notAnEnum
         case .invalidScreenAttribute:
             return .invalidScreenAttribute
-        case .associatedValueNotSupported:
-            return .associatedValueNotSupported
         }
     }
 }

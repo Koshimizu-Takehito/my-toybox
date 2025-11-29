@@ -125,36 +125,6 @@ struct ScreenMacrosTests {
         #endif
     }
 
-    /// Ensures that cases with associated values produce an error.
-    @Test("Associated value cases produce a diagnostic error")
-    func associatedValueCaseProducesError() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
-            """
-            @ScreenRegistry
-            enum ScreenID: String {
-                case normalScreen
-                case invalidScreen(value: Int)
-            }
-            """,
-            expandedSource: """
-            enum ScreenID: String {
-                case normalScreen
-                case invalidScreen(value: Int)
-            }
-            """,
-            diagnostics: [
-                DiagnosticSpec(
-                    message: "@ScreenRegistry does not support enum cases with associated values (case: invalidScreen)",
-                    line: 1,
-                    column: 1
-                )
-            ],
-            macros: testMacros
-        )
-        #endif
-    }
-
     /// Ensures that applying @ScreenRegistry to a non-enum produces an error.
     @Test("Applying to non-enum produces a diagnostic error")
     func nonEnumProducesError() {
@@ -178,6 +148,157 @@ struct ScreenMacrosTests {
                     column: 1
                 )
             ],
+            macros: testMacros
+        )
+        #endif
+    }
+}
+
+// MARK: - Associated Value Tests
+
+@Suite("Associated Value Tests")
+struct AssociatedValueTests {
+
+    /// Ensures that a case with a single associated value generates proper pattern matching.
+    @Test("Single associated value generates correct pattern")
+    func singleAssociatedValue() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                case simpleScreen
+                case detailScreen(id: Int)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case simpleScreen
+                case detailScreen(id: Int)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .simpleScreen:
+                        SimpleScreen()
+                    case .detailScreen(id: let id):
+                        DetailScreen(id: id)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that a case with multiple associated values generates proper pattern matching.
+    @Test("Multiple associated values generate correct pattern")
+    func multipleAssociatedValues() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                case simpleScreen
+                case userProfileScreen(userId: Int, showEdit: Bool)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case simpleScreen
+                case userProfileScreen(userId: Int, showEdit: Bool)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .simpleScreen:
+                        SimpleScreen()
+                    case .userProfileScreen(userId: let userId, showEdit: let showEdit):
+                        UserProfileScreen(userId: userId, showEdit: showEdit)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that associated values work with explicit @Screen type.
+    @Test("Associated values with explicit @Screen type")
+    func associatedValueWithExplicitType() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(CustomDetailView.self)
+                case detailScreen(id: Int)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case detailScreen(id: Int)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .detailScreen(id: let id):
+                        CustomDetailView(id: id)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that mixed cases (with and without associated values) work correctly.
+    @Test("Mixed cases with and without associated values")
+    func mixedCases() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                case homeScreen
+                case detailScreen(id: Int)
+                case settingsScreen
+                case profileScreen(userId: String, editable: Bool)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case homeScreen
+                case detailScreen(id: Int)
+                case settingsScreen
+                case profileScreen(userId: String, editable: Bool)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .homeScreen:
+                        HomeScreen()
+                    case .detailScreen(id: let id):
+                        DetailScreen(id: id)
+                    case .settingsScreen:
+                        SettingsScreen()
+                    case .profileScreen(userId: let userId, editable: let editable):
+                        ProfileScreen(userId: userId, editable: editable)
+                    }
+                }
+            }
+            """,
             macros: testMacros
         )
         #endif
