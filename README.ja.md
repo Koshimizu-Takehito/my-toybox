@@ -21,17 +21,21 @@
 
 1. **豊富なサンプル画面 (Screen)**  
    - `Sources/Screens` 以下に多数の画面が定義されており、それぞれが独自のアニメーションや描画ロジックを持ちます。  
-   - `Screen.swift` / `ScreenID.swift` で画面の識別子を一元管理し、`Screens.json` から読み込む仕組みになっています。
+   - `Screen.swift` / `Screens.json` で画面の識別子を一元管理し、`Screens.json` を元に `Scripts/generate_screen_id.sh` によって `Sources/Generated/ScreenID.swift` が自動生成されます。
 
 2. **Metal シェーダーによる表現**  
    - `MosaicShader.metal` や `WaveParticleShader.metal` など、Metal シェーダーファイルを用いたビジュアルエフェクトを多数実装しています。  
    - SwiftUI のシェーダーサポートを使い、カスタムの描画を簡潔に呼び出せるよう工夫しています。
 
-3. **Swift Concurrency / async-await**  
+3. **Screen 定義の自動生成**  
+   - `ScreenID` はローカル Swift パッケージ `ScreenMacros` による `@ScreenRegistry` マクロで `View` 準拠と `body` を自動生成しています。  
+   - `Screens.json` の `"id"` は `enum ScreenID` の case 名としてそのまま使われるため、**Swift の識別子として有効な lowerCamelCase（例: `gameOfLifeScreen`）** で記述する必要があります。
+
+4. **Swift Concurrency / async-await**  
    - `RootScreenViewModel` 内で `async/await` を使って JSON データを読み込み、メインスレッドに画面一覧をバインドしています。  
    - `@Observable` (Swift 5.9 以降) を使ったシンプルな状態管理を試すことができます。
 
-4. **画面遷移**  
+5. **画面遷移**  
    - SwiftUI の `NavigationSplitView` を使い、iPad や横向き時はサイドバー＋詳細表示、iPhone 縦向き時はプッシュ遷移のような動作になります。  
    - 選択したサンプル画面が右ペイン（または新たな画面）に即時表示されます。
 
@@ -46,6 +50,7 @@ my-toybox/
   │   ├─ Sources/
   │   │   ├─ App/
   │   │   │   └─ App.swift       # @main アプリエントリーポイント
+  │   │   ├─ Generated/          # Screens.json から自動生成される ScreenID など
   │   │   ├─ Screens/
   │   │   │   ├─ Root/          # アプリ起点画面 (RootScreen + ViewModel)
   │   │   │   ├─ Screens/       # サンプル画面
@@ -57,7 +62,7 @@ my-toybox/
 - `App.swift`: アプリのエントリーポイント。`RootScreen` が初期画面として指定されています。
 - `RootScreen.swift`: アプリ起動時に表示される「画面一覧＋詳細表示」のメインビュー。
 - `RootScreenViewModel.swift`: 画面一覧データの取得など、ビジネスロジックを担当。
-- `Screens.json`: アプリ内で利用する画面情報（`ScreenID`、画面タイトル、説明文など）を JSON フォーマットで保持。
+- `Screens.json`: アプリ内で利用する画面情報（`ScreenID`、画面タイトル、説明文など）を JSON フォーマットで保持。`Scripts/generate_screen_id.sh` により `Sources/Generated/ScreenID.swift` が生成されます（`ScreenID` は手書きしません）。
 
 ## インストール & ビルド手順
 

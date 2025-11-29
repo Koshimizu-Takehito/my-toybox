@@ -1,0 +1,8 @@
+# This folder contains auto-generated source files.
+# Files in this folder are ignored by .gitignore.
+# 
+# To generate files:
+#   ./Scripts/generate_screen_id.sh
+# 
+# Or simply build the project in Xcode (⌘B).
+

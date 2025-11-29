@@ -11,6 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate Screens.json ids
+        run: ./Scripts/check_screen_sync.sh
+
       - name: Set up Xcode 16.2
         uses: maxim-lobanov/setup-xcode@v1
         with:
