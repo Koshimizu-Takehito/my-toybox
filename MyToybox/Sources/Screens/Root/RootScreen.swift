@@ -70,7 +70,7 @@ extension RootScreen {
             Group {
                 if let selection {
                     // Render the selected screen
-                    DetailScreen(id: selection.id)
+                    selection.id
                 } else {
                     Text("Please select a screen")
                         .foregroundStyle(.secondary)
