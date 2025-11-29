@@ -26,7 +26,7 @@ Screens are loaded dynamically from a bundled JSON file and rendered using Swift
 ### 🔹 Dozens of Sample Screens
 Each screen lives under `Sources/Screens/` and showcases a specific animation, layout, or rendering technique.  
 The screen list is defined using `Screen.swift` and a `Screens.json` file.  
-From `Screens.json`, `Scripts/generate_screen_id.sh` automatically generates `Sources/Generated/ScreenID.swift`, which is then turned into a `View` by the local Swift package `ScreenMacros` via the `@ScreenRegistry` macro.  
+From `Screens.json`, `Scripts/generate_screen_id.sh` automatically generates `Sources/Generated/ScreenID.swift`, which is then turned into a `View` by the local Swift package `ScreenMacros` via the `@Screens` macro.  
 Each `"id"` in `Screens.json` is used directly as an `enum ScreenID` case name, so it **must be a valid Swift identifier in lowerCamelCase (e.g. `gameOfLifeScreen`)**.
 
 ### 🔹 Metal Shaders

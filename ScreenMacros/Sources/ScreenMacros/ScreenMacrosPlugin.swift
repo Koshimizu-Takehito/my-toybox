@@ -8,7 +8,7 @@ import SwiftSyntaxMacros
 struct ScreenMacrosPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
         ScreenMacro.self,
-        ScreenRegistryMacro.self,
+        ScreensMacro.self,
     ]
 }
 

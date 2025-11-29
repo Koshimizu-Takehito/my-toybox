@@ -8,7 +8,7 @@ import Testing
 import ScreenMacrosImpl
 
 private let testMacros: [String: Macro.Type] = [
-    "ScreenRegistry": ScreenRegistryMacro.self,
+    "Screens": ScreensMacro.self,
     "Screen": ScreenMacro.self,
 ]
 
@@ -59,10 +59,10 @@ struct ScreenMacrosTests {
 
     /// Ensures that even cases without an explicit @Screen attribute infer the View type from the case name.
     @Test("View type is inferred from case name")
-    func screenRegistryMacroInfersViewType() {
+    func screensMacroInfersViewType() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID: String {
                 case gameOfLifeScreen
                 case mosaicScreen
@@ -91,10 +91,10 @@ struct ScreenMacrosTests {
 
     /// Ensures that an explicitly specified type via @Screen is honored.
     @Test("Explicit @Screen type is used when specified")
-    func screenRegistryMacroWithExplicitType() {
+    func screensMacroWithExplicitType() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID: String {
                 case inferredScreen
                 @Screen(CustomView.self)
@@ -124,10 +124,10 @@ struct ScreenMacrosTests {
 
     /// Ensures that @Screen without arguments behaves the same as having no @Screen.
     @Test("@Screen without arguments works the same as no @Screen")
-    func screenRegistryMacroWithScreenAttributeNoArgs() {
+    func screensMacroWithScreenAttributeNoArgs() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID: String {
                 @Screen
                 case explicitScreen
@@ -155,12 +155,12 @@ struct ScreenMacrosTests {
         )
     }
 
-    /// Ensures that applying @ScreenRegistry to a non-enum produces an error.
+    /// Ensures that applying @Screens to a non-enum produces an error.
     @Test("Applying to non-enum produces a diagnostic error")
     func nonEnumProducesError() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             struct NotAnEnum {
                 var value: Int
             }
@@ -172,7 +172,7 @@ struct ScreenMacrosTests {
             """,
             diagnostics: [
                 DiagnosticSpec(
-                    message: "@ScreenRegistry can only be applied to an enum",
+                    message: "@Screens can only be applied to an enum",
                     line: 1,
                     column: 1
                 )
@@ -180,12 +180,12 @@ struct ScreenMacrosTests {
         )
     }
 
-    /// Ensures that applying @ScreenRegistry to a class produces an error.
+    /// Ensures that applying @Screens to a class produces an error.
     @Test("Applying to class produces a diagnostic error")
     func classProducesError() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             class NotAnEnum {
                 var value: Int = 0
             }
@@ -197,7 +197,7 @@ struct ScreenMacrosTests {
             """,
             diagnostics: [
                 DiagnosticSpec(
-                    message: "@ScreenRegistry can only be applied to an enum",
+                    message: "@Screens can only be applied to an enum",
                     line: 1,
                     column: 1
                 )
@@ -210,7 +210,7 @@ struct ScreenMacrosTests {
     func emptyEnumGeneratesEmptySwitch() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum EmptyScreenID {
             }
             """,
@@ -234,7 +234,7 @@ struct ScreenMacrosTests {
     func singleCaseEnum() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 case onlyScreen
             }
@@ -262,7 +262,7 @@ struct ScreenMacrosTests {
     func screenTypeWithoutSelfSuffix() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(CustomView)
                 case customScreen
@@ -297,7 +297,7 @@ struct AssociatedValueTests {
     func singleAssociatedValue() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 case simpleScreen
                 case detailScreen(id: Int)
@@ -329,7 +329,7 @@ struct AssociatedValueTests {
     func multipleAssociatedValues() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 case simpleScreen
                 case userProfileScreen(userId: Int, showEdit: Bool)
@@ -361,7 +361,7 @@ struct AssociatedValueTests {
     func associatedValueWithExplicitType() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(CustomDetailView.self)
                 case detailScreen(id: Int)
@@ -390,7 +390,7 @@ struct AssociatedValueTests {
     func mixedCases() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 case homeScreen
                 case detailScreen(id: Int)
@@ -430,7 +430,7 @@ struct AssociatedValueTests {
     func unlabeledAssociatedValue() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 case detailScreen(Int)
             }
@@ -458,7 +458,7 @@ struct AssociatedValueTests {
     func mixedLabeledAndUnlabeledAssociatedValues() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 case mixedScreen(Int, name: String)
             }
@@ -492,7 +492,7 @@ struct ParameterMappingTests {
     func singleParameterMapping() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(DetailView.self, ["id": "detailId"])
                 case detailScreen(id: Int)
@@ -521,7 +521,7 @@ struct ParameterMappingTests {
     func multipleParameterMapping() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
                 case profileScreen(userId: Int, showEdit: Bool)
@@ -550,7 +550,7 @@ struct ParameterMappingTests {
     func partialParameterMapping() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(ProfileView.self, ["userId": "id"])
                 case profileScreen(userId: Int, showEdit: Bool)
@@ -579,7 +579,7 @@ struct ParameterMappingTests {
     func emptyMappingDictionary() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(DetailView.self, [:])
                 case detailScreen(id: Int)
@@ -608,7 +608,7 @@ struct ParameterMappingTests {
     func mappingOnlyWithoutViewType() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(["foo": "image"])
                 case multiColorImage(foo: Image, colors: [Color])
@@ -637,7 +637,7 @@ struct ParameterMappingTests {
     func mappingOnlyMultipleParams() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(["userId": "id", "showEdit": "editable"])
                 case userProfileScreen(userId: Int, showEdit: Bool)
@@ -672,7 +672,7 @@ struct GenericsAndModuleQualifierTests {
     func moduleQualifiedType() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(SomeModule.CustomView.self)
                 case customScreen
@@ -701,7 +701,7 @@ struct GenericsAndModuleQualifierTests {
     func genericTypeSingleParameter() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(GenericView<Int>.self)
                 case genericScreen
@@ -730,7 +730,7 @@ struct GenericsAndModuleQualifierTests {
     func genericTypeMultipleParameters() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(GenericView<Int, String>.self)
                 case genericScreen
@@ -759,7 +759,7 @@ struct GenericsAndModuleQualifierTests {
     func moduleQualifiedGenericType() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(SomeModule.GenericView<Int>.self)
                 case fullyQualifiedScreen
@@ -788,7 +788,7 @@ struct GenericsAndModuleQualifierTests {
     func deeplyNestedModuleType() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(Module.SubModule.DeepView.self)
                 case deepScreen
@@ -817,7 +817,7 @@ struct GenericsAndModuleQualifierTests {
     func genericTypeWithAssociatedValuesAndMapping() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(GenericDetailView<Int>.self, ["itemId": "id"])
                 case detailScreen(itemId: Int)
@@ -846,7 +846,7 @@ struct GenericsAndModuleQualifierTests {
     func complexGenericTypeParameter() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(ListView<[String]>.self)
                 case listScreen
@@ -881,7 +881,7 @@ struct AccessLevelTests {
     func publicEnumGeneratesPublicAPI() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             public enum ScreenID {
                 case simpleScreen
             }
@@ -909,7 +909,7 @@ struct AccessLevelTests {
     func internalEnumGeneratesInternalAPI() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             internal enum ScreenID {
                 case simpleScreen
             }
@@ -937,7 +937,7 @@ struct AccessLevelTests {
     func fileprivateEnumGeneratesFileprivateAPI() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             fileprivate enum ScreenID {
                 case simpleScreen
             }
@@ -965,7 +965,7 @@ struct AccessLevelTests {
     func privateEnumGeneratesPrivateAPI() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             private enum ScreenID {
                 case simpleScreen
             }
@@ -999,7 +999,7 @@ struct OptionalAndResultAssociatedValuesTests {
     func optionalAssociatedValue() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 case optionalDetail(id: Int?)
             }
@@ -1027,7 +1027,7 @@ struct OptionalAndResultAssociatedValuesTests {
     func resultAssociatedValue() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 case loadResult(result: Result<Int, Error>)
             }
@@ -1061,7 +1061,7 @@ struct ErrorHandlingTests {
     func invalidMappingArgumentProducesError() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(DetailView.self, "notADictionary")
                 case detailScreen(id: Int)
@@ -1087,7 +1087,7 @@ struct ErrorHandlingTests {
     func unusedMappingKeysProduceWarning() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(DetailView.self, ["typoId": "detailId", "id": "correctId"])
                 case detailScreen(id: Int)
@@ -1124,7 +1124,7 @@ struct ErrorHandlingTests {
     func multipleUnusedMappingKeys() {
         assertScreenMacroExpansion(
             """
-            @ScreenRegistry
+            @Screens
             enum ScreenID {
                 @Screen(ProfileView.self, ["unknownKey1": "a", "unknownKey2": "b"])
                 case profileScreen(userId: Int)

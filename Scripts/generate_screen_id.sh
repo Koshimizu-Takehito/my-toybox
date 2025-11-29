@@ -69,11 +69,11 @@ extension ScreenID: Identifiable {
 
 /// Enum that identifies each sample screen.
 ///
-/// The `@ScreenRegistry` macro automatically generates `View` conformance and a `body` property.
+/// The `@Screens` macro automatically generates `View` conformance and a `body` property.
 /// Each case name is converted to UpperCamelCase and used as a View type.
 ///
 /// Example: `case gameOfLifeScreen` → `GameOfLifeScreen()`
-@ScreenRegistry
+@Screens
 enum ScreenID: String, Codable, CaseIterable {
 HEADER
 

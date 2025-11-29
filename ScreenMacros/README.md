@@ -3,14 +3,14 @@
 **ScreenMacros** is a Swift macro package that turns an enum of screen identifiers
 into type-safe SwiftUI views.
 
-You annotate an enum with `@ScreenRegistry` and optionally each case with `@Screen`,
+You annotate an enum with `@Screens` and optionally each case with `@Screen`,
 and the macro generates a `View` conformance that switches over all cases.
 
 ```swift
 import SwiftUI
 import ScreenMacrosClient
 
-@ScreenRegistry
+@Screens
 enum ScreenID {
     case homeScreen
     case detailScreen(id: Int?)
@@ -67,7 +67,7 @@ And use the client module in your target:
 
 ## Macros
 
-### `@ScreenRegistry`
+### `@Screens`
 
 - **Attached to**: enum  
 - **Generates**:
@@ -78,7 +78,7 @@ If no `@Screen` attributes are present, types are inferred from case names by
 converting them to UpperCamelCase:
 
 ```swift
-@ScreenRegistry
+@Screens
 enum ScreenID {
     case gameOfLifeScreen  // → GameOfLifeScreen()
     case mosaicScreen      // → MosaicScreen()
@@ -91,7 +91,7 @@ enum ScreenID {
 - **Purpose**: Override the inferred view type and/or map parameter labels.
 
 ```swift
-@ScreenRegistry
+@Screens
 enum ScreenID {
     @Screen(CustomView.self)
     case customScreen
@@ -118,7 +118,7 @@ enum ScreenID {
 Example:
 
 ```swift
-@ScreenRegistry
+@Screens
 public enum ScreenID {
     case homeScreen
 }
@@ -149,7 +149,7 @@ and makes it safe to expose `public` APIs from libraries.
 
 ## Associated Values with Optional / Result
 
-`@ScreenRegistry` does **not depend on the concrete types** of associated values.
+`@Screens` does **not depend on the concrete types** of associated values.
 It simply:
 
 - Binds each case parameter to a local `let` binding
@@ -158,7 +158,7 @@ It simply:
 This means cases with `Optional` or `Result` work out of the box:
 
 ```swift
-@ScreenRegistry
+@Screens
 enum ScreenID {
     case optionalDetail(id: Int?)
     case loadResult(result: Result<Int, Error>)
@@ -192,7 +192,7 @@ When the case labels and the View initializer parameter names differ,
 you can provide a mapping via `@Screen`:
 
 ```swift
-@ScreenRegistry
+@Screens
 enum ScreenID {
     @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
     case profile(userId: Int, showEdit: Bool)

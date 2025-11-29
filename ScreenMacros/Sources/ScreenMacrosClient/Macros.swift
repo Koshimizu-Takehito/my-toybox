@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - @ScreenRegistry (Attached Macro - Extension + MemberAttribute)
+// MARK: - @Screens (Attached Macro - Extension + MemberAttribute)
 
 /// Macro applied to an enum that automatically generates `View` conformance and a `body` property.
 ///
@@ -11,7 +11,7 @@ import SwiftUI
 /// ## Example
 ///
 /// ```swift
-/// @ScreenRegistry
+/// @Screens
 /// enum ScreenID: String {
 ///     case gameOfLifeScreen    // Automatically gets @Screen → GameOfLifeScreen()
 ///     case mosaicScreen        // Automatically gets @Screen → MosaicScreen()
@@ -47,16 +47,16 @@ import SwiftUI
 /// ```
 @attached(extension, conformances: View, names: named(body))
 @attached(memberAttribute)
-public macro ScreenRegistry() = #externalMacro(
+public macro Screens() = #externalMacro(
     module: "ScreenMacrosImpl",
-    type: "ScreenRegistryMacro"
+    type: "ScreensMacro"
 )
 
 // MARK: - @Screen (Attached Macro - Peer)
 
 /// Macro applied to an enum case to specify the corresponding View type.
 ///
-/// When using `@ScreenRegistry`, `@Screen` is added automatically.
+/// When using `@Screens`, `@Screen` is added automatically.
 /// Explicitly specify it only when you want to use a different View type from the case name.
 ///
 /// ## Without arguments (recommended)

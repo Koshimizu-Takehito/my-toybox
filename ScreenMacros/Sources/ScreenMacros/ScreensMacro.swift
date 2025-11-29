@@ -2,16 +2,16 @@ import SwiftDiagnostics
 import SwiftSyntax
 import SwiftSyntaxMacros
 
-// MARK: - ScreenRegistryMacro
+// MARK: - ScreensMacro
 
-/// Implementation of the `@ScreenRegistry` macro.
+/// Implementation of the `@Screens` macro.
 ///
 /// When applied to an enum, this macro:
 /// 1. Automatically adds a `@Screen` attribute to cases without it (MemberAttributeMacro)
 ///    - This is mainly to keep metadata consistent; type inference itself is done from the case name
 ///      even if `@Screen` is not present.
 /// 2. Generates an extension that conforms to the `View` protocol (ExtensionMacro)
-public struct ScreenRegistryMacro {}
+public struct ScreensMacro {}
 
 // MARK: - Constants
 
@@ -106,7 +106,7 @@ private struct CaseInfo {
 
 // MARK: - MemberAttributeMacro
 
-extension ScreenRegistryMacro: MemberAttributeMacro {
+extension ScreensMacro: MemberAttributeMacro {
     /// Adds a `@Screen` attribute to each enum case that does not already have one.
     ///
     /// Note: Resolution of the `View` type itself is performed in the ExtensionMacro,
@@ -150,7 +150,7 @@ extension ScreenRegistryMacro: MemberAttributeMacro {
 
 // MARK: - ExtensionMacro
 
-extension ScreenRegistryMacro: ExtensionMacro {
+extension ScreensMacro: ExtensionMacro {
     /// Generates an extension that conforms to the `View` protocol.
     public static func expansion(
         of node: AttributeSyntax,
@@ -545,7 +545,7 @@ enum ScreenMacroDiagnostic: String, DiagnosticMessage {
     var message: String {
         switch self {
         case .notAnEnum:
-            return "@ScreenRegistry can only be applied to an enum"
+            return "@Screens can only be applied to an enum"
         case .invalidScreenAttribute:
             return "@Screen expects a View type and/or a parameter mapping (e.g., @Screen(MyView.self), @Screen([\"id\": \"detailId\"]), @Screen(MyView.self, [\"id\": \"detailId\"]))"
         case .invalidMappingArgument:

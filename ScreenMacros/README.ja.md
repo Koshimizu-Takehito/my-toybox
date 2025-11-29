@@ -3,14 +3,14 @@
 **ScreenMacros** は、画面を表す `enum` から型安全な SwiftUI `View` を自動生成する
 Swift マクロパッケージです。
 
-`enum` に `@ScreenRegistry` を付け、必要に応じて各 case に `@Screen` を付けることで、
+`enum` に `@Screens` を付け、必要に応じて各 case に `@Screen` を付けることで、
 その `enum` 自体を SwiftUI の `View` として扱えるようになります。
 
 ```swift
 import SwiftUI
 import ScreenMacrosClient
 
-@ScreenRegistry
+@Screens
 enum ScreenID {
     case homeScreen
     case detailScreen(id: Int?)
@@ -67,7 +67,7 @@ dependencies: [
 
 ## マクロ一覧
 
-### `@ScreenRegistry`
+### `@Screens`
 
 - **付与先**: `enum`  
 - **生成内容**:
@@ -78,7 +78,7 @@ dependencies: [
 View 型を推論します。
 
 ```swift
-@ScreenRegistry
+@Screens
 enum ScreenID {
     case gameOfLifeScreen  // → GameOfLifeScreen()
     case mosaicScreen      // → MosaicScreen()
@@ -91,7 +91,7 @@ enum ScreenID {
 - **用途**: 推論される View 型を上書きしたり、引数ラベルをマッピングしたりする
 
 ```swift
-@ScreenRegistry
+@Screens
 enum ScreenID {
     @Screen(CustomView.self)
     case customScreen
@@ -108,7 +108,7 @@ enum ScreenID {
 
 ## アクセスレベルの自動調整
 
-**`@ScreenRegistry` は、元の `enum` のアクセスレベルを自動的に引き継ぎます。**
+**`@Screens` は、元の `enum` のアクセスレベルを自動的に引き継ぎます。**
 
 - **アクセスレベルの対応**
   - `public enum` → `public extension` / `public var body`
@@ -118,7 +118,7 @@ enum ScreenID {
 例:
 
 ```swift
-@ScreenRegistry
+@Screens
 public enum ScreenID {
     case homeScreen
 }
@@ -154,7 +154,7 @@ public extension ScreenID: View {
 
 ## Optional / Result を含む associated value のサポート
 
-`@ScreenRegistry` は、associated value の**具体的な型には依存せず**、
+`@Screens` は、associated value の**具体的な型には依存せず**、
 
 - case の引数ラベルを `let` で束縛し
 - その束縛値を View イニシャライザにそのまま渡す
@@ -164,7 +164,7 @@ public extension ScreenID: View {
 そのため、`Optional` や `Result` を含むケースもそのまま扱えます。
 
 ```swift
-@ScreenRegistry
+@Screens
 enum ScreenID {
     case optionalDetail(id: Int?)
     case loadResult(result: Result<Int, Error>)
@@ -198,7 +198,7 @@ case の引数ラベルと View のイニシャライザの引数名が異なる
 `@Screen` の第 2 引数としてマッピングを渡します。
 
 ```swift
-@ScreenRegistry
+@Screens
 enum ScreenID {
     @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
     case profile(userId: Int, showEdit: Bool)
