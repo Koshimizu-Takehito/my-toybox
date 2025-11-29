@@ -1,4 +1,8 @@
-## ScreenMacros
+# ScreenMacros
+
+[![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
+[![Platform](https://img.shields.io/badge/Platforms-iOS%2017+%20|%20macOS%2014+-blue.svg)](https://developer.apple.com)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **ScreenMacros** は、画面を表す `enum` から型安全な SwiftUI `View` を自動生成する
 Swift マクロパッケージです。
@@ -8,7 +12,7 @@ Swift マクロパッケージです。
 
 ```swift
 import SwiftUI
-import ScreenMacrosClient
+import ScreenMacros
 
 @Screens
 enum ScreenID {
@@ -42,26 +46,32 @@ extension ScreenID: View, ScreenMacros.Screens {
 
 ## インストール
 
+### Swift Package Manager
+
 `Package.swift` に **ScreenMacros** を追加します。
 
 ```swift
 dependencies: [
-    .package(path: "../ScreenMacros")  // ローカルパッケージ参照
-    // または、リモート参照:
-    // .package(url: "https://github.com/Koshimizu-Takehito/my-toybox.git", from: "0.1.0")
+    .package(url: "https://github.com/Koshimizu-Takehito/ScreenMacros.git", from: "1.0.0")
 ]
 ```
 
-利用するターゲットでクライアントモジュールを指定します。
+利用するターゲットで依存を追加します。
 
 ```swift
 .target(
     name: "YourFeature",
     dependencies: [
-        .product(name: "ScreenMacrosClient", package: "ScreenMacros")
+        .product(name: "ScreenMacros", package: "ScreenMacros")
     ]
 )
 ```
+
+### Xcode
+
+1. File → Add Package Dependencies...
+2. URL を入力: `https://github.com/Koshimizu-Takehito/ScreenMacros.git`
+3. バージョンを選択: `1.0.0` 以降
 
 ---
 

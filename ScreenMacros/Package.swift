@@ -1,11 +1,18 @@
-// swift-tools-version: 6.2
+// swift-tools-version: 6.0
+// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 import CompilerPluginSupport
 
 let package = Package(
     name: "ScreenMacros",
-    platforms: [.iOS(.v17), .macOS(.v14)],
+    platforms: [
+        .iOS(.v17),
+        .macOS(.v14),
+        .tvOS(.v17),
+        .watchOS(.v10),
+        .visionOS(.v1),
+    ],
     products: [
         .library(
             name: "ScreenMacros",
@@ -13,7 +20,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", from: "602.0.0"),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0"),
     ],
     targets: [
         .macro(
