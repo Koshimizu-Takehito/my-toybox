@@ -38,6 +38,9 @@
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		3AED71DC2DD072FC00D95672 /* Exceptions for "MyToybox" folder in "MyToybox" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Sources/Generated/ScreenID.swift,
+			);
 			platformFiltersByRelativePath = {
 				Sources/Screens/Screens/ViewcontrollerRepresentable/SampleViewController.xib = (ios, );
 			};
