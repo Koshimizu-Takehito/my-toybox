@@ -74,7 +74,7 @@ struct ScreenMacrosTests {
                 case mosaicScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -107,7 +107,7 @@ struct ScreenMacrosTests {
                 case customScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -140,7 +140,7 @@ struct ScreenMacrosTests {
                 case implicitScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -218,7 +218,7 @@ struct ScreenMacrosTests {
             enum EmptyScreenID {
             }
 
-            extension EmptyScreenID: View {
+            extension EmptyScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -244,7 +244,7 @@ struct ScreenMacrosTests {
                 case onlyScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -273,7 +273,7 @@ struct ScreenMacrosTests {
                 case customScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -309,7 +309,7 @@ struct AssociatedValueTests {
                 case detailScreen(id: Int)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -341,7 +341,7 @@ struct AssociatedValueTests {
                 case userProfileScreen(userId: Int, showEdit: Bool)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -372,7 +372,7 @@ struct AssociatedValueTests {
                 case detailScreen(id: Int)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -406,7 +406,7 @@ struct AssociatedValueTests {
                 case profileScreen(userId: String, editable: Bool)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -440,7 +440,7 @@ struct AssociatedValueTests {
                 case detailScreen(Int)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -468,7 +468,7 @@ struct AssociatedValueTests {
                 case mixedScreen(Int, name: String)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -503,7 +503,7 @@ struct ParameterMappingTests {
                 case detailScreen(id: Int)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -532,7 +532,7 @@ struct ParameterMappingTests {
                 case profileScreen(userId: Int, showEdit: Bool)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -561,7 +561,7 @@ struct ParameterMappingTests {
                 case profileScreen(userId: Int, showEdit: Bool)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -590,7 +590,7 @@ struct ParameterMappingTests {
                 case detailScreen(id: Int)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -619,7 +619,7 @@ struct ParameterMappingTests {
                 case multiColorImage(foo: Image, colors: [Color])
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -648,7 +648,7 @@ struct ParameterMappingTests {
                 case userProfileScreen(userId: Int, showEdit: Bool)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -683,7 +683,7 @@ struct GenericsAndModuleQualifierTests {
                 case customScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -712,7 +712,7 @@ struct GenericsAndModuleQualifierTests {
                 case genericScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -741,7 +741,7 @@ struct GenericsAndModuleQualifierTests {
                 case genericScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -770,7 +770,7 @@ struct GenericsAndModuleQualifierTests {
                 case fullyQualifiedScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -799,7 +799,7 @@ struct GenericsAndModuleQualifierTests {
                 case deepScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -828,7 +828,7 @@ struct GenericsAndModuleQualifierTests {
                 case detailScreen(itemId: Int)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -857,7 +857,7 @@ struct GenericsAndModuleQualifierTests {
                 case listScreen
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -891,7 +891,7 @@ struct AccessLevelTests {
                 case simpleScreen
             }
 
-            public extension ScreenID: View {
+            public extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 public var body: some View {
                     switch self {
@@ -919,7 +919,7 @@ struct AccessLevelTests {
                 case simpleScreen
             }
 
-            internal extension ScreenID: View {
+            internal extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 internal var body: some View {
                     switch self {
@@ -947,7 +947,7 @@ struct AccessLevelTests {
                 case simpleScreen
             }
 
-            fileprivate extension ScreenID: View {
+            fileprivate extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 fileprivate var body: some View {
                     switch self {
@@ -975,7 +975,7 @@ struct AccessLevelTests {
                 case simpleScreen
             }
 
-            private extension ScreenID: View {
+            private extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 private var body: some View {
                     switch self {
@@ -1009,7 +1009,7 @@ struct OptionalAndResultAssociatedValuesTests {
                 case optionalDetail(id: Int?)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -1037,7 +1037,7 @@ struct OptionalAndResultAssociatedValuesTests {
                 case loadResult(result: Result<Int, Error>)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -1098,7 +1098,7 @@ struct ErrorHandlingTests {
                 case detailScreen(id: Int)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {
@@ -1135,7 +1135,7 @@ struct ErrorHandlingTests {
                 case profileScreen(userId: Int)
             }
 
-            extension ScreenID: View {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 var body: some View {
                     switch self {

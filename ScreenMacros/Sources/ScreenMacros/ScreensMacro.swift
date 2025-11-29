@@ -51,11 +51,6 @@ private struct CaseInfo {
     /// Parameter mapping from case labels to View initializer labels.
     let parameterMapping: [String: String]
 
-    /// Whether this case has associated values.
-    var hasAssociatedValues: Bool {
-        !parameters.isEmpty
-    }
-
     /// Generates the pattern for the switch case.
     ///
     /// Examples:
@@ -212,9 +207,11 @@ extension ScreensMacro: ExtensionMacro {
         // the source type (e.g. internal enum with public body).
         let accessModifier = resolveAccessModifier(from: enumDecl)
 
-        // Generate the extension that conforms to the View protocol
+        // Generate the extension that conforms to View and Screens protocols
+        // Use fully-qualified `ScreenMacros.Screens` to avoid name collisions
+        // with user-defined types named `Screens` in the client module.
         let extensionDecl: DeclSyntax = """
-            \(raw: accessModifier)extension \(type.trimmed): View {
+            \(raw: accessModifier)extension \(type.trimmed): View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 \(raw: accessModifier)var body: some View {
                     switch self {
@@ -602,19 +599,6 @@ enum ScreenMacroError: Error, CustomStringConvertible {
             return ScreenMacroDiagnostic.invalidMappingArgument.message
         case .unsupportedTypeExpression:
             return ScreenMacroDiagnostic.unsupportedTypeExpression.message
-        }
-    }
-
-    var diagnostic: ScreenMacroDiagnostic {
-        switch self {
-        case .notAnEnum:
-            return .notAnEnum
-        case .invalidScreenAttribute:
-            return .invalidScreenAttribute
-        case .invalidMappingArgument:
-            return .invalidMappingArgument
-        case .unsupportedTypeExpression:
-            return .unsupportedTypeExpression
         }
     }
 }
