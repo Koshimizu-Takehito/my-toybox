@@ -304,3 +304,201 @@ struct AssociatedValueTests {
         #endif
     }
 }
+
+// MARK: - Parameter Mapping Tests
+
+@Suite("Parameter Mapping Tests")
+struct ParameterMappingTests {
+
+    /// Ensures that parameter mapping remaps a single parameter.
+    @Test("Single parameter mapping")
+    func singleParameterMapping() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(DetailView.self, ["id": "detailId"])
+                case detailScreen(id: Int)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case detailScreen(id: Int)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .detailScreen(id: let id):
+                        DetailView(detailId: id)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that parameter mapping remaps multiple parameters.
+    @Test("Multiple parameter mapping")
+    func multipleParameterMapping() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(ProfileView.self, ["userId": "id", "showEdit": "editable"])
+                case profileScreen(userId: Int, showEdit: Bool)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case profileScreen(userId: Int, showEdit: Bool)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .profileScreen(userId: let userId, showEdit: let showEdit):
+                        ProfileView(id: userId, editable: showEdit)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that partial mapping works (only some parameters are remapped).
+    @Test("Partial parameter mapping")
+    func partialParameterMapping() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(ProfileView.self, ["userId": "id"])
+                case profileScreen(userId: Int, showEdit: Bool)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case profileScreen(userId: Int, showEdit: Bool)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .profileScreen(userId: let userId, showEdit: let showEdit):
+                        ProfileView(id: userId, showEdit: showEdit)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that empty mapping dictionary is treated as no mapping.
+    @Test("Empty mapping dictionary")
+    func emptyMappingDictionary() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(DetailView.self, [:])
+                case detailScreen(id: Int)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case detailScreen(id: Int)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .detailScreen(id: let id):
+                        DetailView(id: id)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that mapping-only @Screen (without View type) works correctly.
+    @Test("Mapping only without View type")
+    func mappingOnlyWithoutViewType() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(["foo": "image"])
+                case multiColorImage(foo: Image, colors: [Color])
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case multiColorImage(foo: Image, colors: [Color])
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .multiColorImage(foo: let foo, colors: let colors):
+                        MultiColorImage(image: foo, colors: colors)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that mapping-only @Screen works with multiple remapped parameters.
+    @Test("Mapping only with multiple remapped parameters")
+    func mappingOnlyMultipleParams() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(["userId": "id", "showEdit": "editable"])
+                case userProfileScreen(userId: Int, showEdit: Bool)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case userProfileScreen(userId: Int, showEdit: Bool)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .userProfileScreen(userId: let userId, showEdit: let showEdit):
+                        UserProfileScreen(id: userId, editable: showEdit)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+}

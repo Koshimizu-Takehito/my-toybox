@@ -13,6 +13,18 @@ import SwiftSyntaxMacros
 /// 2. Generates an extension that conforms to the `View` protocol (ExtensionMacro)
 public struct ScreenRegistryMacro {}
 
+// MARK: - ScreenInfo
+
+/// Information extracted from the `@Screen` attribute.
+private struct ScreenInfo {
+    /// The View type to instantiate (e.g., "DetailView").
+    let viewType: String
+
+    /// Parameter mapping from case labels to View initializer labels.
+    /// e.g., ["id": "detailId"] means case's `id` becomes View's `detailId`.
+    let parameterMapping: [String: String]
+}
+
 // MARK: - CaseInfo
 
 /// Represents information about an enum case for code generation.
@@ -27,6 +39,9 @@ private struct CaseInfo {
     /// Each tuple contains (label, name) where label is the external name and name is the internal name.
     /// For example, `case detail(id: Int)` would have `[("id", "id")]`.
     let parameters: [(label: String?, name: String)]
+
+    /// Parameter mapping from case labels to View initializer labels.
+    let parameterMapping: [String: String]
 
     /// Whether this case has associated values.
     var hasAssociatedValues: Bool {
@@ -52,15 +67,20 @@ private struct CaseInfo {
     }
 
     /// Generates the View initializer call.
-    /// e.g., "DetailView()" or "DetailView(id: id)" or "UserProfileView(userId: userId, showEdit: showEdit)"
+    /// e.g., "DetailView()" or "DetailView(id: id)" or "DetailView(detailId: id)"
     func viewInitializer() -> String {
         if parameters.isEmpty {
             return "\(viewType)()"
         }
 
         let args = parameters.map { param -> String in
-            let argLabel = param.label ?? param.name
-            return "\(argLabel): \(param.name)"
+            // Use the case label (or generated name) as the source
+            let sourceLabel = param.label ?? param.name
+
+            // Check if there's a mapping for this parameter
+            let targetLabel = parameterMapping[sourceLabel] ?? sourceLabel
+
+            return "\(targetLabel): \(param.name)"
         }.joined(separator: ", ")
 
         return "\(viewType)(\(args))"
@@ -138,8 +158,8 @@ extension ScreenRegistryMacro: ExtensionMacro {
             for element in caseDecl.elements {
                 let caseName = element.name.text
 
-                // Resolve the View type
-                let viewType = try resolveViewType(
+                // Resolve the View type and parameter mapping
+                let screenInfo = try resolveScreenInfo(
                     from: caseDecl.attributes,
                     caseName: caseName
                 )
@@ -149,8 +169,9 @@ extension ScreenRegistryMacro: ExtensionMacro {
 
                 caseInfos.append(CaseInfo(
                     caseName: caseName,
-                    viewType: viewType,
-                    parameters: parameters
+                    viewType: screenInfo.viewType,
+                    parameters: parameters,
+                    parameterMapping: screenInfo.parameterMapping
                 ))
             }
         }
@@ -204,20 +225,22 @@ extension ScreenRegistryMacro: ExtensionMacro {
         }
     }
 
-    /// Resolves the View type name.
+    /// Resolves the View type name and parameter mapping from @Screen attribute.
     ///
-    /// - Priority:
-    ///   1. A type explicitly specified by `@Screen(SomeView.self)` / `@Screen(SomeView)`
-    ///   2. Otherwise (no arguments to `@Screen`, or no `@Screen` at all),
-    ///      a simple UpperCamelCase conversion of the case name is used.
+    /// Supported patterns:
+    /// - `@Screen` → type inferred from case name, no mapping
+    /// - `@Screen(SomeView.self)` → explicit type, no mapping
+    /// - `@Screen(SomeView.self, ["a": "b"])` → explicit type with mapping
+    /// - `@Screen(["a": "b"])` → type inferred from case name, with mapping
     ///
-    /// - Note:
-    ///   - If we ever want to support patterns such as `SomeModule.SomeView.self` or generic types,
-    ///     extend the syntax patterns handled here.
-    private static func resolveViewType(
+    /// - Parameter mapping:
+    ///   - `@Screen(DetailView.self, ["id": "detailId"])` provides a mapping
+    ///   - `@Screen(["id": "detailId"])` provides a mapping with inferred type
+    ///   - If no mapping is provided, labels are passed through unchanged
+    private static func resolveScreenInfo(
         from attributes: AttributeListSyntax,
         caseName: String
-    ) throws -> String {
+    ) throws -> ScreenInfo {
         for attribute in attributes {
             guard case .attribute(let attr) = attribute,
                   let identifier = IdentifierTypeSyntax(attr.attributeName),
@@ -226,31 +249,102 @@ extension ScreenRegistryMacro: ExtensionMacro {
                 continue
             }
 
-            // When arguments are present, use the explicitly specified type.
-            if let arguments = LabeledExprListSyntax(attr.arguments),
-               let firstArg = arguments.first {
-                // Parse expressions of the form GameOfLifeScreen.self.
-                if let memberAccess = MemberAccessExprSyntax(firstArg.expression),
-                   memberAccess.declName.baseName.text == "self",
-                   let base = DeclReferenceExprSyntax(memberAccess.base) {
-                    return base.baseName.text
+            // When arguments are present, parse them
+            if let arguments = LabeledExprListSyntax(attr.arguments) {
+                let argArray = Array(arguments)
+
+                guard let firstArg = argArray.first else {
+                    // @Screen() - empty parentheses, same as @Screen
+                    return ScreenInfo(viewType: caseName.toUpperCamelCase(), parameterMapping: [:])
                 }
 
-                // Direct type reference (without `.self`).
-                if let declRef = DeclReferenceExprSyntax(firstArg.expression) {
-                    return declRef.baseName.text
+                // Check if first argument is a dictionary literal (mapping only)
+                if let mapping = parseMappingDictionary(from: firstArg.expression),
+                   DictionaryExprSyntax(firstArg.expression) != nil {
+                    // @Screen(["a": "b"]) - mapping only, infer type from case name
+                    return ScreenInfo(
+                        viewType: caseName.toUpperCamelCase(),
+                        parameterMapping: mapping
+                    )
                 }
 
-                // If an explicit View type is specified but does not match a known pattern, throw an error.
+                // First argument should be View type
+                if let viewType = try parseViewType(from: firstArg.expression) {
+                    // Second argument (optional): parameter mapping dictionary
+                    var parameterMapping: [String: String] = [:]
+                    if argArray.count >= 2 {
+                        parameterMapping = parseMappingDictionary(from: argArray[1].expression) ?? [:]
+                    }
+                    return ScreenInfo(viewType: viewType, parameterMapping: parameterMapping)
+                }
+
+                // @Screen with arguments but couldn't parse them
                 throw ScreenMacroError.invalidScreenAttribute
             }
 
-            // @Screen without arguments: convert the case name to UpperCamelCase.
-            return caseName.toUpperCamelCase()
+            // @Screen without arguments: convert the case name to UpperCamelCase
+            return ScreenInfo(viewType: caseName.toUpperCamelCase(), parameterMapping: [:])
         }
 
-        // Even when @Screen is absent, infer the type from the case name (before MemberAttributeMacro injection).
-        return caseName.toUpperCamelCase()
+        // Even when @Screen is absent, infer the type from the case name
+        return ScreenInfo(viewType: caseName.toUpperCamelCase(), parameterMapping: [:])
+    }
+
+    /// Parses a View type from an expression.
+    ///
+    /// Handles:
+    /// - `SomeView.self` → "SomeView"
+    /// - `SomeView` → "SomeView"
+    private static func parseViewType(from expression: ExprSyntax) throws -> String? {
+        // Parse expressions of the form GameOfLifeScreen.self
+        if let memberAccess = MemberAccessExprSyntax(expression),
+           memberAccess.declName.baseName.text == "self",
+           let base = DeclReferenceExprSyntax(memberAccess.base) {
+            return base.baseName.text
+        }
+
+        // Direct type reference (without `.self`)
+        if let declRef = DeclReferenceExprSyntax(expression) {
+            return declRef.baseName.text
+        }
+
+        return nil
+    }
+
+    /// Parses a dictionary literal expression into a String-to-String mapping.
+    ///
+    /// Handles: `["id": "detailId", "name": "userName"]` and `[:]`
+    ///
+    /// - Returns: A mapping dictionary if the expression is a dictionary literal, `nil` otherwise.
+    private static func parseMappingDictionary(from expression: ExprSyntax) -> [String: String]? {
+        guard let dictExpr = DictionaryExprSyntax(expression) else {
+            return nil
+        }
+
+        var mapping: [String: String] = [:]
+
+        // Handle non-empty dictionary
+        if case .elements(let elements) = dictExpr.content {
+            for element in elements {
+                // Extract key (string literal)
+                guard let keyLiteral = StringLiteralExprSyntax(element.key),
+                      let keySegment = keyLiteral.segments.first,
+                      case .stringSegment(let keyString) = keySegment else {
+                    continue
+                }
+
+                // Extract value (string literal)
+                guard let valueLiteral = StringLiteralExprSyntax(element.value),
+                      let valueSegment = valueLiteral.segments.first,
+                      case .stringSegment(let valueString) = valueSegment else {
+                    continue
+                }
+
+                mapping[keyString.content.text] = valueString.content.text
+            }
+        }
+
+        return mapping
     }
 }
 

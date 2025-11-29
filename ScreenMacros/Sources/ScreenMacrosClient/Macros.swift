@@ -68,7 +68,7 @@ public macro ScreenRegistry() = #externalMacro(
 /// case appleLogoScreen  // → AppleLogoScreen()
 /// ```
 ///
-/// ## With arguments
+/// ## With View type only
 ///
 /// Explicitly specify a View type.
 ///
@@ -77,9 +77,49 @@ public macro ScreenRegistry() = #externalMacro(
 /// case myScreen  // → CustomView()
 /// ```
 ///
+/// ## With View type and parameter mapping (for associated values)
+///
+/// Specify a mapping from case parameter names to View initializer parameter names.
+///
+/// ```swift
+/// @Screen(DetailView.self, ["id": "detailId"])
+/// case detail(id: Int)  // → DetailView(detailId: id)
+/// ```
+///
 /// - Parameter viewType: The View type corresponding to this case (optional).
+/// - Parameter mapping: A dictionary mapping case parameter names to View initializer parameter names.
 @attached(peer)
 public macro Screen<V: View>(_ viewType: V.Type) = #externalMacro(
+    module: "ScreenMacrosImpl",
+    type: "ScreenMacro"
+)
+
+/// `@Screen` macro with View type and parameter mapping.
+///
+/// Use this when the case's associated value labels differ from the View's initializer parameter names.
+///
+/// ```swift
+/// @Screen(DetailView.self, ["id": "detailId"])
+/// case detail(id: Int)  // → DetailView(detailId: id)
+/// ```
+@attached(peer)
+public macro Screen<V: View>(_ viewType: V.Type, _ mapping: [String: String]) = #externalMacro(
+    module: "ScreenMacrosImpl",
+    type: "ScreenMacro"
+)
+
+/// `@Screen` macro with parameter mapping only.
+///
+/// The View type is inferred from the case name (converted to UpperCamelCase).
+/// Use this when you only need to remap parameter names.
+///
+/// ```swift
+/// @Screen(["foo": "image"])
+/// case multiColorImage(foo: Image, colors: [Color])
+/// // → MultiColorImage(image: foo, colors: colors)
+/// ```
+@attached(peer)
+public macro Screen(_ mapping: [String: String]) = #externalMacro(
     module: "ScreenMacrosImpl",
     type: "ScreenMacro"
 )
