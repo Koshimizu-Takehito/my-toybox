@@ -10,7 +10,7 @@ import SwiftSyntaxMacros
 /// 1. Automatically adds a `@Screen` attribute to cases without it (MemberAttributeMacro)
 ///    - This is mainly to keep metadata consistent; type inference itself is done from the case name
 ///      even if `@Screen` is not present.
-/// 2. Generates an extension that conforms to the `View` protocol (ExtensionMacro)
+/// 2. Generates an extension that conforms to both the `View` and `Screens` protocols (ExtensionMacro)
 public struct ScreensMacro {}
 
 // MARK: - Constants
@@ -146,7 +146,7 @@ extension ScreensMacro: MemberAttributeMacro {
 // MARK: - ExtensionMacro
 
 extension ScreensMacro: ExtensionMacro {
-    /// Generates an extension that conforms to the `View` protocol.
+    /// Generates an extension that conforms to the `View` and `Screens` protocols.
     public static func expansion(
         of node: AttributeSyntax,
         attachedTo declaration: some DeclGroupSyntax,
