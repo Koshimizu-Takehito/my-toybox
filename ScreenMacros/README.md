@@ -1,4 +1,8 @@
-## ScreenMacros
+# ScreenMacros
+
+[![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
+[![Platform](https://img.shields.io/badge/Platforms-iOS%2017+%20|%20macOS%2014+-blue.svg)](https://developer.apple.com)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **ScreenMacros** is a Swift macro package that turns an enum of screen identifiers
 into type-safe SwiftUI views.
@@ -8,7 +12,7 @@ and the macro generates `View` and `Screens` conformances that switch over all c
 
 ```swift
 import SwiftUI
-import ScreenMacrosClient
+import ScreenMacros
 
 @Screens
 enum ScreenID {
@@ -42,26 +46,32 @@ You can now use `ScreenID` directly as a SwiftUI `View`.
 
 ## Installation
 
+### Swift Package Manager
+
 Add **ScreenMacros** as a dependency in your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(path: "../ScreenMacros")  // Local package reference
-    // Or for remote:
-    // .package(url: "https://github.com/Koshimizu-Takehito/my-toybox.git", from: "0.1.0")
+    .package(url: "https://github.com/Koshimizu-Takehito/ScreenMacros.git", from: "1.0.0")
 ]
 ```
 
-And use the client module in your target:
+And add it to your target:
 
 ```swift
 .target(
     name: "YourFeature",
     dependencies: [
-        .product(name: "ScreenMacrosClient", package: "ScreenMacros")
+        .product(name: "ScreenMacros", package: "ScreenMacros")
     ]
 )
 ```
+
+### Xcode
+
+1. File → Add Package Dependencies...
+2. Enter: `https://github.com/Koshimizu-Takehito/ScreenMacros.git`
+3. Select version: `1.0.0` or later
 
 ---
 
