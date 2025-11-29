@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - @Screens (Attached Macro - Extension + MemberAttribute)
 
-/// Macro applied to an enum that automatically generates `View` conformance and a `body` property.
+/// Macro applied to an enum that automatically generates `View` and `Screens` conformance.
 ///
 /// - For cases without a `@Screen` attribute, `@Screen` is added automatically (for metadata).
 /// - Type resolution itself works even without `@Screen`; the case name is converted to UpperCamelCase
@@ -12,7 +12,7 @@ import SwiftUI
 ///
 /// ```swift
 /// @Screens
-/// enum ScreenID: String {
+/// enum ScreenID: Hashable {
 ///     case gameOfLifeScreen    // Automatically gets @Screen → GameOfLifeScreen()
 ///     case mosaicScreen        // Automatically gets @Screen → MosaicScreen()
 ///
@@ -24,7 +24,7 @@ import SwiftUI
 /// ## After macro expansion
 ///
 /// ```swift
-/// enum ScreenID: String {
+/// enum ScreenID: Hashable {
 ///     @Screen
 ///     case gameOfLifeScreen
 ///     @Screen
@@ -34,9 +34,9 @@ import SwiftUI
 ///     case customScreen
 /// }
 ///
-/// extension ScreenID: View {
+/// extension ScreenID: View, ScreenMacros.Screens {
 ///     @MainActor @ViewBuilder
-///     public var body: some View {
+///     var body: some View {
 ///         switch self {
 ///         case .gameOfLifeScreen: GameOfLifeScreen()
 ///         case .mosaicScreen: MosaicScreen()
@@ -45,7 +45,16 @@ import SwiftUI
 ///     }
 /// }
 /// ```
-@attached(extension, conformances: View, names: named(body))
+///
+/// ## Usage with SwiftUI Navigation
+///
+/// ```swift
+/// NavigationStack(path: $path) {
+///     ContentView()
+///         .navigationDestination(ScreenID.self)
+/// }
+/// ```
+@attached(extension, conformances: View, Screens, names: named(body))
 @attached(memberAttribute)
 public macro Screens() = #externalMacro(
     module: "ScreenMacrosImpl",

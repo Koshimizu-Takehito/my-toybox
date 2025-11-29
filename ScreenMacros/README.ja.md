@@ -21,7 +21,7 @@ enum ScreenID {
 マクロ展開後は次のようなコードが生成されます（View 名は case 名から推論されます）:
 
 ```swift
-extension ScreenID: View {
+extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -71,7 +71,7 @@ dependencies: [
 
 - **付与先**: `enum`  
 - **生成内容**:
-  - `extension <Enum>: View`
+  - `extension <Enum>: View, Screens`
   - `var body: some View`
 
 `@Screen` が付いていない場合でも、case 名を UpperCamelCase に変換して
@@ -131,7 +131,7 @@ public enum ScreenID {
     case homeScreen
 }
 
-public extension ScreenID: View {
+public extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     public var body: some View {
         switch self {
@@ -174,7 +174,7 @@ enum ScreenID {
 展開結果:
 
 ```swift
-extension ScreenID: View {
+extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -208,7 +208,7 @@ enum ScreenID {
 展開結果:
 
 ```swift
-extension ScreenID: View {
+extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -221,5 +221,131 @@ extension ScreenID: View {
 
 - マッピングのキーは **case の引数ラベル** と一致している必要があります。
 - マッピングに含まれない引数は、そのままのラベル名で View に渡されます。
+
+---
+
+## ナビゲーションヘルパー
+
+`@Screens` を付与した enum は自動的に `Screens` プロトコルに準拠し、
+便利なナビゲーションヘルパーが使用できるようになります。
+
+### NavigationStack
+
+`navigationDestination(_:)` でナビゲーション先を登録できます:
+
+```swift
+@Screens
+enum ScreenID: Hashable {
+    case home
+    case detail(id: Int)
+}
+
+struct ContentView: View {
+    @State private var path: [ScreenID] = []
+
+    var body: some View {
+        NavigationStack(path: $path) {
+            HomeView()
+                .navigationDestination(ScreenID.self)
+        }
+    }
+}
+```
+
+これは以下の冗長なコードと同等です:
+
+```swift
+.navigationDestination(for: ScreenID.self) { screen in
+    screen
+}
+```
+
+### Sheet
+
+`sheet(item:)` でシートを表示できます:
+
+```swift
+@Screens
+enum ModalScreen: Hashable, Identifiable {
+    case settings
+    case profile(userId: Int)
+
+    var id: Self { self }
+}
+
+struct ContentView: View {
+    @State private var presentedScreen: ModalScreen?
+
+    var body: some View {
+        Button("設定を表示") {
+            presentedScreen = .settings
+        }
+        .sheet(item: $presentedScreen)
+    }
+}
+```
+
+### FullScreenCover (iOS / tvOS / watchOS / visionOS)
+
+`fullScreenCover(item:)` でフルスクリーン表示ができます:
+
+```swift
+@Screens
+enum FullScreen: Hashable, Identifiable {
+    case onboarding
+    case login
+
+    var id: Self { self }
+}
+
+struct ContentView: View {
+    @State private var fullScreen: FullScreen?
+
+    var body: some View {
+        Button("オンボーディングを開始") {
+            fullScreen = .onboarding
+        }
+        .fullScreenCover(item: $fullScreen)
+    }
+}
+```
+
+---
+
+## ForEach ヘルパー
+
+### ScreensForEach
+
+`CaseIterable` な enum の全ケースをカスタムコンテンツで反復処理します:
+
+```swift
+@Screens
+enum TabScreen: CaseIterable, Hashable {
+    case home
+    case search
+    case profile
+
+    var title: String { ... }
+    var icon: String { ... }
+}
+
+TabView {
+    ScreensForEach(TabScreen.self) { screen in
+        screen.tabItem {
+            Label(screen.title, systemImage: screen.icon)
+        }
+    }
+}
+```
+
+### ScreensForEachView
+
+全ケースを直接 View としてレンダリングします:
+
+```swift
+VStack {
+    ScreensForEachView(TabScreen.self)
+}
+```
 
 

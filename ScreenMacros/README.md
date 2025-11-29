@@ -4,7 +4,7 @@
 into type-safe SwiftUI views.
 
 You annotate an enum with `@Screens` and optionally each case with `@Screen`,
-and the macro generates a `View` conformance that switches over all cases.
+and the macro generates `View` and `Screens` conformances that switch over all cases.
 
 ```swift
 import SwiftUI
@@ -21,7 +21,7 @@ enum ScreenID {
 After macro expansion:
 
 ```swift
-extension ScreenID: View {
+extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -71,7 +71,7 @@ And use the client module in your target:
 
 - **Attached to**: enum  
 - **Generates**:
-  - `extension <Enum>: View`
+  - `extension <Enum>: View, Screens`
   - `var body: some View`
 
 If no `@Screen` attributes are present, types are inferred from case names by
@@ -131,7 +131,7 @@ public enum ScreenID {
     case homeScreen
 }
 
-public extension ScreenID: View {
+public extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     public var body: some View {
         switch self {
@@ -168,7 +168,7 @@ enum ScreenID {
 The macro expands to:
 
 ```swift
-extension ScreenID: View {
+extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -202,7 +202,7 @@ enum ScreenID {
 expands to:
 
 ```swift
-extension ScreenID: View {
+extension ScreenID: View, ScreenMacros.Screens {
     @MainActor @ViewBuilder
     var body: some View {
         switch self {
@@ -215,5 +215,131 @@ extension ScreenID: View {
 
 Keys in the mapping must match the case parameter labels.
 Unmapped parameters are passed through unchanged.
+
+---
+
+## Navigation Helpers
+
+Enums annotated with `@Screens` automatically conform to the `Screens` protocol,
+which enables convenient navigation helpers.
+
+### NavigationStack
+
+Use `navigationDestination(_:)` to register a navigation destination:
+
+```swift
+@Screens
+enum ScreenID: Hashable {
+    case home
+    case detail(id: Int)
+}
+
+struct ContentView: View {
+    @State private var path: [ScreenID] = []
+
+    var body: some View {
+        NavigationStack(path: $path) {
+            HomeView()
+                .navigationDestination(ScreenID.self)
+        }
+    }
+}
+```
+
+This is equivalent to the more verbose:
+
+```swift
+.navigationDestination(for: ScreenID.self) { screen in
+    screen
+}
+```
+
+### Sheet
+
+Use `sheet(item:)` to present a sheet:
+
+```swift
+@Screens
+enum ModalScreen: Hashable, Identifiable {
+    case settings
+    case profile(userId: Int)
+
+    var id: Self { self }
+}
+
+struct ContentView: View {
+    @State private var presentedScreen: ModalScreen?
+
+    var body: some View {
+        Button("Show Settings") {
+            presentedScreen = .settings
+        }
+        .sheet(item: $presentedScreen)
+    }
+}
+```
+
+### FullScreenCover (iOS / tvOS / watchOS / visionOS)
+
+Use `fullScreenCover(item:)` for full-screen presentations:
+
+```swift
+@Screens
+enum FullScreen: Hashable, Identifiable {
+    case onboarding
+    case login
+
+    var id: Self { self }
+}
+
+struct ContentView: View {
+    @State private var fullScreen: FullScreen?
+
+    var body: some View {
+        Button("Start Onboarding") {
+            fullScreen = .onboarding
+        }
+        .fullScreenCover(item: $fullScreen)
+    }
+}
+```
+
+---
+
+## ForEach Helpers
+
+### ScreensForEach
+
+Iterates over all cases of a `CaseIterable` enum with custom content:
+
+```swift
+@Screens
+enum TabScreen: CaseIterable, Hashable {
+    case home
+    case search
+    case profile
+
+    var title: String { ... }
+    var icon: String { ... }
+}
+
+TabView {
+    ScreensForEach(TabScreen.self) { screen in
+        screen.tabItem {
+            Label(screen.title, systemImage: screen.icon)
+        }
+    }
+}
+```
+
+### ScreensForEachView
+
+Renders all cases directly as Views:
+
+```swift
+VStack {
+    ScreensForEachView(TabScreen.self)
+}
+```
 
 
