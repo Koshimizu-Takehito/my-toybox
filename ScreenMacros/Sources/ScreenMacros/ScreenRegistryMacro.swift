@@ -181,11 +181,16 @@ extension ScreenRegistryMacro: ExtensionMacro {
             return "        case \(info.switchPattern()): \(info.viewInitializer())"
         }.joined(separator: "\n")
 
+        // Resolve access level from the original enum declaration so that
+        // the generated API does not accidentally become more public than
+        // the source type (e.g. internal enum with public body).
+        let accessModifier = resolveAccessModifier(from: enumDecl)
+
         // Generate the extension that conforms to the View protocol
         let extensionDecl: DeclSyntax = """
-            extension \(type.trimmed): View {
+            \(raw: accessModifier)extension \(type.trimmed): View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                \(raw: accessModifier)var body: some View {
                     switch self {
             \(raw: switchCases)
                     }
@@ -198,6 +203,27 @@ extension ScreenRegistryMacro: ExtensionMacro {
         }
 
         return [extensionDeclSyntax]
+    }
+
+    /// Resolves the access modifier to use for the generated extension and `body` property.
+    ///
+    /// The rule is simple:
+    /// - If the enum is declared as `public`/`open`/`internal`/`fileprivate`/`private`,
+    ///   use the same modifier for the generated extension and property.
+    /// - If no explicit access modifier is present, the default is `internal`,
+    ///   which we represent by returning an empty string (no keyword emitted).
+    private static func resolveAccessModifier(from enumDecl: EnumDeclSyntax) -> String {
+        // SwiftSyntax represents modifiers such as `public`, `internal`, etc. as `DeclModifierSyntax`.
+        // We look for the first access-control modifier and mirror it.
+        let accessKeywords: Set<String> = ["public", "open", "internal", "fileprivate", "private"]
+
+        guard let modifier = enumDecl.modifiers.first(where: { accessKeywords.contains($0.name.text) }) else {
+            // No explicit access modifier → default `internal`
+            return ""
+        }
+
+        // Append a trailing space so it can be placed directly before `extension` / `var`.
+        return modifier.name.text + " "
     }
 
     /// Extracts parameter information from an enum case's associated value clause.

@@ -38,7 +38,7 @@ struct ScreenMacrosTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .gameOfLifeScreen:
                         GameOfLifeScreen()
@@ -74,7 +74,7 @@ struct ScreenMacrosTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .inferredScreen:
                         InferredScreen()
@@ -110,7 +110,7 @@ struct ScreenMacrosTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .explicitScreen:
                         ExplicitScreen()
@@ -179,7 +179,7 @@ struct AssociatedValueTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .simpleScreen:
                         SimpleScreen()
@@ -214,7 +214,7 @@ struct AssociatedValueTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .simpleScreen:
                         SimpleScreen()
@@ -248,7 +248,7 @@ struct AssociatedValueTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .detailScreen(id: let id):
                         CustomDetailView(id: id)
@@ -285,7 +285,7 @@ struct AssociatedValueTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .homeScreen:
                         HomeScreen()
@@ -329,7 +329,7 @@ struct ParameterMappingTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .detailScreen(id: let id):
                         DetailView(detailId: id)
@@ -361,7 +361,7 @@ struct ParameterMappingTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .profileScreen(userId: let userId, showEdit: let showEdit):
                         ProfileView(id: userId, editable: showEdit)
@@ -393,7 +393,7 @@ struct ParameterMappingTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .profileScreen(userId: let userId, showEdit: let showEdit):
                         ProfileView(id: userId, showEdit: showEdit)
@@ -425,7 +425,7 @@ struct ParameterMappingTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .detailScreen(id: let id):
                         DetailView(id: id)
@@ -457,7 +457,7 @@ struct ParameterMappingTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .multiColorImage(foo: let foo, colors: let colors):
                         MultiColorImage(image: foo, colors: colors)
@@ -489,7 +489,7 @@ struct ParameterMappingTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .userProfileScreen(userId: let userId, showEdit: let showEdit):
                         UserProfileScreen(id: userId, editable: showEdit)
@@ -527,7 +527,7 @@ struct GenericsAndModuleQualifierTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .customScreen:
                         SomeModule.CustomView()
@@ -559,7 +559,7 @@ struct GenericsAndModuleQualifierTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .genericScreen:
                         GenericView<Int>()
@@ -591,7 +591,7 @@ struct GenericsAndModuleQualifierTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .genericScreen:
                         GenericView<Int, String>()
@@ -623,7 +623,7 @@ struct GenericsAndModuleQualifierTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .fullyQualifiedScreen:
                         SomeModule.GenericView<Int>()
@@ -655,7 +655,7 @@ struct GenericsAndModuleQualifierTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .deepScreen:
                         Module.SubModule.DeepView()
@@ -687,7 +687,7 @@ struct GenericsAndModuleQualifierTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .detailScreen(itemId: let itemId):
                         GenericDetailView<Int>(id: itemId)
@@ -719,10 +719,115 @@ struct GenericsAndModuleQualifierTests {
 
             extension ScreenID: View {
                 @MainActor @ViewBuilder
-                public var body: some View {
+                var body: some View {
                     switch self {
                     case .listScreen:
                         ListView<[String]>()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+}
+
+// MARK: - Access Level Tests
+
+@Suite("Access Level Tests")
+struct AccessLevelTests {
+
+    /// Ensures that public enums generate public extensions and public body properties.
+    @Test("Public enum generates public extension and public body")
+    func publicEnumGeneratesPublicAPI() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            public enum ScreenID {
+                case simpleScreen
+            }
+            """,
+            expandedSource: """
+            public enum ScreenID {
+                case simpleScreen
+            }
+
+            public extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .simpleScreen:
+                        SimpleScreen()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+}
+
+// MARK: - Optional and Result Associated Values Tests
+
+@Suite("Optional and Result Associated Values Tests")
+struct OptionalAndResultAssociatedValuesTests {
+
+    /// Ensures that Optional associated values are correctly passed through to the View initializer.
+    @Test("Optional associated value")
+    func optionalAssociatedValue() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                case optionalDetail(id: Int?)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case optionalDetail(id: Int?)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                var body: some View {
+                    switch self {
+                    case .optionalDetail(id: let id):
+                        OptionalDetail(id: id)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that Result associated values are correctly passed through to the View initializer.
+    @Test("Result associated value")
+    func resultAssociatedValue() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                case loadResult(result: Result<Int, Error>)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case loadResult(result: Result<Int, Error>)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                var body: some View {
+                    switch self {
+                    case .loadResult(result: let result):
+                        LoadResult(result: result)
                     }
                 }
             }
