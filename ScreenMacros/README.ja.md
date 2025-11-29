@@ -46,7 +46,9 @@ extension ScreenID: View {
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/your-account/ScreenMacros.git", from: "0.1.0")
+    .package(path: "../ScreenMacros")  // ローカルパッケージ参照
+    // または、リモート参照:
+    // .package(url: "https://github.com/Koshimizu-Takehito/my-toybox.git", from: "0.1.0")
 ]
 ```
 

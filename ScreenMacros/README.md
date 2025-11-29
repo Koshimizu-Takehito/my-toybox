@@ -46,7 +46,9 @@ Add **ScreenMacros** as a dependency in your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/your-account/ScreenMacros.git", from: "0.1.0")
+    .package(path: "../ScreenMacros")  // Local package reference
+    // Or for remote:
+    // .package(url: "https://github.com/Koshimizu-Takehito/my-toybox.git", from: "0.1.0")
 ]
 ```
 

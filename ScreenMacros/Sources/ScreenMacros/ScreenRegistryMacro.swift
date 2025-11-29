@@ -13,6 +13,14 @@ import SwiftSyntaxMacros
 /// 2. Generates an extension that conforms to the `View` protocol (ExtensionMacro)
 public struct ScreenRegistryMacro {}
 
+// MARK: - Constants
+
+private enum Constants {
+    /// Prefix used for generating parameter names for unlabeled associated values.
+    /// e.g., "param0", "param1", etc.
+    static let unlabeledParameterPrefix = "param"
+}
+
 // MARK: - ScreenInfo
 
 /// Information extracted from the `@Screen` attribute.
@@ -49,7 +57,12 @@ private struct CaseInfo {
     }
 
     /// Generates the pattern for the switch case.
-    /// e.g., ".detail" or ".detail(let id)" or ".userProfile(let userId, let showEdit)"
+    ///
+    /// Examples:
+    /// - No associated values: `.homeScreen`
+    /// - Single value: `.detailScreen(id: let id)`
+    /// - Multiple values: `.userProfile(userId: let userId, showEdit: let showEdit)`
+    /// - Unlabeled: `.detailScreen(let param0)`
     func switchPattern() -> String {
         if parameters.isEmpty {
             return ".\(caseName)"
@@ -67,7 +80,11 @@ private struct CaseInfo {
     }
 
     /// Generates the View initializer call.
-    /// e.g., "DetailView()" or "DetailView(id: id)" or "DetailView(detailId: id)"
+    ///
+    /// Examples:
+    /// - No parameters: `HomeScreen()`
+    /// - With parameters: `DetailScreen(id: id)`
+    /// - With mapping: `ProfileView(detailId: id)` (when `["id": "detailId"]` mapping is applied)
     func viewInitializer() -> String {
         if parameters.isEmpty {
             return "\(viewType)()"
@@ -167,6 +184,15 @@ extension ScreenRegistryMacro: ExtensionMacro {
                 // Extract associated value parameters
                 let parameters = extractParameters(from: element.parameterClause)
 
+                // Validate mapping keys and emit warnings for unused keys
+                validateMappingKeys(
+                    mapping: screenInfo.parameterMapping,
+                    parameters: parameters,
+                    caseName: caseName,
+                    caseDecl: caseDecl,
+                    context: context
+                )
+
                 caseInfos.append(CaseInfo(
                     caseName: caseName,
                     viewType: screenInfo.viewType,
@@ -246,7 +272,7 @@ extension ScreenRegistryMacro: ExtensionMacro {
                 return (label: label, name: name)
             } else {
                 // Unlabeled parameter - generate a name like "param0", "param1", etc.
-                return (label: nil, name: "param\(index)")
+                return (label: nil, name: "\(Constants.unlabeledParameterPrefix)\(index)")
             }
         }
     }
@@ -298,7 +324,11 @@ extension ScreenRegistryMacro: ExtensionMacro {
                     // Second argument (optional): parameter mapping dictionary
                     var parameterMapping: [String: String] = [:]
                     if argArray.count >= 2 {
-                        parameterMapping = parseMappingDictionary(from: argArray[1].expression) ?? [:]
+                        // Second argument must be a dictionary literal
+                        guard let mapping = parseMappingDictionary(from: argArray[1].expression) else {
+                            throw ScreenMacroError.invalidMappingArgument
+                        }
+                        parameterMapping = mapping
                     }
                     return ScreenInfo(viewType: viewType, parameterMapping: parameterMapping)
                 }
@@ -323,24 +353,45 @@ extension ScreenRegistryMacro: ExtensionMacro {
     /// - `SomeModule.SomeView.self` → "SomeModule.SomeView"
     /// - `SomeView<Int>.self` → "SomeView<Int>"
     /// - `SomeModule.SomeView<Int, String>.self` → "SomeModule.SomeView<Int, String>"
+    ///
+    /// - Returns: The View type string, or `nil` if the expression is not a type expression.
+    /// - Throws: `ScreenMacroError.unsupportedTypeExpression` if the expression looks like a type
+    ///           but uses an unsupported syntax pattern.
     private static func parseViewType(from expression: ExprSyntax) throws -> String? {
         // Handle `.self` suffix: extract the base expression
         if let memberAccess = MemberAccessExprSyntax(expression),
            memberAccess.declName.baseName.text == "self",
            let base = memberAccess.base {
-            return stringifyTypeExpression(base)
+            guard let result = stringifyTypeExpression(base) else {
+                // Expression has `.self` suffix but base couldn't be parsed
+                throw ScreenMacroError.unsupportedTypeExpression
+            }
+            return result
         }
 
         // Direct type reference (without `.self`)
+        // Note: Returns nil for non-type expressions (e.g., dictionary literals)
+        // which is expected and handled by the caller
         return stringifyTypeExpression(expression)
     }
 
     /// Converts a type expression to its string representation.
     ///
-    /// Recursively handles:
-    /// - `DeclReferenceExprSyntax`: Simple type name (e.g., "SomeView")
-    /// - `MemberAccessExprSyntax`: Module-qualified type (e.g., "SomeModule.SomeView")
-    /// - `GenericSpecializationExprSyntax`: Generic type (e.g., "SomeView<Int>")
+    /// ## Supported Syntax Patterns
+    /// - `DeclReferenceExprSyntax`: Simple type name (e.g., `SomeView`)
+    /// - `MemberAccessExprSyntax`: Module-qualified type (e.g., `SomeModule.SomeView`)
+    /// - `GenericSpecializationExprSyntax`: Generic type (e.g., `SomeView<Int>`)
+    /// - Nested combinations of the above (e.g., `SomeModule.GenericView<Int, String>`)
+    ///
+    /// ## Unsupported Syntax Patterns
+    /// The following patterns will return `nil`:
+    /// - Closures or function types (e.g., `(Int) -> View`)
+    /// - Tuple types (e.g., `(Int, String)`)
+    /// - Existential types (e.g., `any View`)
+    /// - Opaque types (e.g., `some View`)
+    ///
+    /// - Returns: The string representation of the type, or `nil` if the expression
+    ///            is not a supported type syntax pattern.
     private static func stringifyTypeExpression(_ expression: ExprSyntax) -> String? {
         // Simple type reference: SomeView
         if let declRef = DeclReferenceExprSyntax(expression) {
@@ -389,6 +440,41 @@ extension ScreenRegistryMacro: ExtensionMacro {
         // For simple cases, we can use the argument's description
         // This handles types like Int, String, [Int], etc.
         return argument.argument.trimmedDescription
+    }
+
+    /// Validates that all mapping keys correspond to actual parameter labels.
+    ///
+    /// Emits a warning for any keys that don't match parameter labels, helping
+    /// developers catch typos early.
+    ///
+    /// - Parameters:
+    ///   - mapping: The parameter mapping dictionary from @Screen attribute.
+    ///   - parameters: The extracted parameters from the enum case.
+    ///   - caseName: The name of the enum case (for error messages).
+    ///   - caseDecl: The syntax node for the case declaration (for diagnostic location).
+    ///   - context: The macro expansion context for emitting diagnostics.
+    private static func validateMappingKeys(
+        mapping: [String: String],
+        parameters: [(label: String?, name: String)],
+        caseName: String,
+        caseDecl: EnumCaseDeclSyntax,
+        context: some MacroExpansionContext
+    ) {
+        guard !mapping.isEmpty else { return }
+
+        // Collect all valid parameter labels
+        let validLabels = Set(parameters.compactMap { $0.label ?? $0.name })
+
+        // Find keys that don't match any parameter label
+        let unusedKeys = mapping.keys.filter { !validLabels.contains($0) }
+
+        if !unusedKeys.isEmpty {
+            let warning = ScreenMacroWarning.unusedMappingKeys(
+                keys: unusedKeys.sorted(),
+                caseName: caseName
+            )
+            context.diagnose(Diagnostic(node: caseDecl, message: warning))
+        }
     }
 
     /// Parses a dictionary literal expression into a String-to-String mapping.
@@ -449,6 +535,8 @@ extension String {
 enum ScreenMacroDiagnostic: String, DiagnosticMessage {
     case notAnEnum
     case invalidScreenAttribute
+    case invalidMappingArgument
+    case unsupportedTypeExpression
 
     var severity: DiagnosticSeverity {
         .error
@@ -460,11 +548,36 @@ enum ScreenMacroDiagnostic: String, DiagnosticMessage {
             return "@ScreenRegistry can only be applied to an enum"
         case .invalidScreenAttribute:
             return "@Screen expects a View type and/or a parameter mapping (e.g., @Screen(MyView.self), @Screen([\"id\": \"detailId\"]), @Screen(MyView.self, [\"id\": \"detailId\"]))"
+        case .invalidMappingArgument:
+            return "@Screen's second argument must be a dictionary literal (e.g., [\"id\": \"detailId\"])"
+        case .unsupportedTypeExpression:
+            return "@Screen's View type expression is not supported. Use simple types, module-qualified types, or generic types (e.g., MyView.self, Module.MyView.self, GenericView<Int>.self)"
         }
     }
 
     var diagnosticID: MessageID {
         MessageID(domain: "ScreenMacros", id: rawValue)
+    }
+}
+
+/// Warning messages used during macro expansion.
+enum ScreenMacroWarning: DiagnosticMessage {
+    case unusedMappingKeys(keys: [String], caseName: String)
+
+    var severity: DiagnosticSeverity {
+        .warning
+    }
+
+    var message: String {
+        switch self {
+        case .unusedMappingKeys(let keys, let caseName):
+            let keyList = keys.map { "\"\($0)\"" }.joined(separator: ", ")
+            return "Mapping keys [\(keyList)] do not match any parameter labels in case '\(caseName)' and will be ignored"
+        }
+    }
+
+    var diagnosticID: MessageID {
+        MessageID(domain: "ScreenMacros", id: "unusedMappingKeys")
     }
 }
 
@@ -476,6 +589,8 @@ enum ScreenMacroDiagnostic: String, DiagnosticMessage {
 enum ScreenMacroError: Error, CustomStringConvertible {
     case notAnEnum
     case invalidScreenAttribute
+    case invalidMappingArgument
+    case unsupportedTypeExpression
 
     var description: String {
         switch self {
@@ -483,6 +598,10 @@ enum ScreenMacroError: Error, CustomStringConvertible {
             return ScreenMacroDiagnostic.notAnEnum.message
         case .invalidScreenAttribute:
             return ScreenMacroDiagnostic.invalidScreenAttribute.message
+        case .invalidMappingArgument:
+            return ScreenMacroDiagnostic.invalidMappingArgument.message
+        case .unsupportedTypeExpression:
+            return ScreenMacroDiagnostic.unsupportedTypeExpression.message
         }
     }
 
@@ -492,6 +611,10 @@ enum ScreenMacroError: Error, CustomStringConvertible {
             return .notAnEnum
         case .invalidScreenAttribute:
             return .invalidScreenAttribute
+        case .invalidMappingArgument:
+            return .invalidMappingArgument
+        case .unsupportedTypeExpression:
+            return .unsupportedTypeExpression
         }
     }
 }

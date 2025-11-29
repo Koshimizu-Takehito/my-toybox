@@ -11,6 +11,45 @@ private let testMacros: [String: Macro.Type] = [
     "ScreenRegistry": ScreenRegistryMacro.self,
     "Screen": ScreenMacro.self,
 ]
+
+/// Helper function to reduce boilerplate in macro expansion tests.
+///
+/// This wrapper handles the common pattern of calling `assertMacroExpansion`
+/// with the standard test macros, reducing code duplication across tests.
+///
+/// - Parameters:
+///   - originalSource: The source code before macro expansion.
+///   - expandedSource: The expected source code after macro expansion.
+///   - diagnostics: Expected diagnostic messages (errors, warnings).
+///   - file: The file where the test is defined (for error reporting).
+///   - line: The line where the test is defined (for error reporting).
+private func assertScreenMacroExpansion(
+    _ originalSource: String,
+    expandedSource: String,
+    diagnostics: [DiagnosticSpec] = [],
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
+    assertMacroExpansion(
+        originalSource,
+        expandedSource: expandedSource,
+        diagnostics: diagnostics,
+        macros: testMacros,
+        file: file,
+        line: line
+    )
+}
+#else
+/// Stub helper for when ScreenMacrosImpl is not available.
+private func assertScreenMacroExpansion(
+    _ originalSource: String,
+    expandedSource: String,
+    diagnostics: [DiagnosticSpec] = [],
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
+    // No-op when macro implementation is not available
+}
 #endif
 
 // MARK: - ScreenMacrosTests
@@ -21,8 +60,7 @@ struct ScreenMacrosTests {
     /// Ensures that even cases without an explicit @Screen attribute infer the View type from the case name.
     @Test("View type is inferred from case name")
     func screenRegistryMacroInfersViewType() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID: String {
@@ -47,17 +85,14 @@ struct ScreenMacrosTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that an explicitly specified type via @Screen is honored.
     @Test("Explicit @Screen type is used when specified")
     func screenRegistryMacroWithExplicitType() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID: String {
@@ -83,17 +118,14 @@ struct ScreenMacrosTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that @Screen without arguments behaves the same as having no @Screen.
     @Test("@Screen without arguments works the same as no @Screen")
     func screenRegistryMacroWithScreenAttributeNoArgs() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID: String {
@@ -119,17 +151,14 @@ struct ScreenMacrosTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that applying @ScreenRegistry to a non-enum produces an error.
     @Test("Applying to non-enum produces a diagnostic error")
     func nonEnumProducesError() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             struct NotAnEnum {
@@ -147,17 +176,14 @@ struct ScreenMacrosTests {
                     line: 1,
                     column: 1
                 )
-            ],
-            macros: testMacros
+            ]
         )
-        #endif
     }
 
     /// Ensures that applying @ScreenRegistry to a class produces an error.
     @Test("Applying to class produces a diagnostic error")
     func classProducesError() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             class NotAnEnum {
@@ -175,17 +201,14 @@ struct ScreenMacrosTests {
                     line: 1,
                     column: 1
                 )
-            ],
-            macros: testMacros
+            ]
         )
-        #endif
     }
 
     /// Ensures that an empty enum generates an empty switch statement.
     @Test("Empty enum generates empty switch")
     func emptyEnumGeneratesEmptySwitch() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum EmptyScreenID {
@@ -202,17 +225,14 @@ struct ScreenMacrosTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that a single-case enum works correctly.
     @Test("Single case enum works correctly")
     func singleCaseEnum() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -233,17 +253,14 @@ struct ScreenMacrosTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that @Screen without .self suffix works correctly.
     @Test("@Screen type without .self suffix")
     func screenTypeWithoutSelfSuffix() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -265,10 +282,8 @@ struct ScreenMacrosTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 }
 
@@ -280,8 +295,7 @@ struct AssociatedValueTests {
     /// Ensures that a case with a single associated value generates proper pattern matching.
     @Test("Single associated value generates correct pattern")
     func singleAssociatedValue() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -306,17 +320,14 @@ struct AssociatedValueTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that a case with multiple associated values generates proper pattern matching.
     @Test("Multiple associated values generate correct pattern")
     func multipleAssociatedValues() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -341,17 +352,14 @@ struct AssociatedValueTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that associated values work with explicit @Screen type.
     @Test("Associated values with explicit @Screen type")
     func associatedValueWithExplicitType() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -373,17 +381,14 @@ struct AssociatedValueTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that mixed cases (with and without associated values) work correctly.
     @Test("Mixed cases with and without associated values")
     func mixedCases() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -416,17 +421,14 @@ struct AssociatedValueTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that unlabeled associated values generate proper pattern matching.
     @Test("Unlabeled associated value generates param0, param1, etc.")
     func unlabeledAssociatedValue() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -447,17 +449,14 @@ struct AssociatedValueTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that mixed labeled and unlabeled associated values work correctly.
     @Test("Mixed labeled and unlabeled associated values")
     func mixedLabeledAndUnlabeledAssociatedValues() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -478,10 +477,8 @@ struct AssociatedValueTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 }
 
@@ -493,8 +490,7 @@ struct ParameterMappingTests {
     /// Ensures that parameter mapping remaps a single parameter.
     @Test("Single parameter mapping")
     func singleParameterMapping() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -516,17 +512,14 @@ struct ParameterMappingTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that parameter mapping remaps multiple parameters.
     @Test("Multiple parameter mapping")
     func multipleParameterMapping() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -548,17 +541,14 @@ struct ParameterMappingTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that partial mapping works (only some parameters are remapped).
     @Test("Partial parameter mapping")
     func partialParameterMapping() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -580,17 +570,14 @@ struct ParameterMappingTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that empty mapping dictionary is treated as no mapping.
     @Test("Empty mapping dictionary")
     func emptyMappingDictionary() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -612,17 +599,14 @@ struct ParameterMappingTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that mapping-only @Screen (without View type) works correctly.
     @Test("Mapping only without View type")
     func mappingOnlyWithoutViewType() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -644,17 +628,14 @@ struct ParameterMappingTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that mapping-only @Screen works with multiple remapped parameters.
     @Test("Mapping only with multiple remapped parameters")
     func mappingOnlyMultipleParams() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -676,10 +657,8 @@ struct ParameterMappingTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 }
 
@@ -691,8 +670,7 @@ struct GenericsAndModuleQualifierTests {
     /// Ensures that module-qualified types are correctly parsed.
     @Test("Module-qualified type")
     func moduleQualifiedType() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -714,17 +692,14 @@ struct GenericsAndModuleQualifierTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that generic types with single type parameter are correctly parsed.
     @Test("Generic type with single parameter")
     func genericTypeSingleParameter() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -746,17 +721,14 @@ struct GenericsAndModuleQualifierTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that generic types with multiple type parameters are correctly parsed.
     @Test("Generic type with multiple parameters")
     func genericTypeMultipleParameters() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -778,17 +750,14 @@ struct GenericsAndModuleQualifierTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that module-qualified generic types are correctly parsed.
     @Test("Module-qualified generic type")
     func moduleQualifiedGenericType() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -810,17 +779,14 @@ struct GenericsAndModuleQualifierTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that deeply nested module types work correctly.
     @Test("Deeply nested module type")
     func deeplyNestedModuleType() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -842,17 +808,14 @@ struct GenericsAndModuleQualifierTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that generic types with associated values and parameter mapping work correctly.
     @Test("Generic type with associated values and mapping")
     func genericTypeWithAssociatedValuesAndMapping() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -874,17 +837,14 @@ struct GenericsAndModuleQualifierTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that complex generic types (e.g., Array<String>) work correctly.
     @Test("Complex generic type parameter")
     func complexGenericTypeParameter() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -906,10 +866,8 @@ struct GenericsAndModuleQualifierTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 }
 
@@ -921,8 +879,7 @@ struct AccessLevelTests {
     /// Ensures that public enums generate public extensions and public body properties.
     @Test("Public enum generates public extension and public body")
     func publicEnumGeneratesPublicAPI() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             public enum ScreenID {
@@ -943,17 +900,14 @@ struct AccessLevelTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that internal enums (default) generate internal extensions without explicit modifier.
     @Test("Internal enum generates extension without explicit modifier")
     func internalEnumGeneratesInternalAPI() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             internal enum ScreenID {
@@ -974,17 +928,14 @@ struct AccessLevelTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that fileprivate enums generate fileprivate extensions.
     @Test("Fileprivate enum generates fileprivate extension")
     func fileprivateEnumGeneratesFileprivateAPI() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             fileprivate enum ScreenID {
@@ -1005,17 +956,14 @@ struct AccessLevelTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that private enums generate private extensions.
     @Test("Private enum generates private extension")
     func privateEnumGeneratesPrivateAPI() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             private enum ScreenID {
@@ -1036,10 +984,8 @@ struct AccessLevelTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 }
 
@@ -1051,8 +997,7 @@ struct OptionalAndResultAssociatedValuesTests {
     /// Ensures that Optional associated values are correctly passed through to the View initializer.
     @Test("Optional associated value")
     func optionalAssociatedValue() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -1073,17 +1018,14 @@ struct OptionalAndResultAssociatedValuesTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
     }
 
     /// Ensures that Result associated values are correctly passed through to the View initializer.
     @Test("Result associated value")
     func resultAssociatedValue() {
-        #if canImport(ScreenMacrosImpl)
-        assertMacroExpansion(
+        assertScreenMacroExpansion(
             """
             @ScreenRegistry
             enum ScreenID {
@@ -1104,9 +1046,113 @@ struct OptionalAndResultAssociatedValuesTests {
                     }
                 }
             }
-            """,
-            macros: testMacros
+            """
         )
-        #endif
+    }
+}
+
+// MARK: - Error Handling Tests
+
+@Suite("Error Handling Tests")
+struct ErrorHandlingTests {
+
+    /// Ensures that an invalid second argument (non-dictionary) produces an error.
+    @Test("Invalid mapping argument produces error")
+    func invalidMappingArgumentProducesError() {
+        assertScreenMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(DetailView.self, "notADictionary")
+                case detailScreen(id: Int)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case detailScreen(id: Int)
+            }
+            """,
+            diagnostics: [
+                DiagnosticSpec(
+                    message: "@Screen's second argument must be a dictionary literal (e.g., [\"id\": \"detailId\"])",
+                    line: 3,
+                    column: 5
+                )
+            ]
+        )
+    }
+
+    /// Ensures that unused mapping keys produce a warning.
+    @Test("Unused mapping keys produce warning")
+    func unusedMappingKeysProduceWarning() {
+        assertScreenMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(DetailView.self, ["typoId": "detailId", "id": "correctId"])
+                case detailScreen(id: Int)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case detailScreen(id: Int)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                var body: some View {
+                    switch self {
+                    case .detailScreen(id: let id):
+                        DetailView(correctId: id)
+                    }
+                }
+            }
+            """,
+            diagnostics: [
+                DiagnosticSpec(
+                    message: "Mapping keys [\"typoId\"] do not match any parameter labels in case 'detailScreen' and will be ignored",
+                    line: 3,
+                    column: 5,
+                    severity: .warning
+                )
+            ]
+        )
+    }
+
+    /// Ensures that multiple unused mapping keys are reported in a single warning.
+    @Test("Multiple unused mapping keys produce single warning")
+    func multipleUnusedMappingKeys() {
+        assertScreenMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(ProfileView.self, ["unknownKey1": "a", "unknownKey2": "b"])
+                case profileScreen(userId: Int)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case profileScreen(userId: Int)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                var body: some View {
+                    switch self {
+                    case .profileScreen(userId: let userId):
+                        ProfileView(userId: userId)
+                    }
+                }
+            }
+            """,
+            diagnostics: [
+                DiagnosticSpec(
+                    message: "Mapping keys [\"unknownKey1\", \"unknownKey2\"] do not match any parameter labels in case 'profileScreen' and will be ignored",
+                    line: 3,
+                    column: 5,
+                    severity: .warning
+                )
+            ]
+        )
     }
 }
