@@ -112,8 +112,8 @@ enum ScreenID {
 
 - **Access level mapping**
   - `public enum` → `public extension` / `public var body`
-  - `internal enum` (including no modifier) → `extension` / `var body` without modifiers
-  - `fileprivate` / `private` enums keep their original access modifier as well.
+  - `internal enum` (including no modifier) → `internal extension` / `internal var body`
+  - `fileprivate` / `private` enums → `fileprivate extension` / `fileprivate var body`, `private extension` / `private var body` respectively.
 
 Example:
 

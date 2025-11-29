@@ -112,8 +112,8 @@ enum ScreenID {
 
 - **アクセスレベルの対応**
   - `public enum` → `public extension` / `public var body`
-  - `internal enum`（修飾子なしを含む）→ 修飾子なしの `extension` / `var body`
-  - `fileprivate` / `private` も同様に、元の修飾子をそのまま反映
+  - `internal enum`（修飾子なしを含む）→ `internal extension` / `internal var body`
+  - `fileprivate` / `private` も同様に、`fileprivate extension` / `fileprivate var body`、`private extension` / `private var body` として反映
 
 例:
 
