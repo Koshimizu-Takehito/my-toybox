@@ -152,6 +152,124 @@ struct ScreenMacrosTests {
         )
         #endif
     }
+
+    /// Ensures that applying @ScreenRegistry to a class produces an error.
+    @Test("Applying to class produces a diagnostic error")
+    func classProducesError() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            class NotAnEnum {
+                var value: Int = 0
+            }
+            """,
+            expandedSource: """
+            class NotAnEnum {
+                var value: Int = 0
+            }
+            """,
+            diagnostics: [
+                DiagnosticSpec(
+                    message: "@ScreenRegistry can only be applied to an enum",
+                    line: 1,
+                    column: 1
+                )
+            ],
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that an empty enum generates an empty switch statement.
+    @Test("Empty enum generates empty switch")
+    func emptyEnumGeneratesEmptySwitch() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum EmptyScreenID {
+            }
+            """,
+            expandedSource: """
+            enum EmptyScreenID {
+            }
+
+            extension EmptyScreenID: View {
+                @MainActor @ViewBuilder
+                var body: some View {
+                    switch self {
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that a single-case enum works correctly.
+    @Test("Single case enum works correctly")
+    func singleCaseEnum() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                case onlyScreen
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case onlyScreen
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                var body: some View {
+                    switch self {
+                    case .onlyScreen:
+                        OnlyScreen()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that @Screen without .self suffix works correctly.
+    @Test("@Screen type without .self suffix")
+    func screenTypeWithoutSelfSuffix() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(CustomView)
+                case customScreen
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case customScreen
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                var body: some View {
+                    switch self {
+                    case .customScreen:
+                        CustomView()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
 }
 
 // MARK: - Associated Value Tests
@@ -295,6 +413,68 @@ struct AssociatedValueTests {
                         SettingsScreen()
                     case .profileScreen(userId: let userId, editable: let editable):
                         ProfileScreen(userId: userId, editable: editable)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that unlabeled associated values generate proper pattern matching.
+    @Test("Unlabeled associated value generates param0, param1, etc.")
+    func unlabeledAssociatedValue() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                case detailScreen(Int)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case detailScreen(Int)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                var body: some View {
+                    switch self {
+                    case .detailScreen(let param0):
+                        DetailScreen(param0: param0)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that mixed labeled and unlabeled associated values work correctly.
+    @Test("Mixed labeled and unlabeled associated values")
+    func mixedLabeledAndUnlabeledAssociatedValues() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                case mixedScreen(Int, name: String)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case mixedScreen(Int, name: String)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                var body: some View {
+                    switch self {
+                    case .mixedScreen(let param0, name: let name):
+                        MixedScreen(param0: param0, name: name)
                     }
                 }
             }
@@ -757,6 +937,99 @@ struct AccessLevelTests {
             public extension ScreenID: View {
                 @MainActor @ViewBuilder
                 public var body: some View {
+                    switch self {
+                    case .simpleScreen:
+                        SimpleScreen()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that internal enums (default) generate internal extensions without explicit modifier.
+    @Test("Internal enum generates extension without explicit modifier")
+    func internalEnumGeneratesInternalAPI() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            internal enum ScreenID {
+                case simpleScreen
+            }
+            """,
+            expandedSource: """
+            internal enum ScreenID {
+                case simpleScreen
+            }
+
+            internal extension ScreenID: View {
+                @MainActor @ViewBuilder
+                internal var body: some View {
+                    switch self {
+                    case .simpleScreen:
+                        SimpleScreen()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that fileprivate enums generate fileprivate extensions.
+    @Test("Fileprivate enum generates fileprivate extension")
+    func fileprivateEnumGeneratesFileprivateAPI() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            fileprivate enum ScreenID {
+                case simpleScreen
+            }
+            """,
+            expandedSource: """
+            fileprivate enum ScreenID {
+                case simpleScreen
+            }
+
+            fileprivate extension ScreenID: View {
+                @MainActor @ViewBuilder
+                fileprivate var body: some View {
+                    switch self {
+                    case .simpleScreen:
+                        SimpleScreen()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that private enums generate private extensions.
+    @Test("Private enum generates private extension")
+    func privateEnumGeneratesPrivateAPI() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            private enum ScreenID {
+                case simpleScreen
+            }
+            """,
+            expandedSource: """
+            private enum ScreenID {
+                case simpleScreen
+            }
+
+            private extension ScreenID: View {
+                @MainActor @ViewBuilder
+                private var body: some View {
                     switch self {
                     case .simpleScreen:
                         SimpleScreen()
