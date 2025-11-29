@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - @ScreenRegistry (Attached Macro - Extension + MemberAttribute)
+// MARK: - @Screens (Attached Macro - Extension + MemberAttribute)
 
 /// Macro applied to an enum that automatically generates `View` conformance and a `body` property.
 ///
@@ -11,7 +11,7 @@ import SwiftUI
 /// ## Example
 ///
 /// ```swift
-/// @ScreenRegistry
+/// @Screens
 /// enum ScreenID: String {
 ///     case gameOfLifeScreen    // Automatically gets @Screen → GameOfLifeScreen()
 ///     case mosaicScreen        // Automatically gets @Screen → MosaicScreen()
@@ -47,16 +47,16 @@ import SwiftUI
 /// ```
 @attached(extension, conformances: View, names: named(body))
 @attached(memberAttribute)
-public macro ScreenRegistry() = #externalMacro(
+public macro Screens() = #externalMacro(
     module: "ScreenMacrosImpl",
-    type: "ScreenRegistryMacro"
+    type: "ScreensMacro"
 )
 
 // MARK: - @Screen (Attached Macro - Peer)
 
 /// Macro applied to an enum case to specify the corresponding View type.
 ///
-/// When using `@ScreenRegistry`, `@Screen` is added automatically.
+/// When using `@Screens`, `@Screen` is added automatically.
 /// Explicitly specify it only when you want to use a different View type from the case name.
 ///
 /// ## Without arguments (recommended)
@@ -68,7 +68,7 @@ public macro ScreenRegistry() = #externalMacro(
 /// case appleLogoScreen  // → AppleLogoScreen()
 /// ```
 ///
-/// ## With arguments
+/// ## With View type only
 ///
 /// Explicitly specify a View type.
 ///
@@ -77,9 +77,68 @@ public macro ScreenRegistry() = #externalMacro(
 /// case myScreen  // → CustomView()
 /// ```
 ///
+/// ## With module-qualified or generic types
+///
+/// Supports module-qualified types, generics, and combinations.
+/// The referenced View type must be visible in scope (e.g. imported or in the same module).
+///
+/// ```swift
+/// @Screen(SomeModule.CustomView.self)
+/// case moduleQualified  // → SomeModule.CustomView()
+///
+/// @Screen(GenericView<Int>.self)
+/// case genericView  // → GenericView<Int>()
+///
+/// @Screen(SomeModule.GenericView<Int, String>.self)
+/// case fullyQualified  // → SomeModule.GenericView<Int, String>()
+/// ```
+///
+/// ## With View type and parameter mapping (for associated values)
+///
+/// Specify a mapping from case parameter names to View initializer parameter names.
+/// - Keys must be string literals matching the case's parameter labels
+///   (e.g. `id`, `userId`). Unused keys are ignored.
+///
+/// ```swift
+/// @Screen(DetailView.self, ["id": "detailId"])
+/// case detail(id: Int)  // → DetailView(detailId: id)
+/// ```
+///
 /// - Parameter viewType: The View type corresponding to this case (optional).
+/// - Parameter mapping: A dictionary mapping case parameter names to View initializer parameter names.
 @attached(peer)
 public macro Screen<V: View>(_ viewType: V.Type) = #externalMacro(
+    module: "ScreenMacrosImpl",
+    type: "ScreenMacro"
+)
+
+/// `@Screen` macro with View type and parameter mapping.
+///
+/// Use this when the case's associated value labels differ from the View's initializer parameter names.
+///
+/// ```swift
+/// @Screen(DetailView.self, ["id": "detailId"])
+/// case detail(id: Int)  // → DetailView(detailId: id)
+/// ```
+@attached(peer)
+public macro Screen<V: View>(_ viewType: V.Type, _ mapping: [String: String]) = #externalMacro(
+    module: "ScreenMacrosImpl",
+    type: "ScreenMacro"
+)
+
+/// `@Screen` macro with parameter mapping only.
+///
+/// The View type is inferred from the case name (converted to UpperCamelCase).
+/// Use this when you only need to remap parameter names.
+/// - Keys must be string literals matching the case's parameter labels.
+///
+/// ```swift
+/// @Screen(["foo": "image"])
+/// case multiColorImage(foo: Image, colors: [Color])
+/// // → MultiColorImage(image: foo, colors: colors)
+/// ```
+@attached(peer)
+public macro Screen(_ mapping: [String: String]) = #externalMacro(
     module: "ScreenMacrosImpl",
     type: "ScreenMacro"
 )

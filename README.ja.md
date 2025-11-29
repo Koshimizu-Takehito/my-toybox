@@ -28,7 +28,7 @@
    - SwiftUI のシェーダーサポートを使い、カスタムの描画を簡潔に呼び出せるよう工夫しています。
 
 3. **Screen 定義の自動生成**  
-   - `ScreenID` はローカル Swift パッケージ `ScreenMacros` による `@ScreenRegistry` マクロで `View` 準拠と `body` を自動生成しています。  
+   - `ScreenID` はローカル Swift パッケージ `ScreenMacros` による `@Screens` マクロで `View` 準拠と `body` を自動生成しています。  
    - `Screens.json` の `"id"` は `enum ScreenID` の case 名としてそのまま使われるため、**Swift の識別子として有効な lowerCamelCase（例: `gameOfLifeScreen`）** で記述する必要があります。
 
 4. **Swift Concurrency / async-await**  
