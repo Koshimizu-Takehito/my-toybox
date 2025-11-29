@@ -502,3 +502,233 @@ struct ParameterMappingTests {
         #endif
     }
 }
+
+// MARK: - Generics and Module Qualifier Tests
+
+@Suite("Generics and Module Qualifier Tests")
+struct GenericsAndModuleQualifierTests {
+
+    /// Ensures that module-qualified types are correctly parsed.
+    @Test("Module-qualified type")
+    func moduleQualifiedType() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(SomeModule.CustomView.self)
+                case customScreen
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case customScreen
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .customScreen:
+                        SomeModule.CustomView()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that generic types with single type parameter are correctly parsed.
+    @Test("Generic type with single parameter")
+    func genericTypeSingleParameter() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(GenericView<Int>.self)
+                case genericScreen
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case genericScreen
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .genericScreen:
+                        GenericView<Int>()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that generic types with multiple type parameters are correctly parsed.
+    @Test("Generic type with multiple parameters")
+    func genericTypeMultipleParameters() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(GenericView<Int, String>.self)
+                case genericScreen
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case genericScreen
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .genericScreen:
+                        GenericView<Int, String>()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that module-qualified generic types are correctly parsed.
+    @Test("Module-qualified generic type")
+    func moduleQualifiedGenericType() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(SomeModule.GenericView<Int>.self)
+                case fullyQualifiedScreen
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case fullyQualifiedScreen
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .fullyQualifiedScreen:
+                        SomeModule.GenericView<Int>()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that deeply nested module types work correctly.
+    @Test("Deeply nested module type")
+    func deeplyNestedModuleType() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(Module.SubModule.DeepView.self)
+                case deepScreen
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case deepScreen
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .deepScreen:
+                        Module.SubModule.DeepView()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that generic types with associated values and parameter mapping work correctly.
+    @Test("Generic type with associated values and mapping")
+    func genericTypeWithAssociatedValuesAndMapping() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(GenericDetailView<Int>.self, ["itemId": "id"])
+                case detailScreen(itemId: Int)
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case detailScreen(itemId: Int)
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .detailScreen(itemId: let itemId):
+                        GenericDetailView<Int>(id: itemId)
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+
+    /// Ensures that complex generic types (e.g., Array<String>) work correctly.
+    @Test("Complex generic type parameter")
+    func complexGenericTypeParameter() {
+        #if canImport(ScreenMacrosImpl)
+        assertMacroExpansion(
+            """
+            @ScreenRegistry
+            enum ScreenID {
+                @Screen(ListView<[String]>.self)
+                case listScreen
+            }
+            """,
+            expandedSource: """
+            enum ScreenID {
+                case listScreen
+            }
+
+            extension ScreenID: View {
+                @MainActor @ViewBuilder
+                public var body: some View {
+                    switch self {
+                    case .listScreen:
+                        ListView<[String]>()
+                    }
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #endif
+    }
+}

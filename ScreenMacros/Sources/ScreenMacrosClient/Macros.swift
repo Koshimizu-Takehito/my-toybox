@@ -77,6 +77,21 @@ public macro ScreenRegistry() = #externalMacro(
 /// case myScreen  // → CustomView()
 /// ```
 ///
+/// ## With module-qualified or generic types
+///
+/// Supports module-qualified types, generics, and combinations.
+///
+/// ```swift
+/// @Screen(SomeModule.CustomView.self)
+/// case moduleQualified  // → SomeModule.CustomView()
+///
+/// @Screen(GenericView<Int>.self)
+/// case genericView  // → GenericView<Int>()
+///
+/// @Screen(SomeModule.GenericView<Int, String>.self)
+/// case fullyQualified  // → SomeModule.GenericView<Int, String>()
+/// ```
+///
 /// ## With View type and parameter mapping (for associated values)
 ///
 /// Specify a mapping from case parameter names to View initializer parameter names.

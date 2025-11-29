@@ -294,20 +294,72 @@ extension ScreenRegistryMacro: ExtensionMacro {
     /// Handles:
     /// - `SomeView.self` → "SomeView"
     /// - `SomeView` → "SomeView"
+    /// - `SomeModule.SomeView.self` → "SomeModule.SomeView"
+    /// - `SomeView<Int>.self` → "SomeView<Int>"
+    /// - `SomeModule.SomeView<Int, String>.self` → "SomeModule.SomeView<Int, String>"
     private static func parseViewType(from expression: ExprSyntax) throws -> String? {
-        // Parse expressions of the form GameOfLifeScreen.self
+        // Handle `.self` suffix: extract the base expression
         if let memberAccess = MemberAccessExprSyntax(expression),
            memberAccess.declName.baseName.text == "self",
-           let base = DeclReferenceExprSyntax(memberAccess.base) {
-            return base.baseName.text
+           let base = memberAccess.base {
+            return stringifyTypeExpression(base)
         }
 
         // Direct type reference (without `.self`)
+        return stringifyTypeExpression(expression)
+    }
+
+    /// Converts a type expression to its string representation.
+    ///
+    /// Recursively handles:
+    /// - `DeclReferenceExprSyntax`: Simple type name (e.g., "SomeView")
+    /// - `MemberAccessExprSyntax`: Module-qualified type (e.g., "SomeModule.SomeView")
+    /// - `GenericSpecializationExprSyntax`: Generic type (e.g., "SomeView<Int>")
+    private static func stringifyTypeExpression(_ expression: ExprSyntax) -> String? {
+        // Simple type reference: SomeView
         if let declRef = DeclReferenceExprSyntax(expression) {
             return declRef.baseName.text
         }
 
+        // Member access: SomeModule.SomeView or nested generics
+        if let memberAccess = MemberAccessExprSyntax(expression) {
+            // Ignore `.self` suffix at this level
+            if memberAccess.declName.baseName.text == "self" {
+                if let base = memberAccess.base {
+                    return stringifyTypeExpression(base)
+                }
+                return nil
+            }
+
+            // Build module.type path
+            if let base = memberAccess.base,
+               let baseString = stringifyTypeExpression(base) {
+                return "\(baseString).\(memberAccess.declName.baseName.text)"
+            }
+            return nil
+        }
+
+        // Generic specialization: SomeView<Int> or SomeView<Int, String>
+        if let genericExpr = GenericSpecializationExprSyntax(expression) {
+            guard let baseString = stringifyTypeExpression(genericExpr.expression) else {
+                return nil
+            }
+
+            let genericArgs = genericExpr.genericArgumentClause.arguments
+                .map { stringifyGenericArgument($0) }
+                .joined(separator: ", ")
+
+            return "\(baseString)<\(genericArgs)>"
+        }
+
         return nil
+    }
+
+    /// Converts a generic argument to its string representation.
+    private static func stringifyGenericArgument(_ argument: GenericArgumentSyntax) -> String {
+        // For simple cases, we can use the argument's description
+        // This handles types like Int, String, [Int], etc.
+        return argument.argument.trimmedDescription
     }
 
     /// Parses a dictionary literal expression into a String-to-String mapping.
