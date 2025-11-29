@@ -259,8 +259,7 @@ extension ScreenRegistryMacro: ExtensionMacro {
                 }
 
                 // Check if first argument is a dictionary literal (mapping only)
-                if let mapping = parseMappingDictionary(from: firstArg.expression),
-                   DictionaryExprSyntax(firstArg.expression) != nil {
+                if let mapping = parseMappingDictionary(from: firstArg.expression) {
                     // @Screen(["a": "b"]) - mapping only, infer type from case name
                     return ScreenInfo(
                         viewType: caseName.toUpperCamelCase(),
@@ -379,7 +378,7 @@ enum ScreenMacroDiagnostic: String, DiagnosticMessage {
         case .notAnEnum:
             return "@ScreenRegistry can only be applied to an enum"
         case .invalidScreenAttribute:
-            return "@Screen requires a View type argument (e.g., @Screen(MyView.self))"
+            return "@Screen expects a View type and/or a parameter mapping (e.g., @Screen(MyView.self), @Screen([\"id\": \"detailId\"]), @Screen(MyView.self, [\"id\": \"detailId\"]))"
         }
     }
 

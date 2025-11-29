@@ -80,6 +80,8 @@ public macro ScreenRegistry() = #externalMacro(
 /// ## With View type and parameter mapping (for associated values)
 ///
 /// Specify a mapping from case parameter names to View initializer parameter names.
+/// - Keys must be string literals matching the case's parameter labels
+///   (e.g. `id`, `userId`). Unused keys are ignored.
 ///
 /// ```swift
 /// @Screen(DetailView.self, ["id": "detailId"])
@@ -112,6 +114,7 @@ public macro Screen<V: View>(_ viewType: V.Type, _ mapping: [String: String]) = 
 ///
 /// The View type is inferred from the case name (converted to UpperCamelCase).
 /// Use this when you only need to remap parameter names.
+/// - Keys must be string literals matching the case's parameter labels.
 ///
 /// ```swift
 /// @Screen(["foo": "image"])
