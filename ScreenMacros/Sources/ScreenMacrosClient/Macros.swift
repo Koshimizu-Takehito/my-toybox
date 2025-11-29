@@ -80,6 +80,7 @@ public macro ScreenRegistry() = #externalMacro(
 /// ## With module-qualified or generic types
 ///
 /// Supports module-qualified types, generics, and combinations.
+/// The referenced View type must be visible in scope (e.g. imported or in the same module).
 ///
 /// ```swift
 /// @Screen(SomeModule.CustomView.self)

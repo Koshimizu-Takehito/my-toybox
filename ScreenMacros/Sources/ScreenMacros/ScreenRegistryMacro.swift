@@ -356,6 +356,9 @@ extension ScreenRegistryMacro: ExtensionMacro {
     }
 
     /// Converts a generic argument to its string representation.
+    ///
+    /// Uses the argument's source description, which covers common cases like
+    /// `Int`, `String`, `[Int]`, `SomeModule.TypeName`, etc.
     private static func stringifyGenericArgument(_ argument: GenericArgumentSyntax) -> String {
         // For simple cases, we can use the argument's description
         // This handles types like Int, String, [Int], etc.
