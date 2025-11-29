@@ -1,6 +1,15 @@
 {
-  "originHash" : "5123be8ff601dc2ed2fafbb23f104c295c2cb8e17b80da16c528c2251cca8460",
+  "originHash" : "134ef2280586eb88a3a151f9fb32def77bf3a92530907000b9bfd6e81abe192a",
   "pins" : [
+    {
+      "identity" : "screenmacros",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Koshimizu-Takehito/ScreenMacros",
+      "state" : {
+        "revision" : "b777034d2bd5ebff769080e3927431c4737bebe2",
+        "version" : "1.0.0"
+      }
+    },
     {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
