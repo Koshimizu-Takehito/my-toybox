@@ -137,3 +137,6 @@ xcuserdata/
 # See: Scripts/generate_screen_id.sh
 MyToybox/Sources/Generated/*
 !MyToybox/Sources/Generated/.gitkeep
+
+# Xcode SPM scheme files (auto-generated)
+Packages/.swiftpm/
