@@ -1,22 +1,21 @@
 # my-toybox
 
-![Platform](https://img.shields.io/badge/platform-iOS-blue.svg)
+![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS-blue.svg)
 ![Swift](https://img.shields.io/badge/swift-6.1-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
 
 ![Simulator Screenshot - iPad Pro 13-inch (M4) - 2025-05-11 at 15 32 02](https://github.com/user-attachments/assets/8b5ecc14-1224-4de7-9160-622aee2fb723)
 
-
-
-**my-toybox** is an experimental iOS app project that showcases a wide variety of SwiftUI and Metal-based visual effects and animations.  
+**my-toybox** is an experimental iOS/macOS app project that showcases a wide variety of SwiftUI and Metal-based visual effects and animations.  
 It acts as a sandbox or "toybox" of interactive screens where you can explore different UI techniques and graphics rendering approaches.
 
 ## Overview
 
-- **Languages & Frameworks**: Swift, SwiftUI, Metal  
-- **Project Format**: Xcode project (`MyToybox.xcodeproj`)  
-- **Platform**: iOS (iPhone/iPad), recommended with Xcode 16.3 or later  
+- **Languages & Frameworks**: Swift 6.0, SwiftUI, Metal  
+- **Project Format**: Xcode workspace (`MyToybox.xcworkspace`)  
+- **Platform**: iOS 18+ (iPhone/iPad), macOS 15+  
+- **Recommended**: Xcode 16.3 or later  
 
 The app displays a list of sample screens (referred to as "screens") on launch. Each screen demonstrates a unique animation or visual effect.  
 Screens are loaded dynamically from a bundled JSON file and rendered using SwiftUI and, in some cases, custom Metal shaders.
@@ -39,11 +38,11 @@ This project uses SPM plugins to automatically generate code during build:
 The `@Screens` macro ([ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)) converts each `ScreenID` case into a corresponding `View` type.
 
 ### 🔹 Metal Shaders
-Some effects (like mosaic or particle waves) are implemented with `.metal` shader files using SwiftUI’s shader support.
+Some effects (like mosaic or particle waves) are implemented with `.metal` shader files using SwiftUI's shader support.
 
 ### 🔹 Modern SwiftUI & Concurrency
 - Uses `async/await` for loading screen metadata asynchronously.
-- Applies `@Observable` (available from Swift 5.9+) for reactive state management.
+- Applies `@Observable` for reactive state management.
 - Embraces SwiftUI idioms like `NavigationSplitView` for adaptive layouts.
 
 ### 🔹 Adaptive Navigation
@@ -56,7 +55,7 @@ Some effects (like mosaic or particle waves) are implemented with `.metal` shade
 ```
 my-toybox/
   ├─ MyToybox.xcworkspace/         # Xcode workspace (open with xed .)
-  ├─ Makefile                      # Build commands
+  ├─ Makefile                      # Build commands (see below)
   ├─ App/
   │   ├─ MyToybox.xcodeproj/       # Xcode project
   │   └─ MyToybox/
@@ -68,19 +67,26 @@ my-toybox/
   │   ├─ Plugins/
   │   │   ├─ BuildMetalShaders/    # SPM plugin for Metal compilation
   │   │   └─ GenerateScreenID/     # SPM plugin for ScreenID generation
-  │   └─ Sources/
-  │       ├─ MyToyboxCore/         # Core utilities and shared code
-  │       └─ MyToyboxScreens/      # All screen implementations
-  │           ├─ Resources/
-  │           │   └─ Screens.json  # Screen metadata
-  │           ├─ Screens/          # Dozens of animation screens
-  │           ├─ Shaders/          # Metal shader files
-  │           └─ Root/             # Root screen and view model
+  │   ├─ Sources/
+  │   │   ├─ MyToyboxCore/         # Core utilities and shared code
+  │   │   │   ├─ Models/           # Shared models (Tag, etc.)
+  │   │   │   └─ Utils/            # Utilities and Metal shader headers
+  │   │   └─ MyToyboxScreens/      # All screen implementations
+  │   │       ├─ Resources/
+  │   │       │   └─ Screens.json  # Screen metadata
+  │   │       ├─ Screens/          # Dozens of animation screens
+  │   │       ├─ Shaders/          # Metal shader files
+  │   │       └─ Root/             # Root screen and view model
+  │   └─ Tests/
+  │       └─ MyToyboxCoreTests/    # Unit tests for core module
   └─ Scripts/
       ├─ build_metallib.sh         # Metal shader build script (used by plugin)
-      └─ generate_screen_id.sh     # ScreenID generator (used by plugin)
+      ├─ generate_screen_id.sh     # ScreenID generator (used by plugin)
+      ├─ new_screen.sh             # Script to create new screens
+      └─ check_screen_sync.sh      # Validates screen consistency
 ```
 
+**Key Files:**
 - `App.swift`: The app's `@main` entry point, launching the `RootScreen`.
 - `RootScreen.swift`: The master-detail view listing all available screens.
 - `RootScreenViewModel.swift`: Handles loading and storing screen data.
@@ -88,28 +94,57 @@ my-toybox/
 
 ## Getting Started
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Koshimizu-Takehito/my-toybox.git
-   cd my-toybox
-   ```
+### 1. Clone the repository
+```bash
+git clone https://github.com/Koshimizu-Takehito/my-toybox.git
+cd my-toybox
+```
 
-2. **Open in Xcode**
-   ```bash
-   xed .
-   ```
-   - This opens `MyToybox.xcworkspace` containing both the app and SPM packages.
-   - Or open `Packages/Package.swift` for SPM-only development.
-   > **Note**: Metal shaders and `ScreenID.swift` are automatically generated by SPM plugins during build.
+### 2. Open in Xcode
+```bash
+make open
+# or
+xed .
+```
+- This opens `MyToybox.xcworkspace` containing both the app and SPM packages.
+- Or open `Packages/Package.swift` for SPM-only development.
 
-3. **Build and run**
-   - Choose a simulator or real device and run the app via Xcode.
+> **Note**: Metal shaders and `ScreenID.swift` are automatically generated by SPM plugins during build.
+
+### 3. Build and run
+- Choose a simulator or real device and run the app via Xcode.
+
+## Makefile Commands
+
+This project includes a `Makefile` for common development tasks:
+
+| Command | Description |
+|---------|-------------|
+| `make help` | Show available commands |
+| `make open` | Open project in Xcode |
+| `make new-screen` | Create a new screen (interactive) |
+| `make new-screen NAME=Foo` | Create a new screen named `Foo` |
+| `make new-screen NAME=Foo SHADER=yes` | Create a new screen with Metal shader |
+| `make clean` | Remove build artifacts |
+
+### Creating a New Screen
+
+```bash
+# Interactive mode
+make new-screen
+
+# Direct creation
+make new-screen NAME=MyNewAnimation
+
+# With Metal shader support
+make new-screen NAME=MyShaderEffect SHADER=yes
+```
 
 ## How to Use
 
 - On launch, the app displays a list of demo screens.
 - Tap (or click) a screen to open it in the detail panel or navigation stack.
-- On iPads or large screens, you’ll see both the sidebar and selected content side-by-side.
+- On iPads or large screens, you'll see both the sidebar and selected content side-by-side.
 
 ## License
 
