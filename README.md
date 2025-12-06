@@ -60,11 +60,9 @@ my-toybox/
   ├─ App/
   │   ├─ MyToybox.xcodeproj/       # Xcode project
   │   └─ MyToybox/
-  │       ├─ Resources/
-  │       │   ├─ Assets.xcassets/  # App icons and image assets
-  │       │   └─ Screens.json      # Screen metadata
-  │       └─ Sources/App/
-  │           └─ App.swift         # Entry point of the app
+  │       ├─ App.swift             # Entry point of the app
+  │       └─ Resources/
+  │           └─ Assets.xcassets/  # App icons and image assets
   ├─ Packages/                     # Swift Package
   │   ├─ Package.swift             # Swift Package definition
   │   ├─ Plugins/
@@ -73,7 +71,10 @@ my-toybox/
   │   └─ Sources/
   │       ├─ MyToyboxCore/         # Core utilities and shared code
   │       └─ MyToyboxScreens/      # All screen implementations
+  │           ├─ Resources/
+  │           │   └─ Screens.json  # Screen metadata
   │           ├─ Screens/          # Dozens of animation screens
+  │           ├─ Shaders/          # Metal shader files
   │           └─ Root/             # Root screen and view model
   └─ Scripts/
       ├─ build_metallib.sh         # Metal shader build script (used by plugin)
