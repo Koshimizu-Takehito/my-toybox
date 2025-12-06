@@ -1,8 +1,9 @@
-.PHONY: clean help new-screen
+.PHONY: clean help new-screen open
 
 # Default target
 help:
 	@echo "Available commands:"
+	@echo "  make open                - Open project in Xcode"
 	@echo "  make new-screen          - Create a new screen (interactive)"
 	@echo "  make new-screen NAME=Foo - Create a new screen named Foo"
 	@echo "  make new-screen NAME=Foo SHADER=yes - With Metal shader"
@@ -22,6 +23,10 @@ endif
 else
 	@./Scripts/new_screen.sh
 endif
+
+# Open project in Xcode
+open:
+	@xed .
 
 # Clean build artifacts
 clean:
