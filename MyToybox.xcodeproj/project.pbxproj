@@ -680,8 +680,9 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Koshimizu-Takehito/ScreenMacros";
 			requirement = {
-				kind = exactVersion;
-				version = 1.0.0;
+				kind = versionRange;
+				maximumVersion = 2.0.0;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

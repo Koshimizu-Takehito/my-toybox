@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Koshimizu-Takehito/ScreenMacros",
       "state" : {
-        "revision" : "b777034d2bd5ebff769080e3927431c4737bebe2",
-        "version" : "1.0.0"
+        "revision" : "e5898b1051037ad88eec0b35ec068f384516e639",
+        "version" : "1.0.7"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
-        "revision" : "0687f71944021d616d34d922343dcef086855920",
-        "version" : "600.0.1"
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
       }
     }
   ],
