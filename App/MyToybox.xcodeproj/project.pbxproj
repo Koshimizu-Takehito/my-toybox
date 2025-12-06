@@ -11,42 +11,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3A682AA12D8D471100B110AC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3A682A872D8D471000B110AC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3A682A8E2D8D471000B110AC;
-			remoteInfo = MyToybox;
-		};
-		3A682AAB2D8D471100B110AC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3A682A872D8D471000B110AC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3A682A8E2D8D471000B110AC;
-			remoteInfo = MyToybox;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		3A682A8F2D8D471000B110AC /* MyToybox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyToybox.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A682AA02D8D471100B110AC /* MyToyboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyToyboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A682AAA2D8D471100B110AC /* MyToyboxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyToyboxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3A682A912D8D471000B110AC /* MyToybox */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = MyToybox;
-			sourceTree = "<group>";
-		};
-		3A682AA32D8D471100B110AC /* MyToyboxTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MyToyboxTests;
-			sourceTree = "<group>";
-		};
-		3A682AAD2D8D471100B110AC /* MyToyboxUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MyToyboxUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -57,20 +31,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A2AAF0B2EE4036F00CAF02D /* MyToyboxScreens in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3A682A9D2D8D471100B110AC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3A682AA72D8D471100B110AC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,8 +48,6 @@
 			isa = PBXGroup;
 			children = (
 				3A682A912D8D471000B110AC /* MyToybox */,
-				3A682AA32D8D471100B110AC /* MyToyboxTests */,
-				3A682AAD2D8D471100B110AC /* MyToyboxUITests */,
 				3A41A9802EDA839200FDE81F /* Frameworks */,
 				3A682A902D8D471000B110AC /* Products */,
 			);
@@ -99,8 +57,6 @@
 			isa = PBXGroup;
 			children = (
 				3A682A8F2D8D471000B110AC /* MyToybox.app */,
-				3A682AA02D8D471100B110AC /* MyToyboxTests.xctest */,
-				3A682AAA2D8D471100B110AC /* MyToyboxUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,52 +87,6 @@
 			productReference = 3A682A8F2D8D471000B110AC /* MyToybox.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3A682A9F2D8D471100B110AC /* MyToyboxTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3A682AB72D8D471100B110AC /* Build configuration list for PBXNativeTarget "MyToyboxTests" */;
-			buildPhases = (
-				3A682A9C2D8D471100B110AC /* Sources */,
-				3A682A9D2D8D471100B110AC /* Frameworks */,
-				3A682A9E2D8D471100B110AC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3A682AA22D8D471100B110AC /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				3A682AA32D8D471100B110AC /* MyToyboxTests */,
-			);
-			name = MyToyboxTests;
-			packageProductDependencies = (
-			);
-			productName = MyToyboxTests;
-			productReference = 3A682AA02D8D471100B110AC /* MyToyboxTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		3A682AA92D8D471100B110AC /* MyToyboxUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3A682ABA2D8D471100B110AC /* Build configuration list for PBXNativeTarget "MyToyboxUITests" */;
-			buildPhases = (
-				3A682AA62D8D471100B110AC /* Sources */,
-				3A682AA72D8D471100B110AC /* Frameworks */,
-				3A682AA82D8D471100B110AC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3A682AAC2D8D471100B110AC /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				3A682AAD2D8D471100B110AC /* MyToyboxUITests */,
-			);
-			name = MyToyboxUITests;
-			packageProductDependencies = (
-			);
-			productName = MyToyboxUITests;
-			productReference = 3A682AAA2D8D471100B110AC /* MyToyboxUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -189,14 +99,6 @@
 				TargetAttributes = {
 					3A682A8E2D8D471000B110AC = {
 						CreatedOnToolsVersion = 16.2;
-					};
-					3A682A9F2D8D471100B110AC = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = 3A682A8E2D8D471000B110AC;
-					};
-					3A682AA92D8D471100B110AC = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = 3A682A8E2D8D471000B110AC;
 					};
 				};
 			};
@@ -218,28 +120,12 @@
 			projectRoot = "";
 			targets = (
 				3A682A8E2D8D471000B110AC /* MyToybox */,
-				3A682A9F2D8D471100B110AC /* MyToyboxTests */,
-				3A682AA92D8D471100B110AC /* MyToyboxUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3A682A8D2D8D471000B110AC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3A682A9E2D8D471100B110AC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3A682AA82D8D471100B110AC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -256,33 +142,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3A682A9C2D8D471100B110AC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3A682AA62D8D471100B110AC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3A682AA22D8D471100B110AC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3A682A8E2D8D471000B110AC /* MyToybox */;
-			targetProxy = 3A682AA12D8D471100B110AC /* PBXContainerItemProxy */;
-		};
-		3A682AAC2D8D471100B110AC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3A682A8E2D8D471000B110AC /* MyToybox */;
-			targetProxy = 3A682AAB2D8D471100B110AC /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -492,92 +354,6 @@
 			};
 			name = Release;
 		};
-		3A682AB82D8D471100B110AC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sample.takehito.koshimizu.MyToyboxTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyToybox.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyToybox";
-				XROS_DEPLOYMENT_TARGET = 2.2;
-			};
-			name = Debug;
-		};
-		3A682AB92D8D471100B110AC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sample.takehito.koshimizu.MyToyboxTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyToybox.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyToybox";
-				XROS_DEPLOYMENT_TARGET = 2.2;
-			};
-			name = Release;
-		};
-		3A682ABB2D8D471100B110AC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sample.takehito.koshimizu.MyToyboxUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = MyToybox;
-				XROS_DEPLOYMENT_TARGET = 2.2;
-			};
-			name = Debug;
-		};
-		3A682ABC2D8D471100B110AC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sample.takehito.koshimizu.MyToyboxUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = MyToybox;
-				XROS_DEPLOYMENT_TARGET = 2.2;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -595,24 +371,6 @@
 			buildConfigurations = (
 				3A682AB52D8D471100B110AC /* Debug */,
 				3A682AB62D8D471100B110AC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3A682AB72D8D471100B110AC /* Build configuration list for PBXNativeTarget "MyToyboxTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3A682AB82D8D471100B110AC /* Debug */,
-				3A682AB92D8D471100B110AC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3A682ABA2D8D471100B110AC /* Build configuration list for PBXNativeTarget "MyToyboxUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3A682ABB2D8D471100B110AC /* Debug */,
-				3A682ABC2D8D471100B110AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

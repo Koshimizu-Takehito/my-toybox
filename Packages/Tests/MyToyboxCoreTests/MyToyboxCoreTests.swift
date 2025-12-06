@@ -1,5 +1,5 @@
 import Testing
-@testable import MyToyboxCore
+import MyToyboxCore
 
 @Test func tagHasExpectedCases() async throws {
     let allCases = Tag.allCases
@@ -7,4 +7,3 @@ import Testing
     #expect(allCases.contains(.animation))
     #expect(allCases.contains(.metal))
 }
-
