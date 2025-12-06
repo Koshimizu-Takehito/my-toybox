@@ -1,31 +1,31 @@
 #!/bin/bash
 #
-# Metalシェーダーをプリコンパイルして default.metallib を生成するスクリプト
+# Script to pre-compile Metal shaders into default.metallib
 #
-# 使用方法:
-#   ./Scripts/build_metallib.sh                           # デフォルト設定で実行
-#   ./Scripts/build_metallib.sh -o OUTPUT_FILE -s SRC_DIR # カスタム設定で実行
+# Usage:
+#   ./Scripts/build_metallib.sh                           # Run with default settings
+#   ./Scripts/build_metallib.sh -o OUTPUT_FILE -s SRC_DIR # Run with custom settings
 #
-# オプション:
-#   -o OUTPUT_FILE  出力ファイルパス（default.metallib）
-#   -s SRC_DIR      Metalソースディレクトリ（複数指定可）
-#   -i INCLUDE_DIR  ヘッダーのインクルードディレクトリ
+# Options:
+#   -o OUTPUT_FILE  Output file path (default.metallib)
+#   -s SRC_DIR      Metal source directory (can be specified multiple times)
+#   -i INCLUDE_DIR  Header include directory
 #
-# このスクリプトは以下の場合に実行してください:
-#   - Metalシェーダー(.metal)を変更した場合
-#   - 新しいMetalシェーダーを追加した場合
+# Run this script when:
+#   - You modify Metal shader files (.metal)
+#   - You add new Metal shaders
 #
 
 set -euo pipefail
 
-# デフォルト値
+# Default values
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 OUTPUT_FILE=""
 SRC_DIRS=()
 INCLUDE_DIR=""
 
-# 引数解析
+# Parse arguments
 while getopts "o:s:i:" opt; do
     case $opt in
         o) OUTPUT_FILE="$OPTARG" ;;
@@ -35,7 +35,7 @@ while getopts "o:s:i:" opt; do
     esac
 done
 
-# デフォルト値を設定（引数がない場合）
+# Set default values if no arguments provided
 if [ ${#SRC_DIRS[@]} -eq 0 ]; then
     SRC_DIRS=(
         "$PROJECT_ROOT/Packages/Sources/MyToyboxCore/Utils/Shaders"
@@ -51,13 +51,13 @@ if [ -z "$INCLUDE_DIR" ]; then
     INCLUDE_DIR="$PROJECT_ROOT/Packages/Sources/MyToyboxCore/Utils/Shaders"
 fi
 
-# 一時ディレクトリ
+# Temporary directory
 BUILD_DIR=$(mktemp -d)
 trap "rm -rf $BUILD_DIR" EXIT
 
 echo "🔨 Building Metal shaders..."
 
-# すべての.metalファイルを収集
+# Collect all .metal files
 METAL_FILES=()
 
 for src_dir in "${SRC_DIRS[@]}"; do
@@ -75,7 +75,7 @@ fi
 
 echo "📁 Found ${#METAL_FILES[@]} Metal files"
 
-# 各.metalファイルを.airにコンパイル
+# Compile each .metal file to .air
 INCLUDE_ARGS=""
 if [ -n "$INCLUDE_DIR" ] && [ -d "$INCLUDE_DIR" ]; then
     INCLUDE_ARGS="-I$INCLUDE_DIR"
@@ -93,13 +93,12 @@ for metal_file in "${METAL_FILES[@]}"; do
         }
 done
 
-# 出力ディレクトリを作成
+# Create output directory
 mkdir -p "$(dirname "$OUTPUT_FILE")"
 
-# .airファイルを.metallibにリンク
+# Link .air files to .metallib
 echo "🔗 Linking to metallib..."
 xcrun -sdk iphonesimulator metallib "$BUILD_DIR"/*.air -o "$OUTPUT_FILE"
 
 echo "✅ Successfully created: $OUTPUT_FILE"
 echo "   Size: $(du -h "$OUTPUT_FILE" | cut -f1)"
-

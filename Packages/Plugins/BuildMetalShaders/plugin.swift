@@ -13,11 +13,11 @@ struct BuildMetalShadersPlugin: BuildToolPlugin {
         let workDir = context.pluginWorkDirectoryURL
         let outputFile = workDir.appending(path: "default.metallib")
         
-        // Scripts/build_metallib.sh へのパス（Packages/ の親ディレクトリにある）
+        // Path to Scripts/build_metallib.sh (in parent directory of Packages/)
         let projectRoot = packageDir.deletingLastPathComponent()
         let scriptPath = projectRoot.appending(path: "Scripts/build_metallib.sh")
         
-        // ソースディレクトリ
+        // Source directories for Metal shaders
         let coreShaders = packageDir.appending(path: "Sources/MyToyboxCore/Utils/Shaders")
         let screenShaders = packageDir.appending(path: "Sources/MyToyboxScreens/Shaders")
         

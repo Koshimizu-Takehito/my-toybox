@@ -13,11 +13,11 @@ struct GenerateScreenIDPlugin: BuildToolPlugin {
         let workDir = context.pluginWorkDirectoryURL
         let outputFile = workDir.appending(path: "ScreenID.swift")
         
-        // Scripts/generate_screen_id.sh へのパス（Packages/ の親ディレクトリにある）
+        // Path to Scripts/generate_screen_id.sh (in parent directory of Packages/)
         let projectRoot = packageDir.deletingLastPathComponent()
         let scriptPath = projectRoot.appending(path: "Scripts/generate_screen_id.sh")
         
-        // Screens.json のパス（SPM モジュールのリソースを参照）
+        // Path to Screens.json (SPM module resource)
         let screensJson = packageDir.appending(path: "Sources/MyToyboxScreens/Resources/Screens.json")
         
         return [

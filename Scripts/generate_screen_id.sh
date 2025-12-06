@@ -3,12 +3,12 @@
 # Script to auto-generate ScreenID.swift from Screens.json
 #
 # Usage:
-#   ./Scripts/generate_screen_id.sh                       # デフォルト設定で実行
-#   ./Scripts/generate_screen_id.sh -i INPUT -o OUTPUT    # カスタム設定で実行
+#   ./Scripts/generate_screen_id.sh                       # Run with default settings
+#   ./Scripts/generate_screen_id.sh -i INPUT -o OUTPUT    # Run with custom settings
 #
-# オプション:
-#   -i INPUT_FILE   入力ファイル（Screens.json）
-#   -o OUTPUT_FILE  出力ファイル（ScreenID.swift）
+# Options:
+#   -i INPUT_FILE   Input file (Screens.json)
+#   -o OUTPUT_FILE  Output file (ScreenID.swift)
 #
 
 set -euo pipefail
@@ -16,11 +16,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-# デフォルト値
+# Default values
 SCREENS_JSON_FILE=""
 SCREEN_ID_FILE=""
 
-# 引数解析
+# Parse arguments
 while getopts "i:o:" opt; do
     case $opt in
         i) SCREENS_JSON_FILE="$OPTARG" ;;
@@ -29,7 +29,7 @@ while getopts "i:o:" opt; do
     esac
 done
 
-# デフォルト値を設定（引数がない場合）
+# Set default values if no arguments provided
 if [ -z "$SCREENS_JSON_FILE" ]; then
     SCREENS_JSON_FILE="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Resources/Screens.json"
 fi
@@ -64,7 +64,7 @@ done <<< "$IDS"
 # Remove the trailing newline
 CASES=$(echo -e "$CASES" | sed '$ s/\\n$//')
 
-# 出力ディレクトリを作成
+# Create output directory
 mkdir -p "$(dirname "$SCREEN_ID_FILE")"
 
 # Generate ScreenID.swift
