@@ -1,0 +1,24 @@
+{
+  "originHash" : "7aee9b140a69cfb86f6320ea3f76eb75f1c23bac4888c180a7200a4da0538b22",
+  "pins" : [
+    {
+      "identity" : "screenmacros",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Koshimizu-Takehito/ScreenMacros",
+      "state" : {
+        "revision" : "e5898b1051037ad88eec0b35ec068f384516e639",
+        "version" : "1.0.7"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax.git",
+      "state" : {
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
