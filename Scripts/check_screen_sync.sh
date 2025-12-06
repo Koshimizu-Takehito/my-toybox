@@ -5,7 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-SCREENS_JSON_FILE="$PROJECT_ROOT/MyToybox/Resources/Screens.json"
+SCREENS_JSON_FILE="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Resources/Screens.json"
 
 # Extract ids from Screens.json
 IDS=$(grep '"id":' "$SCREENS_JSON_FILE" | sed 's/.*"id": "\([^"]*\)".*/\1/')
@@ -49,4 +49,3 @@ if [ $EXIT_CODE -eq 0 ]; then
 fi
 
 exit $EXIT_CODE
-
