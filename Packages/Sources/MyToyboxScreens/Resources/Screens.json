@@ -4,552 +4,552 @@
     "title": "Stroke modifier",
     "description": "ビューに枠線を引く",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/StrokeModifier/StrokeModifier.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/StrokeModifier/StrokeModifier.swift"
   },
   {
     "id": "implicitEquationScreen",
     "title": "Implicit Equation",
     "description": "陰関数 SDF",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ImplicitEquation/ImplicitEquationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ImplicitEquation/ImplicitEquationScreen.swift"
   },
   {
     "id": "radialLayoutScreen",
     "title": "RadialLayout",
     "description": "Radial Layout",
     "tags": ["animation", "layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/RadialLayout/RadialLayoutScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/RadialLayout/RadialLayoutScreen.swift"
   },
   {
     "id": "flowDistortionScreen",
     "title": "FlowDistortion",
     "description": "Flow Distortion",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/FlowDistortion/FlowDistortionScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/FlowDistortion/FlowDistortionScreen.swift"
   },
   {
     "id": "gameOfLifeScreen",
     "title": "Game Of Life",
     "description": "コンウェイのライフゲーム",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/GameOfLife/GameOfLifeScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/GameOfLife/GameOfLifeScreen.swift"
   },
   {
     "id": "multiHelixScreen",
     "title": "Multi helix",
     "description": "多重らせん",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/MultiHelix/MultiHelixScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/MultiHelix/MultiHelixScreen.swift"
   },
   {
     "id": "kuwaharaScreen",
     "title": "Kuwahara filter",
     "description": "Kuwahara filter",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/KuwaharaFilter/KuwaharaScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/KuwaharaFilter/KuwaharaScreen.swift"
   },
   {
     "id": "badgeDemoScreen",
     "title": "Capsule",
     "description": "Capsuleを使ったバッジサンプル",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/Badge/BadgeDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/Badge/BadgeDemoScreen.swift"
   },
   {
     "id": "randomMetaballDemoScreen",
     "title": "Random Metaball 2D",
     "description": "Canvasをつかった 2D Metaball",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/RandomMetaball2D/RandomMetaballDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/RandomMetaball2D/RandomMetaballDemoScreen.swift"
   },
   {
     "id": "lissajousCurveDemoScreen1",
     "title": "LissajousCurve1",
     "description": "リサージュ曲線",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/LissajousCurve/LissajousCurveScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/LissajousCurve/LissajousCurveScreen.swift"
   },
   {
     "id": "lissajousCurveDemoScreen2",
     "title": "LissajousCurve2",
     "description": "リサージュ曲線（線形補間）",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/LissajousCurve/LissajousCurveScreen2.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/LissajousCurve/LissajousCurveScreen2.swift"
   },
   {
     "id": "autoScrolledTextFieldDemoScreen",
     "title": "AutoScrolledTextField",
     "description": "テキスト入力でスクロール位置更新",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/AutoScrolledTextField/AutoScrolledTextField.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/AutoScrolledTextField/AutoScrolledTextField.swift"
   },
   {
     "id": "autoScrolledTextFieldDemoScreen2",
     "title": "AutoScrolledTextField2",
     "description": "テキスト入力でスクロール位置更新2",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/AutoScrolledTextField2/AutoScrolledTextField2.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/AutoScrolledTextField2/AutoScrolledTextField2.swift"
   },
   {
     "id": "flipTransitionDemoScreen",
     "title": "FlipTransition",
     "description": "カードの裏返しトランジション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/FlipTransition/FlipTransitionDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/FlipTransition/FlipTransitionDemoScreen.swift"
   },
   {
     "id": "spiralLayoutDemoScreen",
     "title": "SpiralLayout",
     "description": "螺旋レイアウト",
     "tags": ["animation", "layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/SpiralLayout/SpiralLayoutDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/SpiralLayout/SpiralLayoutDemoScreen.swift"
   },
   {
     "id": "pipCardDemoScreen",
     "title": "PipCardAnimation",
     "description": "PiPアニメーション",
     "tags": ["animation", "layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/PipCardDemo/PipCardDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/PipCardDemo/PipCardDemoScreen.swift"
   },
   {
     "id": "voronoiDiagramDemoScreen1",
     "title": "VoronoiDiagram",
     "description": "ボロノイ図",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/VoronoiDiagram/VoronoiDiagramDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/VoronoiDiagram/VoronoiDiagramDemoScreen.swift"
   },
   {
     "id": "voronoiDiagramDemoScreen2",
     "title": "VoronoiDiagram",
     "description": "距離空間を変更したボロノイ図",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/VoronoiDiagram/VoronoiDiagramDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/VoronoiDiagram/VoronoiDiagramDemoScreen.swift"
   },
   {
     "id": "cosmicWebScreen",
     "title": "CosmicWeb",
     "description": "コズミックウェブ",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/CosmicWeb/CosmicWebScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/CosmicWeb/CosmicWebScreen.swift"
   },
   {
     "id": "homeIconDemoScreen",
     "title": "HomeIconShakeView",
     "description": "ホームスクリーンのアイコンのブルブルするやつ",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/HomeIconShake/HomeIconDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/HomeIconShake/HomeIconDemoScreen.swift"
   },
   {
     "id": "colorSegmentedControlDemoScreen",
     "title": "Segmented Control",
     "description": "カスタムなセグメントコントロール",
     "tags": ["layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ColorSegmentedControl/ColorSegmentedControlDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ColorSegmentedControl/ColorSegmentedControlDemoScreen.swift"
   },
   {
     "id": "gradientPolygonScreen",
     "title": "Gradient Polygon",
     "description": "多角形のグラデーション塗りつぶし",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/GradientPolygon/GradientPolygonScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/GradientPolygon/GradientPolygonScreen.swift"
   },
   {
     "id": "collisionColorChangeScreen",
     "title": "Collision Color Change",
     "description": "壁にぶつかったら色が変わるやつ",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/CollisionColorChange/CollisionColorChangeScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/CollisionColorChange/CollisionColorChangeScreen.swift"
   },
   {
     "id": "solarSystem1Screen",
     "title": "Heliocentric Animation",
     "description": "地動説っぽいアニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/SolarSystem1/SolarSystem1Screen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/SolarSystem1/SolarSystem1Screen.swift"
   },
   {
     "id": "solarSystem2Screen",
     "title": "Solar System Animation",
     "description": "地動説と天動説のアニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/SolarSystem2/SolarSystem2Screen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/SolarSystem2/SolarSystem2Screen.swift"
   },
   {
     "id": "pixelBasedColorChangeScreen",
     "title": "Pixel Based Color Toggle",
     "description": "表示中のピクセルデータからボタンの色を切り替える",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/PixelBasedColorChange/PixelBasedColorChangeScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/PixelBasedColorChange/PixelBasedColorChangeScreen.swift"
   },
   {
     "id": "countdownAnimationScreen",
     "title": "Countdown Animation",
     "description": "カウントダウンアニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/CountdownAnimation/CountdownAnimationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/CountdownAnimation/CountdownAnimationScreen.swift"
   },
   {
     "id": "infiniteScrollScreen",
     "title": "Infinite Scroll",
     "description": "ページング無しの循環スクロールビュー",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/InfiniteScroll/InfiniteScrollScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/InfiniteScroll/InfiniteScrollScreen.swift"
   },
   {
     "id": "horizontalPickerScreen",
     "title": "Horizontal Picker",
     "description": "水平方向のピッカー",
     "tags": ["layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/HorizontalPicker/HorizontalPickerScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/HorizontalPicker/HorizontalPickerScreen.swift"
   },
   {
     "id": "circleSDF1Screen",
     "title": "Circle SDF1",
     "description": "Circle SDF",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/CircleSDF1/CircleSDF1Screen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/CircleSDF1/CircleSDF1Screen.swift"
   },
   {
     "id": "circleSDF2Screen",
     "title": "Circle SDF2",
     "description": "Circle SDF2",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/CircleSDF2/CircleSDF2Screen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/CircleSDF2/CircleSDF2Screen.swift"
   },
   {
     "id": "wavingTextScreen",
     "title": "Waving Text",
     "description": "Waving Text",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/WavingText/WavingTextScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/WavingText/WavingTextScreen.swift"
   },
   {
     "id": "coloredMapScreen",
     "title": "Colored Map",
     "description": "色付きマップ",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ColoredMap/ColoredMapScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ColoredMap/ColoredMapScreen.swift"
   },
   {
     "id": "monotoneMapScreen",
     "title": "Monotone Map",
     "description": "モノクロのマップ",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/MonotoneMap/MonotoneMapScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/MonotoneMap/MonotoneMapScreen.swift"
   },
   {
     "id": "waveParticleScreen",
     "title": "WaveParticle",
     "description": "MSLでパーティクル",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/WaveParticle/WaveParticleScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/WaveParticle/WaveParticleScreen.swift"
   },
   {
     "id": "reverseListScreen",
     "title": "ReverseListView",
     "description": "逆向きのリスト",
     "tags": ["layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ReverseList/ReverseListScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ReverseList/ReverseListScreen.swift"
   },
   {
     "id": "viewIdentityAnimationScreen",
     "title": "ViewIdentity",
     "description": "ViewのIdentity を意識してアニメーション素振り",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ViewIdentityAnimation/ViewIdentityAnimationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ViewIdentityAnimation/ViewIdentityAnimationScreen.swift"
   },
   {
     "id": "progressiveBlurScreen",
     "title": "Progressive Blur",
     "description": "ProgressiveBlur",
     "tags": ["metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ProgressiveBlur/ProgressiveBlurScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ProgressiveBlur/ProgressiveBlurScreen.swift"
   },
   {
     "id": "mosaicScreen",
     "title": "Shader Mosaic",
     "description": "シェーダー関数でモザイク",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/Mosaic/MosaicScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/Mosaic/MosaicScreen.swift"
   },
   {
     "id": "tileShaderScreen",
     "title": "Shader Tile",
     "description": "シェーダー関数でタイル",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ShaderTile/TileShaderScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ShaderTile/TileShaderScreen.swift"
   },
   {
     "id": "spiralShaderScreen",
     "title": "Shader Spiral",
     "description": "シェーダー関数で螺旋",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/SpiralShader/SpiralShaderScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/SpiralShader/SpiralShaderScreen.swift"
   },
   {
     "id": "primeSpiralScreen",
     "title": "Prime Spiral",
     "description": "素数のアルキメデスの螺旋",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/PrimeSpiral/PrimeSpiralScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/PrimeSpiral/PrimeSpiralScreen.swift"
   },
   {
     "id": "archimedesSpiralScreen",
     "title": "Archimedes Spiral",
     "description": "アルキメデスのらせん",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ArchimedesSpiral/ArchimedesSpiralScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ArchimedesSpiral/ArchimedesSpiralScreen.swift"
   },
   {
     "id": "motions4Screen",
     "title": "4 motions",
     "description": "4 motions",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/Motions4/Motions4Screen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/Motions4/Motions4Screen.swift"
   },
   {
     "id": "matchTopWidthScreen",
     "title": "Match top width",
     "description": "上のHStackの幅に下のViewの幅を揃える",
     "tags": ["layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/MatchTopWidth/MatchTopWidthScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/MatchTopWidth/MatchTopWidthScreen.swift"
   },
   {
     "id": "authCodeScreen",
     "title": "Auth code UI",
     "description": "認証コード入力っぽいUI",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/AuthCode/AuthCodeScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/AuthCode/AuthCodeScreen.swift"
   },
   {
     "id": "tileAnimationScreen",
     "title": "Tile Animation",
     "description": "タイルアニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/TileAnimation/TileAnimationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/TileAnimation/TileAnimationScreen.swift"
   },
   {
     "id": "tileAnimation3DScreen",
     "title": "Tile Animation 3D",
     "description": "タイルアニメーション 3D",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/TileAnimation3D/TileAnimation3DScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/TileAnimation3D/TileAnimation3DScreen.swift"
   },
   {
     "id": "shineScreen",
     "title": "Shine Shader",
     "description": "シェーダーを使った光アニメーション",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/Shine/ShineScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/Shine/ShineScreen.swift"
   },
   {
     "id": "waveCircleScreen",
     "title": "Wave Circle",
     "description": "波アニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/WaveCircle/WaveCircleScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/WaveCircle/WaveCircleScreen.swift"
   },
   {
     "id": "rectangleAnimationScreen",
     "title": "RectangleAnimation",
     "description": "長方形アニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/RectangleAnimation/RectangleAnimationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/RectangleAnimation/RectangleAnimationScreen.swift"
   },
   {
     "id": "dateformatStyleScreen",
     "title": "Dateformat Style",
     "description": "Date.FormatStyle の出力サンプル",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/DateformatStyle/DateformatStyleScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/DateformatStyle/DateformatStyleScreen.swift"
   },
   {
     "id": "dynamicTypeScalingScreen",
     "title": "Dynamic Type Scaling",
     "description": "ダイナミックタイプを利用した場合の標準フォントのスケール",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/DynamicTypeScaling/DynamicTypeScalingScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/DynamicTypeScaling/DynamicTypeScalingScreen.swift"
   },
   {
     "id": "dynamicTypeScreen",
     "title": "Scaledmetric Dynamictype",
     "description": "ScaledMetric と DynamicTypeSizeでフォントサイズを変更するサンプル",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/Dynamictype/DynamicTypeScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/Dynamictype/DynamicTypeScreen.swift"
   },
   {
     "id": "colorSchemeAnimationScreen",
     "title": "Color Scheme Animation",
     "description": "外観モードの変更にアニメーションをつける",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ColorSchemeAnimation/ColorSchemeAnimationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ColorSchemeAnimation/ColorSchemeAnimationScreen.swift"
   },
   {
     "id": "viewcontrollerRepresentableScreen",
     "title": "Uiviewcontrollerrepresentable",
     "description": "UIViewControllerRepresentableのレイアウト処理のサンプル",
     "tags": ["layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ViewcontrollerRepresentable/ViewcontrollerRepresentableScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ViewcontrollerRepresentable/ViewcontrollerRepresentableScreen.swift"
   },
   {
     "id": "enumPickerScreen",
     "title": "Enumpicker",
     "description": "EnumPicker",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/EnumPicker/EnumPickerScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/EnumPicker/EnumPickerScreen.swift"
   },
   {
     "id": "ringSliderScreen",
     "title": "Ring Slider",
     "description": "RingSlider",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/RingSlider/RingSliderScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/RingSlider/RingSliderScreen.swift"
   },
   {
     "id": "unevenRoundedRectangle1Screen",
     "title": "Uneven Rounded Rectangle 1",
     "description": "UnevenRoundedRectangle Sample",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/UnevenRoundedRectangle1/UnevenRoundedRectangle1Screen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/UnevenRoundedRectangle1/UnevenRoundedRectangle1Screen.swift"
   },
   {
     "id": "unevenRoundedRectangle2Screen",
     "title": "Uneven Rounded Rectangle 2",
     "description": "UnevenRoundedRectangle Sample 2",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/UnevenRoundedRectangle2/UnevenRoundedRectangle2Screen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/UnevenRoundedRectangle2/UnevenRoundedRectangle2Screen.swift"
   },
   {
     "id": "colorHexAnimationScreen",
     "title": "ColorCircleAnimation",
     "description": "Color HEX Animation",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ColorHexAnimation/ColorHexAnimationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ColorHexAnimation/ColorHexAnimationScreen.swift"
   },
   {
     "id": "ringanimationScreen",
     "title": "Ringanimation",
     "description": "Ring Animation",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/Ringanimation/RinganimationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/Ringanimation/RinganimationScreen.swift"
   },
   {
     "id": "progressRingScreen",
     "title": "Progress Ring",
     "description": "Progress Ring",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ProgressRing/ProgressRingScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ProgressRing/ProgressRingScreen.swift"
   },
   {
     "id": "lostRowAnimationScreen",
     "title": "Lost Row Animation",
     "description": "ScrollView + LazyVStack アニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/LostRowAnimation/LostRowAnimationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/LostRowAnimation/LostRowAnimationScreen.swift"
   },
   {
     "id": "hierarchicalShapeStyleScreen",
     "title": "Hierarchical Style",
     "description": "Hierarchical ShapeStyle",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/HierarchicalShapeStyle/HierarchicalShapeStyleScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/HierarchicalShapeStyle/HierarchicalShapeStyleScreen.swift"
   },
   {
     "id": "mazeGeneratorScreen",
     "title": "Maze Generator",
     "description": "迷路生成ロジック",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/MazeGenerator/MazeGeneratorScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/MazeGenerator/MazeGeneratorScreen.swift"
   },
   {
     "id": "meshgradient2Screen",
     "title": "Mesh Gradient",
     "description": "MeshGradient サンプル",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/Meshgradient/Meshgradient2Screen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/Meshgradient/Meshgradient2Screen.swift"
   },
   {
     "id": "visualeffectScreen",
     "title": "Visualeffect",
     "description": "VisualEffect サンプル",
     "tags": ["layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/Visualeffect/VisualeffectScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/Visualeffect/VisualeffectScreen.swift"
   },
   {
     "id": "contentTransitionScreen",
     "title": "Content Transition",
     "description": "Content Transition",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ContentTransition/ContentTransitionScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ContentTransition/ContentTransitionScreen.swift"
   },
   {
     "id": "flowLayoutScreen",
     "title": "Flow Layout",
     "description": "改行を考慮した FlowLayout",
     "tags": ["layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/FlowLayout/FlowLayoutScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/FlowLayout/FlowLayoutScreen.swift"
   },
   {
     "id": "layoutProtocolSampleScreen",
     "title": "Layout Protocol Sample",
     "description": "グリッドのマスと隙間に View を配置する Layout プロトコルのサンプル実装",
     "tags": ["layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/LayoutProtocolSample/LayoutProtocolSampleScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/LayoutProtocolSample/LayoutProtocolSampleScreen.swift"
   },
   {
     "id": "scrollYRotationScreen",
     "title": "Y-Axis Rotation",
     "description": "スクロール位置に応じてY軸回転",
     "tags": ["layout"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/ScrollYRotation/ScrollYRotationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ScrollYRotation/ScrollYRotationScreen.swift"
   },
   {
     "id": "gradientAnimationScreen",
     "title": "GradientAnimation",
     "description": "グラデーションアニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/GradientAnimation/GradientAnimationScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/GradientAnimation/GradientAnimationScreen.swift"
   },
   {
     "id": "juliaSetScreen",
     "title": "Julia Set",
     "description": "Julia Set",
     "tags": ["metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/JuliaSet/JuliaSetScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/JuliaSet/JuliaSetScreen.swift"
   },
   {
     "id": "squreflowScreen",
     "title": "Squreflowview",
     "description": "SqureFlowView",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/Squreflow/SqureflowScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/Squreflow/SqureflowScreen.swift"
   },
   {
     "id": "smoothMinScreen",
     "title": "Smoothmin2d",
     "description": "SmoothMin2d",
     "tags": ["animation", "metal"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/SmoothMin/SmoothMinScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/SmoothMin/SmoothMinScreen.swift"
   },
   {
     "id": "dotsSpinnerDemoScreen",
     "title": "Loading Animation 1",
     "description": "カスタムローディングアニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/LoadingAnimation1/DotsSpinnerDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/LoadingAnimation1/DotsSpinnerDemoScreen.swift"
   },
   {
     "id": "orbitingDotsLoaderDemoScreen",
     "title": "Loading Animation 2",
     "description": "カスタムローディングアニメーション",
     "tags": ["animation"],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/LoadingAnimation2/OrbitingDotsLoaderDemoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/LoadingAnimation2/OrbitingDotsLoaderDemoScreen.swift"
   },
   {
     "id": "appleLogoScreen",
     "title": "Apple Logo",
     "description": "Canvas を 画像でクリップ",
     "tags": [],
-    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/develop/MyToybox/Sources/Screens/Screens/AppleLogo/AppleLogoScreen.swift"
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/AppleLogo/AppleLogoScreen.swift"
   }
 ]
