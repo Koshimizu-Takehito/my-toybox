@@ -14,6 +14,13 @@
     "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/ImplicitEquation/ImplicitEquationScreen.swift"
   },
   {
+    "id": "realTimeMosicScreen",
+    "title": "Real Time Mosic",
+    "description": "リアルタイムのモザイク処理",
+    "tags": ["metal"],
+    "html": "https://github.com/Koshimizu-Takehito/my-toybox/blob/main/Packages/Sources/MyToyboxScreens/Screens/RealTimeMosic/RealTimeMosicScreen.swift"
+  },
+  {
     "id": "radialLayoutScreen",
     "title": "RadialLayout",
     "description": "Radial Layout",
