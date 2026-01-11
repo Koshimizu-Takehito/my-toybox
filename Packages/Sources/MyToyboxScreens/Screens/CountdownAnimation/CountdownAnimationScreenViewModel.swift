@@ -20,10 +20,10 @@ final class CountdownAnimationScreenViewModel {
 
     /// Restarts the countdown from 10 seconds.
     /// Begins a new high-frequency timer and decrements the `count` accordingly.
-    func restart() async {
+    func restart() {
         count = 10
         task = Task { [weak self] in
-            let interval = 1.0 / 360.0  // ~60fps * 6 for ultra smooth UI updates
+            let interval = 1.0 / 360.0 // ~60fps * 6 for ultra smooth UI updates
             let timer = Timer
                 .publish(every: interval, on: .main, in: .common)
                 .autoconnect()

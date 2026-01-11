@@ -64,27 +64,27 @@ private extension CGPoint {
 
     // Utility overloads to support CGPoint math.
 
-    static func +(_ lhs: Self, _ rhs: Self) -> Self {
+    static func + (_ lhs: Self, _ rhs: Self) -> Self {
         self.init(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
 
-    static func +(_ lhs: Self, _ rhs: Double) -> Self {
+    static func + (_ lhs: Self, _ rhs: Double) -> Self {
         self.init(x: lhs.x + rhs, y: lhs.y + rhs)
     }
 
-    static func -(_ lhs: Self, _ rhs: Self) -> Self {
+    static func - (_ lhs: Self, _ rhs: Self) -> Self {
         self.init(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
 
-    static func -(_ lhs: Self, _ rhs: Double) -> Self {
+    static func - (_ lhs: Self, _ rhs: Double) -> Self {
         self.init(x: lhs.x - rhs, y: lhs.y - rhs)
     }
 
-    static func *(_ lhs: Double, _ rhs: Self) -> Self {
+    static func * (_ lhs: Double, _ rhs: Self) -> Self {
         self.init(x: lhs * rhs.x, y: lhs * rhs.y)
     }
 
-    static func /(_ lhs: Self, _ rhs: Double) -> Self {
+    static func / (_ lhs: Self, _ rhs: Double) -> Self {
         self.init(x: lhs.x / rhs, y: lhs.y / rhs)
     }
 
@@ -96,12 +96,12 @@ private extension CGPoint {
 // MARK: - CGSize
 
 private extension CGSize {
-    static func *(_ lhs: Double, _ rhs: Self) -> Self {
+    static func * (_ lhs: Double, _ rhs: Self) -> Self {
         self.init(width: lhs * rhs.width, height: lhs * rhs.height)
     }
 }
 
-// MARK: - 
+// MARK: -
 
 /// Calculates all prime numbers up to a given upper bound using
 /// the Sieve of Eratosthenes algorithm.
@@ -119,7 +119,7 @@ private func sieveOfEratosthenes(upTo n: Int) -> [Int] {
     isPrime[1] = false
 
     let limit = Int(Double(n).squareRoot())
-    for i in 2...limit {
+    for i in 2 ... limit {
         if !isPrime[i] {
             continue
         }
@@ -128,7 +128,7 @@ private func sieveOfEratosthenes(upTo n: Int) -> [Int] {
         }
     }
     var primes: [Int] = []
-    for i in 2...n {
+    for i in 2 ... n {
         if isPrime[i] {
             primes.append(i)
         }

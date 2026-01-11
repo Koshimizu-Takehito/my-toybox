@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Demo Screen
+// MARK: - OrbitingDotsLoaderDemoScreen
 
 /// Demonstrates `OrbitingDotsLoadingView` and lets you preview it at any
 /// built-in `ControlSize`.
@@ -12,6 +12,7 @@ struct OrbitingDotsLoaderDemoScreen: View {
     @State private var controlSize: ControlSize = .regular
 
     // MARK: Body
+
     var body: some View {
         VStack {
             Spacer()
@@ -23,7 +24,7 @@ struct OrbitingDotsLoaderDemoScreen: View {
     }
 }
 
-// MARK: - Control-Size Picker
+// MARK: - ControlSizePickerView
 
 /// A palette-style picker that exposes every `ControlSize` case.
 ///
@@ -46,7 +47,7 @@ private struct ControlSizePickerView: View {
     }
 }
 
-// MARK: - Loading view
+// MARK: - OrbitingDotsLoadingView
 
 /// A colorful loading indicator composed of eight dots orbiting the same
 /// circular path.
@@ -93,7 +94,7 @@ struct OrbitingDotsLoadingView: View {
     }
 }
 
-// MARK: - Orbit Layer
+// MARK: - OrbitingDotsLayerView
 
 /// Renders eight equally spaced dots, each offset by a unique phase so
 /// they animate in a perfect ring.
@@ -105,7 +106,7 @@ private struct OrbitingDotsLayerView: View {
 
     var body: some View {
         ZStack {
-            ForEach(0..<8) { index in
+            ForEach(0 ..< 8) { index in
                 let phaseOffset = 2 * .pi * Double(index) / 8
                 let baseAngle = sharedRotationAngle + phaseOffset
                 OrbitingDot(orbitRadius: orbitRadius, baseAngle: baseAngle, phaseOffset: phaseOffset)
@@ -114,7 +115,7 @@ private struct OrbitingDotsLayerView: View {
     }
 }
 
-// MARK: - Single Dot
+// MARK: - OrbitingDot
 
 /// A single dot that orbits `orbitRadius` away from center and animates
 /// both its scale and color according to `baseAngle`.
@@ -154,8 +155,9 @@ private extension ControlSize {
     /// Human-readable label used by `ControlSizePicker`.
     func formatted() -> String {
         switch self {
-        case .extraLarge: 
+        case .extraLarge:
             "xLarge"
+
         default:
             String(describing: self).capitalized
         }

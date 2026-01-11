@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - ColorHexAnimationScreen
+
 /// A screen that displays a randomly changing color inside a circle,
 /// showing its hexadecimal color code in the center.
 /// The color smoothly transitions every ~1.8 seconds.
@@ -28,6 +30,8 @@ struct ColorHexAnimationScreen: View {
     }
 }
 
+// MARK: - ColorCircleView
+
 /// A view that draws a circle filled with a given color and displays its hex code in the center.
 /// It supports animating color transitions by implementing `Animatable`.
 private struct ColorCircleView: Animatable {
@@ -48,6 +52,8 @@ private struct ColorCircleView: Animatable {
         }
     }
 }
+
+// MARK: View
 
 extension ColorCircleView: View {
     var body: some View {
@@ -94,12 +100,12 @@ extension ColorCircleView: View {
 }
 
 /// Provides a convenient way to generate bright, saturated random colors.
-extension Color {
-    fileprivate static var random: Self {
+private extension Color {
+    static var random: Self {
         Color(
-            hue: .random(in: 0..<1),
-            saturation: .random(in: 0.9..<1),
-            brightness: .random(in: 0.9..<1)
+            hue: .random(in: 0 ..< 1),
+            saturation: .random(in: 0.9 ..< 1),
+            brightness: .random(in: 0.9 ..< 1)
         )
     }
 }

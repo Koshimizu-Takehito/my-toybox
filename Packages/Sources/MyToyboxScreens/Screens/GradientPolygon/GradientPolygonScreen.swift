@@ -8,9 +8,9 @@ import SwiftUI
 /// using interactive controls. The polygon morphs smoothly between sharp and rounded corners.
 struct GradientPolygonScreen: View {
     /// The number of vertices of the polygon (e.g., 3 for triangle, 6 for hexagon).
-    @State var vertex = 6
+    @State private var vertex = 6
     /// The smoothness of the polygon's corners, ranging from 0 (sharp) to 1 (fully rounded).
-    @State var roundness: Double = 0.5
+    @State private var roundness: Double = 0.5
 
     var body: some View {
         VStack {
@@ -22,14 +22,14 @@ struct GradientPolygonScreen: View {
 
             VStack {
                 // Vertex count adjustment.
-                Stepper("Vertex", value: $vertex, in: 3...9)
+                Stepper("Vertex", value: $vertex, in: 3 ... 9)
 
                 // Roundness control with reset button.
                 HStack {
                     Button("Reset") {
                         roundness = 0.5
                     }
-                    Slider(value: $roundness, in: 0...1)
+                    Slider(value: $roundness, in: 0 ... 1)
                 }
             }
         }
@@ -73,7 +73,7 @@ private struct PolygonShape: Shape {
         let theta = 2 * Double.pi / Double(vertex)
 
         // Base polygon points (with one extra to complete the cycle).
-        let basePoints: [CGPoint] = (0...(vertex + 1)).map { index in
+        let basePoints: [CGPoint] = (0 ... (vertex + 1)).map { index in
             CGPoint(radius: radius, theta: Double(index) * theta)
         }
 
@@ -91,7 +91,7 @@ private struct PolygonShape: Shape {
         // Construct the path using quadratic curves.
         let path = Path { path in
             path.move(to: center + controlA[vertex - 1])
-            for index in 0..<vertex {
+            for index in 0 ..< vertex {
                 let p0 = center + controlA[(index + vertex - 1) % vertex]
                 let p2 = center + controlB[index]
                 let p1 = center + basePoints[index]
@@ -114,25 +114,25 @@ private struct PolygonShape: Shape {
 
 // MARK: - CGPoint
 
-nonisolated extension CGPoint {
+private nonisolated extension CGPoint {
     /// Creates a point on a circle with the given radius and angle (in radians).
-    fileprivate init(radius: CGFloat, theta radians: Double) {
+    init(radius: CGFloat, theta radians: Double) {
         self.init(x: radius * cos(radians), y: radius * sin(radians))
     }
 
-    fileprivate static func + (_ lhs: Self, _ rhs: Self) -> Self {
+    static func + (_ lhs: Self, _ rhs: Self) -> Self {
         .init(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
 
-    fileprivate static func - (_ lhs: Self, _ rhs: Self) -> Self {
+    static func - (_ lhs: Self, _ rhs: Self) -> Self {
         .init(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
 
-    fileprivate static func * (_ lhs: CGFloat, _ rhs: Self) -> Self {
+    static func * (_ lhs: CGFloat, _ rhs: Self) -> Self {
         .init(x: lhs * rhs.x, y: lhs * rhs.y)
     }
 
-    fileprivate static func / (_ lhs: Self, _ rhs: CGFloat) -> Self {
+    static func / (_ lhs: Self, _ rhs: CGFloat) -> Self {
         .init(x: lhs.x / rhs, y: lhs.y / rhs)
     }
 }

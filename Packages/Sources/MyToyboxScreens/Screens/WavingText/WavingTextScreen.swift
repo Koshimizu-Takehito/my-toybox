@@ -1,13 +1,17 @@
 import SwiftUI
 
+// MARK: - WavingTextScreen
+
 struct WavingTextScreen: View {
     var body: some View {
         WavingText()
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(hue: 220/360, saturation: 0.3, brightness: 0.9))
+            .background(Color(hue: 220 / 360, saturation: 0.3, brightness: 0.9))
     }
 }
+
+// MARK: - WavingText
 
 struct WavingText: View {
     var fullText = "Now Loading ..."

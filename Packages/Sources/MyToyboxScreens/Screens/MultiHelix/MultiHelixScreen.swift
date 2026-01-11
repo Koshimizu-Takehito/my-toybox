@@ -14,11 +14,11 @@ import SwiftUI
 struct MultiHelixScreen: View {
     /// Total number of marbles to render across the canvas.
     /// This effectively sets the horizontal density (the grid resolution).
-    @State var marbleCount = 6
+    @State private var marbleCount = 6
 
     /// How many color lanes (gradients) to take from the predefined palette.
     /// The first `laneCount` entries in ``gradientLanes`` are used.
-    @State var laneCount = 2
+    @State private var laneCount = 2
 
     /// A preset palette of vertical linear gradients. Each entry represents
     /// one “lane.” Lanes are animated with a per-lane phase offset so
@@ -41,13 +41,13 @@ struct MultiHelixScreen: View {
             // The animated preview. Only the first `laneCount` lanes are used.
             MultiHelixAnimationView(
                 marbleCount: marbleCount,
-                lanes: Array(gradientLanes[0..<laneCount])
+                lanes: Array(gradientLanes[0 ..< laneCount])
             )
             .border(.cyan)
 
-            Stepper("marbles: \(marbleCount)", value: $marbleCount, in: 1...20)
+            Stepper("marbles: \(marbleCount)", value: $marbleCount, in: 1 ... 20)
             // Changing this clamps how many lanes (gradients) are active.
-            Stepper("lanes: \(laneCount)", value: $laneCount, in: 1...gradientLanes.count)
+            Stepper("lanes: \(laneCount)", value: $laneCount, in: 1 ... gradientLanes.count)
         }
         .padding()
     }
@@ -101,7 +101,7 @@ struct MultiHelixAnimationView<S: Shape>: View {
                 }
             }
         }
-        .aspectRatio(3.0/2.0, contentMode: .fit)
+        .aspectRatio(3.0 / 2.0, contentMode: .fit)
     }
 
     /// Computes all `Marble`s (one per marble per lane) for the current canvas size and phase.

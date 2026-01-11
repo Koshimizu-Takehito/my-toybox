@@ -63,14 +63,16 @@ private struct RotatingProgressRingsView: View {
 /// A single animated progress ring segment.
 /// The ring is visually represented by a trimmed circle segment that rotates based on its speed and progress value.
 private struct RotatingProgressRingSegment {
-    var value = 0.0   // Progress value in the range [0, 1]
-    var speed = 1.0   // Speed multiplier for rotation
+    var value = 0.0 // Progress value in the range [0, 1]
+    var speed = 1.0 // Speed multiplier for rotation
     var lineWidth = 10.0 // Stroke thickness of the ring
 }
 
+// MARK: View
+
 extension RotatingProgressRingSegment: View {
     var body: some View {
-        let trimFraction = trimFraction  // Shadowed to clarify meaning
+        let trimFraction = trimFraction // Shadowed to clarify meaning
 
         ZStack {
             // Background circle track
@@ -96,12 +98,14 @@ extension RotatingProgressRingSegment: View {
     /// First half of the animation increases the arc, second half decreases it.
     private var trimFraction: (from: Double, to: Double) {
         if value <= 0.5 {
-            return (0, value * 2)
+            (0, value * 2)
         } else {
-            return ((value - 0.5) * 2, 1)
+            ((value - 0.5) * 2, 1)
         }
     }
 }
+
+// MARK: Animatable
 
 extension RotatingProgressRingSegment: Animatable {
     /// Enables smooth animation by treating `value` as animatable data.

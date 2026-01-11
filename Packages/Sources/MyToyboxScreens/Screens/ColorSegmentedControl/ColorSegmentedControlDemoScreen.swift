@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Demo Screen
+// MARK: - ColorSegmentedControlDemoScreen
 
 /// A demo screen showcasing a custom color-based segmented control component.
 /// Displays a list of segments and shows the selected segment's value in a large, bold title.
@@ -31,6 +31,8 @@ struct ColorSegmentedControlDemoScreen: View {
     }
 }
 
+// MARK: - ColorItem
+
 /// A selectable item with an associated display color.
 struct ColorItem<Value: Hashable>: Identifiable, Hashable {
     /// Unique identifier for diffing and animations.
@@ -41,7 +43,7 @@ struct ColorItem<Value: Hashable>: Identifiable, Hashable {
     var color: Color
 }
 
-// MARK: - Color-Based Segmented Control
+// MARK: - ColorSegmentedControl
 
 /// A generic, color-highlighted segmented control that animates
 /// transitions between selections using SwiftUI’s matched geometry effect.
@@ -87,6 +89,8 @@ struct ColorSegmentedControl<Value: Hashable>: View {
     }
 }
 
+// MARK: - SelectedSegment
+
 /// The capsule-shaped background for the selected segment.
 private struct SelectedSegment: View {
     var body: some View {
@@ -96,6 +100,8 @@ private struct SelectedSegment: View {
             .shadow(radius: 2)
     }
 }
+
+// MARK: - Segment
 
 /// A single segment button with its text label and styling.
 ///

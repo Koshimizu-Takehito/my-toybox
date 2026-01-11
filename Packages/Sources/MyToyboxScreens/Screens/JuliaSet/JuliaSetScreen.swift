@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - JuliaSetScreen
+
 struct JuliaSetScreen: View {
     @State private var id = UUID()
     var body: some View {
@@ -17,6 +19,8 @@ struct JuliaSetScreen: View {
         .fontWeight(.semibold)
     }
 }
+
+// MARK: - JuliaSetShaderView
 
 struct JuliaSetShaderView: View, Animatable {
     typealias Animatable2 = AnimatablePair<Double, Double>
@@ -52,6 +56,8 @@ struct JuliaSetShaderView: View, Animatable {
     }
 }
 
+// MARK: - JuliaSetGestureView
+
 private struct JuliaSetGestureView: View {
     @Binding var id: UUID
     @GestureState private var magnifyBy = 1.0
@@ -76,8 +82,8 @@ private struct JuliaSetGestureView: View {
 
             VStack {
                 Spacer()
-                Slider(value: $constant.x, in: 0.3504...(constant.y - 0.0001))
-                Slider(value: $constant.y, in: 0.3506...0.4)
+                Slider(value: $constant.x, in: 0.3504 ... (constant.y - 0.0001))
+                Slider(value: $constant.y, in: 0.3506 ... 0.4)
             }
             .padding()
         }
@@ -88,11 +94,11 @@ private struct JuliaSetGestureView: View {
 
     var magnification: some Gesture {
         MagnifyGesture()
-            .updating($magnifyBy) { value, gestureState, transaction in
+            .updating($magnifyBy) { value, gestureState, _ in
                 gestureState = value.magnification / 2.0
                 scale = lastScale + value.magnification / 2.0
             }
-            .onEnded { value in
+            .onEnded { _ in
                 lastScale = scale
             }
     }
@@ -120,16 +126,16 @@ private struct JuliaSetGestureView: View {
     private func onDrag(action: DragGesture.Value, in size: CGSize) {
         let base = lastLocation
         let r = pow(scale, 2)
-        self.location.x = -(base.x + 1 / r * (action.translation.width) / size.width)
-        self.location.y = -(base.y + 1 / r * (action.translation.height) / size.width)
+        location.x = -(base.x + 1 / r * (action.translation.width) / size.width)
+        location.y = -(base.y + 1 / r * (action.translation.height) / size.width)
     }
 
     func reset() {
-        let scale = self.scale
+        let scale = scale
         let duration = scale > 1 ? min(log(scale), 2) : 0.5
         withAnimation(.spring(duration: duration)) {
             self.scale = 1
-            self.lastScale = 0.5
+            lastScale = 0.5
         } completion: {
             withAnimation(.spring(duration: duration)) {
                 location = .zero

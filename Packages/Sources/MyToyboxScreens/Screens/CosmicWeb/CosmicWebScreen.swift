@@ -45,7 +45,7 @@ private extension Shader {
     /// - Returns: The configured Shader instance.
     static func cosmicWeb(time: Double) -> Shader {
         var time = time
-        time = time.truncatingRemainder(dividingBy: (2 * .pi))
+        time = time.truncatingRemainder(dividingBy: 2 * .pi)
         let function = ShaderFunction(library: .module, name: "CosmicWeb::main")
         return function(.boundingRect, .float(time))
     }

@@ -6,7 +6,7 @@ import SwiftUI
 /// Uses a `ProgressRingViewModel` to track and animate the progress state.
 struct ProgressRingScreen: View {
     /// A view model that tracks and animates the progress value.
-    @State var viewModel = ProgressRingViewModel()
+    @State private var viewModel = ProgressRingViewModel()
 
     var body: some View {
         GeometryReader { geometry in
@@ -84,7 +84,7 @@ private struct ProgressSlider: View {
     var body: some View {
         @Bindable var viewModel = viewModel
 
-        Slider(value: progressBinding.animation(), in: 0...1)
+        Slider(value: progressBinding.animation(), in: 0 ... 1)
             .padding(12)
             .background(.ultraThinMaterial)
             .clipShape(.rect(cornerRadius: 12))
@@ -109,8 +109,8 @@ private struct ProgressControl: View {
                 canStart
                     ? viewModel.start()
                     : isPaused
-                        ? viewModel.resume()
-                        : viewModel.pause()
+                    ? viewModel.resume()
+                    : viewModel.pause()
             } label: {
                 ZStack {
                     // A hidden label to reserve layout space
@@ -150,7 +150,6 @@ private struct ProgressControl: View {
 ///
 /// Conforms to `Animatable` so SwiftUI can smoothly animate changes to `value`.
 private struct ProgressRing<ProgressText: View>: Animatable {
-
     /// The current progress value (0.0 to 1.0).
     var value = 0.0
 
@@ -173,6 +172,8 @@ private struct ProgressRing<ProgressText: View>: Animatable {
         self.text = text
     }
 }
+
+// MARK: View
 
 extension ProgressRing: View {
     /// Draws a circular progress indicator with a background circle,
@@ -218,7 +219,7 @@ extension ProgressRing: View {
 private struct ProgressText: View {
     /// The current progress value, from 0.0 to 1.0.
     /// Multiplied by 100 to display a percentage.
-    var progressValue = 0.0  // renamed from `value` for clarity (optional)
+    var progressValue = 0.0 // renamed from `value` for clarity (optional)
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
@@ -233,8 +234,8 @@ private struct ProgressText: View {
 
 // MARK: - Label.Action
 
-extension Label<Text, Image> {
-    fileprivate enum Action: CaseIterable {
+private extension Label<Text, Image> {
+    enum Action: CaseIterable {
         case start
         case reset
         case resume
@@ -243,32 +244,38 @@ extension Label<Text, Image> {
         var title: String {
             switch self {
             case .start:
-                return "Start"
+                "Start"
+
             case .reset:
-                return "Reset"
+                "Reset"
+
             case .resume:
-                return "Resume"
+                "Resume"
+
             case .pause:
-                return "Pause"
+                "Pause"
             }
         }
 
         var symbol: String {
             switch self {
             case .start:
-                return "play"
+                "play"
+
             case .reset:
-                return "arrow.trianglehead.counterclockwise"
+                "arrow.trianglehead.counterclockwise"
+
             case .resume:
-                return "forward.frame"
+                "forward.frame"
+
             case .pause:
-                return "pause"
+                "pause"
             }
         }
     }
 
     /// Creates a `Label` with a title and system image based on the given action type.
-    fileprivate init(action: Action) {
+    init(action: Action) {
         self = Label(action.title, systemImage: action.symbol)
     }
 }

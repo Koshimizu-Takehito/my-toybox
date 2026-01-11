@@ -1,6 +1,7 @@
 import SwiftUI
 
-// MARK: - View
+// MARK: - ViewIdentityAnimationScreen
+
 struct ViewIdentityAnimationScreen: View {
     @State private var model = ViewIdentityAnimationScreenModel(row: 4, column: 4)
 
@@ -40,6 +41,8 @@ struct ViewIdentityAnimationScreen: View {
     }
 }
 
+// MARK: - Grid1
+
 private struct Grid1: View {
     var angles: [[Angle]]
     var body: some View {
@@ -55,13 +58,15 @@ private struct Grid1: View {
     }
 }
 
+// MARK: - Grid2
+
 private struct Grid2: View {
     var angles: [[Angle]]
     var body: some View {
         Grid(horizontalSpacing: 0, verticalSpacing: 0) {
-            ForEach(0..<angles.count, id: \.self) { i in
+            ForEach(0 ..< angles.count, id: \.self) { i in
                 GridRow {
-                    ForEach(0..<angles[i].count, id: \.self) { j in
+                    ForEach(0 ..< angles[i].count, id: \.self) { j in
                         Tile(angle: angles[i][j])
                     }
                 }
@@ -69,6 +74,8 @@ private struct Grid2: View {
         }
     }
 }
+
+// MARK: - Tile
 
 private struct Tile: View {
     let angle: Angle
@@ -85,6 +92,8 @@ private struct Tile: View {
     }
 }
 
+// MARK: - QuarterArc
+
 private struct QuarterArc: Shape {
     func path(in rect: CGRect) -> Path {
         Path { path in
@@ -99,7 +108,7 @@ private struct QuarterArc: Shape {
     }
 }
 
-// MARK: - ViewIdentityAnimationScreenViewModel
+// MARK: - ViewIdentityAnimationScreenModel
 
 @MainActor
 @Observable
@@ -107,9 +116,9 @@ private final class ViewIdentityAnimationScreenModel {
     var angles: [[Angle]]
 
     init(row: Int, column: Int) {
-        angles = (0..<row).map { _ in
-            (0..<column).map { _ in
-                Angle(radians: Double(Int.random(in: 0..<4)) * .pi/2)
+        self.angles = (0 ..< row).map { _ in
+            (0 ..< column).map { _ in
+                Angle(radians: Double(Int.random(in: 0 ..< 4)) * .pi / 2)
             }
         }
     }
@@ -125,7 +134,7 @@ private final class ViewIdentityAnimationScreenModel {
             .shuffled()
             .prefix(2 * angles.count)
             .forEach { i, j in
-                angles[i][j] += Angle(radians: Double(i.isMultiple(of: 2) ? 1 : -1) * .pi/2)
+                angles[i][j] += Angle(radians: Double(i.isMultiple(of: 2) ? 1 : -1) * .pi / 2)
             }
         try? await Task.sleep(nanoseconds: 1_000_000_000)
         await rotate()

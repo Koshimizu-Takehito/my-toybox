@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - KuwaharaScreen
+
 /// A demo screen that applies a **Kuwahara** edge-preserving smoothing filter to an image
 /// using a custom SwiftUI layer shader backed by Metal.
 ///
@@ -68,27 +70,27 @@ struct KuwaharaScreen: View {
         // Use `blend = 0` to fully bypass the effect without changing the radius.
         VStack {
             HStack {
-                Stepper(value: $radius, in: 0...6) {
+                Stepper(value: $radius, in: 0 ... 6) {
                     Text("Radius \(radius.formatted())")
                 }
             }
             HStack {
                 Text("Blend \(blend, specifier: "%.2f")")
-                Slider(value: $blend, in: 0...1)
+                Slider(value: $blend, in: 0 ... 1)
             }
         }
         .fontDesign(.monospaced)
     }
 }
 
-extension Shader {
+private extension Shader {
     /// Builds a SwiftUI `Shader` that invokes the `Kuwahara::main` Metal function.
     ///
     /// - Parameters:
     ///   - radius: Integer sampling radius (UI-level). The shader clamps to `[0, 6]`.
     ///   - blend: Mix factor between the source and filtered color in `[0, 1]`.
     /// - Returns: A `Shader` suitable for `layerEffect(_:maxSampleOffset:)`.
-    fileprivate static func kuwahara(radius: Int, blend: Double) -> Self {
+    static func kuwahara(radius: Int, blend: Double) -> Self {
         let function = ShaderFunction(library: .module, name: "Kuwahara::main")
         return function(.float(Float(radius)), .boundingRect, .float(Float(blend)))
     }

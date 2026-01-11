@@ -1,11 +1,13 @@
 import SwiftUI
 
+// MARK: - VisualeffectScreen
+
 struct VisualeffectScreen: View {
     var body: some View {
         GeometryReader { geometry in
             let scrollViewFrame = geometry.frame(in: .local)
             ScrollView {
-                ForEach(0..<100) { offset in
+                ForEach(0 ..< 100) { offset in
                     RowContent(offset: offset, scrollViewFrame: scrollViewFrame)
                         .frame(height: scrollViewFrame.height / 8.0)
                 }
@@ -15,10 +17,12 @@ struct VisualeffectScreen: View {
     }
 }
 
+// MARK: - RowContent
+
 private struct RowContent: View {
     let offset: Int
     let scrollViewFrame: CGRect
-    @State var zIndex: Double = 0
+    @State private var zIndex: Double = 0
 
     var body: some View {
         RoundedRectangle(cornerRadius: 24)

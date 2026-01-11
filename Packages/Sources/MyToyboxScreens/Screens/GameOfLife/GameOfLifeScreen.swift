@@ -129,11 +129,11 @@ struct GameOfLifeScreen: View {
 
     @ToolbarContentBuilder
     private func toolbar() -> some ToolbarContent {
-#if os(iOS) || os(tvOS)
+        #if os(iOS) || os(tvOS)
         let placement: ToolbarItemPlacement = .bottomBar
-#elseif os(macOS)
+        #elseif os(macOS)
         let placement: ToolbarItemPlacement = .automatic
-#endif
+        #endif
         // ズーム用コントロール
         ToolbarItemGroup(placement: placement) {
             Button {

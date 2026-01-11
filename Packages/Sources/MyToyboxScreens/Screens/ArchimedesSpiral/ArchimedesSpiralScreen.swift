@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - ArchimedesSpiralScreen
+
 /// A SwiftUI view that draws a dynamic Archimedean spiral animation using `Canvas`.
 ///
 /// The spiral continuously rotates and changes color over time.
@@ -7,7 +9,7 @@ import SwiftUI
 /// The animation is driven by `TimelineView`, which updates regularly with `.animation` schedule.
 struct ArchimedesSpiralScreen: View {
     /// The start time of the animation. Used to calculate elapsed time.
-    @State var start = Date()
+    @State private var start = Date()
 
     var body: some View {
         TimelineView(.animation) { context in
@@ -24,7 +26,7 @@ struct ArchimedesSpiralScreen: View {
                 let center = CGPoint(x: size.width / 2 - radius, y: size.height / 2 - radius)
                 let pointSize = CGSize(width: 2 * radius, height: 2 * radius)
 
-                for i in 0..<3000 {
+                for i in 0 ..< 3000 {
                     let j = rotation * Double(i)
 
                     // Calculate the point on the spiral, scaled down by half.
@@ -56,22 +58,22 @@ private extension CGPoint {
     }
 
     /// Adds two `CGPoint` values.
-    static func +(_ lhs: Self, _ rhs: Self) -> Self {
+    static func + (_ lhs: Self, _ rhs: Self) -> Self {
         .init(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
 
     /// Subtracts one `CGPoint` from another.
-    static func -(_ lhs: Self, _ rhs: Self) -> Self {
+    static func - (_ lhs: Self, _ rhs: Self) -> Self {
         .init(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
 
     /// Multiplies a `CGPoint` by a scalar.
-    static func *(_ lhs: Double, _ rhs: Self) -> Self {
+    static func * (_ lhs: Double, _ rhs: Self) -> Self {
         .init(x: lhs * rhs.x, y: lhs * rhs.y)
     }
 
     /// Divides a `CGPoint` by a scalar.
-    static func /(_ lhs: Self, _ rhs: Double) -> Self {
+    static func / (_ lhs: Self, _ rhs: Double) -> Self {
         .init(x: lhs.x / rhs, y: lhs.y / rhs)
     }
 }

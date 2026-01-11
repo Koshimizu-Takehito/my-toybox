@@ -3,13 +3,13 @@ import Observation
 /// An observable view‑model that drives a numeric badge.
 ///
 /// `BadgeModel` keeps track of the current count (`number`) and the
-/// badge’s visual appearance (`style`).  It also exposes two derived
+/// badge’s visual appearance (`style`)  It also exposes two derived
 /// properties that make it easy to bind the model to SwiftUI controls:
 ///
 /// * `slider` – Bridges the `Int`‐based `number` to floating‑point
 ///   controls such as `Slider`.
 /// * `value`  – Returns the string that should actually appear inside
-///   the badge.  Counts over 999 collapse to `"+999"`; negative values
+///   the badge. Counts over 999 collapse to `"+999"`; negative values
 ///   yield `nil`, which you can interpret as “hide the badge.”
 @Observable
 final class BadgeModel {
@@ -34,12 +34,14 @@ final class BadgeModel {
     /// * < 0     → `nil` (badge off)
     var value: String? {
         switch number {
-        case 0...999:
-            return number.formatted()
+        case 0 ... 999:
+            number.formatted()
+
         case 1000...:
-            return "+999"
+            "+999"
+
         default:
-            return nil
+            nil
         }
     }
 

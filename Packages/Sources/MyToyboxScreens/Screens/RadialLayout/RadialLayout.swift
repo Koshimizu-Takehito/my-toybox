@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct RadialLayout: Layout {
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout Void) -> CGSize {
+    func sizeThatFits(proposal: ProposedViewSize, subviews _: Subviews, cache _: inout Void) -> CGSize {
         proposal.replacingUnspecifiedDimensions()
     }
 
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout Void) {
+    func placeSubviews(in bounds: CGRect, proposal _: ProposedViewSize, subviews: Subviews, cache _: inout Void) {
         let side = min(bounds.size.width, bounds.size.height)
         let angle = Double.pi / Double(subviews.count)
-        let itemRadius = (side / 2.0) * (sin(angle)) / (1.0 + sin(angle))
+        let itemRadius = (side / 2.0) * sin(angle) / (1.0 + sin(angle))
         let ringRadius = (side / 2.0) * (1.0 + sin(angle)).rounded(.down)
         let step = Angle.radians(2.0 * angle).radians
         for (index, subview) in subviews.enumerated() {

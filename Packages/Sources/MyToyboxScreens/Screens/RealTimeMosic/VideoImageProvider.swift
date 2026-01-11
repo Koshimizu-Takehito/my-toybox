@@ -233,7 +233,7 @@ final class VideoImageProvider {
             let image = CIImage(cvPixelBuffer: buffer)
             self.image = context.createCGImage(image, from: image.extent)
             if let player {
-                self.currentTime = player.currentTime().seconds
+                currentTime = player.currentTime().seconds
             }
         }
     }

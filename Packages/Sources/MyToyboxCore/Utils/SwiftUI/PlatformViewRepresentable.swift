@@ -9,6 +9,8 @@ public typealias PlatformView = NSView
 public typealias PlatformViewRepresentable = NSViewRepresentable
 #endif
 
+// MARK: - PlatformAgnosticViewRepresentable
+
 /// このプロトコルを実装すると、iOSでは自動的にUIViewRepresentableに、macOSではNSViewRepresentableに準拠する
 public protocol PlatformAgnosticViewRepresentable: PlatformViewRepresentable {
     associatedtype PlatformViewType
@@ -21,6 +23,7 @@ public extension PlatformAgnosticViewRepresentable where UIViewType == PlatformV
     func makeUIView(context: Context) -> UIViewType {
         makePlatformView(context: context)
     }
+
     func updateUIView(_ uiView: UIViewType, context: Context) {
         updatePlatformView(uiView, context: context)
     }
@@ -33,6 +36,7 @@ public extension PlatformAgnosticViewRepresentable where NSViewType == PlatformV
     func makeNSView(context: Context) -> NSViewType {
         makePlatformView(context: context)
     }
+
     func updateNSView(_ nsView: NSViewType, context: Context) {
         updatePlatformView(nsView, context: context)
     }

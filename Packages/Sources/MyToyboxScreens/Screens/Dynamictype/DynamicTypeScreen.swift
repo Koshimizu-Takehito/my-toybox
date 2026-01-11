@@ -35,14 +35,14 @@ struct DynamicTypeScreen: View {
                 .contentTransition(.interpolate)
 
             // Slider to change the DynamicTypeSize
-            Slider(value: $dynamicTypeIndex, in: 0...11)
+            Slider(value: $dynamicTypeIndex, in: 0 ... 11)
         }
         .animation(.default, value: dynamicTypeIndex)
         .padding()
     }
 }
 
-// MARK: - MyStyle (custom style enum)
+// MARK: - MyStyle
 
 /// Enumeration representing custom font styles associated with specific system text styles.
 private enum MyStyle: CaseIterable {
@@ -63,11 +63,13 @@ private struct MyFontSize: DynamicProperty {
     func value(for style: MyStyle) -> Double {
         switch style {
         case .style1:
-            return scaledLargeTitleSize
+            scaledLargeTitleSize
+
         case .style2:
-            return scaledTitleSize
+            scaledTitleSize
+
         case .style3:
-            return scaledBodySize
+            scaledBodySize
         }
     }
 }
@@ -88,8 +90,8 @@ private struct MyStyleModifier: ViewModifier {
 // MARK: - View Extension
 
 /// Convenience method for applying a custom style modifier.
-extension View {
-    fileprivate func myStyle(_ style: MyStyle) -> some View {
+private extension View {
+    func myStyle(_ style: MyStyle) -> some View {
         modifier(MyStyleModifier(style: style))
     }
 }

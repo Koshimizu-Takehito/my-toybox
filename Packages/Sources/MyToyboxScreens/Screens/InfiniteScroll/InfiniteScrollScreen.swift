@@ -2,7 +2,7 @@ import SwiftUI
 
 #if os(iOS)
 struct InfiniteScrollScreen: View {
-    private var items: [Int] = (1...5).map(\.self)
+    private var items: [Int] = (1 ... 5).map(\.self)
     @State private var numberOfDisplays = 5
     @State private var showsIndicator = false
     @State private var viewId = UUID()
@@ -16,7 +16,7 @@ struct InfiniteScrollScreen: View {
             .scrollIndicators(showsIndicator ? .visible : .hidden)
 
             VStack(alignment: .trailing, spacing: 16) {
-                Stepper("Display Items", value: $numberOfDisplays, in: 1...10)
+                Stepper("Display Items", value: $numberOfDisplays, in: 1 ... 10)
                 Toggle("Shows Scroll Indicator", isOn: $showsIndicator)
                 Button("Reset", action: reset)
             }
@@ -69,7 +69,7 @@ private struct InfiniteScrollView<Item: Hashable, Content: View>: View {
             containerWidth = width
             updateItemSize()
         }
-        .onChange(of: numberOfDisplays, initial: false) { _, newValue in
+        .onChange(of: numberOfDisplays, initial: false) { _, _ in
             updateItemSize()
         }
         .frame(height: itemWidth)
@@ -78,7 +78,7 @@ private struct InfiniteScrollView<Item: Hashable, Content: View>: View {
     /// Updates the item width based on available container width and number of visible items.
     private func updateItemSize() {
         let count = Double(max(numberOfDisplays, 1))
-        self.itemWidth = (containerWidth - (count + 1) * spacing) / count
+        itemWidth = (containerWidth - (count + 1) * spacing) / count
     }
 }
 
@@ -97,7 +97,7 @@ private extension InfiniteUIScrollView {
         private var spacing: Double
         private var content: (Item) -> Content
 
-        func makeUIView(context: Context) -> InfiniteUIScrollView {
+        func makeUIView(context _: Context) -> InfiniteUIScrollView {
             InfiniteUIScrollView()
         }
 
@@ -118,7 +118,7 @@ private extension InfiniteUIScrollView {
                     .frame(width: spacing, height: 0)
                 HStack(spacing: spacing) {
                     ForEach(items, id: \.self) { items in
-                        self.content(items)
+                        content(items)
                     }
                 }
             }
@@ -173,9 +173,9 @@ private final class InfiniteUIScrollView: UIScrollView {
 
     /// Initial setup for the scroll view.
     private func setup() {
-        self.containerView.isUserInteractionEnabled = false
-        self.addSubview(containerView)
-        self.contentSize = frame.size
+        containerView.isUserInteractionEnabled = false
+        addSubview(containerView)
+        contentSize = frame.size
     }
 
     // MARK: - レイアウト
@@ -313,7 +313,7 @@ private struct ItemView: View {
 // MARK: - Preview
 
 #Preview("InfiniteScrollView") {
-    let numbers = (1...5).map(\.self)
+    let numbers = (1 ... 5).map(\.self)
     InfiniteScrollView(numbers, numberOfDisplays: 5) {
         ItemView(number: $0)
     }

@@ -9,7 +9,7 @@ actor ScreenUseCase {
     private(set) var screens: [Screen]?
 
     /// Loads and decodes the list of available screens from the bundle.
-    func fetch() async throws -> [Screen] {
+    func fetch() throws -> [Screen] {
         if let screens {
             return screens
         }

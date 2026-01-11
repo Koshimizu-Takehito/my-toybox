@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - SqureflowScreen
+
 struct SqureflowScreen: View {
     @State private var holder = SquresHolder()
 
@@ -17,6 +19,8 @@ struct SqureflowScreen: View {
     }
 }
 
+// MARK: - SquresHolder
+
 private final class SquresHolder {
     private(set) var squre = Set<Squre>()
     private let maxCount = 10
@@ -30,20 +34,22 @@ private final class SquresHolder {
     }
 }
 
+// MARK: - Squre
+
 private struct Squre: Hashable {
-    static let velocities = 0.02...0.1
+    static let velocities = 0.02 ... 0.1
 
     var x: Double
     var edge: Double
     var creationDate: Date
-    var initialY: Double = .random(in: 1.0...2.0)
+    var initialY: Double = .random(in: 1.0 ... 2.0)
     var velocity: Double = .random(in: velocities)
-    var color = Color(red: 0.2, green: 0.3, blue: 0.8).opacity(.random(in: 0.2...0.6))
+    var color = Color(red: 0.2, green: 0.3, blue: 0.8).opacity(.random(in: 0.2 ... 0.6))
 
     init(creationDate: Date) {
         self.creationDate = creationDate
-        self.edge = .random(in: 0.1...0.3)
-        self.x = max(.random(in: 0.01...0.99) - edge, 0.01)
+        self.edge = .random(in: 0.1 ... 0.3)
+        self.x = max(.random(in: 0.01 ... 0.99) - edge, 0.01)
     }
 
     func isAlive(at date: Date, in size: CGSize) -> Bool {
@@ -63,8 +69,8 @@ private struct Squre: Hashable {
             height: edge
         )
 
-        let velocity = velocity/Squre.velocities.upperBound
-        return RoundedRectangle(cornerRadius: max(edge/8, 4), style: .circular)
+        let velocity = velocity / Self.velocities.upperBound
+        return RoundedRectangle(cornerRadius: max(edge / 8, 4), style: .circular)
             .rotation(.radians(-velocity * duration / 2))
             .path(in: rect)
     }

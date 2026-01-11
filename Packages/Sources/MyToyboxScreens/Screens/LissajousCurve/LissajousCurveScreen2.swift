@@ -12,7 +12,7 @@ import SwiftUI
  */
 struct LissajousCurveDemoScreen2: View {
     /// State model that holds all the current curve parameters.
-    @State var curve = LissajousCurve2()
+    @State private var curve = LissajousCurve2()
 
     var body: some View {
         VStack(spacing: 16) {
@@ -123,7 +123,7 @@ private struct LissajousCurveShape: Shape {
 
             // Start at t = 0, then add lines through sampled points.
             path.move(to: curve.point2(at: 0, center: center, radius: radius))
-            for i in 1...curve.samples {
+            for i in 1 ... curve.samples {
                 path.addLine(to: curve.point2(at: i, center: center, radius: radius))
             }
         }
@@ -165,10 +165,10 @@ private struct LissajousCurveControlView: View {
             Grid(horizontalSpacing: 8, verticalSpacing: 4) {
                 GridRow {
                     ZStack(alignment: .trailing) {
-                        Text("99").hidden()  // Placeholder for alignment.
+                        Text("99").hidden() // Placeholder for alignment.
                         Text("\(Int(curve.k))")
                     }
-                    Slider(value: $curve.k.animation(), in: 1...10) { value in
+                    Slider(value: $curve.k.animation(), in: 1 ... 10) { value in
                         if !value { // On drag end, snap to nearest integer.
                             withAnimation(.snappy) {
                                 curve.k = curve.k.rounded(.toNearestOrEven)
@@ -182,7 +182,7 @@ private struct LissajousCurveControlView: View {
                         Text("99").hidden()
                         Text("\(Int(curve.l))")
                     }
-                    Slider(value: $curve.l.animation(), in: 1...10) { value in
+                    Slider(value: $curve.l.animation(), in: 1 ... 10) { value in
                         if !value {
                             withAnimation(.snappy) {
                                 curve.l = curve.l.rounded(.toNearestOrEven)
@@ -204,14 +204,14 @@ private struct LissajousCurveControlView: View {
 
 // MARK: - Color Extensions
 
-extension Color {
+private extension Color {
     /**
      Returns a color blended from the k and l parameter colors, for use as the curve's stroke.
 
      - Parameter curve: The LissajousCurve instance.
      - Returns: A visually dynamic Color.
      */
-    fileprivate static func color(_ curve: LissajousCurve2) -> Color {
+    static func color(_ curve: LissajousCurve2) -> Color {
         colorX(curve).mix(with: colorY(curve), by: 0.5)
     }
 
@@ -220,7 +220,7 @@ extension Color {
 
      - Returns: A hue varying smoothly with k.
      */
-    fileprivate static func colorX(_ curve: LissajousCurve2) -> Color {
+    static func colorX(_ curve: LissajousCurve2) -> Color {
         let x = (1.0 + sin(curve.k * (2 * .pi / 20.0))) / 2.0
         return Color(hue: x, saturation: 1, brightness: 1)
     }
@@ -230,7 +230,7 @@ extension Color {
 
      - Returns: A hue varying smoothly with l.
      */
-    fileprivate static func colorY(_ curve: LissajousCurve2) -> Color {
+    static func colorY(_ curve: LissajousCurve2) -> Color {
         let y = (1.0 + sin(curve.l * (2 * .pi / 20.0))) / 2.0
         return Color(hue: y, saturation: 1, brightness: 1)
     }
@@ -322,14 +322,14 @@ nonisolated struct LissajousCurve2: Hashable, VectorArithmetic {
         k * k + l * l + phase * phase
     }
 
-    static var zero: LissajousCurve2 {
-        LissajousCurve2(k: 0, l: 0, phase: 0)
+    static var zero: Self {
+        Self(k: 0, l: 0, phase: 0)
     }
 
     // MARK: AdditiveArithmetic
 
-    static func + (lhs: LissajousCurve2, rhs: LissajousCurve2) -> LissajousCurve2 {
-        LissajousCurve2(
+    static func + (lhs: Self, rhs: Self) -> Self {
+        Self(
             k: lhs.k + rhs.k,
             l: lhs.l + rhs.l,
             phase: lhs.phase + rhs.phase,
@@ -337,8 +337,8 @@ nonisolated struct LissajousCurve2: Hashable, VectorArithmetic {
         )
     }
 
-    static func - (lhs: LissajousCurve2, rhs: LissajousCurve2) -> LissajousCurve2 {
-        LissajousCurve2(
+    static func - (lhs: Self, rhs: Self) -> Self {
+        Self(
             k: lhs.k - rhs.k,
             l: lhs.l - rhs.l,
             phase: lhs.phase - rhs.phase,

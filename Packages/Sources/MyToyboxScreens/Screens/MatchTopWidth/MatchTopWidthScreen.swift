@@ -35,7 +35,7 @@ struct MatchTopWidthScreen: View {
         .linearGradient(
             colors: [
                 isInfinityWidth ? blue : isFixedSize ? purple : .gray,
-                isFixedSize ? purple : isInfinityWidth ? blue : .gray
+                isFixedSize ? purple : isInfinityWidth ? blue : .gray,
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
@@ -44,12 +44,12 @@ struct MatchTopWidthScreen: View {
 
     /// A bright blue used when `.infinity` is active.
     var blue: Color {
-        Color(hue: 207/360, saturation: 0.88, brightness: 0.88)
+        Color(hue: 207 / 360, saturation: 0.88, brightness: 0.88)
     }
 
     /// A vivid purple used when `.fixedSize` is active.
     var purple: Color {
-        Color(hue: 302/360, saturation: 1.00, brightness: 1.00)
+        Color(hue: 302 / 360, saturation: 1.00, brightness: 1.00)
     }
 }
 

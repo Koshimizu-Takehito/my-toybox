@@ -1,6 +1,8 @@
 import Foundation
 import Observation
 
+// MARK: - MazeTile
+
 /// `MazeTile` は迷路内に存在するさまざまなタイルの種類を表す
 enum MazeTile {
     /// 迷路の開始地点
@@ -13,7 +15,7 @@ enum MazeTile {
     case goal
 }
 
-// MARK: - MazeGeneratorViewModel (ViewModel)
+// MARK: - MazeGeneratorViewModel
 
 /// A view model responsible for managing the maze generation and holding the current grid state.
 /// 迷路の生成を管理し、現在の迷路の状態を保持するための ViewModel です。
@@ -38,7 +40,7 @@ final class MazeGeneratorViewModel {
     ///
     /// Whenever a new task is assigned, the previous one is cancelled automatically.
     /// 新しいタスクが設定されると、以前のタスクは自動的にキャンセルされます。
-    private var mazeSnapshotTask: Task<(), Never>? {
+    private var mazeSnapshotTask: Task<Void, Never>? {
         didSet {
             oldValue?.cancel()
         }
@@ -69,8 +71,8 @@ final class MazeGeneratorViewModel {
             for await snapshot in await mazeModel.snapshots {
                 guard let self else { break }
                 try? await Task.sleep(for: .milliseconds(30))
-                self.tiles = await makeTiles(snapshot: snapshot)
-                self.isGenerating = snapshot.isGenerating
+                tiles = await makeTiles(snapshot: snapshot)
+                isGenerating = snapshot.isGenerating
             }
         }
     }

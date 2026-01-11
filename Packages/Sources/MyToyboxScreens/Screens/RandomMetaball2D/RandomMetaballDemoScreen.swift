@@ -1,7 +1,7 @@
 import Combine
 import SwiftUI
 
-// MARK: - Demo View
+// MARK: - RandomMetaballDemoScreen
 
 /// A demo screen showcasing the `RandomMetaball2DView`.
 ///
@@ -13,7 +13,7 @@ struct RandomMetaballDemoScreen: View {
     }
 }
 
-// MARK: - Random Metaball 2D View
+// MARK: - RandomMetaball2DView
 
 /// A view that displays a glowing "metaball" particle effect with randomized circles.
 ///
@@ -55,8 +55,8 @@ struct RandomMetaball2DView: View {
     /// Each particle either expands or shrinks with a randomly chosen animation curve and delay.
     private func update() {
         var randomAnimation: Animation {
-            .easeInOut(duration: .random(in: 1...4))
-            .delay(.random(in: 0...2))
+            .easeInOut(duration: .random(in: 1 ... 4))
+                .delay(.random(in: 0 ... 2))
         }
         for idx in scales.indices {
             withAnimation(randomAnimation) {
@@ -66,7 +66,7 @@ struct RandomMetaball2DView: View {
     }
 }
 
-// MARK: - Random Metaball Canvas
+// MARK: - RandomMetaballCanvas
 
 /// A canvas that renders metaball-like glowing particles
 /// using SwiftUI's `Canvas` and symbol rendering.
@@ -94,12 +94,12 @@ struct RandomMetaballCanvas: View {
                 ForEach(scales.indices, id: \.self) { index in
                     Circle()
                         .frame(
-                            width: .random(in: 10...maxWidth),
-                            height: .random(in: 10...maxWidth)
+                            width: .random(in: 10 ... maxWidth),
+                            height: .random(in: 10 ... maxWidth)
                         )
                         .position(
-                            x: .random(in: 0...size.width),
-                            y: .random(in: 0...size.height)
+                            x: .random(in: 0 ... size.width),
+                            y: .random(in: 0 ... size.height)
                         )
                         .scaleEffect(scales[index])
                         .tag(index)

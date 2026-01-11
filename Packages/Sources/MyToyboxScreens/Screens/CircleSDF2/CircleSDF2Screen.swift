@@ -22,10 +22,10 @@ struct CircleSDF2Screen: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 // Controls the animation phase.
-                Slider(value: $time, in: 0...(2.0 * .pi))
+                Slider(value: $time, in: 0 ... (2.0 * .pi))
 
                 // Controls the smoothing (blend sharpness).
-                Slider(value: $k, in: 0...0.72)
+                Slider(value: $k, in: 0 ... 0.72)
             }
             .frame(maxHeight: .infinity, alignment: .bottom)
             .padding()

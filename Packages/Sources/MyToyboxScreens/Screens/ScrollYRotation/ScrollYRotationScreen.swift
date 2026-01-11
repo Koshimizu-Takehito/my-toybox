@@ -1,11 +1,13 @@
 import SwiftUI
 
+// MARK: - ScrollYRotationScreen
+
 struct ScrollYRotationScreen: View {
     @State private var colors: [(offset: Int, element: Color)]
         = Array(repeating: [Color].rainbow(count: 50), count: 300)
-            .flatMap { $0 }
-            .enumerated()
-            .map { $0 }
+        .flatMap(\.self)
+        .enumerated()
+        .map(\.self)
 
     var body: some View {
         GeometryReader { geometry in
@@ -25,6 +27,8 @@ struct ScrollYRotationScreen: View {
         }
     }
 }
+
+// MARK: - RowContent
 
 private struct RowContent<Content: View>: View {
     var containerFrame: CGRect
@@ -60,9 +64,9 @@ private struct RowContent<Content: View>: View {
     }
 }
 
-extension [Color] {
-    fileprivate static func rainbow(hue: Double = 0, count: Int) -> Self {
-        (0..<count).map { i in
+private extension [Color] {
+    static func rainbow(hue: Double = 0, count: Int) -> Self {
+        (0 ..< count).map { i in
             var value = hue + Double(i) / Double(count)
             value -= floor(value)
             return Color(hue: value, saturation: 0.60, brightness: 1)

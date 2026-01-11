@@ -11,7 +11,7 @@ struct RectangleAnimationScreen: View {
     var body: some View {
         GeometryReader { geometry in
             TimelineView(.animation) { timeline in
-                Canvas {context, size in
+                Canvas { context, size in
                     let rects = viewModel.rects
                     for rect in rects {
                         rect.update(size: size)

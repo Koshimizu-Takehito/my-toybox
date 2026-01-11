@@ -12,12 +12,12 @@ struct SpiralLayoutDemoScreen: View {
         VStack {
             Spacer()
             SpiralLayout {
-                ForEach(0..<count, id: \.self) { index in
+                ForEach(0 ..< count, id: \.self) { index in
                     ColorCell(index: index)
                 }
             }
             Spacer()
-            Stepper(value: $count.animation(), in: 1...21) {
+            Stepper(value: $count.animation(), in: 1 ... 21) {
                 Text("Count \(count.formatted())")
             }
         }
@@ -54,7 +54,7 @@ private struct ColorCell: View {
 /// Each cell is a rectangle, and the layout algorithm ensures that the rectangles are placed in a way that visually simulates a spiral,
 /// with each cell occupying equal area as much as possible.
 struct SpiralLayout: Layout {
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+    func sizeThatFits(proposal: ProposedViewSize, subviews _: Subviews, cache _: inout ()) -> CGSize {
         // Ensure the layout is square, constrained by the smallest side.
         let size = CGSize(width: proposal.width ?? .zero, height: proposal.height ?? .zero)
         let side = min(size.width, size.height)
@@ -65,10 +65,10 @@ struct SpiralLayout: Layout {
         in bounds: CGRect,
         proposal: ProposedViewSize,
         subviews: Subviews,
-        cache: inout ()
+        cache _: inout ()
     ) {
         // No subviews to arrange.
-        if subviews.count <= 0 {
+        if subviews.isEmpty {
             return
         }
 
@@ -85,7 +85,7 @@ struct SpiralLayout: Layout {
         )
 
         // Place remaining cells in a spiral path, alternating direction and length.
-        for index in 1..<subviews.count {
+        for index in 1 ..< subviews.count {
             let layer = (index - 1) / 4
             let direction = index % 4
             let longSide = 2 * (cellSide + cellSide * CGFloat(layer))
@@ -100,6 +100,7 @@ struct SpiralLayout: Layout {
                     ) + (bounds.center - cellSide / 2),
                     proposal: .init(width: longSide, height: cellSide)
                 )
+
             case 2:
                 // Up vertical extension
                 subviews[index].place(
@@ -109,6 +110,7 @@ struct SpiralLayout: Layout {
                     ) + (bounds.center - cellSide / 2),
                     proposal: .init(width: cellSide, height: longSide)
                 )
+
             case 3:
                 // Left horizontal extension
                 subviews[index].place(
@@ -118,6 +120,7 @@ struct SpiralLayout: Layout {
                     ) + (bounds.center - cellSide / 2),
                     proposal: .init(width: longSide, height: cellSide)
                 )
+
             default:
                 // Down vertical extension
                 subviews[index].place(
@@ -134,38 +137,38 @@ struct SpiralLayout: Layout {
 
 // MARK: - Utilities
 
-nonisolated extension CGRect {
+private nonisolated extension CGRect {
     /// Returns the center point of the rectangle.
-    fileprivate var center: CGPoint { CGPoint(x: midX, y: midY) }
+    var center: CGPoint { CGPoint(x: midX, y: midY) }
 }
 
-nonisolated extension CGPoint {
-    fileprivate init(_ value: CGFloat) {
+private nonisolated extension CGPoint {
+    init(_ value: CGFloat) {
         self.init(x: value, y: value)
     }
 
     /// Adds two CGPoint values.
-    fileprivate static func + (_ lhs: Self, _ rhs: Self) -> Self {
+    static func + (_ lhs: Self, _ rhs: Self) -> Self {
         CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
 
     /// Subtracts two CGPoint values.
-    fileprivate static func - (_ lhs: Self, _ rhs: Self) -> Self {
+    static func - (_ lhs: Self, _ rhs: Self) -> Self {
         CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
 
     /// Subtracts a CGFloat value from a CGPoint (on both axes).
-    fileprivate static func - (_ lhs: Self, _ rhs: CGFloat) -> Self {
+    static func - (_ lhs: Self, _ rhs: CGFloat) -> Self {
         lhs - .init(rhs)
     }
 
     /// Subtracts a CGPoint from a CGFloat value, returning a CGPoint.
-    fileprivate static func - (_ lhs: CGFloat, _ rhs: Self) -> Self {
+    static func - (_ lhs: CGFloat, _ rhs: Self) -> Self {
         .init(lhs) - rhs
     }
 
     /// Divides a CGPoint by a CGFloat value.
-    fileprivate static func / (_ lhs: Self, _ rhs: CGFloat) -> Self {
+    static func / (_ lhs: Self, _ rhs: CGFloat) -> Self {
         CGPoint(x: lhs.x / rhs, y: lhs.y / rhs)
     }
 }

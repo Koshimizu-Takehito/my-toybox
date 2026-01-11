@@ -1,5 +1,5 @@
-import SwiftUI
 import MapKit
+import SwiftUI
 
 /// A screen that displays a desaturated, monochrome-style map view.
 ///
@@ -8,7 +8,7 @@ import MapKit
 /// It's useful for design exploration or focusing on layout contrast.
 struct MonotoneMapScreen: View {
     /// The current camera position for the map, centered on Tokyo.
-    @State var position = MapCameraPosition.region(
+    @State private var position = MapCameraPosition.region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2DMake(35.685175, 139.7528),
             span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)

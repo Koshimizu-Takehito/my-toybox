@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentTransitionScreen: View {
-    @State var rating: Double = 0
+    @State private var rating: Double = 0
 
     var body: some View {
         HStack(spacing: 18) {

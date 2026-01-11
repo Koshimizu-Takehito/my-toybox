@@ -5,7 +5,7 @@ import SwiftUI
 
 struct TileAnimation3DScreen: View {
     @State private var viewModel: ViewModel?
-    @State var lineWidth: Double?
+    @State private var lineWidth: Double?
 
     var body: some View {
         Group {
@@ -19,8 +19,8 @@ struct TileAnimation3DScreen: View {
         .onGeometryChange(for: CGSize.self, of: \.size) { _, size in
             let column = 10
             let row = max(Int(ceil(Double(column) * size.height / size.width)), column)
-            self.viewModel = ViewModel(row: row, column: column)
-            self.lineWidth = min(size.height, size.width) / Double(min(row, column)) / 5
+            viewModel = ViewModel(row: row, column: column)
+            lineWidth = min(size.height, size.width) / Double(min(row, column)) / 5
         }
         .ignoresSafeArea()
     }
@@ -31,7 +31,7 @@ struct TileAnimation3DScreen: View {
 private struct TileAnimation3DScreenContent: View {
     var viewModel: TileAnimation3DScreen.ViewModel
     var lineWidth: Double
-    @State var lastUpdateDate = Date.now
+    @State private var lastUpdateDate = Date.now
 
     var body: some View {
         TimelineView(.animation) { context in
@@ -39,9 +39,9 @@ private struct TileAnimation3DScreenContent: View {
             let interval = date.timeIntervalSince(lastUpdateDate)
             Grid(horizontalSpacing: 0, verticalSpacing: 0) {
                 let rotations = viewModel.rotations
-                ForEach(0..<rotations.count, id: \.self) { i in
+                ForEach(0 ..< rotations.count, id: \.self) { i in
                     GridRow {
-                        ForEach(0..<rotations[i].count, id: \.self) { j in
+                        ForEach(0 ..< rotations[i].count, id: \.self) { j in
                             Tile(radians: Double(rotations[i][j]) * .pi / 2, lineWidth: lineWidth)
                         }
                         .foregroundStyle(.blue)

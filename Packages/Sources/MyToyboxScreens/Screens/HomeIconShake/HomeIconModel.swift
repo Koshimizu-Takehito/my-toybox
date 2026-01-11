@@ -16,7 +16,7 @@ final class HomeIconModel {
     }
 
     private func fetch() async {
-        self.items = await repository
+        items = await repository
             .fetch(numberOfChunk: numberOfColumn)
     }
 }

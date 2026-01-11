@@ -43,7 +43,7 @@ final class ProgressRingViewModel {
     func resume() {
         task = Task {
             // Convert current progress to a starting integer, then go up to 1000 (representing 100% in 0.1% steps).
-            for i in Int(progress * 1000)...1000 {
+            for i in Int(progress * 1000) ... 1000 {
                 if Task.isCancelled {
                     break
                 }

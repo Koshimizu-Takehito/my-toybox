@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - ProgressiveBlurScreen
+
 /// A view that continuously animates a blur effect across a static image.
 ///
 /// The blur radius changes over time using a sine wave,
@@ -14,7 +16,7 @@ struct ProgressiveBlurScreen: View {
             let time = context.date.timeIntervalSince(start)
 
             // Blur radius oscillates between 0 and 40 using a sine wave.
-            let radius = 20 * (sin(time - .pi/2) + 1)
+            let radius = 20 * (sin(time - .pi / 2) + 1)
 
             Image("waterwheel", bundle: .module)
                 .resizable()
@@ -23,6 +25,8 @@ struct ProgressiveBlurScreen: View {
         }
     }
 }
+
+// MARK: - ProgressiveBlur
 
 /// A custom view modifier that applies a progressive Gaussian blur
 /// using a Metal shader. The blur radius can be dynamically adjusted.
