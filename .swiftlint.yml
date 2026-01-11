@@ -1,0 +1,194 @@
+# SwiftLint Configuration for Confetti
+# Swift 6.0 / iOS 18+ / macOS 15+ 向けモダン設定
+
+# Paths to include
+included:
+  - App/MyToybox
+  - Packages/Sources
+  - Packages/Tests
+  - Packages/Plugins
+
+# Paths to exclude
+excluded:
+  - App/MyToybox/Resources
+  - App/MyToybox.xcodeproj
+  - MyToybox.xcworkspace
+  - Packages/.build
+  - Packages/.swiftpm
+  - Packages/Package.swift
+  - Scripts
+
+# =============================================================================
+# Disabled Rules
+# =============================================================================
+# SwiftFormat と重複するルールや、プロジェクトのスタイルに合わないルールを無効化
+disabled_rules:
+  - trailing_comma          # SwiftFormat で制御
+  - opening_brace           # SwiftFormat で制御
+  - identifier_name         # 短い変数名（x, y, id 等）を許可
+  - type_name               # 柔軟な型名を許可
+  - todo                    # TODO/FIXME コメントを許可
+
+# =============================================================================
+# Opt-in Rules (モダンなルールを積極採用)
+# =============================================================================
+opt_in_rules:
+  # --- Performance (パフォーマンス最適化) ---
+  - empty_count                       # .count == 0 より .isEmpty を推奨
+  - empty_string                      # "" より .isEmpty を推奨
+  - empty_collection_literal          # 空コレクションリテラルの最適化
+  - first_where                       # filter().first より first(where:)
+  - last_where                        # filter().last より last(where:)
+  - sorted_first_last                 # sorted().first より min()
+  - contains_over_filter_count        # filter().count より contains
+  - contains_over_filter_is_empty     # filter().isEmpty より contains
+  - contains_over_first_not_nil       # first(where:) != nil より contains
+  - contains_over_range_nil_comparison
+  - flatmap_over_map_reduce           # map + reduce より flatMap
+  - reduce_into                       # reduce より reduce(into:)
+  - final_test_case                   # テストクラスに final を付与
+
+  # --- Safety (安全性) ---
+  - force_unwrapping                  # ! の使用を警告
+  - implicitly_unwrapped_optional     # 暗黙的アンラップを警告
+  - overridden_super_call             # super 呼び出し漏れを検知
+  - unowned_variable_capture          # unowned キャプチャの危険性
+  - discarded_notification_center_observer  # Observer の解放漏れ
+  - yoda_condition                    # 定数を左辺に置くスタイルを禁止
+  - identical_operands                # 同一オペランドの比較を検知
+  - unhandled_throwing_task           # Task 内の未処理エラー
+
+  # --- Swift Concurrency (Swift 6 対応) ---
+  - async_without_await               # async 関数内で await がない場合
+
+  # --- SwiftUI 専用ルール ---
+  - private_swiftui_state             # @State は private に
+  - accessibility_label_for_image     # Image にアクセシビリティラベル
+  - accessibility_trait_for_button    # ボタンにアクセシビリティ trait
+
+  # --- Modern Swift Idioms (モダン Swift) ---
+  - modifier_order                    # 修飾子の順序を統一
+  - shorthand_optional_binding        # if let x = x より if let x
+  - prefer_self_in_static_references  # static メンバで Self を使用
+  - prefer_self_type_over_type_of_self
+  - prefer_zero_over_explicit_init    # .zero を推奨
+  - direct_return                     # 冗長な変数を排除
+  - implicit_return                   # 単一式の return を省略
+  - redundant_type_annotation         # 冗長な型注釈を排除
+  - redundant_nil_coalescing          # 冗長な ?? nil を排除
+  - redundant_self_in_closure         # クロージャ内の冗長な self
+  - toggle_bool                       # x = !x より x.toggle()
+  - joined_default_parameter          # .joined() のデフォルト引数
+  - discouraged_optional_boolean      # Bool? を避ける
+  - discouraged_optional_collection   # [T]? より [T] を推奨
+  - discouraged_none_name             # none という名前を避ける
+
+  # --- Code Organization (コード整理) ---
+  - sorted_imports                    # import 文をソート
+  - closure_end_indentation           # クロージャの閉じ括弧のインデント
+  - closure_spacing                   # クロージャ内のスペース
+  - collection_alignment              # コレクションリテラルの整列
+  - multiline_function_chains         # メソッドチェーンの改行
+  - multiline_literal_brackets        # 複数行リテラルの括弧
+  - multiline_parameters              # 関数パラメータの改行
+  - operator_usage_whitespace         # 演算子周りのスペース
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace_between_cases # switch case 間の空行
+
+  # --- Testing (テスト品質) ---
+  - balanced_xctest_lifecycle         # setUp/tearDown の対称性
+  - empty_xctest_method               # 空のテストメソッド
+  - single_test_class                 # ファイルごとに1テストクラス
+  - xct_specific_matcher              # 適切な XCT アサーションを使用
+
+  # --- Documentation (ドキュメント品質) ---
+  - fatal_error_message               # fatalError にメッセージを要求
+  - period_spacing                    # ピリオド後のスペース
+
+  # --- Other (その他) ---
+  - closure_body_length               # クロージャのボディ長制限
+  - self_binding                      # self のバインディング名を統一
+  - shorthand_argument                # 省略引数 ($0, $1) の制限
+
+# =============================================================================
+# Rule Configurations
+# =============================================================================
+
+# 行の長さ (SwiftFormat の maxwidth: 150 と統一)
+line_length:
+  warning: 150
+  error: 200
+  ignores_comments: true
+  ignores_urls: true
+  ignores_function_declarations: false
+  ignores_interpolated_strings: true
+
+# ファイルの長さ
+file_length:
+  warning: 700
+  error: 1500
+  ignore_comment_only_lines: true
+
+# 型のボディ長
+type_body_length:
+  warning: 250
+  error: 400
+
+# 関数のボディ長
+function_body_length:
+  warning: 50
+  error: 100
+
+# クロージャのボディ長
+closure_body_length:
+  warning: 50
+  error: 100
+
+# 関数パラメータ数
+function_parameter_count:
+  warning: 5
+  error: 8
+  ignores_default_parameters: true
+
+# サイクロマティック複雑度
+cyclomatic_complexity:
+  warning: 10
+  error: 20
+  ignores_case_statements: true
+
+# 大きなタプル
+large_tuple:
+  warning: 3
+  error: 4
+
+# ネストの深さ
+nesting:
+  type_level:
+    warning: 2
+    error: 3
+  function_level:
+    warning: 3
+    error: 5
+
+# 修飾子の順序 (Swift 6 推奨順)
+modifier_order:
+  preferred_modifier_order:
+    - override
+    - acl
+    - setterACL
+    - dynamic
+    - mutators
+    - lazy
+    - final
+    - required
+    - convenience
+    - typeMethods
+    - owned
+
+# self のバインディング名
+self_binding:
+  bind_identifier: self
+
+# 省略引数 ($0, $1 など)
+shorthand_argument:
+  allow_until_line_after_opening_brace: 3
