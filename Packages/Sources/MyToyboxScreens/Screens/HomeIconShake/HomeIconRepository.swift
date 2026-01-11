@@ -15,7 +15,7 @@ actor HomeIconRepository {
         .brown, .mint, .yellow, .pink, .indigo, .purple,
     ]
 
-    private var items: [HomeIcon]?
+    private var items: [HomeIcon] = []
 
     func fetch(numberOfChunk: Int) -> [[HomeIcon]] {
         let items = fetch()
@@ -32,7 +32,7 @@ actor HomeIconRepository {
     }
 
     func fetch() -> [HomeIcon] {
-        if let items {
+        if !items.isEmpty {
             return items
         }
         let symbols = Self.symbols
