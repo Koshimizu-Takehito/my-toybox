@@ -5,7 +5,7 @@ import SwiftUI
 /// A screen that visually represents a percentage using a circular wave animation.
 /// The user can adjust the percentage using a slider.
 struct WaveCircleScreen: View {
-    @State var percent = 0.50
+    @State private var percent = 0.50
 
     var body: some View {
         VStack {
@@ -13,7 +13,7 @@ struct WaveCircleScreen: View {
             WaveCircleView(percent: percent)
 
             // A slider to change the percentage value interactively.
-            Slider(value: $percent.animation(), in: 0...1, step: 0.01)
+            Slider(value: $percent.animation(), in: 0 ... 1, step: 0.01)
         }
         .foregroundStyle(.tint)
         .tint(.blue)
@@ -119,7 +119,6 @@ private struct WaveShape: Shape {
         }
     }
 }
-
 
 // MARK: - Preview
 

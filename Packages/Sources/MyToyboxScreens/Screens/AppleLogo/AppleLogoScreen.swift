@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - AppleLogoScreen
+
 struct AppleLogoScreen: View {
     var body: some View {
         MultiColorImage(image: .applelogo, colors: .rainbow)
@@ -7,6 +9,8 @@ struct AppleLogoScreen: View {
             .padding()
     }
 }
+
+// MARK: - MultiColorImage
 
 struct MultiColorImage: View {
     var image: Image
@@ -36,14 +40,14 @@ struct MultiColorImage: View {
     }
 }
 
-extension Image {
-    fileprivate static var applelogo: Self {
+private extension Image {
+    static var applelogo: Self {
         Image(systemName: "applelogo")
     }
 }
 
-extension [Color] {
-    fileprivate static let rainbow: Self = [
+private extension [Color] {
+    static let rainbow: Self = [
         .green,
         .green,
         .green,

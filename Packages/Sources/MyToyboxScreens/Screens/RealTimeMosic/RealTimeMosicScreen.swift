@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - RealTimeMosicScreen
+
 /// A sample view that plays a remote video and applies a controllable mosaic shader.
 ///
 /// This view demonstrates how to:
@@ -17,7 +19,9 @@ struct RealTimeMosicScreen: View {
 
     /// An observable object that provides decoded video frames and playback state.
     @State private var provider = VideoImageProvider(
-        url: URL(string: "https://devstreaming-cdn.apple.com/videos/wwdc/2025/102/2/137f7e3a-caee-4bb1-bdea-adca731aa1ed/downloads/wwdc2025-102_hd.mp4")!
+        url: URL(
+            string: "https://devstreaming-cdn.apple.com/videos/wwdc/2025/102/2/137f7e3a-caee-4bb1-bdea-adca731aa1ed/downloads/wwdc2025-102_hd.mp4"
+        )!
     )
 
     /// The size of the content area used to normalize the drag position.
@@ -132,7 +136,7 @@ struct RealTimeMosicScreen: View {
     /// displays the current playback time and total duration.
     @ViewBuilder
     private func slider() -> some View {
-        Slider(value: $provider.progress, in: 0...1) {
+        Slider(value: $provider.progress, in: 0 ... 1) {
             Text("Position")
         } minimumValueLabel: {
             Text(timeString(from: provider.currentTime))
@@ -164,6 +168,8 @@ struct RealTimeMosicScreen: View {
         return String(format: "%d:%02d", m, s)
     }
 }
+
+// MARK: - MosaicEffect
 
 /// A view modifier that applies a mosaic shader to its content.
 ///

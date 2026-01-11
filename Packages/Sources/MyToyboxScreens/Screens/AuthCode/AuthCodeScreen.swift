@@ -36,7 +36,7 @@ private struct AuthCodeInput: View {
     ///   - count: The number of input fields to display.
     init(digits: Binding<[Int]>, count: Int) {
         _digits = digits
-        values = Array(repeating: AuthCodeInput.space, count: count)
+        self.values = Array(repeating: Self.space, count: count)
     }
 
     var body: some View {
@@ -76,7 +76,7 @@ private struct AuthCodeInput: View {
 
         // Handle backspacing by clearing the previous field if needed.
         if values[focusedIndex].isEmpty, focusedIndex > 0 {
-            values[focusedIndex - 1] = AuthCodeInput.space
+            values[focusedIndex - 1] = Self.space
         }
 
         // Concatenate numeric characters only.
@@ -87,8 +87,8 @@ private struct AuthCodeInput: View {
         // Reconstruct the field values with valid input and padding.
         self.values = joined
             .prefix(values.count)
-            .map { AuthCodeInput.space + String($0) }
-            + Array(repeating: AuthCodeInput.space, count: max(values.count - joined.count, 0))
+            .map { Self.space + String($0) }
+            + Array(repeating: Self.space, count: max(values.count - joined.count, 0))
 
         // Adjust the focus based on input state.
         self.focusedIndex = values[focusedIndex].isEmpty

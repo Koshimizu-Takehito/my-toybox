@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Demo Screen
+// MARK: - StrokeModifierDemoScreen
 
 /// A sample screen demonstrating three stacked stroke effects produced by
 /// `StrokeModifier`.
@@ -60,7 +60,7 @@ extension View {
     }
 }
 
-// MARK: - Stroke Modifier
+// MARK: - StrokeModifier
 
 /// A `ViewModifier` that renders a blurred, outward-growing outline
 /// (“stroke”) surrounding the target view.

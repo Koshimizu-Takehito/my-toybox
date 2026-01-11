@@ -121,9 +121,17 @@ xed .
 |---------|------|
 | `make help` | 利用可能なコマンドを表示 |
 | `make open` | プロジェクトを Xcode で開く |
+| `make setup` | Mint（必要に応じて）と依存関係をインストール |
+| `make sync` | 最新の変更を取得し、依存関係を更新 |
 | `make new-screen` | 新規画面を作成（対話モード） |
 | `make new-screen NAME=Foo` | `Foo` という名前の新規画面を作成 |
 | `make new-screen NAME=Foo SHADER=yes` | Metal シェーダー付きの新規画面を作成 |
+| `make lint` | SwiftLint を実行 |
+| `make lint-fix` | SwiftLint を自動修正モードで実行 |
+| `make lint-strict` | SwiftLint を厳密モードで実行（警告をエラーとして扱う、CI用） |
+| `make format` | SwiftFormat でコードをフォーマット |
+| `make format-check` | コードフォーマットをチェック（変更なし） |
+| `make fix` | コードをフォーマットし、自動修正を適用 |
 | `make clean` | ビルドアーティファクトを削除 |
 
 ### 新規画面の作成

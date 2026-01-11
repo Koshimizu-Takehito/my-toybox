@@ -30,7 +30,7 @@ final class TagSelectionModel {
     }
 }
 
-// MARK: - TagSelectionModel.Selection
+// MARK: TagSelectionModel.Selection
 
 extension TagSelectionModel {
     /// Represents a single tag's selection state.
@@ -46,7 +46,7 @@ extension TagSelectionModel {
     }
 }
 
-// MARK: - Identifiable Conformance
+// MARK: - TagSelectionModel.Selection + Identifiable
 
 extension TagSelectionModel.Selection: Identifiable {
     /// Use the underlying `Tag` as the identifier.
@@ -55,13 +55,13 @@ extension TagSelectionModel.Selection: Identifiable {
 
 // MARK: - Array<Selection> Convenience Initializer
 
-extension Array where Element == TagSelectionModel.Selection {
+private extension [TagSelectionModel.Selection] {
     /// Creates a `Selection` for each tag in `Tag.allCases`, all initialized
     /// to the same selection state.
     ///
     /// - Parameter initialSelectionState: The Boolean value to assign
     ///   to each `Selection.isSelected`.
-    fileprivate init(initialSelectionState: Bool) {
+    init(initialSelectionState: Bool) {
         self = Tag.allCases.map { tag in
             .init(tag: tag, isSelected: initialSelectionState)
         }

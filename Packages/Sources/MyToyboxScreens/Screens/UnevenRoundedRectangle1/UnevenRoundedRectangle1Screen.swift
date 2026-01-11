@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - UnevenRoundedRectangle1Screen
+
 struct UnevenRoundedRectangle1Screen: View {
     var body: some View {
         Group {
@@ -18,6 +20,8 @@ struct UnevenRoundedRectangle1Screen: View {
         .padding()
     }
 }
+
+// MARK: - HelloWorld
 
 private struct HelloWorld: View {
     var body: some View {

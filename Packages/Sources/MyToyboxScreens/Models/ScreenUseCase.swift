@@ -6,11 +6,11 @@ import Foundation
 ///
 /// This runs in an actor to ensure safe concurrency.
 actor ScreenUseCase {
-    private(set) var screens: [Screen]?
+    private(set) var screens: [Screen] = []
 
     /// Loads and decodes the list of available screens from the bundle.
-    func fetch() async throws -> [Screen] {
-        if let screens {
+    func fetch() throws -> [Screen] {
+        if !screens.isEmpty {
             return screens
         }
         guard let url = Bundle.module.url(forResource: "Screens", withExtension: "json") else {

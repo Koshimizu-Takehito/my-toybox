@@ -1,12 +1,12 @@
 import SwiftUI
 
-// MARK: - 🪐 SolarSystem2Screen
+// MARK: - SolarSystem2Screen
 
 /// A SwiftUI view that simulates a solar system with adjustable perspective between
 /// the geocentric and heliocentric models using a faith slider.
 struct SolarSystem2Screen: View {
     let start: Date = .now
-    @State var faith = 0.0
+    @State private var faith = 0.0
 
     var body: some View {
         // The main container overlays multiple views:
@@ -35,7 +35,7 @@ struct SolarSystem2Screen: View {
     }
 }
 
-// MARK: - 🎚️ FaithSlider
+// MARK: - FaithSlider
 
 /// A slider UI to control the `faith` parameter, which linearly interpolates between
 /// geocentric (0.0) and heliocentric (1.0) planetary motion models.
@@ -46,7 +46,7 @@ private struct FaithSlider: View {
         // A horizontal layout containing a slider and a dynamic percentage label
         HStack {
             // Slider to control the faith value (0.0 to 1.0), with animation
-            Slider(value: $faith.animation(.linear), in: 0.0...1.0)
+            Slider(value: $faith.animation(.linear), in: 0.0 ... 1.0)
 
             // Percentage label aligned to the right
             ZStack(alignment: .trailing) {
@@ -56,9 +56,9 @@ private struct FaithSlider: View {
                 // Actual visible percentage that updates with faith value
                 Text(faith.formatted(.percent.rounded(rule: .up, increment: 1)))
             }
-            .contentTransition(.numericText())  // Smooth numeric transition
-            .foregroundStyle(.white)  // White text color
-            .monospacedDigit()  // Monospaced digits for stable layout
+            .contentTransition(.numericText()) // Smooth numeric transition
+            .foregroundStyle(.white) // White text color
+            .monospacedDigit() // Monospaced digits for stable layout
         }
         // Position the slider at the bottom of the screen
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
@@ -66,7 +66,7 @@ private struct FaithSlider: View {
     }
 }
 
-// MARK: - 🌍 SolarSystemView
+// MARK: - SolarSystemView
 
 /// A view that displays all planets and the sun as animated circular bodies,
 /// orbiting based on the `faith` value and elapsed time.
@@ -86,7 +86,7 @@ private struct SolarSystemView: View {
                 Sphere(faith: faith, star: .sun, center: earth)
                     .frame(width: radius)
                 // Planets
-                ForEach(0..<Star.planets.count, id: \.self) { index in
+                ForEach(0 ..< Star.planets.count, id: \.self) { index in
                     let planet = Star.planets[index]
                     Sphere(
                         faith: faith, star: planet, center: earth, offset: offset(index), time: time
@@ -100,7 +100,7 @@ private struct SolarSystemView: View {
     }
 }
 
-// MARK: - 🌀 OrbitsView
+// MARK: - OrbitsView
 
 /// A background visualization of the orbital paths of each celestial body.
 /// The appearance and motion depend on the `faith` parameter.
@@ -115,7 +115,7 @@ private struct OrbitsView: View {
                 .stroke(lineWidth: 1.5)
                 .foregroundStyle(Star.sun.color)
             // Planets
-            ForEach(0..<Star.planets.count, id: \.self) { index in
+            ForEach(0 ..< Star.planets.count, id: \.self) { index in
                 let planet = Star.planets[index]
                 Orbit(faith: faith, radius: radius, index: index, target: planet)
                     .stroke(lineWidth: 1)
@@ -128,7 +128,7 @@ private struct OrbitsView: View {
     }
 }
 
-// MARK: - 💫 Orbit
+// MARK: - Orbit
 
 /// A `Shape` that draws the orbital path of a celestial body
 /// by computing positions over time using the given model (`faith`).
@@ -160,7 +160,8 @@ private struct Orbit: Shape {
             let earth = Sphere(star: .earth, offset: offset(2), time: 0)
             // Compute the target planet's position relative to Earth
             let planet = Sphere(
-                faith: faith, star: target, center: earth, offset: offset(index), time: 0)
+                faith: faith, star: target, center: earth, offset: offset(index), time: 0
+            )
             // Calculate the orbit start point, adjusted based on faith
             let point = planet.point - planet.faith * planet.center
             // Move the path's start point to the computed position
@@ -168,7 +169,7 @@ private struct Orbit: Shape {
             // Determine the appropriate number of samples based on orbit speed
             let maxSpeed = target.speed > 1 ? target.speed : 1 / target.speed
             // Iterate to simulate orbit progression across time (0 to ~1 second)
-            for step in 0...Int(360.0 * maxSpeed) {
+            for step in 0 ... Int(360.0 * maxSpeed) {
                 // Normalize step into a time value between 0.0 and 1.0
                 let time = Double(step) / 360.0
                 // Recalculate Earth's position at this time
@@ -184,12 +185,12 @@ private struct Orbit: Shape {
     }
 }
 
-// MARK: - 🌕 Sphere
+// MARK: - Sphere
 
 /// A geometric and visual representation of a celestial body (planet or star).
 /// When used as a View, it renders itself as a circle offset from its center,
 /// simulating orbital motion.
-nonisolated private struct Sphere {
+private nonisolated struct Sphere {
     var color: Color = .clear
     var center: CGPoint = .zero
     var offset = 0.0
@@ -202,8 +203,8 @@ nonisolated private struct Sphere {
     }
 }
 
-nonisolated extension Sphere {
-    fileprivate init(
+private nonisolated extension Sphere {
+    init(
         faith: Double = 0,
         star: Star,
         center: Sphere = Sphere(),
@@ -218,6 +219,8 @@ nonisolated extension Sphere {
     }
 }
 
+// MARK: View
+
 extension Sphere: View {
     var body: some View {
         let point = point - faith * center
@@ -226,6 +229,8 @@ extension Sphere: View {
     }
 }
 
+// MARK: Animatable
+
 extension Sphere: Animatable {
     var animatableData: Double {
         get { faith }
@@ -233,42 +238,42 @@ extension Sphere: Animatable {
     }
 }
 
-// MARK: - 🌟 Star
+// MARK: - Star
 
 /// A model representing a star or planet in the solar system, including its color and orbital speed.
-nonisolated private struct Star: Hashable, Identifiable {
+private nonisolated struct Star: Hashable, Identifiable {
     var id = UUID()
     var color: Color
     var speed: Double
 
-    static var sun: Star {
-        Star(color: .red.mix(with: .orange, by: 0.2), speed: 1)
+    static var sun: Self {
+        Self(color: .red.mix(with: .orange, by: 0.2), speed: 1)
     }
 
-    static var earth: Star {
-        Star(color: .green, speed: 1)
+    static var earth: Self {
+        Self(color: .green, speed: 1)
     }
 
-    static let planets: [Star] = [
-        Star(color: .blue, speed: 1 / 0.2),
-        Star(color: .yellow, speed: 1 / 0.5),
-        Star(color: .green, speed: 1),
-        Star(color: .red, speed: 1 / 2),
-        Star(color: .brown, speed: 1 / 10),
-        Star(color: .gray, speed: 1 / 20),
+    static let planets: [Self] = [
+        Self(color: .blue, speed: 1 / 0.2),
+        Self(color: .yellow, speed: 1 / 0.5),
+        Self(color: .green, speed: 1),
+        Self(color: .red, speed: 1 / 2),
+        Self(color: .brown, speed: 1 / 10),
+        Self(color: .gray, speed: 1 / 20),
     ]
 }
 
-nonisolated extension CGPoint {
-    fileprivate static func + (_ lhs: Self, _ rhs: Self) -> Self {
+private nonisolated extension CGPoint {
+    static func + (_ lhs: Self, _ rhs: Self) -> Self {
         self.init(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
 
-    fileprivate static func - (_ lhs: Self, _ rhs: Self) -> Self {
+    static func - (_ lhs: Self, _ rhs: Self) -> Self {
         self.init(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
 
-    fileprivate static func * (_ lhs: Double, _ rhs: Self) -> Self {
+    static func * (_ lhs: Double, _ rhs: Self) -> Self {
         self.init(x: lhs * rhs.x, y: lhs * rhs.y)
     }
 }

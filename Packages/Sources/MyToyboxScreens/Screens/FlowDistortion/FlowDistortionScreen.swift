@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - FlowDistortionScreen
+
 public struct FlowDistortionScreen: View {
     @State private var start = Date.now
     @State private var model = Model()
@@ -46,9 +48,9 @@ private extension FlowDistortionScreen {
 
         var body: some View {
             VStack(alignment: .trailing) {
-                Slider(value: $model.distortionStrength, in: 0.01...0.03)
-                Slider(value: $model.damping, in: 0.10...1.00)
-                Slider(value: $model.noiseScale, in: 1.0...3.0)
+                Slider(value: $model.distortionStrength, in: 0.01 ... 0.03)
+                Slider(value: $model.damping, in: 0.10 ... 1.00)
+                Slider(value: $model.noiseScale, in: 1.0 ... 3.0)
                 Divider()
                 Button("Reset") { model = Model() }
             }

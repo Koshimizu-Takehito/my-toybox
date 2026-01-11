@@ -40,10 +40,10 @@ public struct RootScreen: View {
     }
 }
 
-extension RootScreen {
+private extension RootScreen {
     /// The sidebar view that displays a list of available screens.
     @ViewBuilder
-    fileprivate func sidebarView() -> some View {
+    func sidebarView() -> some View {
         List(viewModel.filteredScreens(), selection: $selection) { screen in
             NavigationLink(value: screen) {
                 VStack(alignment: .leading) {
@@ -60,15 +60,15 @@ extension RootScreen {
         .toolbar {
             TagPicker()
         }
-#if os(iOS)
+        #if os(iOS)
         .navigationBarTitle("MyToybox")
         .navigationBarTitleDisplayMode(.inline)
-#endif
+        #endif
     }
 
     /// The detail view that renders the selected screen.
     @ViewBuilder
-    fileprivate func detailView() -> some View {
+    func detailView() -> some View {
         NavigationStack {
             Group {
                 if let selection {
@@ -91,7 +91,6 @@ extension RootScreen {
         }
     }
 }
-
 
 #Preview {
     RootScreen()

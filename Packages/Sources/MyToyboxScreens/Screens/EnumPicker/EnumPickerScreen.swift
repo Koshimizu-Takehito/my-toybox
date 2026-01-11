@@ -9,7 +9,7 @@ import SwiftUI
 /// - `DynamicTypeSize`: dynamic type scaling size
 struct EnumPickerScreen: View {
     @State private var leading: Font.Leading = .standard
-    @State private var design: Font.Design = Font.Design.default
+    @State private var design: Font.Design = .default
     @State private var dynamicTypeSize: DynamicTypeSize = .medium
 
     var body: some View {

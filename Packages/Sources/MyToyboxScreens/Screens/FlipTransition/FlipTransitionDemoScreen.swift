@@ -102,11 +102,13 @@ struct FlipTransition: Transition {
     private func angle(for phase: TransitionPhase) -> Double {
         switch phase {
         case .identity:
-            return 0
+            0
+
         case .willAppear:
-            return -180
+            -180
+
         case .didDisappear:
-            return 180
+            180
         }
     }
 
@@ -114,9 +116,10 @@ struct FlipTransition: Transition {
     private func opacity(for phase: TransitionPhase) -> Double {
         switch phase {
         case .identity:
-            return 1
+            1
+
         case .willAppear, .didDisappear:
-            return 0
+            0
         }
     }
 }

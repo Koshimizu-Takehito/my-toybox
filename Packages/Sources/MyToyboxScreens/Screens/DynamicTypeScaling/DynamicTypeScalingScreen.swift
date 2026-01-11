@@ -22,7 +22,7 @@ struct DynamicTypeScalingScreen: View {
                 .contentTransition(.identity)
 
             // Slider to adjust the dynamic type size index
-            Slider(value: $dynamicTypeSizeIndex.animation(), in: 0...11)
+            Slider(value: $dynamicTypeSizeIndex.animation(), in: 0 ... 11)
         }
         .font(.system(size: 30).monospacedDigit().bold())
         .padding()

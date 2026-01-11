@@ -5,8 +5,8 @@ import SwiftUI
 /// A demo screen showcasing a horizontal 3D-style picker built with `HPicker`.
 /// Users can scroll through numbered items, and the currently selected item is highlighted.
 struct HorizontalPickerScreen: View {
-    @State var selection: Int?
-    let items = Array(0..<20)
+    @State private var selection: Int?
+    let items = Array(0 ..< 20)
 
     var body: some View {
         HPicker(items: items, selection: $selection, numberOfDisplays: 9) { item in
@@ -59,13 +59,13 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
             ScrollView(.horizontal) {
                 ScrollViewReader { scrollView in
                     HStack(spacing: 0) {
-                        ForEach(0..<items.count, id: \.self) { index in
+                        ForEach(0 ..< items.count, id: \.self) { index in
                             // Determine item's distance from the scroll center
                             let offset = (Double(index) - scrollOffset / widthPerItem)
                             // Convert offset to rotation angle
                             let rotationLimit = min(max(offset / (visibleCount / 2), -6), 6)
                             let angle = rotationLimit * .pi / 3
-                            let clampedAngle = min(max(angle, -(.pi/2 - 0.001)), .pi/2 - 0.001)
+                            let clampedAngle = min(max(angle, -(.pi / 2 - 0.001)), .pi / 2 - 0.001)
 
                             let item = items[index]
                             content(item)
@@ -121,7 +121,7 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
             .overlay {
                 // Frame outline for the centered (selected) item
                 RoundedRectangle(cornerRadius: 4)
-                    .stroke(Color(red: 229/255, green: 229/255, blue: 234/255), lineWidth: 4)
+                    .stroke(Color(red: 229 / 255, green: 229 / 255, blue: 234 / 255), lineWidth: 4)
                     .scaledToFit()
                     .shadow(radius: 2, x: 0, y: 2)
             }
@@ -135,7 +135,6 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
         }
     }
 }
-
 
 // MARK: - ItemView
 
@@ -157,7 +156,6 @@ private struct ItemView: View {
             }
     }
 }
-
 
 #Preview {
     HorizontalPickerScreen()

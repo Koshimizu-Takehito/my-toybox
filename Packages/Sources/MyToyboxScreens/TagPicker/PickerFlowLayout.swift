@@ -1,4 +1,5 @@
 import SwiftUI
+
 // https://github.com/apple/sample-food-truck/blob/main/App/General/FlowLayout.swift
 
 // MARK: - PickerFlowLayout
@@ -20,7 +21,7 @@ struct PickerFlowLayout: Layout {
     func sizeThatFits(
         proposal: ProposedViewSize,
         subviews: Subviews,
-        cache: inout Void
+        cache _: inout Void
     ) -> CGSize {
         let layout = FlowResult(
             in: proposal.replacingUnspecifiedDimensions().width,
@@ -36,7 +37,7 @@ struct PickerFlowLayout: Layout {
         in bounds: CGRect,
         proposal: ProposedViewSize,
         subviews: Subviews,
-        cache: inout Void
+        cache _: inout Void
     ) {
         let layout = FlowResult(
             in: proposal.replacingUnspecifiedDimensions().width,
@@ -102,7 +103,7 @@ struct PickerFlowLayout: Layout {
         init(
             in maxPossibleWidth: Double,
             subviews: Subviews,
-            alignment: Alignment,
+            alignment _: Alignment,
             spacing: CGFloat?
         ) {
             var itemsInRow = 0
@@ -117,7 +118,7 @@ struct PickerFlowLayout: Layout {
                 var widthWithSpacing = size.width + spacingBeforeCurrent
 
                 // If this item doesn't fit, finalize the current row
-                if index != 0 && widthWithSpacing > remainingWidth {
+                if index != 0, widthWithSpacing > remainingWidth {
                     finalizeRow(at: index - 1)
                     spacingBeforeCurrent = spacingBefore(index: index)
                     widthWithSpacing = size.width + spacingBeforeCurrent
@@ -150,7 +151,7 @@ struct PickerFlowLayout: Layout {
 
                 rows.append(
                     Row(
-                        range: startIndex..<lastIndex + 1,
+                        range: startIndex ..< lastIndex + 1,
                         xOffsets: xOffsets,
                         frame: CGRect(x: 0, y: rowMinY, width: rowWidth, height: rowHeight)
                     )
@@ -179,9 +180,9 @@ private extension HorizontalAlignment {
     /// Maps `.leading` → 0, `.center` → 0.5, `.trailing` → 1.0
     nonisolated var percent: Double {
         switch self {
-        case .leading: return 0
-        case .trailing: return 1
-        default: return 0.5
+        case .leading: 0
+        case .trailing: 1
+        default: 0.5
         }
     }
 }
@@ -190,9 +191,9 @@ private extension VerticalAlignment {
     /// Maps `.top` → 0, `.center` → 0.5, `.bottom` → 1.0
     nonisolated var percent: Double {
         switch self {
-        case .top: return 0
-        case .bottom: return 1
-        default: return 0.5
+        case .top: 0
+        case .bottom: 1
+        default: 0.5
         }
     }
 }

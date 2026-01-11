@@ -43,7 +43,7 @@ nonisolated struct LissajousCurve1 {
 /// Users can adjust parameters and observe their effects in real time.
 struct LissajousCurveDemoScreen1: View {
     /// State model holding all curve parameters.
-    @State var curve = LissajousCurve1()
+    @State private var curve = LissajousCurve1()
 
     var body: some View {
         VStack(spacing: 16) {
@@ -127,7 +127,7 @@ private struct LissajousCurveShape: Shape {
 
             // Sample points along t in [0, 2π] and construct the curve.
             path.move(to: curve.point(at: 0, center: center, radius: radius))
-            for i in 1...curve.samples {
+            for i in 1 ... curve.samples {
                 path.addLine(to: curve.point(at: i, center: center, radius: radius))
             }
         }
@@ -160,10 +160,10 @@ private struct LissajousCurveControlView: View {
             Grid(horizontalSpacing: 8, verticalSpacing: 4) {
                 GridRow {
                     ZStack(alignment: .trailing) {
-                        Text("99").hidden()  // Alignment placeholder.
+                        Text("99").hidden() // Alignment placeholder.
                         Text("\(Int(curve.k))")
                     }
-                    Slider(value: $curve.k.animation(), in: 1...10)
+                    Slider(value: $curve.k.animation(), in: 1 ... 10)
                         .tint(.colorX(curve))
                 }
                 GridRow {
@@ -171,7 +171,7 @@ private struct LissajousCurveControlView: View {
                         Text("99").hidden()
                         Text("\(Int(curve.l))")
                     }
-                    Slider(value: $curve.l.animation(), in: 1...10)
+                    Slider(value: $curve.l.animation(), in: 1 ... 10)
                         .tint(.colorY(curve))
                 }
             }
@@ -187,21 +187,21 @@ private struct LissajousCurveControlView: View {
 
 // MARK: - Color Extensions
 
-extension Color {
+private extension Color {
     /// Returns a blended color based on the Lissajous curve's k and l parameters,
     /// for use as the stroke color of the curve.
-    fileprivate static func color(_ curve: LissajousCurve1) -> Color {
+    static func color(_ curve: LissajousCurve1) -> Color {
         colorX(curve).mix(with: colorY(curve), by: 0.5)
     }
 
     /// Generates a color based on the k parameter.
-    fileprivate static func colorX(_ curve: LissajousCurve1) -> Color {
+    static func colorX(_ curve: LissajousCurve1) -> Color {
         let x = (1.0 + sin(curve.k * (2 * .pi / 20.0))) / 2.0
         return Color(hue: x, saturation: 1, brightness: 1)
     }
 
     /// Generates a color based on the l parameter.
-    fileprivate static func colorY(_ curve: LissajousCurve1) -> Color {
+    static func colorY(_ curve: LissajousCurve1) -> Color {
         let y = (1.0 + sin(curve.l * (2 * .pi / 20.0))) / 2.0
         return Color(hue: y, saturation: 1, brightness: 1)
     }

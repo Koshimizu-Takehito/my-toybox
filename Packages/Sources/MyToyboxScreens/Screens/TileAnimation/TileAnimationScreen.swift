@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - View
+// MARK: - TileAnimationScreen
 
 struct TileAnimationScreen: View {
     @State private var viewModel: ViewModel?
@@ -34,10 +34,12 @@ struct TileAnimationScreen: View {
     }
 }
 
+// MARK: TileAnimationScreen.ContentView
+
 private extension TileAnimationScreen {
     struct ContentView: View {
         var viewModel: ViewModel
-        @State var lastUpdateDate = Date.now
+        @State private var lastUpdateDate = Date.now
 
         var body: some View {
             TimelineView(.animation) { context in
@@ -45,9 +47,9 @@ private extension TileAnimationScreen {
                 let interval = date.timeIntervalSince(lastUpdateDate)
                 Grid(horizontalSpacing: .zero, verticalSpacing: .zero) {
                     let rotations = viewModel.rotations
-                    ForEach(0..<rotations.count, id: \.self) { i in
+                    ForEach(0 ..< rotations.count, id: \.self) { i in
                         GridRow {
-                            ForEach(0..<rotations[i].count, id: \.self) { j in
+                            ForEach(0 ..< rotations[i].count, id: \.self) { j in
                                 Tile(radians: Double(rotations[i][j]) * .pi / 2)
                             }
                         }
@@ -68,6 +70,8 @@ private extension TileAnimationScreen {
     }
 }
 
+// MARK: - Tile
+
 private struct Tile: View {
     let radians: Double
 
@@ -82,6 +86,8 @@ private struct Tile: View {
         }
     }
 }
+
+// MARK: - QuarterArc
 
 private struct QuarterArc: Shape {
     func path(in rect: CGRect) -> Path {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Model
+// MARK: - DotsSpinnerModel
 
 /// Holds the user‑tunable parameters for the dots spinner.
 ///
@@ -24,7 +24,7 @@ final class DotsSpinnerModel {
 
     /// Convenience computed array returning only the first `count` colors.
     var colors: [Color] {
-        Array(Self.colors[0..<min(count, Self.colors.count)])
+        Array(Self.colors[0 ..< min(count, Self.colors.count)])
     }
 
     init(count: Int = 5, width: Double = 340) {
@@ -33,7 +33,7 @@ final class DotsSpinnerModel {
     }
 }
 
-// MARK: - Demo Screen
+// MARK: - DotsSpinnerDemoScreen
 
 /// Complete sample screen that embeds the spinner and its controls.
 struct DotsSpinnerDemoScreen: View {
@@ -50,7 +50,7 @@ struct DotsSpinnerDemoScreen: View {
     }
 }
 
-// MARK: - Control Panel
+// MARK: - DotsSpinnerControl
 
 /// UI that lets the user tweak the spinner parameters in real time.
 struct DotsSpinnerControl: View {
@@ -63,12 +63,12 @@ struct DotsSpinnerControl: View {
             // Width control
             HStack {
                 Text("Width")
-                Slider(value: $model.width.animation(), in: 50...340)
+                Slider(value: $model.width.animation(), in: 50 ... 340)
             }
             Divider()
 
             // Colors / dot count control
-            Stepper(value: $model.count, in: 1...DotsSpinnerModel.colors.count) {
+            Stepper(value: $model.count, in: 1 ... DotsSpinnerModel.colors.count) {
                 Text("Colors")
             }
         }
@@ -79,7 +79,7 @@ struct DotsSpinnerControl: View {
     }
 }
 
-// MARK: - Spinner View
+// MARK: - DotsSpinnerView
 
 /// Renders an animated pair of counter‑rotating dot rings.
 ///
@@ -98,9 +98,9 @@ struct DotsSpinnerView: View {
             TimelineView(.animation) { context in
                 ZStack {
                     let count = colors.count
-                    let dotSize = (30.0 / 340.0) * side  // keeps dot size proportional
+                    let dotSize = (30.0 / 340.0) * side // keeps dot size proportional
                     let radius = 2 * dotSize
-                    ForEach(0..<count, id: \.self) { index in
+                    ForEach(0 ..< count, id: \.self) { index in
                         // Base angle that advances over time.
                         let theta = 3 * context.date.timeIntervalSinceReferenceDate
                             .truncatingRemainder(dividingBy: 2 * .pi)
@@ -137,7 +137,7 @@ struct DotsSpinnerView: View {
     }
 }
 
-// MARK: - Dot Sub‑view
+// MARK: - DotView
 
 /// Single dot that follows a circular trajectory with optional direction reversal.
 ///

@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - CollisionColorChangeScreen
+
 /// A screen that demonstrates a simple collision-based color-changing animation.
 ///
 /// An image moves within the view bounds, bouncing off the edges. Each collision
@@ -9,6 +11,8 @@ struct CollisionColorChangeScreen: View {
         CollisionAnimationView(speed: .init(dx: 100, dy: 140))
     }
 }
+
+// MARK: - CollisionAnimationView
 
 /// A view that animates an item moving within the container bounds.
 /// The item bounces off edges, and each collision triggers a color change.
@@ -79,6 +83,8 @@ private struct CollisionAnimationView: View {
     }
 }
 
+// MARK: - ItemView
+
 /// A view representing the animated item (a PlayStation logo).
 /// Its size is reported using a geometry proxy.
 private struct ItemView: View {
@@ -93,7 +99,7 @@ private struct ItemView: View {
             .padding()
             .frame(width: 120, height: 100)
             .onGeometryChange(for: CGSize.self, of: \.size) { _, newSize in
-                self.size = newSize
+                size = newSize
             }
     }
 }

@@ -3,6 +3,7 @@ import Observation
 
 extension TileAnimationScreen {
     // MARK: - Model
+
     @MainActor
     @Observable
     final class ViewModel {
@@ -13,9 +14,9 @@ extension TileAnimationScreen {
         init(row: Int, column: Int) {
             self.row = row
             self.column = column
-            self.rotations = (0..<row).map { _ in
-                (0..<column).map { _ in
-                    Int.random(in: 0..<4)
+            self.rotations = (0 ..< row).map { _ in
+                (0 ..< column).map { _ in
+                    Int.random(in: 0 ..< 4)
                 }
             }
         }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Demo Entry
+// MARK: - HomeIconDemoScreen
 
 /// Shows a 4×4 grid of SF Symbols that can enter “jiggle mode”
 /// like the iOS Home‑Screen icons.
@@ -13,7 +13,7 @@ struct HomeIconDemoScreen: View {
     }
 }
 
-// MARK: - Icon Grid
+// MARK: - HomeIconView
 
 /// A 4 × 4 grid of tappable icons whose appearance mimics
 /// Home‑Screen app icons.
@@ -45,6 +45,8 @@ struct HomeIconView: View {
     }
 }
 
+// MARK: - IconModifier
+
 struct IconModifier: ViewModifier {
     var color: Color
 
@@ -64,7 +66,7 @@ struct IconModifier: ViewModifier {
     }
 }
 
-// MARK: - Jiggle Modifier
+// MARK: - JiggleModifier
 
 /// Adds a subtle, indefinite “jiggle” animation to its content
 /// while `isEnabled` is `true`. The effect closely approximates
@@ -82,27 +84,27 @@ struct JiggleModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         // Each icon gets a slightly different offset to avoid perfect sync.
-        let baseRandomOffset: Double = isEnabled ? .random(in: -1..<1) : 0
+        let baseRandomOffset: Double = isEnabled ? .random(in: -1 ..< 1) : 0
         JiggleView(
             phase: animationPhase,
             baseRandomOffset: baseRandomOffset,
             content: content
         )
-        .id(isEnabled)  // Reset phase whenever the mode toggles.
+        .id(isEnabled) // Reset phase whenever the mode toggles.
         .onChange(of: isEnabled, initial: true) { _, editing in
             animationPhase = 0
             if editing {
-                withAnimation(.linear(duration: 0.3).repeatForever().delay(.random(in: 0..<0.2))) {
+                withAnimation(.linear(duration: 0.3).repeatForever().delay(.random(in: 0 ..< 0.2))) {
                     animationPhase = 1
                 }
             } else {
-                animationPhase = 0.25  // Quick settle‑down
+                animationPhase = 0.25 // Quick settle‑down
             }
         }
     }
 }
 
-// MARK: - Jiggle View
+// MARK: - JiggleView
 
 /// Applies a wobbling rotation and position offset based on `phase`.
 private struct JiggleView<Content: View>: View, Animatable {
@@ -115,7 +117,7 @@ private struct JiggleView<Content: View>: View, Animatable {
     nonisolated var phase: Double
 
     /// Random variance so that icons do not move in perfect unison.
-    var baseRandomOffset: Double = .random(in: -1..<1)
+    var baseRandomOffset: Double = .random(in: -1 ..< 1)
 
     /// The underlying content to animate.
     var content: Content

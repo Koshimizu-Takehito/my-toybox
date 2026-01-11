@@ -1,5 +1,5 @@
-import SwiftUI
 import MapKit
+import SwiftUI
 
 /// A SwiftUI screen that displays a `Map` view with a dynamic color overlay.
 ///
@@ -7,7 +7,7 @@ import MapKit
 /// The overlay is blended using the `.screen` blend mode to softly tint the map.
 struct ColoredMapScreen: View {
     /// The current map camera position, initially centered on Tokyo.
-    @State var position = MapCameraPosition.region(
+    @State private var position = MapCameraPosition.region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2DMake(35.685175, 139.7528),
             span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
@@ -15,7 +15,7 @@ struct ColoredMapScreen: View {
     )
 
     /// The RGB color used for the overlay tint.
-    @State var color = Color.Resolved(red: 0, green: 0, blue: 1)
+    @State private var color = Color.Resolved(red: 0, green: 0, blue: 1)
 
     var body: some View {
         Map(position: $position)
@@ -32,9 +32,9 @@ struct ColoredMapScreen: View {
             .overlay {
                 // Controls for adjusting RGB components of the overlay color.
                 VStack {
-                    Slider(value: $color.red, in: 0...1)
-                    Slider(value: $color.green, in: 0...1)
-                    Slider(value: $color.blue, in: 0...1)
+                    Slider(value: $color.red, in: 0 ... 1)
+                    Slider(value: $color.green, in: 0 ... 1)
+                    Slider(value: $color.blue, in: 0 ... 1)
                 }
                 .tint(Color(color)) // Match slider accents to the selected color.
                 .padding()

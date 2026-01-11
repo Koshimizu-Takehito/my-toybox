@@ -69,7 +69,6 @@ struct DateformatStyleScreen: View {
     }
 }
 
-
 // MARK: - DateCell
 
 /// A reusable cell that displays the formatted date using the injected style
@@ -174,15 +173,19 @@ private enum CalendarName: String, Hashable, CaseIterable, CustomStringConvertib
     var identifier: Calendar.Identifier {
         switch self {
         case .gregorian:
-            return .gregorian
+            .gregorian
+
         case .japanese:
-            return .japanese
+            .japanese
+
         case .chinese:
-            return .chinese
+            .chinese
+
         case .buddhist:
-            return .buddhist
+            .buddhist
+
         case .indian:
-            return .indian
+            .indian
         }
     }
 
@@ -191,8 +194,8 @@ private enum CalendarName: String, Hashable, CaseIterable, CustomStringConvertib
 
 // MARK: - TimeZone init extension
 
-extension TimeZone {
-    fileprivate init(_ id: TimeZoneID) {
+private extension TimeZone {
+    init(_ id: TimeZoneID) {
         self.init(identifier: id.rawValue)!
     }
 }

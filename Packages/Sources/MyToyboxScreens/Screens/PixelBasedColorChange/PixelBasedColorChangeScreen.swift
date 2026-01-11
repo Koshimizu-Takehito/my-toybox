@@ -25,7 +25,7 @@ struct PixelBasedColorChangeScreen: View {
 
     var body: some View {
         NavigationStack {
-            GeometryReader { geometry in
+            GeometryReader { _ in
                 VStack {
                     MyScrollView(image: $image)
                     Color.clear
@@ -46,7 +46,7 @@ struct PixelBasedColorChangeScreen: View {
                     Task.detached { @concurrent in
                         let isBright = image.isBrightArea(in: bounds) ?? isBright
                         Task { @MainActor in
-                            self.isBrightBackground = isBright
+                            isBrightBackground = isBright
                         }
                     }
                 }
@@ -111,7 +111,7 @@ private struct ItemView: View, Hashable {
     }
 
     var random: Double {
-        Double((0..<0xFF).randomElement()!) / Double(0xFF)
+        Double((0 ..< 0xFF).randomElement()!) / Double(0xFF)
     }
 }
 
@@ -128,7 +128,7 @@ private struct MyScrollView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(spacing: 0) {
-                ForEach(0..<300, id: \.self) { index in
+                ForEach(0 ..< 300, id: \.self) { index in
                     ItemView()
                         .frame(height: 120)
                         .id(index)
@@ -154,7 +154,7 @@ private struct UIScrollViewImageRenderer: UIViewControllerRepresentable {
     var offset: CGPoint = .zero
     @Binding var image: UIImage
 
-    func makeUIViewController(context: Context) -> AnonymousViewController {
+    func makeUIViewController(context _: Context) -> AnonymousViewController {
         AnonymousViewController()
     }
 
@@ -212,11 +212,13 @@ private struct UIScrollViewImageRenderer: UIViewControllerRepresentable {
         func find<View: UIView>(ancestor: UIView?) -> View? {
             switch ancestor {
             case nil:
-                return nil
+                nil
+
             case let target as View:
-                return target
+                target
+
             case let target?:
-                return target.subviews.lazy.map(find).compactMap(\.self).first
+                target.subviews.lazy.map(find).compactMap(\.self).first
             }
         }
     }
@@ -224,8 +226,7 @@ private struct UIScrollViewImageRenderer: UIViewControllerRepresentable {
 
 // MARK: - UIImage
 
-nonisolated extension UIImage {
-
+fileprivate nonisolated extension UIImage {
     /// Calculates the average luminance (brightness) of the specified cropped area in the image.
     ///
     /// This function reads pixel data manually and computes luminance using the standard formula:
@@ -233,20 +234,20 @@ nonisolated extension UIImage {
     ///
     /// - Parameter cropRect: A CGRect defining the region to sample (in image coordinates).
     /// - Returns: The average luminance as a Double (0.0–255.0), or `nil` on failure.
-    fileprivate func averageLuminance(in cropRect: CGRect) -> Double? {
-
+    func averageLuminance(in cropRect: CGRect) -> Double? {
         // 画像の CGImage を取り出す
-        guard let cgImage = self.cgImage else {
+        guard let cgImage else {
             return nil
         }
 
         // 座標系・サイズが正しく指定されているかを確認しつつクロップ
-        let scale = self.scale
+        let scale = scale
         let adjustedRect = CGRect(
             x: cropRect.origin.x * scale,
             y: cropRect.origin.y * scale,
             width: cropRect.size.width * scale,
-            height: cropRect.size.height * scale)
+            height: cropRect.size.height * scale
+        )
 
         guard let croppedCGImage = cgImage.cropping(to: adjustedRect) else {
             return nil
@@ -266,15 +267,15 @@ nonisolated extension UIImage {
         }
 
         // CGContext を生成し、クロップした CGImage を (0,0) に描画
-        guard
-            let context = CGContext(
-                data: rawData,
-                width: width,
-                height: height,
-                bitsPerComponent: bitsPerComponent,
-                bytesPerRow: bytesPerRow,
-                space: colorSpace,
-                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+        guard let context = CGContext(
+            data: rawData,
+            width: width,
+            height: height,
+            bitsPerComponent: bitsPerComponent,
+            bytesPerRow: bytesPerRow,
+            space: colorSpace,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+        )
         else {
             free(rawData)
             return nil
@@ -284,13 +285,13 @@ nonisolated extension UIImage {
         context.draw(croppedCGImage, in: drawRect)
 
         // 輝度を合計して最後に平均をとる
-        var totalLuminance: Double = 0.0
+        var totalLuminance = 0.0
 
         // UnsafeRawPointer を UInt8 の配列のように扱う
         let pixelBuffer = rawData.bindMemory(to: UInt8.self, capacity: width * height * 4)
 
-        for y in 0..<height {
-            for x in 0..<width {
+        for y in 0 ..< height {
+            for x in 0 ..< width {
                 let offset = (y * width + x) * 4
                 let r = Double(pixelBuffer[offset + 0])
                 let g = Double(pixelBuffer[offset + 1])
@@ -304,8 +305,7 @@ nonisolated extension UIImage {
         free(rawData)
 
         let count = Double(width * height)
-        let averageLuminance = totalLuminance / count
-        return averageLuminance
+        return totalLuminance / count
     }
 
     /// Determines whether the given cropped area of the image is considered "bright"
@@ -315,7 +315,7 @@ nonisolated extension UIImage {
     ///   - cropRect: The region to analyze.
     ///   - threshold: A luminance threshold from 0 to 255.
     /// - Returns: `true` if the average
-    fileprivate func isBrightArea(in cropRect: CGRect, threshold: Double = 128.0) -> Bool? {
+    func isBrightArea(in cropRect: CGRect, threshold: Double = 128.0) -> Bool? {
         guard let avgLum = averageLuminance(in: cropRect) else {
             return nil
         }

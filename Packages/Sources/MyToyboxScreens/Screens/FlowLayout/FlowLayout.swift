@@ -4,14 +4,14 @@ struct FlowLayout: Layout {
     var vSpacing: CGFloat = 8.0
     var hSpacing: CGFloat = 8.0
 
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
         let proposalWidth = proposal.width ?? .zero
         var remainWidth = proposalWidth - hSpacing
         var currentHeight = CGFloat.zero
         var totalSize = CGSize.zero
         for subview in subviews {
             let size = subview.sizeThatFits(.init(width: proposalWidth - 2 * hSpacing, height: .infinity))
-            if remainWidth - (size.width + hSpacing) < 0  {
+            if remainWidth - (size.width + hSpacing) < 0 {
                 totalSize.height += currentHeight
                 remainWidth = proposalWidth - hSpacing
                 currentHeight = .zero
@@ -24,7 +24,7 @@ struct FlowLayout: Layout {
         return totalSize
     }
 
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+    func placeSubviews(in bounds: CGRect, proposal _: ProposedViewSize, subviews: Subviews, cache _: inout ()) {
         var offset = CGPoint.zero
         offset.y += vSpacing
         offset.x += hSpacing
@@ -32,7 +32,7 @@ struct FlowLayout: Layout {
         var currentHeight = CGFloat.zero
         for subview in subviews {
             let size = subview.sizeThatFits(.init(width: bounds.width - 2 * hSpacing, height: .infinity))
-            if remainWidth - (size.width + hSpacing) < 0  {
+            if remainWidth - (size.width + hSpacing) < 0 {
                 offset.y += currentHeight + vSpacing
                 offset.x = hSpacing
                 currentHeight = .zero

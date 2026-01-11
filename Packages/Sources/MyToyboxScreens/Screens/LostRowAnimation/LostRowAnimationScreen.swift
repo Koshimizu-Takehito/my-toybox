@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - LostRowAnimationScreen
+
 struct LostRowAnimationScreen: View {
     @State private var item: [Item] = .samples()
     @State private var show = false
@@ -42,6 +44,8 @@ struct LostRowAnimationScreen: View {
     }
 }
 
+// MARK: - RowContent
+
 private struct RowContent: View {
     let item: Item
     let index: Int
@@ -74,6 +78,8 @@ private struct RowContent: View {
     }
 }
 
+// MARK: - Item
+
 private struct Item: Identifiable, Hashable {
     var id: String { code }
     let code: String
@@ -83,13 +89,13 @@ private struct Item: Identifiable, Hashable {
     init(code: String, name: String) {
         self.code = code
         self.name = name
-        self.price = "$\(Int.random(in: 30..<999))"
+        self.price = "$\(Int.random(in: 30 ..< 999))"
     }
 }
 
 extension [Item] {
     static func samples() -> Self {
-        return [
+        [
             Item(code: "MFST", name: "マイクロソフト"),
             Item(code: "AAPL", name: "アップル"),
             Item(code: "NVDA", name: "エヌビディア"),
@@ -116,7 +122,6 @@ private extension [[Color]] {
         [.red, .blue],
     ]
 }
-
 
 #Preview {
     LostRowAnimationScreen()
