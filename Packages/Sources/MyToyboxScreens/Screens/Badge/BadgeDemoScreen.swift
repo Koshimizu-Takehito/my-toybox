@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Demo Screen
+// MARK: - BadgeDemoScreen
 
 /// A playground‑style screen that showcases `BadgeView` along with
 /// interactive controls for both value and appearance.
@@ -22,7 +22,7 @@ struct BadgeDemoScreen: View {
     }
 }
 
-// MARK: - Badge View
+// MARK: - BadgeView
 
 /// Displays the provided value inside a capsule‑shaped badge.
 struct BadgeView<Value>: View {
@@ -65,7 +65,7 @@ struct BadgeView<Value>: View {
     private var horizontalPadding: CGFloat { 0.4 * labelSize.height }
 }
 
-// MARK: - Style Modifier
+// MARK: - BadgeStyleModifier
 
 /// Applies a `BadgeStyle` to any view, allowing reuse across the app.
 struct BadgeStyleModifier: ViewModifier {
@@ -80,7 +80,7 @@ struct BadgeStyleModifier: ViewModifier {
     }
 }
 
-// MARK: - Control Panel
+// MARK: - BadgeControl
 
 /// Hosts both the style selectors and the numeric controls.
 private struct BadgeControl: View {
@@ -100,7 +100,7 @@ private struct BadgeControl: View {
     }
 }
 
-// MARK: Style Controls
+// MARK: - BadgeStyleControl
 
 /// Lets the user tweak font, weight, and tint of the badge.
 private struct BadgeStyleControl: View {
@@ -138,7 +138,7 @@ private struct BadgeStyleControl: View {
     }
 }
 
-// MARK: Value Controls
+// MARK: - BadgeValueControl
 
 /// Provides a stepper and slider to mutate the badge’s numeric value.
 private struct BadgeValueControl: View {
@@ -146,9 +146,9 @@ private struct BadgeValueControl: View {
 
     var body: some View {
         VStack {
-            Stepper("Count \(model.number)", value: $model.number, in: -1...1000)
+            Stepper("Count \(model.number)", value: $model.number, in: -1 ... 1000)
                 .frame(maxWidth: .infinity, alignment: .trailing)
-            Slider(value: $model.slider, in: -1...1000)
+            Slider(value: $model.slider, in: -1 ... 1000)
 
             Button("Reset") {
                 withAnimation { model.number = 0 }

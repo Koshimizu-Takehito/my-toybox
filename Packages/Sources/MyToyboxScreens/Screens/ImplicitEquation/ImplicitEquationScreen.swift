@@ -2,9 +2,9 @@ import SwiftUI
 
 struct ImplicitEquationScreen: View {
     private struct Ranges {
-        let ab = 0.0...10.0
-        let iso = -1.0...1.0
-        let zoom = 0.01...1.00
+        let ab = 0.0 ... 10.0
+        let iso = -1.0 ... 1.0
+        let zoom = 0.01 ... 1.00
     }
 
     private let range = Ranges()
@@ -85,7 +85,7 @@ struct ImplicitEquationScreen: View {
     }
 
     func style(size: CGSize) -> some ShapeStyle {
-        let colors = stride(from: 0.0, to: 2.0, by: 1.0/7.0).map { hue in
+        let colors = stride(from: 0.0, to: 2.0, by: 1.0 / 7.0).map { hue in
             Color(hue: hue.truncatingRemainder(dividingBy: 1), saturation: 0.25, brightness: 1)
         }
         return RadialGradient(

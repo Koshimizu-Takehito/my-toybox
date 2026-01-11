@@ -15,16 +15,16 @@ actor HomeIconRepository {
         .brown, .mint, .yellow, .pink, .indigo, .purple,
     ]
 
-    private var items: [HomeIcon]?
+    private var items: [HomeIcon] = []
 
     func fetch(numberOfChunk: Int) -> [[HomeIcon]] {
         let items = fetch()
         let (quotient, _) = items.count.quotientAndRemainder(dividingBy: numberOfChunk)
         var result = [[HomeIcon]]()
-        for i in 0..<quotient {
-            result.append(Array(items[i * numberOfChunk..<(i + 1) * numberOfChunk]))
+        for i in 0 ..< quotient {
+            result.append(Array(items[i * numberOfChunk ..< (i + 1) * numberOfChunk]))
         }
-        let r = Array(items[quotient * numberOfChunk..<items.count])
+        let r = Array(items[quotient * numberOfChunk ..< items.count])
         if !r.isEmpty {
             result.append(r)
         }
@@ -32,7 +32,7 @@ actor HomeIconRepository {
     }
 
     func fetch() -> [HomeIcon] {
-        if let items {
+        if !items.isEmpty {
             return items
         }
         let symbols = Self.symbols

@@ -1,20 +1,20 @@
 import SwiftUI
 
 struct FlowLayoutScreen: View {
-    @State var width: CGFloat = 180
+    @State private var width: CGFloat = 180
 
     let tags: [String] = [
         "Objective-C",
         "Swift",
         "SwiftSwiftSwiftSwiftSwiftSwiftSwiftSwift",
         "Ruby", "Python", "JavaScript",
-        "Java", "C++", "C#", "Go", "Kotlin", "Rust"
+        "Java", "C++", "C#", "Go", "Kotlin", "Rust",
     ]
 
     var body: some View {
         VStack {
             Spacer()
-            Slider(value: $width.animation(), in: 100...360)
+            Slider(value: $width.animation(), in: 100 ... 360)
         }
         .background {
             FlowLayout(vSpacing: 8.0, hSpacing: 8.0) {

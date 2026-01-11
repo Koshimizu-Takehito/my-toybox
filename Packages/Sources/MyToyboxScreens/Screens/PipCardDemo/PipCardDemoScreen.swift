@@ -27,7 +27,7 @@ struct PipCardDemoScreen: View {
             let screen = geometry.frame(in: .local)
 
             CardView()
-                .onGeometryChange(for: CGSize.self, of: \.self.size) { size in
+                .onGeometryChange(for: CGSize.self, of: \.size) { size in
                     cardRect.size = size
                 }
                 .position(
@@ -91,11 +91,11 @@ struct PipCardDemoScreen: View {
 
         // Define possible snap positions: four corners and the center of the screen.
         let snapPoints: [CGPoint] = [
-            CGPoint(x: cardRect.midX, y: cardRect.midY),  // Top-left
-            CGPoint(x: screen.width - cardRect.midX, y: cardRect.midY),  // Top-right
-            CGPoint(x: screen.midX, y: screen.midY),  // Center
-            CGPoint(x: cardRect.midX, y: screen.height - cardRect.midY),  // Bottom-left
-            CGPoint(x: screen.width - cardRect.midX, y: screen.height - cardRect.midY),  // Bottom-right
+            CGPoint(x: cardRect.midX, y: cardRect.midY), // Top-left
+            CGPoint(x: screen.width - cardRect.midX, y: cardRect.midY), // Top-right
+            CGPoint(x: screen.midX, y: screen.midY), // Center
+            CGPoint(x: cardRect.midX, y: screen.height - cardRect.midY), // Bottom-left
+            CGPoint(x: screen.width - cardRect.midX, y: screen.height - cardRect.midY), // Bottom-right
         ]
 
         // Find the closest snap point by comparing Euclidean distance.
@@ -130,12 +130,12 @@ private struct CardView: View {
 // MARK: - CGPoint arithmetic extensions
 
 /// Arithmetic helpers for CGPoint to enable vector addition and subtraction.
-extension CGPoint {
-    fileprivate static func + (lhs: Self, rhs: Self) -> Self {
+private extension CGPoint {
+    static func + (lhs: Self, rhs: Self) -> Self {
         Self(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
 
-    fileprivate static func - (lhs: Self, rhs: Self) -> Self {
+    static func - (lhs: Self, rhs: Self) -> Self {
         Self(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
 }
@@ -143,12 +143,12 @@ extension CGPoint {
 // MARK: - CGSize arithmetic extensions
 
 /// Arithmetic helpers for CGSize to enable vector addition and subtraction.
-extension CGSize {
-    fileprivate static func + (lhs: Self, rhs: Self) -> Self {
+private extension CGSize {
+    static func + (lhs: Self, rhs: Self) -> Self {
         Self(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
     }
 
-    fileprivate static func - (lhs: Self, rhs: Self) -> Self {
+    static func - (lhs: Self, rhs: Self) -> Self {
         Self(width: lhs.width - rhs.width, height: lhs.height - rhs.height)
     }
 }

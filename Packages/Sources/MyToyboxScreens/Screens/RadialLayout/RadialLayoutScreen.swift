@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RadialLayoutScreen: View {
-    private static let range = 3.0...24.0
+    private static let range = 3.0 ... 24.0
     @State private var count = Self.range.lowerBound
     @State private var new = Date.now
 

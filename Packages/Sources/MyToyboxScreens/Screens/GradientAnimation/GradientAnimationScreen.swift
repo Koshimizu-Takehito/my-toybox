@@ -1,10 +1,12 @@
 import SwiftUI
 
+// MARK: - GradientAnimationScreen
+
 struct GradientAnimationScreen: View {
     private let startDate = Date()
 
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             TimelineView(.animation) { context in
                 let time = context.date.timeIntervalSince(startDate)
                 Image(systemName: "apple.logo")
@@ -21,7 +23,7 @@ struct GradientAnimationScreen: View {
 
     private func rainbow(at time: TimeInterval) -> some ShapeStyle {
         LinearGradient(
-            colors: .rainbow(hue: time/5, count: 256).reversed(),
+            colors: .rainbow(hue: time / 5, count: 256).reversed(),
             startPoint: .topTrailing,
             endPoint: .bottom
         )
@@ -30,10 +32,10 @@ struct GradientAnimationScreen: View {
 
 private extension [Color] {
     static func rainbow(hue: Double = 0, count: Int) -> Self {
-        (0..<count).map { i in
+        (0 ..< count).map { i in
             var value = hue + Double(i) / Double(count)
             value -= floor(value)
-            return Color(hue: value, saturation: 1/4, brightness: 1)
+            return Color(hue: value, saturation: 1 / 4, brightness: 1)
         }
     }
 }

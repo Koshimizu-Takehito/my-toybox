@@ -29,7 +29,7 @@ struct CountdownAnimationScreen: View {
 
             // Circular tick marks masked by progress ring
             ZStack {
-                ForEach(0..<36, id: \.self) { angle in
+                ForEach(0 ..< 36, id: \.self) { angle in
                     Capsule()
                         .frame(width: 8, height: 24)
                         .offset(x: 0, y: radius - 12)
@@ -49,10 +49,10 @@ struct CountdownAnimationScreen: View {
         .contentShape(.circle)
         .foregroundStyle(viewModel.count > 0 ? AnyShapeStyle(.foreground) : AnyShapeStyle(.red))
         .onTapGesture {
-            Task { await viewModel.restart() }
+            Task { viewModel.restart() }
         }
         .task {
-            await viewModel.restart()
+            viewModel.restart()
         }
     }
 

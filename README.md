@@ -122,9 +122,17 @@ This project includes a `Makefile` for common development tasks:
 |---------|-------------|
 | `make help` | Show available commands |
 | `make open` | Open project in Xcode |
+| `make setup` | Install Mint (if needed) and dependencies |
+| `make sync` | Pull latest changes and update dependencies |
 | `make new-screen` | Create a new screen (interactive) |
 | `make new-screen NAME=Foo` | Create a new screen named `Foo` |
 | `make new-screen NAME=Foo SHADER=yes` | Create a new screen with Metal shader |
+| `make lint` | Run SwiftLint |
+| `make lint-fix` | Run SwiftLint with auto-correction |
+| `make lint-strict` | Run SwiftLint treating warnings as errors (for CI) |
+| `make format` | Format code with SwiftFormat |
+| `make format-check` | Check code formatting (no changes) |
+| `make fix` | Format and auto-fix all code |
 | `make clean` | Remove build artifacts |
 
 ### Creating a New Screen

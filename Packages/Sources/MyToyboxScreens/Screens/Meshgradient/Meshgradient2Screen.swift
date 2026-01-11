@@ -16,7 +16,7 @@ struct Meshgradient2Screen: View {
     @State private var id = UUID()
     @State private var isDotsHidden = false
     @State private var colors: [Color] = [.black, .blue, .green]
-    @State private var offsets: [CGSize] = [CGSize].init(repeating: .zero, count: 25)
+    @State private var offsets: [CGSize] = .init(repeating: .zero, count: 25)
     @State private var angle: Double = 0
     @State private var toolbarHidden = false
 
@@ -47,8 +47,8 @@ struct Meshgradient2Screen: View {
                 Color.black
                     .ignoresSafeArea()
             }
-            .onChange(of: colors.count) { oldValue, newValue in
-                offsets = [CGSize].init(repeating: .zero, count: colors.count * colors.count)
+            .onChange(of: colors.count) { _, _ in
+                offsets = [CGSize](repeating: .zero, count: colors.count * colors.count)
             }
         }
     }
@@ -93,7 +93,7 @@ struct Meshgradient2Screen: View {
             .opacity(toolbarHidden ? 0 : 1)
         }
         ToolbarItem(placement: .bottomBar) {
-            Slider(value: $angle, in: -(.pi)...(.pi))
+            Slider(value: $angle, in: -(.pi) ... .pi)
                 .opacity(toolbarHidden ? 0 : 1)
         }
     }
@@ -135,28 +135,28 @@ private struct MeshView: View {
                     }
                 )
                 let size = geometry.size
-                let radius = min(size.width, size.height)/20
-                ForEach(0..<height, id: \.self) { j in
-                    ForEach(0..<width, id: \.self) { i in
+                let radius = min(size.width, size.height) / 20
+                ForEach(0 ..< height, id: \.self) { j in
+                    ForEach(0 ..< width, id: \.self) { i in
                         if offsets.count > j * width + i {
                             Dot(id: id, radius: radius, isDraggable: false, currentOffset: .constant(CGSize.zero))
                                 .offset(
-                                    x: 0.85 * (Double(i) - Double(width-1)/2)/Double(width-1) * size.width,
-                                    y: 0.85 * (Double(j) - Double(height-1)/2)/Double(height-1) * size.height
+                                    x: 0.85 * (Double(i) - Double(width - 1) / 2) / Double(width - 1) * size.width,
+                                    y: 0.85 * (Double(j) - Double(height - 1) / 2) / Double(height - 1) * size.height
                                 )
                                 .opacity(isDotsHidden ? 0 : 1)
                         }
                     }
                 }
-                ForEach(0..<height, id: \.self) { j in
-                    ForEach(0..<width, id: \.self) { i in
+                ForEach(0 ..< height, id: \.self) { j in
+                    ForEach(0 ..< width, id: \.self) { i in
                         if offsets.count > j * width + i {
-                            let isDraggable = (i != 0 && i != width-1) && (j != 0 && j != height-1)
+                            let isDraggable = (i != 0 && i != width - 1) && (j != 0 && j != height - 1)
                             if isDraggable {
                                 Dot(id: id, radius: radius, isDraggable: isDraggable, currentOffset: $offsets[j * width + i])
                                     .offset(
-                                        x: 0.85 * (Double(i) - Double(width-1)/2)/Double(width-1) * size.width,
-                                        y: 0.85 * (Double(j) - Double(height-1)/2)/Double(height-1) * size.height
+                                        x: 0.85 * (Double(i) - Double(width - 1) / 2) / Double(width - 1) * size.width,
+                                        y: 0.85 * (Double(j) - Double(height - 1) / 2) / Double(height - 1) * size.height
                                     )
                                     .opacity(isDotsHidden ? 0 : 1)
                             }
@@ -177,12 +177,12 @@ private struct MeshView: View {
     func points(geometry: GeometryProxy) -> [SIMD2<Float>] {
         let size = geometry.size
         var points = [SIMD2<Float>](repeating: .zero, count: width * height)
-        for j in 0..<height {
-            for i in 0..<width {
+        for j in 0 ..< height {
+            for i in 0 ..< width {
                 points[j * width + i].x += Float(i) / Float(height - 1)
                 points[j * width + i].y += Float(j) / Float(height - 1)
                 if offsets.count > j * width + i {
-                    points[j * width + i] += SIMD2(offsets[j * width + i]/size)
+                    points[j * width + i] += SIMD2(offsets[j * width + i] / size)
                 }
             }
         }
@@ -200,7 +200,7 @@ private struct Dot: View {
     var body: some View {
         Circle()
             .frame(width: radius)
-            .foregroundStyle(.white.opacity(1/1024))
+            .foregroundStyle(.white.opacity(1 / 1024))
             .gesture(
                 DragGesture()
                     .onChanged {
@@ -231,23 +231,23 @@ private struct Dot: View {
 }
 
 private extension CGSize {
-    static func+(_ lhs: Self, _ rhs: Self) -> Self {
+    static func + (_ lhs: Self, _ rhs: Self) -> Self {
         self.init(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
     }
 
-    static func-(_ lhs: Self, _ rhs: Self) -> Self {
+    static func - (_ lhs: Self, _ rhs: Self) -> Self {
         self.init(width: lhs.width - rhs.width, height: lhs.height - rhs.height)
     }
 
-    static func/(_ lhs: Self, _ rhs: Self) -> Self {
+    static func / (_ lhs: Self, _ rhs: Self) -> Self {
         self.init(width: lhs.width / rhs.width, height: lhs.height / rhs.height)
     }
 
-    static func*(_ lhs: CGFloat, _ rhs: Self) -> Self {
+    static func * (_ lhs: CGFloat, _ rhs: Self) -> Self {
         self.init(width: lhs * rhs.width, height: lhs * rhs.height)
     }
 
-    static func+=(lhs: inout Self, rhs: Self) {
+    static func += (lhs: inout Self, rhs: Self) {
         lhs = lhs + rhs
     }
 }
@@ -257,7 +257,6 @@ private extension SIMD2<Float> {
         self.init(x: Float(v.width), y: Float(v.height))
     }
 }
-
 
 #Preview {
     Meshgradient2Screen()

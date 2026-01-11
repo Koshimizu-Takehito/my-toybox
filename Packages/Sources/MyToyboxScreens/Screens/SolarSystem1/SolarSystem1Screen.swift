@@ -10,7 +10,7 @@ import SwiftUI
 /// The animation restarts when the screen is tapped.
 struct SolarSystem1Screen: View {
     /// The time when the animation started.
-    @State var start: Date = .now
+    @State private var start: Date = .now
 
     var body: some View {
         GeometryReader { geometry in
@@ -31,7 +31,7 @@ struct SolarSystem1Screen: View {
                                 .fontWeight(.bold)
                         }
                     // Orbital paths
-                    ForEach(0..<6) { index in
+                    ForEach(0 ..< 6) { index in
                         Circle()
                             .stroke(lineWidth: 1)
                             .frame(width: 2 * offset(index))

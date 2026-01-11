@@ -2,6 +2,7 @@
 import SwiftUI
 
 #if os(iOS)
+
 // MARK: - ContentView
 
 /// A screen that showcases four distinct animations side-by-side using a shared spring animation.
@@ -25,7 +26,7 @@ struct Motions4Screen: View {
     }
 
     /// A repeating spring animation used to animate all subviews.
-    var animation : Animation {
+    var animation: Animation {
         .spring(duration: 1).repeatForever()
     }
 }
@@ -51,13 +52,13 @@ private struct MyGroup<Content: View>: View {
             VStack(spacing: 0) {
                 let (q, r) = subviews.count.quotientAndRemainder(dividingBy: numberOfColumns)
                 let rows = Array(repeating: numberOfColumns, count: q) + (r == 0 ? [] : [r])
-                ForEach(0..<rows.count, id: \.self) { i in
+                ForEach(0 ..< rows.count, id: \.self) { i in
                     HStack(spacing: 0) {
                         Group {
-                            ForEach(0..<rows[i], id: \.self) { j in
+                            ForEach(0 ..< rows[i], id: \.self) { j in
                                 subviews[numberOfColumns * i + j]
                             }
-                            ForEach(0..<(numberOfColumns - rows[i]), id: \.self) { j in
+                            ForEach(0 ..< (numberOfColumns - rows[i]), id: \.self) { _ in
                                 Color.clear
                             }
                         }
@@ -170,7 +171,6 @@ private struct Content02: SubContentView {
                 .offset(x: (2.0 / 3.0) * width, y: progress * (2.0 / 3.0) * height)
                 .foregroundStyle(color1)
         }
-
     }
 }
 
@@ -223,7 +223,6 @@ private struct Content03: SubContentView {
                 .offset(x: width, y: offset + ((1 - progress) * (height / 2)))
                 .foregroundStyle(color2)
         }
-
     }
 }
 

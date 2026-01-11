@@ -1,8 +1,8 @@
 import Metal
 import MetalKit
 import Observation
-import SwiftUI
 import simd
+import SwiftUI
 
 // MARK: - MTKView Representable
 
@@ -112,14 +112,13 @@ struct MetalGameOfLifeView: PlatformAgnosticViewRepresentable {
 
         // MARK: MTKViewDelegate
 
-        func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+        func mtkView(_: MTKView, drawableSizeWillChange _: CGSize) {
             // NOP
         }
 
         func draw(in view: MTKView) {
-            guard
-                let drawable = view.currentDrawable,
-                let commandBuffer = queue.makeCommandBuffer()
+            guard let drawable = view.currentDrawable,
+                  let commandBuffer = queue.makeCommandBuffer()
             else { return }
 
             // 1) 必要なら 1 ステップ進める（間隔は cycleIntervalMS）
@@ -180,7 +179,7 @@ struct MetalGameOfLifeView: PlatformAgnosticViewRepresentable {
                 scale: Float(max(1.0, viewModel.scale)),
                 location: SIMD2<Float>(Float(viewModel.location.x), Float(viewModel.location.y)),
                 offset: SIMD2<Float>(Float(viewModel.offset.x), Float(viewModel.offset.y)),
-                foreground: SIMD4<Float>(0.2, 0.9, 0.7, 1.0),  // mint-ish
+                foreground: SIMD4<Float>(0.2, 0.9, 0.7, 1.0), // mint-ish
                 background: SIMD4<Float>(0.05, 0.05, 0.10, 1.0) // dark bluish
             )
 
@@ -214,10 +213,8 @@ struct MetalGameOfLifeView: PlatformAgnosticViewRepresentable {
         return view
     }
 
-    func updatePlatformView(_ platformView: PlatformViewType, context: Context) {
-    }
+    func updatePlatformView(_: PlatformViewType, context _: Context) {}
 }
-
 
 // MARK: - Preview
 

@@ -23,7 +23,7 @@ struct ColorSchemeAnimationScreen: View {
             .background(background)
             .navigationTitle("Color Scheme")
             .environment(\.colorScheme, currentScheme) // Updates the environment manually
-            .preferredColorScheme(currentScheme)       // Also sets it for the current view
+            .preferredColorScheme(currentScheme) // Also sets it for the current view
             .onChange(of: colorScheme, initial: true) { _, value in
                 // Syncs the toggle with the actual system color scheme
                 isDarkModeOn = value == .dark
@@ -41,20 +41,20 @@ struct ColorSchemeAnimationScreen: View {
     /// Returns an appropriate row background color depending on platform.
     private var rowBackground: some View {
         #if os(iOS)
-            Color(.secondarySystemGroupedBackground)
+        Color(.secondarySystemGroupedBackground)
         #else
-            Color.clear
+        Color.clear
         #endif
     }
 
     /// Returns an appropriate background color depending on platform.
     private var background: some ShapeStyle {
         #if os(iOS)
-            Color(.systemGroupedBackground)
+        Color(.systemGroupedBackground)
         #elseif os(macOS)
-            Color(NSColor.windowBackgroundColor)
+        Color(NSColor.windowBackgroundColor)
         #else
-            Color.clear
+        Color.clear
         #endif
     }
 }

@@ -43,19 +43,19 @@ struct ViewcontrollerRepresentableScreen: View {
 /// A generic wrapper for any UIViewController to be used inside SwiftUI.
 /// Implements layout measurement using `systemLayoutSizeFitting`.
 private struct ViewControllerRepresentable<ViewController: UIViewController>: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> ViewController {
+    func makeUIViewController(context _: Context) -> ViewController {
         // Load from .xib in SPM module bundle using type name
-        return ViewController(nibName: String(describing: ViewController.self), bundle: .module)
+        ViewController(nibName: String(describing: ViewController.self), bundle: .module)
     }
 
-    func updateUIViewController(_ uiViewController: ViewController, context: Context) {
+    func updateUIViewController(_: ViewController, context _: Context) {
         // No-op: no external updates needed
     }
 
     func sizeThatFits(
         _ proposal: ProposedViewSize,
         uiViewController: ViewController,
-        context: Context
+        context _: Context
     ) -> CGSize? {
         // Provide a size fitting logic using Auto Layout from UIKit
         let proposedSize = CGSize(

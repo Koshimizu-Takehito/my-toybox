@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-// MARK: - MazeGenerator (Model)
+// MARK: - MazeGenerator
 
 /// An actor that generates a maze using a depth-first search (DFS) based approach.
 /// 深さ優先探索 (DFS) ベースのアルゴリズムを用いて迷路を生成する。
@@ -76,8 +76,8 @@ actor MazeGenerator {
         // Pick a random starting cell (odd indices).
         // ランダムな開始地点 (奇数インデックス) を選択。
         let start = SIMD2(
-            (Int.random(in: 0..<(width / 2)) * 2) + 1,
-            (Int.random(in: 0..<(height / 2)) * 2) + 1
+            (Int.random(in: 0 ..< (width / 2)) * 2) + 1,
+            (Int.random(in: 0 ..< (height / 2)) * 2) + 1
         )
 
         var stack = [SIMD2<Int>]()
@@ -124,14 +124,14 @@ actor MazeGenerator {
     /// Checks if a cell is within the maze boundaries and has not been carved (false).
     /// セルが迷路の範囲内にあり、まだ通路として掘られていない(false)かどうかを確認します。
     private func isValid(_ cell: SIMD2<Int>) -> Bool {
-        if cell.x > 0 && cell.x < width - 1 && cell.y > 0 && cell.y < height - 1 {
+        if cell.x > 0, cell.x < width - 1, cell.y > 0, cell.y < height - 1 {
             return !snapshot.grid[cell]
         }
         return false
     }
 }
 
-// MARK: - MazeGenerator.Snapshot
+// MARK: MazeGenerator.Snapshot
 
 nonisolated extension MazeGenerator {
     /// Represents the current maze state, including its grid and whether it's still generating.
@@ -163,7 +163,7 @@ nonisolated extension MazeGenerator.Snapshot {
 
 // MARK: - SIMD2 Extension
 
-nonisolated private extension SIMD2<Int> {
+private nonisolated extension SIMD2<Int> {
     /// Adds two SIMD2<Int> values.
     /// 2 つの SIMD2<Int> 値を加算します。
     static func + (_ lhs: Self, _ rhs: Self) -> Self {
@@ -179,7 +179,7 @@ nonisolated private extension SIMD2<Int> {
 
 // MARK: - Array Extension
 
-nonisolated private extension [[Bool]] {
+private nonisolated extension [[Bool]] {
     /// Accesses a 2D Boolean array using a SIMD2<Int> coordinate.
     /// SIMD2<Int> 座標を使用して 2 次元ブール配列にアクセスします。
     subscript(_ p: SIMD2<Int>) -> Bool {

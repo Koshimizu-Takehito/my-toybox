@@ -65,7 +65,7 @@ private struct PickerPopover: View {
         VStack {
             // FlowLayout for toggling individual tags
             PickerFlowLayout(alignment: .leading, spacing: 8) {
-                ForEach($model.selections, id: \.self.tag) { $selection in
+                ForEach($model.selections, id: \.tag) { $selection in
                     PickerToggle(selection: $selection)
                 }
             }

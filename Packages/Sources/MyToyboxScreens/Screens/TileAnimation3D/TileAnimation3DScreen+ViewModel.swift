@@ -1,7 +1,7 @@
 import Foundation
 import Observation
 
-// MARK: - TileAnimation3DScreen+ViewModel
+// MARK: - TileAnimation3DScreen.ViewModel
 
 extension TileAnimation3DScreen {
     @MainActor
@@ -15,13 +15,13 @@ extension TileAnimation3DScreen {
         init(row: Int, column: Int) {
             self.row = row
             self.column = column
-            let rotations = (0..<row).map { _ in
-                (0..<column).map { _ in Int.random(in: 0..<4) }
+            let rotations = (0 ..< row).map { _ in
+                (0 ..< column).map { _ in Int.random(in: 0 ..< 4) }
             }
             self.rotations = rotations
 
             var position: IndexPath {
-                [(0..<row).randomElement()!, (0..<column).randomElement()!]
+                [(0 ..< row).randomElement()!, (0 ..< column).randomElement()!]
             }
             self.positions = [position, position, position]
         }
@@ -30,7 +30,7 @@ extension TileAnimation3DScreen {
 
 extension TileAnimation3DScreen.ViewModel {
     func rotate() {
-        for i in 0..<positions.count {
+        for i in 0 ..< positions.count {
             var movements = [IndexPath]()
             let current = positions[i]
             if current[0] > 0 {

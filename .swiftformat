@@ -1,0 +1,63 @@
+--swiftversion 6.0
+--indent 4
+--elseposition same-line
+--semicolons never
+
+# Preprocessor directives (#if, #endif, etc.)
+# no-indent: コードは親スコープのインデントを維持（#ifで追加インデントしない）
+--ifdef no-indent
+
+# Line wrapping (match SwiftLint's 150 char limit)
+--maxwidth 150
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--wrapconditions after-first
+--closingparen balanced
+
+# ============================================================================
+# SwiftLint との整合性
+# ============================================================================
+
+# sorted_imports ルールと統一
+--importgrouping alpha
+
+# modifier_order ルールと統一
+--modifierorder override,acl,setterACL,dynamic,mutating,lazy,final,required,convenience,typeMethods,owned
+
+# implicit_return ルールと統一 (単一式の return を省略)
+--enable redundantReturn
+
+# prefer_self_in_static_references ルールと統一
+--self init-only
+
+# ============================================================================
+# MARK コメント
+# ============================================================================
+
+# 型定義の前に MARK コメントを挿入
+--enable markTypes
+--marktypes always
+--markextensions always
+--typemark "MARK: - %t"
+--extensionmark "MARK: - %t + %c"
+
+# ============================================================================
+# 追加推奨オプション
+# ============================================================================
+
+# 冗長な型注釈を削除 (redundant_type_annotation と統一)
+--enable redundantType
+
+# 冗長な nil 初期化を削除
+--enable redundantNilInit
+
+# 空行の正規化
+--enable blankLinesAtStartOfScope
+--enable blankLinesAtEndOfScope
+
+# ============================================================================
+# 除外パス
+# ============================================================================
+
+--exclude App/MyToybox/Resources,App/MyToybox.xcodeproj,MyToybox.xcworkspace,Packages/.build,Packages/.swiftpm,Scripts,.build,.xcodebuild,.swiftpm,.mint

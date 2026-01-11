@@ -23,7 +23,7 @@ struct SmoothMinScreen: View {
 
             VStack {
                 Spacer()
-                Slider(value: $value, in: 0...1)
+                Slider(value: $value, in: 0 ... 1)
                     .tint(.pink)
             }
             .padding(20)

@@ -6,15 +6,16 @@ import SwiftUI
 /// Presents a single screen with an automatically scrolling email text field.
 struct AutoScrolledTextFieldDemoScreen2: View {
     var body: some View {
-#if os(iOS) || os(tvOS)
+        #if os(iOS) || os(tvOS)
         AutoScrolledTextField2()
-#elseif os(macOS)
+        #elseif os(macOS)
         EmptyView()
-#endif
+        #endif
     }
 }
 
 #if os(iOS) || os(tvOS)
+
 // MARK: - AutoScrolledTextField2
 
 /// A SwiftUI view demonstrating a text field that auto-scrolls into view when focused,
@@ -22,7 +23,7 @@ struct AutoScrolledTextFieldDemoScreen2: View {
 /// Useful for forms where fields may be pushed off-screen by the keyboard.
 struct AutoScrolledTextField2: View {
     /// The user's input for the email address.
-    @State var email: String = ""
+    @State private var email: String = ""
     /// Tracks whether the text field is currently focused.
     @FocusState private var focused: Bool
     /// Namespace used to identify the submit button for scroll targeting.
@@ -81,6 +82,7 @@ struct AutoScrolledTextField2: View {
         .scrollDismissesKeyboard(.interactively)
     }
 }
+
 #elseif os(macOS)
 #endif
 
