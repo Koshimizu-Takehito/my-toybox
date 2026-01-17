@@ -7,8 +7,9 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 SCREENS_JSON_FILE="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Resources/Screens.json"
 
-# Extract ids from Screens.json
-IDS=$(grep '"id":' "$SCREENS_JSON_FILE" | sed 's/.*"id": "\([^"]*\)".*/\1/')
+# Extract ids from Screens.json (now a simple string array)
+# JSON format: ["id1", "id2", ...]
+IDS=$(grep -o '"[^"]*"' "$SCREENS_JSON_FILE" | sed 's/"//g' | grep -v '^$')
 
 # Validate that each id can be used as a Swift enum case name.
 # This intentionally mirrors the constraints in generate_screen_id.sh.
