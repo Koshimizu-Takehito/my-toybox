@@ -87,7 +87,7 @@ SCREEN_ID="${LOWER_CAMEL}Screen"
 # Paths
 SCREENS_DIR="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Screens"
 SHADERS_DIR="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Shaders"
-SCREENS_JSON="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Resources/Screens.json"
+SCREEN_SWIFT="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Screen.swift"
 TARGET_DIR="$SCREENS_DIR/$UPPER_CAMEL"
 
 # Check if screen already exists
@@ -108,6 +108,7 @@ if [ "$INCLUDE_SHADER" = true ]; then
 import SwiftUI
 
 /// ${UPPER_CAMEL} screen demonstrating a custom visual effect.
+@Metadata(title: "${UPPER_CAMEL}", description: "TODO: Add description", tags: [])
 public struct ${UPPER_CAMEL}Screen: View {
     @State private var time: Double = 0
     private let startDate = Date()
@@ -172,6 +173,7 @@ else
 import SwiftUI
 
 /// ${UPPER_CAMEL} screen.
+@Metadata(title: "${UPPER_CAMEL}", description: "TODO: Add description", tags: [])
 public struct ${UPPER_CAMEL}Screen: View {
     public init() {}
     
@@ -194,32 +196,32 @@ EOF
     echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Screen.swift"
 fi
 
-# Add to Screens.json
-if [ -f "$SCREENS_JSON" ]; then
-    # Create new entry
-    NEW_ENTRY=$(cat << EOF
-    {
-        "id": "${SCREEN_ID}",
-        "title": "${UPPER_CAMEL}",
-        "description": "TODO: Add description",
-        "tags": []
-    }
-EOF
-)
-    
-    # Insert before the last ]
-    # Using a temporary file for compatibility
+# Add to Screen.swift
+if [ -f "$SCREEN_SWIFT" ]; then
+    # Insert new case before the closing brace
     TEMP_FILE=$(mktemp)
     
-    # Remove trailing whitespace and ] from the end, add comma and new entry
-    sed '$ s/^[[:space:]]*\]$//' "$SCREENS_JSON" | \
-        sed '$ s/$/,/' > "$TEMP_FILE"
-    echo "$NEW_ENTRY" >> "$TEMP_FILE"
-    echo "]" >> "$TEMP_FILE"
-    
-    mv "$TEMP_FILE" "$SCREENS_JSON"
-    
-    echo -e "  ${GREEN}✓${NC} Added entry to Screens.json"
+    # Check if case already exists
+    if grep -q "^    case ${SCREEN_ID}" "$SCREEN_SWIFT"; then
+        echo -e "  ${YELLOW}⚠${NC} Case '${SCREEN_ID}' already exists in Screen.swift"
+    else
+        # Insert new case before the closing brace of the enum
+        awk -v new_case="    case ${SCREEN_ID}" '
+            /^}/ {
+                # Found the closing brace, insert new case before it
+                print new_case
+                print
+                next
+            }
+            {
+                print
+            }
+        ' "$SCREEN_SWIFT" > "$TEMP_FILE"
+        
+        mv "$TEMP_FILE" "$SCREEN_SWIFT"
+        
+        echo -e "  ${GREEN}✓${NC} Added case to Screen.swift"
+    fi
 fi
 
 echo ""
@@ -229,9 +231,10 @@ echo -e "${YELLOW}Next steps:${NC}"
 echo "  1. Implement your view in ${TARGET_DIR}/${UPPER_CAMEL}Screen.swift"
 if [ "$INCLUDE_SHADER" = true ]; then
     echo "  2. Implement your shader in ${SHADERS_DIR}/${UPPER_CAMEL}Shader.metal"
-    echo "  3. Update the description in Screens.json"
+    echo "  3. Update @Metadata in ${UPPER_CAMEL}Screen.swift with title, description, and tags"
+    echo "  4. Build and run to see your new screen"
 else
-    echo "  2. Update the description in Screens.json"
+    echo "  2. Update @Metadata in ${UPPER_CAMEL}Screen.swift with title, description, and tags"
+    echo "  3. Build and run to see your new screen"
 fi
-echo "  4. Build and run to see your new screen"
 

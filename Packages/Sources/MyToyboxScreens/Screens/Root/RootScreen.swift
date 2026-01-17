@@ -8,7 +8,7 @@ import SwiftUI
 ///
 /// - On regular width (iPad or landscape), it shows a sidebar and detail panel.
 /// - On compact width (iPhone), the detail view appears after selection.
-/// - Automatically loads available screen metadata from a local JSON file.
+/// - Automatically loads available screens from the `Screen` enum.
 public struct RootScreen: View {
     /// The view model that handles fetching available screens.
     @State private var viewModel = RootViewModel()
@@ -24,10 +24,6 @@ public struct RootScreen: View {
     public var body: some View {
         NavigationSplitView(sidebar: sidebarView, detail: detailView)
             .tint(.white)
-            .task {
-                // Load screens when the view appears.
-                await viewModel.fetch()
-            }
             .onChange(of: viewModel.screens, initial: true) { _, screens in
                 // Preselect the first screen if not in compact mode (e.g., iPad).
                 if horizontalSizeClass != .compact {
@@ -44,7 +40,7 @@ private extension RootScreen {
     /// The sidebar view that displays a list of available screens.
     @ViewBuilder
     func sidebarView() -> some View {
-        List(viewModel.filteredScreens(), selection: $selection) { screen in
+        List(viewModel.filteredScreens(), id: \.self, selection: $selection) { screen in
             NavigationLink(value: screen) {
                 VStack(alignment: .leading) {
                     Text(screen.title)
