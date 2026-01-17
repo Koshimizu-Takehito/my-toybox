@@ -1,13 +1,13 @@
 {
-  "originHash" : "8cee65f9d8cd127cf9a9ec585a8bf8f703ebfd87f5c7b052e76c88f5b4e81a57",
+  "originHash" : "96fe15187946d8c8005ec531095341fcc076a6f02382c66b48b03f0e2bb3fbe4",
   "pins" : [
     {
       "identity" : "screenmacros",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Koshimizu-Takehito/ScreenMacros",
       "state" : {
-        "revision" : "e5898b1051037ad88eec0b35ec068f384516e639",
-        "version" : "1.0.7"
+        "revision" : "06999e80719e4481470e375c1afde4c5741f7d6a",
+        "version" : "1.0.4"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
-        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
-        "version" : "602.0.0"
+        "revision" : "0687f71944021d616d34d922343dcef086855920",
+        "version" : "600.0.1"
       }
     }
   ],

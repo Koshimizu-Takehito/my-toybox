@@ -7,6 +7,7 @@ import SwiftUI
 /// - `Font.Leading`: line height spacing
 /// - `Font.Design`: font design
 /// - `DynamicTypeSize`: dynamic type scaling size
+@Metadata(title: "Enumpicker", description: "EnumPicker", tags: [])
 struct EnumPickerScreen: View {
     @State private var leading: Font.Leading = .standard
     @State private var design: Font.Design = .default

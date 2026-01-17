@@ -5,6 +5,11 @@ import SwiftUI
 /// A demo screen that displays a real-time animated Voronoi diagram
 /// using a custom Metal shader.
 /// The diagram is rendered with an overlayed title.
+@Metadata(
+    title: "VoronoiDiagram",
+    description: "ボロノイ図",
+    tags: [.animation, .metal]
+)
 struct VoronoiDiagramDemoScreen1: View {
     var body: some View {
         AnimatableShaderView(
@@ -16,6 +21,11 @@ struct VoronoiDiagramDemoScreen1: View {
 
 // MARK: - VoronoiDiagramDemoScreen2
 
+@Metadata(
+    title: "VoronoiDiagram",
+    description: "距離空間を変更したボロノイ図",
+    tags: [.animation, .metal]
+)
 struct VoronoiDiagramDemoScreen2: View {
     var body: some View {
         AnimatableShaderView(

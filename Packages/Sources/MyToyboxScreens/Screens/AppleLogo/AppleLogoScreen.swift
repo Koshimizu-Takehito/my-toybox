@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - AppleLogoScreen
 
+@Metadata(title: "Apple Logo", description: "Canvas を 画像でクリップ", tags: [])
 struct AppleLogoScreen: View {
     var body: some View {
         MultiColorImage(image: .applelogo, colors: .rainbow)

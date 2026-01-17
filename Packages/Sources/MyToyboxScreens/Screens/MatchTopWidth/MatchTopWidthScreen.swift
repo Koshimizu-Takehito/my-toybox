@@ -7,6 +7,7 @@ import SwiftUI
 ///
 /// Users can toggle these modifiers and observe how they affect
 /// the width of components in a stacked layout.
+@Metadata(title: "Match top width", description: "上のHStackの幅に下のViewの幅を揃える", tags: [.layout])
 struct MatchTopWidthScreen: View {
     // Whether to apply `.frame(maxWidth: .infinity)` to a label in the layout.
     @State private var isInfinityWidth = false

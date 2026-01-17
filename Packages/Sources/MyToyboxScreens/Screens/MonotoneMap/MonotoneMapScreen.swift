@@ -6,6 +6,7 @@ import SwiftUI
 /// This view uses a `.saturation` blend mode to suppress map colors
 /// by overlaying a transparent rectangle on top of the map content.
 /// It's useful for design exploration or focusing on layout contrast.
+@Metadata(title: "Monotone Map", description: "モノクロのマップ", tags: [])
 struct MonotoneMapScreen: View {
     /// The current camera position for the map, centered on Tokyo.
     @State private var position = MapCameraPosition.region(

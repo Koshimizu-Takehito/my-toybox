@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - ViewIdentityAnimationScreen
 
+@Metadata(title: "ViewIdentity", description: "ViewのIdentity を意識してアニメーション素振り", tags: [.animation])
 struct ViewIdentityAnimationScreen: View {
     @State private var model = ViewIdentityAnimationScreenModel(row: 4, column: 4)
 

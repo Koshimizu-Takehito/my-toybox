@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - UnevenRoundedRectangle1Screen
 
+@Metadata(title: "Uneven Rounded Rectangle 1", description: "UnevenRoundedRectangle Sample", tags: [])
 struct UnevenRoundedRectangle1Screen: View {
     var body: some View {
         Group {

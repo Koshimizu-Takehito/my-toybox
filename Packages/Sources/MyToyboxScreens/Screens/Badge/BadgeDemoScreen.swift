@@ -4,6 +4,7 @@ import SwiftUI
 
 /// A playground‑style screen that showcases `BadgeView` along with
 /// interactive controls for both value and appearance.
+@Metadata(title: "Badge", description: "Badge Shape Demo", tags: [.animation])
 struct BadgeDemoScreen: View {
     /// The observable model that drives the badge.
     @State private var model = BadgeModel(number: -1)

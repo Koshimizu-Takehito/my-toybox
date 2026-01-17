@@ -4,6 +4,7 @@ import SwiftUI
 ///
 /// This view displays two animated circles blended together using a smooth minimum function.
 /// Users can control the animation phase and the blend factor (`k`) with sliders, and reset the animation using a button.
+@Metadata(title: "Circle SDF2", description: "Circle SDF2", tags: [.animation, .metal])
 struct CircleSDF2Screen: View {
     /// The smoothing factor used in the `smoothMin` function inside the shader.
     @State private var k: Double = 0.36

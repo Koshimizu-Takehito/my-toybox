@@ -2,20 +2,20 @@ import Foundation
 import MyToyboxCore
 import Observation
 
-// MARK: - RootScreenViewModel
+// MARK: - RootViewModel
 
 /// A view model that loads, holds, and filters the list of available screens for display.
 ///
-/// - Loads screen metadata via `ScreenUseCase` from a local JSON file.
+/// - Loads screen metadata via `RootUseCase` from a local JSON file.
 /// - Filters screens based on the currently selected tags in `tags`.
 @Observable
 @MainActor
-final class RootScreenViewModel {
+final class RootViewModel {
     /// The model managing tag selection state.
     let tags = TagSelectionModel()
 
     /// The use case responsible for fetching screen data.
-    private let screenUseCase = ScreenUseCase()
+    private let useCase = RootUseCase()
 
     /// The list of screens fetched from the JSON file.
     private(set) var screens: [Screen] = []
@@ -23,7 +23,7 @@ final class RootScreenViewModel {
     /// Fetches available screens asynchronously and stores the result.
     func fetch() async {
         do {
-            screens = try await screenUseCase.fetch()
+            screens = try await useCase.fetchScreen()
         } catch {
             print(error)
         }

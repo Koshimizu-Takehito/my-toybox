@@ -18,8 +18,9 @@ import SwiftUI
 /// - Implementation notes:
 ///   - The shader entry point is `Kuwahara::main` in the accompanying `.metal` file.
 ///   - `layerEffect(_:maxSampleOffset:)` uses `.zero` because the shader clamps all
-///     sample coordinates to the layer’s bounds; no off-rect sampling occurs.
+///     sample coordinates to the layer's bounds; no off-rect sampling occurs.
 ///   - This file adds documentation only; there are no behavioral changes.
+@Metadata(title: "Kuwahara Filter", description: "Kuwahara フィルタ", tags: [.metal])
 struct KuwaharaScreen: View {
     /// Sampling radius used by the Kuwahara filter.
     /// - Note: The shader clamps the final radius to **[1, 16]**. A UI value of `0`

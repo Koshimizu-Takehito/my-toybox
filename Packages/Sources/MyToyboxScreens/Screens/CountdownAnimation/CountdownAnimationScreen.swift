@@ -7,6 +7,7 @@ import SwiftUI
 /// - Displays a numeric countdown (e.g., 10 → 0) in the center.
 /// - A circular ring around the number gradually erases as the countdown progresses.
 /// - Tapping the view restarts the countdown animation.
+@Metadata(title: "Countdown Animation", description: "カウントダウンアニメーション", tags: [.animation])
 struct CountdownAnimationScreen: View {
     /// The countdown state and animation logic.
     @State private var viewModel = CountdownAnimationScreenViewModel()

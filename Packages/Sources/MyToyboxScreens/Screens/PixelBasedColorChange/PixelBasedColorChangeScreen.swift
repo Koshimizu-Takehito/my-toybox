@@ -3,9 +3,11 @@ import SwiftUI
 // MARK: - PixelBasedColorChangeScreen
 
 #if os(macOS)
+@Metadata(title: "Pixel Based Color Toggle", description: "表示中のピクセルデータからボタンの色を切り替える", tags: [])
 struct PixelBasedColorChangeScreen: View {
     var body: some View {
-        EmptyView()
+        Text("This feature is not available on macOS")
+            .foregroundStyle(.secondary)
     }
 }
 #else
@@ -16,6 +18,7 @@ struct PixelBasedColorChangeScreen: View {
 /// The background image is rendered from a vertically scrollable view
 /// and passed to a brightness detection function, which updates
 /// the button's appearance based on the underlying content.
+@Metadata(title: "Pixel Based Color Toggle", description: "表示中のピクセルデータからボタンの色を切り替える", tags: [])
 struct PixelBasedColorChangeScreen: View {
     @State private var image = UIImage()
     @State private var buttonRect = CGRect()

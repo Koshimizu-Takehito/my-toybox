@@ -12,6 +12,7 @@ private let gradationColors: [Color] = [
     .cyan,
 ]
 
+@Metadata(title: "Mesh Gradient", description: "MeshGradient サンプル", tags: [])
 struct Meshgradient2Screen: View {
     @State private var id = UUID()
     @State private var isDotsHidden = false
@@ -263,5 +264,11 @@ private extension SIMD2<Float> {
 }
 
 #elseif os(macOS)
-typealias Meshgradient2Screen = EmptyView
+@Metadata(title: "Mesh Gradient", description: "MeshGradient サンプル", tags: [])
+struct Meshgradient2Screen: View {
+    var body: some View {
+        Text("This feature is not available on macOS")
+            .foregroundStyle(.secondary)
+    }
+}
 #endif

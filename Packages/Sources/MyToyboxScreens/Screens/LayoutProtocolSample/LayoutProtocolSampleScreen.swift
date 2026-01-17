@@ -15,6 +15,7 @@ nonisolated enum CustomGridItem: LayoutValueKey, Hashable {
 
 // MARK: - LayoutProtocolSampleScreen
 
+@Metadata(title: "Layout Protocol Sample", description: "グリッドのマスと隙間に View を配置する Layout プロトコルのサンプル実装", tags: [.layout])
 struct LayoutProtocolSampleScreen: View {
     @State private var value: (column: Double, numOfItems: Double) = (5, 25)
     private var column: Int { Int(value.column) }

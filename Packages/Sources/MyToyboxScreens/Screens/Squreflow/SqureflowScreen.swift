@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - SqureflowScreen
 
+@Metadata(title: "Squreflowview", description: "SqureFlowView", tags: [.animation])
 struct SqureflowScreen: View {
     @State private var holder = SquresHolder()
 

@@ -18,7 +18,7 @@ struct BuildMetalShadersPlugin: BuildToolPlugin {
         let scriptPath = projectRoot.appending(path: "Scripts/build_metallib.sh")
 
         // Source directories for Metal shaders
-        let coreShaders = packageDir.appending(path: "Sources/MyToyboxCore/Utils/Shaders")
+        let coreShaders = packageDir.appending(path: "Sources/MyToyboxScreens/Utils/Shaders")
         let screenShaders = packageDir.appending(path: "Sources/MyToyboxScreens/Shaders")
 
         return [

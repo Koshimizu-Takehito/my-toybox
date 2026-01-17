@@ -5,6 +5,7 @@ import SwiftUI
 /// The view uses `TimelineView` with `.animation` schedule to update the shader in sync with time.
 /// The shader renders animated signed distance fields (SDFs) of two moving circles
 /// that blend together using a smooth minimum function.
+@Metadata(title: "Circle SDF1", description: "Circle SDF", tags: [.animation, .metal])
 struct CircleSDF1Screen: View {
     /// The reference time when the view appears. Used to calculate elapsed seconds.
     private let startTime = Date()

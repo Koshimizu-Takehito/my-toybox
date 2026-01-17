@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - HierarchicalShapeStyleScreen
 
+@Metadata(title: "Hierarchical Style", description: "Hierarchical ShapeStyle", tags: [])
 struct HierarchicalShapeStyleScreen: View {
     var body: some View {
         VStack {
