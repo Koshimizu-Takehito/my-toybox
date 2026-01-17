@@ -22,15 +22,14 @@
 
 ### 🔹 豊富なサンプル画面 (Screen)
 `Packages/Sources/MyToyboxScreens/Screens/` 以下に多数の画面が定義されており、それぞれが独自のアニメーションや描画ロジックを持ちます。  
-`Screen.swift` / `Screens.json` で画面の識別子を一元管理しています。  
-`Screens.json` の `"id"` は `enum Screen` の case 名としてそのまま使われるため、**Swift の識別子として有効な lowerCamelCase（例: `gameOfLifeScreen`）** で記述する必要があります。
+`Screen.swift` で画面の識別子を一元管理しています。  
+`enum Screen` の case 名は**Swift の識別子として有効な lowerCamelCase（例: `gameOfLifeScreen`）** で記述する必要があります。
 
 ### 🔹 SPM ビルドツールプラグイン
-このプロジェクトでは SPM プラグインを使用してビルド時に自動でコード生成を行います：
+このプロジェクトでは SPM プラグインを使用してビルド時に自動でリソースをコンパイルします：
 
 | プラグイン | 入力 | 出力 |
 |-----------|------|------|
-| `GenerateScreenID` | `Screens.json` | `Screen.swift`（各画面の enum case） |
 | `BuildMetalShaders` | `.metal` ファイル | `default.metallib`（コンパイル済みシェーダー） |
 
 `@Screens` マクロ ([ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)) により、各 `Screen` case が対応する `View` 型に変換されます。
@@ -40,7 +39,7 @@
 SwiftUI のシェーダーサポートを使い、カスタムの描画を簡潔に呼び出せるよう工夫しています。
 
 ### 🔹 Swift Concurrency / async-await
-- `async/await` を使って JSON データを非同期で読み込みます。
+- `async/await` を使って画面データを非同期で読み込みます。
 - `@Observable` を使ったシンプルな状態管理を採用しています。
 - `NavigationSplitView` などの SwiftUI イディオムを活用しています。
 
@@ -64,15 +63,13 @@ my-toybox/
   ├─ Packages/                     # Swift Package
   │   ├─ Package.swift             # Swift Package 定義
   │   ├─ Plugins/
-  │   │   ├─ BuildMetalShaders/    # Metal コンパイル用 SPM プラグイン
-  │   │   └─ GenerateScreenID/     # Screen 生成用 SPM プラグイン
+  │   │   └─ BuildMetalShaders/    # Metal コンパイル用 SPM プラグイン
   │   ├─ Sources/
   │   │   ├─ MyToyboxCore/         # コアユーティリティと共有コード
   │   │   │   ├─ Models/           # 共有モデル（Tag など）
   │   │   │   └─ Utils/            # ユーティリティと Metal シェーダーヘッダ
   │   │   └─ MyToyboxScreens/      # 全画面の実装
-  │   │       ├─ Resources/
-  │   │       │   └─ Screens.json  # 画面メタデータ
+  │   │       ├─ Screen.swift      # Screen enum 定義
   │   │       ├─ Screens/          # 各種アニメーション画面
   │   │       ├─ Shaders/          # Metal シェーダーファイル
   │   │       └─ Root/             # ルート画面とビューモデル
@@ -80,7 +77,6 @@ my-toybox/
   │       └─ MyToyboxCoreTests/    # コアモジュールのユニットテスト
   └─ Scripts/
       ├─ build_metallib.sh         # Metal シェーダービルドスクリプト（プラグイン使用）
-      ├─ generate_screen_id.sh     # Screen 生成スクリプト（プラグイン使用）
       ├─ new_screen.sh             # 新規画面作成スクリプト
       └─ check_screen_sync.sh      # 画面の整合性検証スクリプト
 ```
@@ -89,7 +85,7 @@ my-toybox/
 - `App.swift`: アプリのエントリーポイント。`RootScreen` が初期画面として指定されています。
 - `RootScreen.swift`: アプリ起動時に表示される「画面一覧＋詳細表示」のメインビュー。
 - `RootScreenViewModel.swift`: 画面一覧データの取得など、ビジネスロジックを担当。
-- `Screens.json`: アプリ内で利用する画面情報（`Screen`、画面タイトル、説明文など）を JSON フォーマットで保持。
+- `Screen.swift`: すべての画面を定義する enum とメタデータを含むファイル。
 
 ## インストール & ビルド手順
 
@@ -108,7 +104,7 @@ xed .
 - `MyToybox.xcworkspace` が開き、アプリと SPM パッケージの両方にアクセスできます。
 - SPM のみの開発には `Packages/Package.swift` を開いてください。
 
-> **Note**: Metal シェーダーと `Screen.swift` は SPM プラグインによってビルド時に自動生成されます。
+> **Note**: Metal シェーダーは SPM プラグインによってビルド時に自動コンパイルされます。
 
 ### 3. ビルド & 実行
 - ターゲットを `MyToybox` に設定し、実機またはシミュレーターを選んで実行してください。

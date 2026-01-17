@@ -46,16 +46,15 @@ This is an iOS/macOS visual effects showcase app (Swift 6.0, SwiftUI, Metal) wit
 **Module Structure:**
 - `App/MyToybox/` - Xcode app entry point (`App.swift` → `RootScreen`)
 - `Packages/Sources/MyToyboxCore/` - Shared models and utilities, Metal shader headers
-- `Packages/Sources/MyToyboxScreens/` - Screen implementations, shaders, and `Screens.json` metadata
+- `Packages/Sources/MyToyboxScreens/` - Screen implementations, shaders, and `Screen.swift` enum
 
 **Code Generation via SPM Plugins:**
-- `GenerateScreenID` plugin: `Screens.json` → `Screen.swift` enum
 - `BuildMetalShaders` plugin: `.metal` files → `default.metallib`
 - `@Screens` macro (from [ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)): converts `Screen` cases to View types
 
 **Screen Registration:**
-- Single source of truth: `Packages/Sources/MyToyboxScreens/Resources/Screens.json`
-- Each screen ID must be a valid Swift identifier in lowerCamelCase (e.g., `gameOfLifeScreen`)
+- Single source of truth: `Packages/Sources/MyToyboxScreens/Screen.swift`
+- Each screen case name must be a valid Swift identifier in lowerCamelCase (e.g., `gameOfLifeScreen`)
 - Screen implementations live in `Packages/Sources/MyToyboxScreens/Screens/{ScreenName}/`
 
 **Key Patterns:**

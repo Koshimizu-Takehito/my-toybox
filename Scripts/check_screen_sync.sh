@@ -5,14 +5,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-SCREENS_JSON_FILE="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Resources/Screens.json"
+SCREEN_SWIFT_FILE="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Screen.swift"
 
-# Extract ids from Screens.json (now a simple string array)
-# JSON format: ["id1", "id2", ...]
-IDS=$(grep -o '"[^"]*"' "$SCREENS_JSON_FILE" | sed 's/"//g' | grep -v '^$')
+# Extract case names from Screen.swift enum
+# Format: case caseName (4 spaces before case)
+IDS=$(grep -E '^    case [a-zA-Z_][a-zA-Z0-9_]*' "$SCREEN_SWIFT_FILE" | sed -E 's/^    case ([a-zA-Z_][a-zA-Z0-9_]*).*/\1/' | grep -v '^$')
 
 # Validate that each id can be used as a Swift enum case name.
-# This intentionally mirrors the constraints in generate_screen_id.sh.
 validate_identifier() {
     local id="$1"
 
@@ -40,13 +39,13 @@ while IFS= read -r id; do
 done <<< "$IDS"
 
 if [ "$TOTAL_COUNT" -ne "$UNIQUE_COUNT" ]; then
-    echo "❌ Error: Duplicate screen ids found in Screens.json:" >&2
+    echo "❌ Error: Duplicate screen ids found in Screen.swift:" >&2
     sort "$TMP_IDS" | uniq -d | sed 's/^/  - /' >&2
     EXIT_CODE=1
 fi
 
 if [ $EXIT_CODE -eq 0 ]; then
-    echo "✅ Screens.json ids are valid Swift identifiers and unique ($TOTAL_COUNT screens)"
+    echo "✅ Screen.swift case names are valid Swift identifiers and unique ($TOTAL_COUNT screens)"
 fi
 
 exit $EXIT_CODE

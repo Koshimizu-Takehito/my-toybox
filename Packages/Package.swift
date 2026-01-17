@@ -51,7 +51,6 @@ let package = Package(
             ],
             plugins: [
                 .plugin(name: "BuildMetalShaders"),
-                .plugin(name: "GenerateScreenID"),
             ]
         ),
 
@@ -60,11 +59,6 @@ let package = Package(
             name: "BuildMetalShaders",
             capability: .buildTool(),
             path: "Plugins/BuildMetalShaders"
-        ),
-        .plugin(
-            name: "GenerateScreenID",
-            capability: .buildTool(),
-            path: "Plugins/GenerateScreenID"
         ),
 
         // MARK: - Tests
