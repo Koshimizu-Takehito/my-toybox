@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - AutoScrolledTextFieldDemoScreen
 
+@Metadata(title: "Auto Scrolled TextField 1", description: "テキストフィールドに入力した時に自動でスクロール 1", tags: [])
 struct AutoScrolledTextFieldDemoScreen: View {
     var body: some View {
         AutoScrolledTextField()

@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - ScrollYRotationScreen
 
+@Metadata(title: "Y-Axis Rotation", description: "スクロール位置に応じてY軸回転", tags: [.layout])
 struct ScrollYRotationScreen: View {
     @State private var colors: [(offset: Int, element: Color)]
         = Array(repeating: [Color].rainbow(count: 50), count: 300)

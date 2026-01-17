@@ -5,6 +5,7 @@ import SwiftUI
 /// A screen that demonstrates the visual differences between several shape types
 /// when used to clip a view in SwiftUI, including `Rectangle`, `RoundedRectangle`,
 /// and `UnevenRoundedRectangle` (iOS 17+).
+@Metadata(title: "Uneven Rounded Rectangle 2", description: "UnevenRoundedRectangle Sample 2", tags: [])
 struct UnevenRoundedRectangle2Screen: View {
     var body: some View {
         HStack(spacing: 20) {

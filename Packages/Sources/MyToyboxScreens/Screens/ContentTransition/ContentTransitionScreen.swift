@@ -1,5 +1,6 @@
 import SwiftUI
 
+@Metadata(title: "Content Transition", description: "Content Transition", tags: [])
 struct ContentTransitionScreen: View {
     @State private var rating: Double = 0
 

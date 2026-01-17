@@ -7,6 +7,7 @@ import SwiftUI
 ///
 /// The spiral continuously animates outward as time progresses, using
 /// `TimelineView` and `Canvas` for efficient real-time rendering.
+@Metadata(title: "Prime Spiral", description: "素数のアルキメデスの螺旋", tags: [.animation])
 struct PrimeSpiralScreen: View {
     /// List of all prime numbers up to 1,000,000.
     private static let primeNumbers = sieveOfEratosthenes(upTo: 1_000_000)

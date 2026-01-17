@@ -4,6 +4,7 @@ import SwiftUI
 
 /// A screen that visually represents a percentage using a circular wave animation.
 /// The user can adjust the percentage using a slider.
+@Metadata(title: "Wave Circle", description: "波アニメーション", tags: [.animation])
 struct WaveCircleScreen: View {
     @State private var percent = 0.50
 

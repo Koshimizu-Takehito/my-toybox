@@ -1,6 +1,7 @@
 import SwiftUI
 
 #if os(iOS)
+@Metadata(title: "Infinite Scroll", description: "ページング無しの循環スクロールビュー", tags: [])
 struct InfiniteScrollScreen: View {
     private var items: [Int] = (1 ... 5).map(\.self)
     @State private var numberOfDisplays = 5
@@ -321,5 +322,11 @@ private struct ItemView: View {
 }
 
 #elseif os(macOS)
-typealias InfiniteScrollScreen = EmptyView
+@Metadata(title: "Infinite Scroll", description: "ページング無しの循環スクロールビュー", tags: [])
+struct InfiniteScrollScreen: View {
+    var body: some View {
+        Text("This feature is not available on macOS")
+            .foregroundStyle(.secondary)
+    }
+}
 #endif

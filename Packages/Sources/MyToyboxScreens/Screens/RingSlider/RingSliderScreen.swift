@@ -4,6 +4,7 @@ import SwiftUI
 
 /// A screen that demonstrates a circular slider (RingSlider) bound to a value `ratio` (0.0–1.0).
 /// The background hue changes dynamically based on the ratio, and a reset button snaps the value to the nearest whole number.
+@Metadata(title: "Ring Slider", description: "RingSlider", tags: [])
 struct RingSliderScreen: View {
     @State private var ratio: Double = 0
 

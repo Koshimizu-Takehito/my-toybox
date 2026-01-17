@@ -10,6 +10,7 @@ import SwiftUI
 /// - Apply a custom Metal-based mosaic effect using `ShaderLibrary`
 /// - Interactively control both the video playback position and the
 ///   mosaic split position with SwiftUI gestures and controls.
+@Metadata(title: "Real-time Mosaic", description: "モザイクを動画にリアルタイムで描画", tags: [.metal])
 struct RealTimeMosicScreen: View {
     /// A Boolean value that toggles the mosaic shader on and off.
     @State private var isOn = true

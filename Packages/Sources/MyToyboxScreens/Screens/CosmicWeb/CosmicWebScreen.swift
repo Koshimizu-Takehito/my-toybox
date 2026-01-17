@@ -15,6 +15,7 @@ import SwiftUI
 /// A demo screen that displays an animated "Cosmic Web" visualization,
 /// inspired by large-scale cosmic structures and self-organizing neural networks.
 /// The pattern is generated using a custom Metal shader.
+@Metadata(title: "Cosmic Web", description: "Cosmic Web shader", tags: [.animation, .metal])
 struct CosmicWebDemoScreen: View {
     var body: some View {
         CosmicWebScreen()
@@ -25,6 +26,7 @@ struct CosmicWebDemoScreen: View {
 
 /// The main screen that applies the custom Metal shader as a layer effect.
 /// Uses TimelineView to animate the shader over time.
+@Metadata(title: "CosmicWeb", description: "コズミックウェブ", tags: [.animation, .metal])
 struct CosmicWebScreen: View {
     var body: some View {
         TimelineView(.animation) { context in

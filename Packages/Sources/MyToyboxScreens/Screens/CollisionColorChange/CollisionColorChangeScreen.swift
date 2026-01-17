@@ -6,6 +6,7 @@ import SwiftUI
 ///
 /// An image moves within the view bounds, bouncing off the edges. Each collision
 /// changes the item's background color based on a hue rotation.
+@Metadata(title: "Collision Color Change", description: "壁にぶつかったら色が変わるやつ", tags: [.animation])
 struct CollisionColorChangeScreen: View {
     var body: some View {
         CollisionAnimationView(speed: .init(dx: 100, dy: 140))

@@ -21,32 +21,30 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Koshimizu-Takehito/ScreenMacros", from: "1.0.0"),
+        .package(path: "../MetadatasMacros"),
     ],
     targets: [
         // MARK: - MyToyboxCore
-        // Note: Utils/Shaders directory is excluded to prevent Xcode from auto-compiling .metal files
-        //       .h files are also excluded but remain accessible via #include during plugin compilation
         .target(
             name: "MyToyboxCore",
             dependencies: [],
-            path: "Sources/MyToyboxCore",
-            exclude: [
-                "Utils/Shaders",
-            ]
+            path: "Sources/MyToyboxCore"
         ),
 
         // MARK: - MyToyboxScreens
-        // Note: Shaders directory is excluded to prevent Xcode from auto-compiling .metal files
+        // Note: Utils/Shaders directory is excluded to prevent Xcode from auto-compiling .metal files
         //       They are compiled by BuildMetalShaders plugin instead
         .target(
             name: "MyToyboxScreens",
             dependencies: [
                 "MyToyboxCore",
+                .product(name: "MetadatasMacros", package: "MetadatasMacros"),
                 .product(name: "ScreenMacros", package: "ScreenMacros"),
             ],
             path: "Sources/MyToyboxScreens",
             exclude: [
                 "Shaders",
+                "Utils/Shaders",
             ],
             resources: [
                 .process("Resources"),

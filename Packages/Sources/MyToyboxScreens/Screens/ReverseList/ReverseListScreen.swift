@@ -7,6 +7,7 @@ import SwiftUI
 ///
 /// This effect is achieved by applying a `.rotationEffect(.pi)` to both the `List`
 /// and its rows, effectively inverting the scroll direction while preserving layout order.
+@Metadata(title: "ReverseListView", description: "逆向きのリスト", tags: [.layout])
 struct ReverseListScreen: View {
     /// The array of list items, with new elements added to the beginning.
     @State private var items = [Item()]

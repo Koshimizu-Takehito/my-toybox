@@ -3,6 +3,7 @@ import SwiftUI
 // MARK: - GameOfLifeScreen
 
 /// Conway のライフゲーム画面（メタル描画 + コントロール）。
+@Metadata(title: "Game of Life", description: "ライフゲーム (Conway)", tags: [.animation, .metal])
 struct GameOfLifeScreen: View {
     @State private var viewModel = GameOfLifeViewModel()
 

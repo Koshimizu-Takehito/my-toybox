@@ -4,6 +4,7 @@ import SwiftUI
 
 /// Demo screen that showcases the AutoScrolledTextField2 component.
 /// Presents a single screen with an automatically scrolling email text field.
+@Metadata(title: "Auto Scrolled TextField 2", description: "テキストフィールドに入力した時に自動でスクロール 2", tags: [])
 struct AutoScrolledTextFieldDemoScreen2: View {
     var body: some View {
         #if os(iOS) || os(tvOS)

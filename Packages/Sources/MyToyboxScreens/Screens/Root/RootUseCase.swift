@@ -1,15 +1,15 @@
 import Foundation
 
-// MARK: - ScreenUseCase
+// MARK: - RootUseCase
 
 /// A simple use case that loads `Screen` data from a bundled JSON file named `Screens.json`.
 ///
 /// This runs in an actor to ensure safe concurrency.
-actor ScreenUseCase {
+actor RootUseCase {
     private(set) var screens: [Screen] = []
 
-    /// Loads and decodes the list of available screens from the bundle.
-    func fetch() throws -> [Screen] {
+    /// Loads and decodes the list of available screen IDs from the bundle.
+    func fetchScreen() throws -> [Screen] {
         if !screens.isEmpty {
             return screens
         }

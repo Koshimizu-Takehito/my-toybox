@@ -6,6 +6,7 @@ import SwiftUI
 ///
 /// Users can adjust the number of vertices (3–9) and the "roundness" of the polygon
 /// using interactive controls. The polygon morphs smoothly between sharp and rounded corners.
+@Metadata(title: "Gradient Polygon", description: "グラデーションポリゴン", tags: [.animation])
 struct GradientPolygonScreen: View {
     /// The number of vertices of the polygon (e.g., 3 for triangle, 6 for hexagon).
     @State private var vertex = 6

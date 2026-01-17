@@ -5,6 +5,7 @@ import SwiftUI
 /// A screen that demonstrates how `@ScaledMetric` adapts to various `DynamicTypeSize` settings.
 /// Users can drag the slider to simulate different accessibility text sizes and observe how
 /// the scaled values change across different text styles.
+@Metadata(title: "Dynamic Type Scaling", description: "ダイナミックタイプを利用した場合の標準フォントのスケール", tags: [])
 struct DynamicTypeScalingScreen: View {
     @State private var dynamicTypeSizeIndex: Double = 3.0
 

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@Metadata(title: "RadialLayout", description: "Radial Layout", tags: [.animation, .layout])
 struct RadialLayoutScreen: View {
     private static let range = 3.0 ... 24.0
     @State private var count = Self.range.lowerBound

@@ -5,6 +5,7 @@ import SwiftUI
 /// A screen that demonstrates how a date is formatted using
 /// different combinations of calendar, locale, and time zone,
 /// via `Date.FormatStyle`.
+@Metadata(title: "Dateformat Style", description: "Date.FormatStyle の出力サンプル", tags: [])
 struct DateformatStyleScreen: View {
     /// A sample date to be formatted and displayed.
     @State private var sampleDate = ISO8601DateFormatter().date(from: "2025-01-01T00:00:00+09:00")!

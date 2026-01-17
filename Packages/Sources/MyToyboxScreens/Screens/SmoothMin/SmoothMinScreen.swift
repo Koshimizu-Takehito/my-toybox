@@ -1,5 +1,6 @@
 import SwiftUI
 
+@Metadata(title: "Smoothmin2d", description: "SmoothMin2d", tags: [.animation, .metal])
 struct SmoothMinScreen: View {
     @State private var value: Double = 0.8
 

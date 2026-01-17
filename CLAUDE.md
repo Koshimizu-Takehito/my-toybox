@@ -49,9 +49,9 @@ This is an iOS/macOS visual effects showcase app (Swift 6.0, SwiftUI, Metal) wit
 - `Packages/Sources/MyToyboxScreens/` - Screen implementations, shaders, and `Screens.json` metadata
 
 **Code Generation via SPM Plugins:**
-- `GenerateScreenID` plugin: `Screens.json` → `ScreenID.swift` enum
+- `GenerateScreenID` plugin: `Screens.json` → `Screen.swift` enum
 - `BuildMetalShaders` plugin: `.metal` files → `default.metallib`
-- `@Screens` macro (from [ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)): converts `ScreenID` cases to View types
+- `@Screens` macro (from [ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)): converts `Screen` cases to View types
 
 **Screen Registration:**
 - Single source of truth: `Packages/Sources/MyToyboxScreens/Resources/Screens.json`

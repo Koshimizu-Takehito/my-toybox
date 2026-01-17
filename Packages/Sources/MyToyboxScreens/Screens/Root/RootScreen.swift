@@ -11,7 +11,7 @@ import SwiftUI
 /// - Automatically loads available screen metadata from a local JSON file.
 public struct RootScreen: View {
     /// The view model that handles fetching available screens.
-    @State private var viewModel = RootScreenViewModel()
+    @State private var viewModel = RootViewModel()
     /// The currently selected screen from the sidebar.
     @State private var selection: Screen?
     /// The current horizontal size class (e.g., `.compact`, `.regular`).
@@ -73,20 +73,13 @@ private extension RootScreen {
             Group {
                 if let selection {
                     // Render the selected screen
-                    selection.id
+                    selection
                 } else {
                     Text("Please select a screen")
                         .foregroundStyle(.secondary)
                 }
             }
             .navigationTitle(selection?.title ?? "")
-            .toolbar {
-                Button("Source Code", systemImage: "safari") {
-                    if let url = selection?.html {
-                        openURL(url)
-                    }
-                }
-            }
             .toolbarTitleDisplayMode(.inline)
         }
     }
