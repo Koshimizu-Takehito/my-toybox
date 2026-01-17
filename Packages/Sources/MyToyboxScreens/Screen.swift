@@ -1,0 +1,90 @@
+import MetadatasMacros
+import ScreenMacros
+import SwiftUI
+
+// MARK: - Screen
+
+@Screens
+@Metadatas
+enum Screen: String, CaseIterable {
+    case strokeModifierDemoScreen
+    case implicitEquationScreen
+    case realTimeMosicScreen
+    case radialLayoutScreen
+    case flowDistortionScreen
+    case gameOfLifeScreen
+    case multiHelixScreen
+    case kuwaharaScreen
+    case badgeDemoScreen
+    case randomMetaballDemoScreen
+    case lissajousCurveDemoScreen1
+    case lissajousCurveDemoScreen2
+    case autoScrolledTextFieldDemoScreen
+    case autoScrolledTextFieldDemoScreen2
+    case flipTransitionDemoScreen
+    case spiralLayoutDemoScreen
+    case pipCardDemoScreen
+    case voronoiDiagramDemoScreen1
+    case voronoiDiagramDemoScreen2
+    case cosmicWebScreen
+    case homeIconDemoScreen
+    case colorSegmentedControlDemoScreen
+    case gradientPolygonScreen
+    case collisionColorChangeScreen
+    case solarSystem1Screen
+    case solarSystem2Screen
+    case pixelBasedColorChangeScreen
+    case countdownAnimationScreen
+    case infiniteScrollScreen
+    case horizontalPickerScreen
+    case circleSDF1Screen
+    case circleSDF2Screen
+    case wavingTextScreen
+    case coloredMapScreen
+    case monotoneMapScreen
+    case waveParticleScreen
+    case reverseListScreen
+    case viewIdentityAnimationScreen
+    case progressiveBlurScreen
+    case mosaicScreen
+    case tileShaderScreen
+    case spiralShaderScreen
+    case primeSpiralScreen
+    case archimedesSpiralScreen
+    case motions4Screen
+    case matchTopWidthScreen
+    case authCodeScreen
+    case tileAnimationScreen
+    case tileAnimation3DScreen
+    case shineScreen
+    case waveCircleScreen
+    case rectangleAnimationScreen
+    case dateformatStyleScreen
+    case dynamicTypeScalingScreen
+    case dynamicTypeScreen
+    case colorSchemeAnimationScreen
+    case viewcontrollerRepresentableScreen
+    case enumPickerScreen
+    case ringSliderScreen
+    case unevenRoundedRectangle1Screen
+    case unevenRoundedRectangle2Screen
+    case colorHexAnimationScreen
+    case ringanimationScreen
+    case progressRingScreen
+    case lostRowAnimationScreen
+    case hierarchicalShapeStyleScreen
+    case mazeGeneratorScreen
+    case meshgradient2Screen
+    case visualeffectScreen
+    case contentTransitionScreen
+    case flowLayoutScreen
+    case layoutProtocolSampleScreen
+    case scrollYRotationScreen
+    case gradientAnimationScreen
+    case juliaSetScreen
+    case squreflowScreen
+    case smoothMinScreen
+    case dotsSpinnerDemoScreen
+    case orbitingDotsLoaderDemoScreen
+    case appleLogoScreen
+}
