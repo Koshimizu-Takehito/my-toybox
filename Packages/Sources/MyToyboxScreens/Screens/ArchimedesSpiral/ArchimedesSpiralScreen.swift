@@ -7,6 +7,7 @@ import SwiftUI
 /// The spiral continuously rotates and changes color over time.
 /// Tapping the screen resets the animation's start time.
 /// The animation is driven by `TimelineView`, which updates regularly with `.animation` schedule.
+@Metadata(title: "Archimedes Spiral", description: "アルキメデスのらせん", tags: [.animation])
 struct ArchimedesSpiralScreen: View {
     /// The start time of the animation. Used to calculate elapsed time.
     @State private var start = Date()

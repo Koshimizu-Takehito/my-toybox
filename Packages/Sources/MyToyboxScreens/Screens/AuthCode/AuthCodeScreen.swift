@@ -4,6 +4,7 @@ import SwiftUI
 /// A screen that presents an authentication code (OTP) input interface.
 ///
 /// Displays six input fields for numeric digits. The entered code is printed to the console whenever it changes.
+@Metadata(title: "Auth code UI", description: "認証コード入力っぽいUI", tags: [])
 struct AuthCodeScreen: View {
     /// The digits entered by the user, updated in real-time.
     @State private var digits: [Int] = []
@@ -105,5 +106,11 @@ private struct AuthCodeInput: View {
 }
 
 #elseif os(macOS)
-typealias AuthCodeScreen = EmptyView
+@Metadata(title: "Auth code UI", description: "認証コード入力っぽいUI", tags: [])
+struct AuthCodeScreen: View {
+    var body: some View {
+        Text("This feature is not available on macOS")
+            .foregroundStyle(.secondary)
+    }
+}
 #endif

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@Metadata(title: "Implicit Equation", description: "陰関数 SDF", tags: [.animation, .metal])
 struct ImplicitEquationScreen: View {
     private struct Ranges {
         let ab = 0.0 ... 10.0

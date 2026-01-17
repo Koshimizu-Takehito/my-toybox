@@ -8,6 +8,7 @@ import SwiftUI
 /// - When released, the card automatically snaps to the closest corner or the center,
 ///   using a spring animation. Inertia is taken into account for a natural feel.
 /// - The card's size is adaptable and defined by the `cardRect` property.
+@Metadata(title: "PIP Card", description: "Drag & Snap Demo", tags: [.animation])
 struct PipCardDemoScreen: View {
     /// Persistent offset of the card from the center of the screen.
     /// This offset accumulates over multiple drags.

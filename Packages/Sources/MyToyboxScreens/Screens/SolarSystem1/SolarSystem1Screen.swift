@@ -8,6 +8,7 @@ import SwiftUI
 /// representing varying orbital periods.
 ///
 /// The animation restarts when the screen is tapped.
+@Metadata(title: "Heliocentric Animation", description: "地動説っぽいアニメーション", tags: [.animation])
 struct SolarSystem1Screen: View {
     /// The time when the animation started.
     @State private var start: Date = .now

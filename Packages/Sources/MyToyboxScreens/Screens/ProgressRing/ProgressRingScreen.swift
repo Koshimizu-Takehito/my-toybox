@@ -4,6 +4,7 @@ import SwiftUI
 
 /// A screen demonstrating a circular progress ring with a slider and control panel.
 /// Uses a `ProgressRingViewModel` to track and animate the progress state.
+@Metadata(title: "Progress Ring", description: "Progress Ring", tags: [.animation])
 struct ProgressRingScreen: View {
     /// A view model that tracks and animates the progress value.
     @State private var viewModel = ProgressRingViewModel()

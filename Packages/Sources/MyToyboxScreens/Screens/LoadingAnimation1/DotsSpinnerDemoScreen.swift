@@ -36,6 +36,7 @@ final class DotsSpinnerModel {
 // MARK: - DotsSpinnerDemoScreen
 
 /// Complete sample screen that embeds the spinner and its controls.
+@Metadata(title: "Loading Animation 1", description: "カスタムローディングアニメーション", tags: [.animation])
 struct DotsSpinnerDemoScreen: View {
     /// Observable model stored in View State.
     @State private var model = DotsSpinnerModel()

@@ -3,6 +3,7 @@ import SwiftUI
 
 // MARK: - TileAnimation3DScreen
 
+@Metadata(title: "Tile Animation 3D", description: "タイルアニメーション 3D", tags: [.animation])
 struct TileAnimation3DScreen: View {
     @State private var viewModel: ViewModel?
     @State private var lineWidth: Double?

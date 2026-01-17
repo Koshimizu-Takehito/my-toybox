@@ -1,9 +1,10 @@
 import SwiftUI
 
+@Metadata(title: "Flow Layout", description: "改行を考慮した FlowLayout", tags: [.layout])
 struct FlowLayoutScreen: View {
     @State private var width: CGFloat = 180
 
-    let tags: [String] = [
+    let languageTags: [String] = [
         "Objective-C",
         "Swift",
         "SwiftSwiftSwiftSwiftSwiftSwiftSwiftSwift",
@@ -18,7 +19,7 @@ struct FlowLayoutScreen: View {
         }
         .background {
             FlowLayout(vSpacing: 8.0, hSpacing: 8.0) {
-                ForEach(tags, id: \.self) { tag in
+                ForEach(languageTags, id: \.self) { tag in
                     Text(tag)
                         .lineLimit(nil)
                         .font(.body)

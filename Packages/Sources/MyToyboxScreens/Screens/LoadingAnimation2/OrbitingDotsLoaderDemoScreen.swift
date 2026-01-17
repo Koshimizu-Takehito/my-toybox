@@ -8,6 +8,7 @@ import SwiftUI
 /// The loader is centered, while the bottom `ControlSizePicker` writes
 /// to `controlSize`, automatically propagating the value down the view
 /// hierarchy through `.controlSize(_:)`.
+@Metadata(title: "Loading Animation 2", description: "カスタムローディングアニメーション", tags: [.animation])
 struct OrbitingDotsLoaderDemoScreen: View {
     @State private var controlSize: ControlSize = .regular
 

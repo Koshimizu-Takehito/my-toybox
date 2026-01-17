@@ -10,6 +10,7 @@ import SwiftUI
  - Users can visually explore how changing the Lissajous curve's parameters (k, l, phase) affects its shape.
  - Animation and UI controls are provided for a real-time experience.
  */
+@Metadata(title: "Lissajous Curve 2", description: "リサージュ曲線アニメーション 2", tags: [.animation])
 struct LissajousCurveDemoScreen2: View {
     /// State model that holds all the current curve parameters.
     @State private var curve = LissajousCurve2()

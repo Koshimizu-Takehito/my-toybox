@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - JuliaSetScreen
 
+@Metadata(title: "Julia Set", description: "Julia Set", tags: [.metal])
 struct JuliaSetScreen: View {
     @State private var id = UUID()
     var body: some View {

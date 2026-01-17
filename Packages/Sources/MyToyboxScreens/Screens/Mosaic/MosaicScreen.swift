@@ -7,6 +7,7 @@ import SwiftUI
 ///
 /// The shader dynamically scales the mosaic blocks using a sine wave,
 /// creating a smooth pulsating effect.
+@Metadata(title: "Shader Mosaic", description: "シェーダー関数でモザイク", tags: [.animation, .metal])
 struct MosaicScreen: View {
     /// The reference start time used to calculate animation progress.
     @State private var start = Date()

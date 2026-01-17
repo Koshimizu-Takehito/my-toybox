@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - FlowDistortionScreen
 
+@Metadata(title: "Flow Distortion", description: "Flow Distortion シェーダ", tags: [.metal])
 public struct FlowDistortionScreen: View {
     @State private var start = Date.now
     @State private var model = Model()

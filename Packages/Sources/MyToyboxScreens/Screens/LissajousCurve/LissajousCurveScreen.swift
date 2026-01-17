@@ -41,6 +41,7 @@ nonisolated struct LissajousCurve1 {
 
 /// The main screen displaying the animated Lissajous curve with interactive controls.
 /// Users can adjust parameters and observe their effects in real time.
+@Metadata(title: "Lissajous Curve 1", description: "リサージュ曲線アニメーション 1", tags: [.animation])
 struct LissajousCurveDemoScreen1: View {
     /// State model holding all curve parameters.
     @State private var curve = LissajousCurve1()

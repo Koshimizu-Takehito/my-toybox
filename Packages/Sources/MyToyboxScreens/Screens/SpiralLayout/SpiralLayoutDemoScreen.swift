@@ -5,6 +5,7 @@ import SwiftUI
 /// A demonstration screen showcasing a custom spiral layout.
 /// Users can increase or decrease the number of cells, which are colored rectangles arranged in a spiral pattern.
 /// The layout dynamically adapts to the number of cells using the Stepper control.
+@Metadata(title: "Spiral Layout", description: "Spiral Layout サンプル", tags: [.animation, .layout])
 struct SpiralLayoutDemoScreen: View {
     @State private var count: Int = 1
 

@@ -11,6 +11,7 @@ import SwiftUI
 /// The preview is powered by ``MultiHelixAnimationView``, which renders
 /// an animated field of equally spaced marbles that vertically oscillate
 /// with a phase offset per color lane.
+@Metadata(title: "Multi Helix", description: "TimelineView + Canvas を使ったアニメーション", tags: [.animation])
 struct MultiHelixScreen: View {
     /// Total number of marbles to render across the canvas.
     /// This effectively sets the horizontal density (the grid resolution).

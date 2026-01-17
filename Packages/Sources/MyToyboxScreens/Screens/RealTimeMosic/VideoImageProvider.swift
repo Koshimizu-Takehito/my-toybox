@@ -24,7 +24,18 @@ final class VideoImageProvider {
     /// Updating this property also pauses or resumes the associated
     /// display link so that frame extraction is aligned with playback.
     private(set) var isPaused: Bool = false {
-        didSet { displayLink?.isPaused = isPaused }
+        didSet {
+            #if os(iOS) || os(tvOS)
+            displayLink?.isPaused = isPaused
+            #else
+            if isPaused {
+                displayLink?.invalidate()
+                displayLink = nil
+            } else {
+                makeDisplayLinkIfNeeded()
+            }
+            #endif
+        }
     }
 
     /// The total duration of the loaded video, in seconds.
@@ -53,7 +64,11 @@ final class VideoImageProvider {
     /// The display link is created lazily when the player item becomes ready
     /// and is invalidated when ``stop()`` is called or when the provider
     /// is deallocated.
+    #if os(iOS) || os(tvOS)
     @ObservationIgnored private var displayLink: CADisplayLink?
+    #else
+    @ObservationIgnored private var displayLink: Timer?
+    #endif
 
     /// The audio volume applied to the underlying player.
     ///
@@ -210,14 +225,25 @@ final class VideoImageProvider {
     /// and configured to call ``copyPixelBuffers(link:)`` on every screen refresh.
     private func makeDisplayLinkIfNeeded() {
         guard displayLink == nil else { return }
+        #if os(iOS) || os(tvOS)
         let link = CADisplayLink(
             target: self,
             selector: #selector(copyPixelBuffers(link:))
         )
         link.add(to: .main, forMode: .common)
         displayLink = link
+        #else
+        // On macOS, use a Timer as a simple alternative to CADisplayLink
+        let timer = Timer.scheduledTimer(withTimeInterval: 1.0 / 60.0, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                self?.copyPixelBuffers()
+            }
+        }
+        displayLink = timer
+        #endif
     }
 
+    #if os(iOS) || os(tvOS)
     /// Copies the latest video frame from the player into ``image``.
     ///
     /// This method is invoked on every screen refresh by the display link.
@@ -237,4 +263,19 @@ final class VideoImageProvider {
             }
         }
     }
+    #else
+    /// Copies the latest video frame from the player into ``image``.
+    ///
+    /// On macOS, this method is called by a Timer instead of CADisplayLink.
+    private func copyPixelBuffers() {
+        guard let player else { return }
+        let time = player.currentTime()
+        let hasBuffer = output.hasNewPixelBuffer(forItemTime: time)
+        if hasBuffer, let buffer = output.copyPixelBuffer(forItemTime: time, itemTimeForDisplay: nil) {
+            let image = CIImage(cvPixelBuffer: buffer)
+            self.image = context.createCGImage(image, from: image.extent)
+            currentTime = time.seconds
+        }
+    }
+    #endif
 }

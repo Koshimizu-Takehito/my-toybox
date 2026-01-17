@@ -1,5 +1,6 @@
 import SwiftUI
 
+@Metadata(title: "WaveParticle", description: "MSLでパーティクル", tags: [.animation, .metal])
 struct WaveParticleScreen: View {
     private let start = Date()
 
