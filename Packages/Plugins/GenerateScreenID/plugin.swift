@@ -11,7 +11,7 @@ struct GenerateScreenIDPlugin: BuildToolPlugin {
 
         let packageDir = context.package.directoryURL
         let workDir = context.pluginWorkDirectoryURL
-        let outputFile = workDir.appending(path: "ScreenID.swift")
+        let outputFile = workDir.appending(path: "Screen.swift")
 
         // Path to Scripts/generate_screen_id.sh (in parent directory of Packages/)
         let projectRoot = packageDir.deletingLastPathComponent()
@@ -22,7 +22,7 @@ struct GenerateScreenIDPlugin: BuildToolPlugin {
 
         return [
             .prebuildCommand(
-                displayName: "Generate ScreenID.swift",
+                displayName: "Generate Screen.swift",
                 executable: URL(filePath: "/bin/bash"),
                 arguments: [
                     scriptPath.path(),
