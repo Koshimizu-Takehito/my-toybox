@@ -134,3 +134,5 @@ xcuserdata/
 
 # Xcode SPM scheme files (auto-generated)
 Packages/.swiftpm/
+MetadatasMacros/.swiftpm/
+ScreenMacros/.swiftpm/
