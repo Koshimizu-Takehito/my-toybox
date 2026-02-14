@@ -87,4 +87,5 @@ enum Screen: String, CaseIterable {
     case dotsSpinnerDemoScreen
     case orbitingDotsLoaderDemoScreen
     case appleLogoScreen
+    case prettyHipScreen
 }
