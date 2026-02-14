@@ -20,7 +20,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/Koshimizu-Takehito/ScreenMacros", from: "1.0.0"),
+        .package(path: "../ScreenMacros"),
         .package(path: "../MetadatasMacros"),
     ],
     targets: [

@@ -1,9 +1,11 @@
 // swift-tools-version: 6.0
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
 import PackageDescription
 import CompilerPluginSupport
 
 let package = Package(
-    name: "MetadatasMacros",
+    name: "ScreenMacros",
     platforms: [
         .iOS(.v17),
         .macOS(.v14),
@@ -13,8 +15,8 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "MetadatasMacros",
-            targets: ["MetadatasMacros"]
+            name: "ScreenMacros",
+            targets: ["ScreenMacros"]
         ),
     ],
     dependencies: [
@@ -22,28 +24,24 @@ let package = Package(
     ],
     targets: [
         .macro(
-            name: "MetadatasMacrosImpl",
+            name: "ScreenMacrosImpl",
             dependencies: [
-                .product(name: "SwiftBasicFormat", package: "swift-syntax"),
                 .product(name: "SwiftDiagnostics", package: "swift-syntax"),
-                .product(name: "SwiftParser", package: "swift-syntax"),
-                .product(name: "SwiftParserDiagnostics", package: "swift-syntax"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
-                .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
             ],
-            path: "Sources/MetadatasMacros"
+            path: "Sources/ScreenMacrosImpl"
         ),
         .target(
-            name: "MetadatasMacros",
-            dependencies: ["MetadatasMacrosImpl"],
-            path: "Sources/MetadatasMacrosClient"
+            name: "ScreenMacros",
+            dependencies: ["ScreenMacrosImpl"],
+            path: "Sources/ScreenMacrosClient"
         ),
         .testTarget(
-            name: "MetadatasMacrosTests",
+            name: "ScreenMacrosTests",
             dependencies: [
-                "MetadatasMacrosImpl",
+                "ScreenMacrosImpl",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
             ]
         ),
