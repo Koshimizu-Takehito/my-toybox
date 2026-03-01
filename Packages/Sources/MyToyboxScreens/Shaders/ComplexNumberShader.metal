@@ -69,10 +69,10 @@ namespace ComplexNumber {
         float scale = 3.0;
         float2 z = uv * scale;
 
-        // Evaluate complex function with interpolation
-        int idx0 = int(floor(functionIndex));
-        int idx1 = idx0 + 1;
-        float t = functionIndex - float(idx0);
+        // Evaluate complex function with interpolation (clamp to avoid default branch on spring overshoot)
+        int idx0 = clamp(int(floor(functionIndex)), 0, 5);
+        int idx1 = clamp(idx0 + 1, 0, 5);
+        float t = clamp(functionIndex - float(idx0), 0.0f, 1.0f);
         float2 fz0 = evaluate(z, idx0);
         float2 fz1 = evaluate(z, idx1);
         float2 fz = mix(fz0, fz1, t);
