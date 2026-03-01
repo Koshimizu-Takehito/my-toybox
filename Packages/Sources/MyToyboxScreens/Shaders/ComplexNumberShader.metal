@@ -69,8 +69,13 @@ namespace ComplexNumber {
         float scale = 3.0;
         float2 z = uv * scale;
 
-        // Evaluate complex function
-        float2 fz = evaluate(z, int(functionIndex));
+        // Evaluate complex function with interpolation
+        int idx0 = int(floor(functionIndex));
+        int idx1 = idx0 + 1;
+        float t = functionIndex - float(idx0);
+        float2 fz0 = evaluate(z, idx0);
+        float2 fz1 = evaluate(z, idx1);
+        float2 fz = mix(fz0, fz1, t);
 
         // Domain coloring: argument -> hue
         float arg = atan2(fz.y, fz.x);

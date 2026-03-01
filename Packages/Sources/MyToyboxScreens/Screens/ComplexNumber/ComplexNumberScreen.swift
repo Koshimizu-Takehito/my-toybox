@@ -2,46 +2,50 @@ import SwiftUI
 
 // MARK: - ComplexNumberScreen
 
-@Metadata(title: "Complex Number", description: "複素関数のドメインカラーリング", tags: [.metal])
+@Metadata(title: "Complex Number", description: "複素関数のドメインカラーリング", tags: [.metal, .animation])
 struct ComplexNumberScreen: View {
     @State private var selection: ComplexFunction = .zSquared
 
     var body: some View {
-        ZStack {
-            Rectangle()
-                .colorEffect(shader)
-                .ignoresSafeArea()
-
-            VStack {
-                Spacer()
+        ComplexNumberShaderView(functionIndex: selection.rawValue)
+            .ignoresSafeArea()
+            .overlay {
                 picker
+                    .frame(maxHeight: .infinity, alignment: .bottom)
+                    .padding()
             }
-            .padding()
-        }
-    }
-
-    private var shader: Shader {
-        ShaderFunction(library: .module, name: "ComplexNumber::main")(
-            .boundingRect,
-            .float(Float(selection.rawValue))
-        )
     }
 
     private var picker: some View {
-        Picker("f(z)", selection: $selection) {
+        Picker("f(z)", selection: $selection.animation()) {
             ForEach(ComplexFunction.allCases) { function in
-                Text(function.label)
-                    .tag(function)
+                Text(function.label).tag(function)
             }
         }
         .pickerStyle(.segmented)
     }
 }
 
+// MARK: - ComplexNumberShaderView
+
+@Animatable
+private struct ComplexNumberShaderView: View, Animatable {
+    var functionIndex: Double
+
+    var body: some View {
+        Rectangle()
+            .colorEffect(function(.boundingRect, .float(functionIndex)))
+    }
+
+    var function: ShaderFunction {
+        ShaderFunction(library: .module, name: "ComplexNumber::main")
+    }
+}
+
 // MARK: - ComplexFunction
 
 extension ComplexNumberScreen {
-    enum ComplexFunction: Int, CaseIterable, Identifiable {
+    enum ComplexFunction: Double, CaseIterable, Identifiable {
         case zSquared = 0
         case oneOverOnePlusZ = 1
         case zCubedMinusOne = 2
@@ -49,7 +53,7 @@ extension ComplexNumberScreen {
         case expZ = 4
         case zSquaredPlusC = 5
 
-        var id: Int { rawValue }
+        var id: Double { rawValue }
 
         var label: String {
             switch self {
