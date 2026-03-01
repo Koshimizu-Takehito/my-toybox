@@ -87,15 +87,26 @@ namespace ComplexNumber {
 
         half3 rgb = hsv2rgb(half3(half(hue), 0.65h, half(brightness)));
 
-        // Draw coordinate axes
+        // Draw grid lines at integer coordinates
         float pixelSize = scale * 2.0 / min(box.z, box.w);
-        float axisThickness = 0.5 * pixelSize;
+        float gridThickness = 0.5 * pixelSize;
+        float axisThickness = 1.0 * pixelSize;
 
+        // Distance to nearest integer grid line
+        float distToGridX = abs(z.x - round(z.x));
+        float distToGridY = abs(z.y - round(z.y));
+        float gridLineX = 1.0 - smoothstep(gridThickness * 0.5, gridThickness * 1.5, distToGridX);
+        float gridLineY = 1.0 - smoothstep(gridThickness * 0.5, gridThickness * 1.5, distToGridY);
+        float gridIntensity = max(gridLineX, gridLineY);
+
+        // Coordinate axes (thicker)
         float xAxisLine = 1.0 - smoothstep(axisThickness * 0.5, axisThickness * 1.5, abs(z.y));
         float yAxisLine = 1.0 - smoothstep(axisThickness * 0.5, axisThickness * 1.5, abs(z.x));
         float axisIntensity = max(xAxisLine, yAxisLine);
 
-        half3 axisColor = half3(0.2h);
+        half3 gridColor = half3(0.3h);
+        half3 axisColor = half3(0.15h);
+        rgb = mix(rgb, gridColor, half(gridIntensity));
         rgb = mix(rgb, axisColor, half(axisIntensity));
 
         return half4(rgb, 1.0h);

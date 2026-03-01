@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - ComplexNumberScreen
 
-@Metadata(title: "Complex Number", description: "複素関数のドメインカラーリング", tags: [.metal, .animation])
+@Metadata(title: "Complex Number", description: "複素関数の可視化", tags: [.metal, .animation])
 struct ComplexNumberScreen: View {
     @State private var selection: ComplexFunction = .zSquared
 
