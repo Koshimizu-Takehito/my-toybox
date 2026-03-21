@@ -10,9 +10,6 @@
 		3A2AAF0B2EE4036F00CAF02D /* MyToyboxScreens in Frameworks */ = {isa = PBXBuildFile; productRef = 3A2AAF0A2EE4036F00CAF02D /* MyToyboxScreens */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		3A682A8F2D8D471000B110AC /* MyToybox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyToybox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -144,9 +141,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
 		3A682AB22D8D471100B110AC /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -203,6 +197,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.7.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -265,6 +260,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -304,7 +300,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.takehito.koshimizu.MyToybox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -343,7 +338,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.takehito.koshimizu.MyToybox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
