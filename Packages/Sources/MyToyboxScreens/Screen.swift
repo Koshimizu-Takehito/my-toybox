@@ -10,6 +10,7 @@ enum Screen: String, CaseIterable {
     case strokeModifierDemoScreen
     case rippleScreen
     case stableFluidScreen
+    case keyframeAnimationScreen
     case complexNumberScreen
     case implicitEquationScreen
     case realTimeMosicScreen
