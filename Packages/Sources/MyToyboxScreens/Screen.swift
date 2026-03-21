@@ -8,6 +8,7 @@ import SwiftUI
 @Metadatas
 enum Screen: String, CaseIterable {
     case strokeModifierDemoScreen
+    case rippleScreen
     case complexNumberScreen
     case implicitEquationScreen
     case realTimeMosicScreen
