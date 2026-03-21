@@ -9,6 +9,7 @@ import SwiftUI
 enum Screen: String, CaseIterable {
     case strokeModifierDemoScreen
     case rippleScreen
+    case stableFluidScreen
     case complexNumberScreen
     case implicitEquationScreen
     case realTimeMosicScreen
