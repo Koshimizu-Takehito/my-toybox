@@ -5,31 +5,56 @@ import SwiftUI
 @Metadata(title: "Complex Number", description: "複素関数の可視化", tags: [.metal, .animation])
 struct ComplexNumberScreen: View {
     @State private var selection: ComplexFunction = .zSquared
+    @State private var shaderMode: ShaderMode = .domainColoring
 
     var body: some View {
-        ComplexNumberShaderView(functionIndex: selection.rawValue)
+        ComplexShaderView(shaderMode: shaderMode, functionIndex: selection.rawValue)
             .ignoresSafeArea()
-            .overlay {
-                picker
-                    .frame(maxHeight: .infinity, alignment: .bottom)
-                    .padding()
-            }
+            .overlay(content: picker)
+            .toolbar(content: menu)
     }
 
-    private var picker: some View {
+    @ViewBuilder
+    private func picker() -> some View {
         Picker("f(z)", selection: $selection.animation()) {
             ForEach(ComplexFunction.allCases) { function in
-                Text(function.label).tag(function)
+                Text(function.label)
+                    .tag(function)
             }
         }
         .pickerStyle(.segmented)
+        .colorScheme(.light)
+        .frame(maxHeight: .infinity, alignment: .bottom)
+        .padding()
+    }
+
+    @ToolbarContentBuilder
+    private func menu() -> some ToolbarContent {
+        ToolbarItem {
+            Menu {
+                ForEach(ShaderMode.allCases) { mode in
+                    Button {
+                        shaderMode = mode
+                    } label: {
+                        if mode == shaderMode {
+                            Label(mode.label, systemImage: "checkmark")
+                        } else {
+                            Text(mode.label)
+                        }
+                    }
+                }
+            } label: {
+                Image(systemName: "paintpalette")
+            }
+        }
     }
 }
 
-// MARK: - ComplexNumberShaderView
+// MARK: - ComplexShaderView
 
 @Animatable
-private struct ComplexNumberShaderView: View, Animatable {
+private struct ComplexShaderView: View, Animatable {
+    @AnimatableIgnored var shaderMode: ShaderMode
     var functionIndex: Double
 
     var body: some View {
@@ -38,11 +63,34 @@ private struct ComplexNumberShaderView: View, Animatable {
     }
 
     var function: ShaderFunction {
-        ShaderFunction(library: .module, name: "ComplexNumber::main")
+        ShaderFunction(library: .module, name: shaderMode.shaderName)
     }
 }
 
-// MARK: - ComplexFunction
+// MARK: - ShaderMode
+
+private enum ShaderMode: String, CaseIterable, Identifiable {
+    case domainColoring
+    case gridTransform
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .domainColoring: "Domain Coloring"
+        case .gridTransform: "Grid Transform"
+        }
+    }
+
+    var shaderName: String {
+        switch self {
+        case .domainColoring: "ComplexNumber::main"
+        case .gridTransform: "ComplexTransform::main"
+        }
+    }
+}
+
+// MARK: - ComplexNumberScreen.ComplexFunction
 
 extension ComplexNumberScreen {
     enum ComplexFunction: Double, CaseIterable, Identifiable {
@@ -69,5 +117,7 @@ extension ComplexNumberScreen {
 }
 
 #Preview {
-    ComplexNumberScreen()
+    NavigationStack {
+        ComplexNumberScreen()
+    }
 }
