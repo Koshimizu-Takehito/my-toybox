@@ -144,6 +144,13 @@ extension MetadatasMacro: ExtensionMacro {
                 \(raw: accessModifier)var tags: [Tag] {
                     metadata.tags
                 }
+
+                \(raw: accessModifier)var thumbnail: AnyView {
+                    func open(_ metadata: some MyToyboxCore.ScreenMetadata) -> AnyView {
+                        AnyView(type(of: metadata).thumbnail)
+                    }
+                    return open(metadata)
+                }
             }
             """
 
