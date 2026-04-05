@@ -106,6 +106,18 @@ struct StableFluidScreen: View {
                 .pickerStyle(.segmented)
             }
 
+            if viewModel.displayMode == .image {
+                HStack {
+                    Text("Image")
+                        .font(.subheadline.weight(.semibold))
+                    Picker("Image", selection: $viewModel.imageContentMode) {
+                        Text("Fit").tag(StableFluidImageContentMode.aspectFit)
+                        Text("Fill").tag(StableFluidImageContentMode.aspectFill)
+                    }
+                    .pickerStyle(.segmented)
+                }
+            }
+
             LabeledContent("Time Step: \(viewModel.deltaTime, specifier: "%.2f")") {
                 Slider(value: $viewModel.deltaTime, in: 0.05 ... 2.0, step: 0.01)
             }

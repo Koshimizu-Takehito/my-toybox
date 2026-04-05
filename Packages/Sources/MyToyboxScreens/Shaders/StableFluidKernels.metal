@@ -622,8 +622,15 @@ fragment float4 fluidVelocityFS(
 }
 
 // ============================================================================
-// Fragment: Image distortion via ink density gradient (aspect-fit)
+// Fragment: Image distortion via ink density gradient (aspect fit / fill)
 // ============================================================================
+
+/// `ImageParams.scalingMode`: letterbox entire image inside the square viewport.
+/// `ImageParams.scalingMode`：画像全体を正方形ビューポート内にレターボックス表示。
+constant uint kImageScalingAspectFit = 0u;
+/// `ImageParams.scalingMode`: cover the square with center-cropped image.
+/// `ImageParams.scalingMode`：中央クロップで正方形を覆う。
+constant uint kImageScalingAspectFill = 1u;
 
 /**
  * @brief  Parameters for the image-distortion fragment shader.
@@ -631,7 +638,8 @@ fragment float4 fluidVelocityFS(
  */
 struct ImageParams {
     float pixelStep;  ///< One pixel in UV space (1/gridWidth), for finite-difference gradient. UV 空間での 1 ピクセル幅（1/グリッド幅）、有限差分勾配用。
-    float imageAspect; ///< Background image width / height, for aspect-fit mapping. 背景画像の幅/高さ比、アスペクトフィットマッピング用。
+    float imageAspect; ///< Background image width / height. 背景画像の幅/高さ比。
+    uint scalingMode;  ///< `kImageScalingAspectFit` or `kImageScalingAspectFill`. フィットまたはフィル。
 };
 
 /**
@@ -650,16 +658,20 @@ struct ImageParams {
  *      The Y component is negated because the gradient's Y direction is
  *      opposite to the UV's Y direction.
  *
- *   3. **Aspect-fit mapping:** The simulation grid is square, but the background
- *      image may not be. We scale UVs so the image fits inside the square
- *      (letterboxed), preserving its aspect ratio.
- *      - If aspect > 1 (landscape): letterbox top/bottom.
- *      - If aspect <= 1 (portrait): letterbox left/right.
+ *   3. **Aspect mapping:** The simulation grid is square, but the background
+ *      image may not be. `scalingMode` selects:
+ *      - **Fit (letterbox):** entire image inside the square; bars may be black.
+ *        - aspect > 1: letterbox top/bottom.
+ *        - aspect <= 1: letterbox left/right.
+ *      - **Fill (center crop):** image covers the square; excess is clipped.
+ *        - aspect > 1: crop left/right.
+ *        - aspect <= 1: crop top/bottom.
  *
  *   4. **Y-flip:** Metal textures have origin at top-left, but the simulation
  *      grid has origin at bottom-left, so we flip `bgUV.y = 1.0 - bgUV.y`.
  *
- *   5. **Bounds check:** Pixels outside [0,1] (in the letterbox bars) are black.
+ *   5. **Bounds check:** For fit, pixels outside [0,1] (letterbox bars) are black.
+ *      For fill, kept for numerical edge cases.
  *
  * **アルゴリズム：**
  *   1. **有限差分勾配：** 4 近傍ピクセル（左右上下）のインク密度をサンプリングし勾配を計算:
@@ -671,16 +683,19 @@ struct ImageParams {
  *      `distorted = uv + grad * strength`。
  *      勾配の Y 方向と UV の Y 方向が逆なので Y 成分は符号を反転。
  *
- *   3. **アスペクトフィットマッピング：** シミュレーショングリッドは正方形だが
- *      背景画像はそうとは限らない。画像が正方形内にフィットし
- *      アスペクト比を保つよう UV をスケーリング（レターボックス）。
- *      - aspect > 1（横長）: 上下にレターボックス。
- *      - aspect <= 1（縦長）: 左右にレターボックス。
+ *   3. **アスペクトマッピング：** シミュレーションは正方形だが背景画像はそうとは限らない。
+ *      `scalingMode` で次を選択：
+ *      - **フィット（レターボックス）：** 画像全体を正方形内に収める。帯は黒。
+ *        - aspect > 1: 上下レターボックス。
+ *        - aspect <= 1: 左右レターボックス。
+ *      - **フィル（中央クロップ）：** 正方形を覆う。はみ出しは切り捨て。
+ *        - aspect > 1: 左右クロップ。
+ *        - aspect <= 1: 上下クロップ。
  *
  *   4. **Y 反転：** Metal テクスチャの原点は左上だが、シミュレーショングリッドの
  *      原点は左下なので `bgUV.y = 1.0 - bgUV.y` で反転。
  *
- *   5. **範囲チェック：** [0,1] 外のピクセル（レターボックス帯）は黒で表示。
+ *   5. **範囲チェック：** フィットでは [0,1] 外（レターボックス帯）を黒。フィルでは数値誤差用。
  *
  * @param in      Interpolated vertex output (UV). 補間された頂点出力（UV）。
  * @param inkTex  Ink density texture (for gradient computation). インク密度テクスチャ（勾配計算用）。
@@ -707,15 +722,26 @@ fragment float4 fluidImageFS(
     float2 distorted = in.uv + grad * float2(strength, -strength);
 
     float aspect = params.imageAspect;
+    uint scaling = (params.scalingMode == kImageScalingAspectFill)
+        ? kImageScalingAspectFill
+        : kImageScalingAspectFit;
     float2 bgUV;
-    if (aspect > 1.0) {
-        float h = 1.0 / aspect;
-        float off = (1.0 - h) * 0.5;
-        bgUV = float2(distorted.x, (distorted.y - off) / h);
+    if (scaling == kImageScalingAspectFill) {
+        if (aspect > 1.0) {
+            bgUV = float2(0.5 + (distorted.x - 0.5) / aspect, distorted.y);
+        } else {
+            bgUV = float2(distorted.x, 0.5 + (distorted.y - 0.5) * aspect);
+        }
     } else {
-        float w = aspect;
-        float off = (1.0 - w) * 0.5;
-        bgUV = float2((distorted.x - off) / w, distorted.y);
+        if (aspect > 1.0) {
+            float h = 1.0 / aspect;
+            float off = (1.0 - h) * 0.5;
+            bgUV = float2(distorted.x, (distorted.y - off) / h);
+        } else {
+            float w = aspect;
+            float off = (1.0 - w) * 0.5;
+            bgUV = float2((distorted.x - off) / w, distorted.y);
+        }
     }
     bgUV.y = 1.0 - bgUV.y;
 

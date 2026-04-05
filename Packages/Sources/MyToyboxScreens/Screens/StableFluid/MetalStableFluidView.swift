@@ -85,9 +85,13 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
             /// UV 空間での 1 ピクセル幅（`1.0 / グリッド幅`）。勾配サンプリング用。
             var pixelStep: Float
 
-            /// Background image aspect ratio (`width / height`), for aspect-fit mapping.
-            /// 背景画像アスペクト比（`幅 / 高さ`）。アスペクトフィットマッピング用。
+            /// Background image aspect ratio (`width / height`).
+            /// 背景画像アスペクト比（`幅 / 高さ`）。
             var imageAspect: Float
+
+            /// `0` = aspect fit, `1` = aspect fill; must match MSL `ImageParams.scalingMode`.
+            /// `0` = アスペクトフィット、`1` = アスペクトフィル。MSL `ImageParams.scalingMode` と一致させる。
+            var scalingMode: UInt32
         }
 
         // MARK: Brush Defaults
@@ -250,7 +254,8 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
             #if os(iOS) || os(tvOS)
             guard let cgImage = UIImage(named: "waterwheel", in: .module, compatibleWith: nil)?.cgImage else { return }
             #elseif os(macOS)
-            guard let cgImage = Bundle.module.image(forResource: "waterwheel")?.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
+            guard let cgImage = Bundle.module.image(forResource: "waterwheel")?.cgImage(forProposedRect: nil, context: nil, hints: nil)
+            else { return }
             #endif
             let loader = MTKTextureLoader(device: device)
             backgroundTex = try? loader.newTexture(cgImage: cgImage, options: [
@@ -475,7 +480,8 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
                 let bgH = Float(backgroundTex?.height ?? 1)
                 var imageParams = ImageParamsBuffer(
                     pixelStep: 1.0 / Float(velTex[0].width),
-                    imageAspect: bgW / bgH
+                    imageAspect: bgW / bgH,
+                    scalingMode: viewModel.imageContentMode.metalScalingMode
                 )
                 enc.setFragmentBytes(&imageParams, length: MemoryLayout<ImageParamsBuffer>.stride, index: 0)
             case .ink:
