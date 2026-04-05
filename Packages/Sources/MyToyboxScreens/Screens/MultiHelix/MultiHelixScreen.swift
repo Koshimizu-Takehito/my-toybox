@@ -94,12 +94,46 @@ struct MultiHelixAnimationView<S: Shape>: View {
             // Convert the current timestamp into a bounded phase [0, 2π).
             let phase = context.date.timeIntervalSinceReferenceDate
                 .truncatingRemainder(dividingBy: 2.0 * .pi)
-            Canvas { context, size in
-                // For each lane and each marble rect, paint the shape with its
-                // vertical linear gradient fill.
-                for marble in marbles(in: size, phase: phase) {
-                    context.fill(marble.path, with: marble.shading)
-                }
+            MultiHelixContentView(marbleCount: marbleCount, lanes: lanes, phase: phase)
+        }
+    }
+}
+
+// MARK: - MultiHelixContentView
+
+struct MultiHelixContentView<S: Shape>: View {
+    /// The base shape used for each marble (e.g. `Circle()` by default).
+    var shape: S
+
+    /// Number of marbles across the canvas. Also influences vertical spacing,
+    /// since both axes derive their step from this count.
+    var marbleCount: Int = 10
+
+    /// A list of vertical gradients—one per animated lane. Each lane receives
+    /// a distinct phase offset so the motion is visually “multi-helix.”
+    var lanes: [Gradient]
+
+    var phase: TimeInterval
+
+    /// Creates a multi-helix animation view.
+    ///
+    /// - Parameters:
+    ///   - shape: The per-item shape to draw (defaults to `Circle()`).
+    ///   - marbleCount: How many marbles to place across the canvas.
+    ///   - lanes: Lane palette; one lane per gradient.
+    init(_ shape: S = Circle(), marbleCount: Int, lanes: [Gradient], phase: TimeInterval) {
+        self.shape = shape
+        self.marbleCount = marbleCount
+        self.lanes = lanes
+        self.phase = phase
+    }
+
+    var body: some View {
+        Canvas { context, size in
+            // For each lane and each marble rect, paint the shape with its
+            // vertical linear gradient fill.
+            for marble in marbles(in: size, phase: phase) {
+                context.fill(marble.path, with: marble.shading)
             }
         }
         .aspectRatio(3.0 / 2.0, contentMode: .fit)
