@@ -30,6 +30,7 @@ struct TileAnimation3DScreen: View {
 // MARK: - TileAnimation3DScreenContent
 
 private struct TileAnimation3DScreenContent: View {
+    typealias Tile = TileAnimation3DScreen.Tile
     var viewModel: TileAnimation3DScreen.ViewModel
     var lineWidth: Double
     @State private var lastUpdateDate = Date.now
@@ -64,20 +65,22 @@ private struct TileAnimation3DScreenContent: View {
     }
 }
 
-// MARK: - Tile
+// MARK: - TileAnimation3DScreen.Tile
 
-private struct Tile: View {
-    let radians: Double
-    var lineWidth: Double
+extension TileAnimation3DScreen {
+    struct Tile: View {
+        let radians: Double
+        var lineWidth: Double
 
-    var body: some View {
-        ZStack {
-            QuarterArc()
-                .stroke(lineWidth: lineWidth)
-                .rotationEffect(.radians(radians))
-            QuarterArc()
-                .stroke(lineWidth: lineWidth)
-                .rotationEffect(.radians(.pi + radians))
+        var body: some View {
+            ZStack {
+                QuarterArc()
+                    .stroke(lineWidth: lineWidth)
+                    .rotationEffect(.radians(radians))
+                QuarterArc()
+                    .stroke(lineWidth: lineWidth)
+                    .rotationEffect(.radians(.pi + radians))
+            }
         }
     }
 }
