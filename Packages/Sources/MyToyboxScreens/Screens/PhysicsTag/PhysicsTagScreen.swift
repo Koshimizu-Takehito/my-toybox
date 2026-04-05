@@ -14,6 +14,7 @@ struct PhysicsTagScreen: View {
         scene.scaleMode = .resizeFill
         return scene
     }()
+
     @State private var usesDeviceMotion = true
     @Environment(\.colorScheme) var colorScheme
 
