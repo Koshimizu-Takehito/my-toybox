@@ -132,6 +132,9 @@ fastlane/test_output
 xcuserdata/
 .DS_Store
 
+# Xcode app build output (project-relative build folder)
+App/build/
+
 # Xcode SPM scheme files (auto-generated)
 Packages/.swiftpm/
 MetadatasMacros/.swiftpm/
