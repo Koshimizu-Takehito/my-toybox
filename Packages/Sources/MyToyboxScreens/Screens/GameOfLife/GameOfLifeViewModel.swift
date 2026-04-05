@@ -53,6 +53,11 @@ final class GameOfLifeViewModel {
     /// ステップコミット後に呼ばれるフック。
     @ObservationIgnored var onStepCommitted: (() -> Void)?
 
+    init(cycleIntervalMS: Double = 30.0, size: Int = 256) {
+        self.cycleIntervalMS = cycleIntervalMS
+        self.size = size
+    }
+
     // MARK: Lifecycle
 
     /// 1ステップ進行が確定したことを通知する。
