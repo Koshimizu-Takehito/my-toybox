@@ -29,7 +29,7 @@ struct RinganimationScreen: View {
 
 /// A view that renders three concentric animated rings.
 /// Each ring rotates at a different speed and uses gradient coloring to indicate progress.
-private struct RotatingProgressRingsView: View {
+struct RotatingProgressRingsView: View {
     var progress: Double
 
     var body: some View {
