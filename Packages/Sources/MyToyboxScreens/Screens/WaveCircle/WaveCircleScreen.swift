@@ -12,7 +12,7 @@ struct WaveCircleScreen: View {
         VStack {
             // A view that renders the animated wave within a circle.
             WaveCircleAnimationView(percent: percent)
-                .font(.system(size: 100).monospacedDigit())
+                .font(.system(size: 60).monospacedDigit())
                 .fontWeight(.bold)
                 .fontDesign(.rounded)
 

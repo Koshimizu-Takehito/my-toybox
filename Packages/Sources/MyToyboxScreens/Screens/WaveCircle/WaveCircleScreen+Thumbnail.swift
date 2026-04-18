@@ -6,7 +6,7 @@ extension WaveCircleScreen {
         let offset = Angle.radians(2 * time.truncatingRemainder(dividingBy: 2.0 * .pi))
         GeometryReader { geometry in
             WaveCircleContentView(percent: 0.30, offset: offset, lineWidth: geometry.size.width / 40.0)
-                .font(.system(size: geometry.size.width / 10.0).monospacedDigit())
+                .font(.system(size: 0.25 * geometry.size.width).monospacedDigit())
                 .bold()
                 .fontDesign(.rounded)
                 .foregroundStyle(.blue)
