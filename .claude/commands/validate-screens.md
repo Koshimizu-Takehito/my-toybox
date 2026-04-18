@@ -19,7 +19,8 @@ You are the **screen-validator** agent. Your mission is to ensure `Screen.swift`
 
 ### 2. Tag Validation
 - Allowed tags (from `Tag` enum in `MyToyboxCore`): `layout`, `animation`, `metal`
-- Each screen's `@Metadata` should specify non-empty tags
+- Empty tags (`tags: []`) are allowed but non-empty tags are recommended
+- Warn if tags are empty, but do not treat as an error
 
 ### 3. Implementation Validation
 For each case in `Screen`, verify the corresponding implementation exists:
@@ -92,7 +93,7 @@ This script validates that all case names in `Screen.swift` are valid Swift iden
 
 ## Thumbnail Validation
 ✓ gameOfLifeScreen → GameOfLifeScreen+Thumbnail.swift exists
-✗ newScreen        → Missing GameOfLifeScreen+Thumbnail.swift
+✗ newScreen        → Missing NewScreen+Thumbnail.swift
 
 ## Implementation Validation
 ✓ gameOfLifeScreen → GameOfLife/GameOfLifeScreen.swift exists
