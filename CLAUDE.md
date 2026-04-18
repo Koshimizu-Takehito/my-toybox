@@ -24,24 +24,24 @@ make clean
 ```bash
 # Build
 xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   CODE_SIGNING_ALLOWED=NO clean build
 
 # Run all tests
 xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   CODE_SIGNING_ALLOWED=NO test
 
 # Run specific test
 xcodebuild test -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   -only-testing MyToyboxCoreTests/MyToyboxCoreTests/testName \
   CODE_SIGNING_ALLOWED=NO
 ```
 
 ## Architecture
 
-This is an iOS/macOS visual effects showcase app (Swift 6.0, SwiftUI, Metal) with a modular SPM-based architecture.
+This is an iOS/macOS visual effects showcase app (Swift 6.3, SwiftUI, Metal) with a modular SPM-based architecture.
 
 **Module Structure:**
 - `App/MyToybox/` - Xcode app entry point (`App.swift` → `RootScreen`)

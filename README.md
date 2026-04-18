@@ -1,7 +1,7 @@
 # my-toybox
 
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS-blue.svg)
-![Swift](https://img.shields.io/badge/swift-6.0-orange.svg)
+![Swift](https://img.shields.io/badge/swift-6.3-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
 
@@ -12,10 +12,10 @@ It acts as a sandbox or "toybox" of interactive screens where you can explore di
 
 ## Overview
 
-- **Languages & Frameworks**: Swift 6.0, SwiftUI, Metal  
+- **Languages & Frameworks**: Swift 6.3, SwiftUI, Metal  
 - **Project Format**: Xcode workspace (`MyToybox.xcworkspace`)  
 - **Platform**: iOS 18+ (iPhone/iPad), macOS 15+  
-- **Recommended**: Xcode 16.3 or later  
+- **Recommended**: Xcode 26.4.1 or later  
 
 The app displays a list of sample screens (referred to as "screens") on launch. Each screen demonstrates a unique animation or visual effect.  
 Screens are loaded dynamically from the `Screen` enum and rendered using SwiftUI and, in some cases, custom Metal shaders.

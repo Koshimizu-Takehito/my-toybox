@@ -1,7 +1,7 @@
 # my-toybox
 
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS-blue.svg)
-![Swift](https://img.shields.io/badge/swift-6.0-orange.svg)
+![Swift](https://img.shields.io/badge/swift-6.3-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
 
@@ -10,10 +10,10 @@
 
 ## 概要
 
-- **言語 / フレームワーク**: Swift 6.0, SwiftUI, Metal  
+- **言語 / フレームワーク**: Swift 6.3, SwiftUI, Metal  
 - **プロジェクト形式**: Xcode ワークスペース（`MyToybox.xcworkspace`）  
 - **動作環境**: iOS 18+（iPhone/iPad）、macOS 15+  
-- **推奨環境**: Xcode 16.3 以降  
+- **推奨環境**: Xcode 26.4.1 以降  
 
 本プロジェクトは、SwiftUI でのアニメーションや Metal シェーダーを使ったグラフィックス表現を学習・実験するための「おもちゃ箱 (Toybox)」として設計されています。  
 アプリを起動すると、サイドバー（またはコンパクト端末では一覧画面）にサンプルの一覧が表示され、選択すると対応するアニメーション／描画サンプルをすぐに実行・確認できます。
