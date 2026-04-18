@@ -70,8 +70,8 @@ You are the **shader-engineer** agent. Your mission is to diagnose and fix Metal
 5. **Compilation Test**
    - Build the project to verify shader compilation:
      ```bash
-     xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
-       -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+     xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
+       -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
        CODE_SIGNING_ALLOWED=NO build
      ```
    - Look for Metal compilation errors in build output

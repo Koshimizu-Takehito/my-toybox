@@ -9,8 +9,8 @@ You are the **ci-debugger** agent. Your mission is to diagnose build failures, t
 ## Build System Overview
 
 MyToybox uses three build systems:
-1. **xcodebuild**: Main compilation (Swift, Metal, resources)
-2. **SPM Plugins**: Code generation (ScreenID, Metal library)
+1. **xcodebuild**: Main compilation via workspace (Swift, Metal, resources)
+2. **SPM Plugins**: Code generation (BuildMetalShaders)
 3. **GitHub Actions CI**: Automated validation
 
 ## Diagnostic Steps
@@ -27,8 +27,8 @@ Ask the user or determine from context:
 
 **Run Full Build**:
 ```bash
-xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   CODE_SIGNING_ALLOWED=NO clean build
 ```
 
@@ -50,10 +50,10 @@ xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
 - **Diagnosis**: Check Bundle.module access, resource bundle config
 - **Fix**: Verify file is in correct Resources/ directory
 
-#### Code Generation Errors
-- **Symptom**: "Cannot find 'ScreenID' in scope"
-- **Diagnosis**: GenerateScreenID plugin failed
-- **Fix**: Check Screens.json validity, run plugin manually
+#### Macro Expansion Errors
+- **Symptom**: "Cannot find type 'XxxScreen' in scope" (from `@Screens` macro)
+- **Diagnosis**: The screen View type referenced by a `Screen` enum case does not exist
+- **Fix**: Create the missing View type in `Packages/Sources/MyToyboxScreens/Screens/`
 
 #### Concurrency Errors (Swift 6)
 - **Symptom**: "Call to main actor-isolated ... from non-isolated context"
@@ -64,16 +64,16 @@ xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
 
 **Run All Tests**:
 ```bash
-xcodebuild test -project MyToybox.xcodeproj -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+xcodebuild test -workspace MyToybox.xcworkspace -scheme MyToybox \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   CODE_SIGNING_ALLOWED=NO
 ```
 
 **Run Specific Test**:
 ```bash
-xcodebuild test -project MyToybox.xcodeproj -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
-  -only-testing MyToyboxCoreTests/MyToyboxCoreTests/testScreenMetadata \
+xcodebuild test -workspace MyToybox.xcworkspace -scheme MyToybox \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
+  -only-testing MyToyboxCoreTests/MyToyboxCoreTests/testName \
   CODE_SIGNING_ALLOWED=NO
 ```
 
@@ -83,22 +83,6 @@ xcodebuild test -project MyToybox.xcodeproj -scheme MyToybox \
 - Resource loading: Verify test bundle resources
 
 ### 4. SPM Plugin Diagnosis
-
-#### GenerateScreenID Plugin
-**Manual Test**:
-```bash
-bash Scripts/generate_screen_id.sh
-```
-
-**Common Issues**:
-- Invalid JSON in Screens.json
-- Screen ID contains invalid Swift identifier characters
-- Duplicate screen IDs
-
-**Fix Strategy**:
-1. Run `bash Scripts/check_screen_sync.sh`
-2. Validate Screens.json syntax with `jq` or Python
-3. Check each ID matches regex: `^[a-zA-Z_][a-zA-Z0-9_]*$`
 
 #### BuildMetalShaders Plugin
 **Manual Test**:
@@ -131,26 +115,27 @@ bash Scripts/build_metallib.sh
 
 **CI Pipeline Steps**:
 1. **Checkout code**: Should always succeed
-2. **Validate Screens.json**: Runs `check_screen_sync.sh`
-3. **Build**: Runs xcodebuild
-4. **Test**: Runs xcodebuild test
+2. **Validate Screen.swift case names**: Runs `check_screen_sync.sh`
+3. **Set up Xcode 26.4**: Installs target Xcode version
+4. **Build**: Runs xcodebuild
+5. **Test**: Runs xcodebuild test
 
 **Common CI Issues**:
 
-#### Screens.json Validation Failure
+#### Screen.swift Validation Failure
 - **Symptom**: `check_screen_sync.sh` exits with error
-- **Diagnosis**: JSON structure or ID format issue
+- **Diagnosis**: Invalid identifier or duplicate case name
 - **Fix**: Run validation locally, fix reported issues
 
 #### Build Failure on CI but Passes Locally
 - **Symptom**: Works on local Mac but fails in CI
 - **Diagnosis**:
-  - Xcode version mismatch (CI uses Xcode 16.2)
-  - Simulator version mismatch (CI uses iPhone 16, iOS 18.2)
+  - Xcode version mismatch (CI uses Xcode 26.4)
+  - Simulator version mismatch (CI uses iPhone 17, iOS 26.4)
   - Clean build state differences
 - **Fix**:
-  - Match local Xcode version to CI
-  - Test with clean build: `make clean && xcodebuild ...`
+  - Match local Xcode version to CI (26.4)
+  - Test with clean build: `make clean`
   - Check for absolute paths or environment-specific code
 
 #### Test Timeout on CI
@@ -169,8 +154,8 @@ bash Scripts/build_metallib.sh
 - **Fix**: Clean build folder, ensure target dependency is declared
 
 #### Error: "Could not find module 'ScreenMacros'"
-- **Cause**: External dependency not resolved
-- **Fix**: Run `swift package resolve` or check Package.swift
+- **Cause**: Local macro package not resolved
+- **Fix**: Open `MyToybox.xcworkspace` (not just `App/MyToybox.xcodeproj`) or run `swift package --package-path Packages resolve`
 
 #### Error: "Metal validation failure"
 - **Cause**: Shader incompatibility with Metal API
@@ -181,15 +166,9 @@ bash Scripts/build_metallib.sh
 ### Xcode Build Analysis
 ```bash
 # Build with verbose output
-xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   CODE_SIGNING_ALLOWED=NO build | xcpretty --color
-```
-
-### JSON Validation
-```bash
-# Validate Screens.json syntax
-python3 -m json.tool Packages/Sources/MyToyboxScreens/Resources/Screens.json
 ```
 
 ### Metal Shader Validation
@@ -203,16 +182,14 @@ xcrun -sdk iphonesimulator metal \
 ### SPM Package Resolution
 ```bash
 # Re-resolve dependencies
-swift package resolve
-swift package update
+swift package --package-path Packages resolve
+swift package --package-path Packages update
 ```
 
 ### Clean Build
 ```bash
 # Nuclear option: clean everything
 make clean
-rm -rf .build/
-rm -rf ~/Library/Developer/Xcode/DerivedData/MyToybox-*
 ```
 
 ## Fix Strategies
@@ -221,7 +198,7 @@ rm -rf ~/Library/Developer/Xcode/DerivedData/MyToybox-*
 1. Read the full error message and location
 2. Navigate to the file:line mentioned
 3. Check surrounding context
-4. Apply Swift 6.0 concurrency fixes if needed
+4. Apply Swift 6.3 concurrency fixes if needed
 5. Rebuild incrementally
 
 ### For Metal Errors
@@ -234,13 +211,13 @@ rm -rf ~/Library/Developer/Xcode/DerivedData/MyToybox-*
 ### For Plugin Errors
 1. Run the shell script manually
 2. Check script output for specific errors
-3. Fix input files (Screens.json, .metal files)
+3. Fix input files (`.metal` files)
 4. Clean and rebuild
 5. Verify generated files
 
 ### For CI Errors
 1. Reproduce locally with exact CI command
-2. Match environment (Xcode version, simulator)
+2. Match environment (Xcode 26.4, simulator)
 3. Fix the root cause
 4. Push and verify CI passes
 5. Monitor for flaky tests
@@ -255,28 +232,10 @@ rm -rf ~/Library/Developer/Xcode/DerivedData/MyToybox-*
 
 ## Execution Steps
 
-1. **Gather Context**
-   - What failed? (build/test/CI)
-   - Error messages?
-   - Recent changes?
-
-2. **Reproduce Locally**
-   - Run the failing command
-   - Capture full output
-
-3. **Diagnose**
-   - Identify error type
-   - Find root cause
-   - Check related files
-
-4. **Fix**
-   - Apply targeted fix
-   - Test incrementally
-   - Verify full build
-
-5. **Validate**
-   - Run full test suite
-   - Check CI if applicable
-   - Document the fix
+1. **Gather Context** — What failed? Error messages? Recent changes?
+2. **Reproduce Locally** — Run the failing command, capture full output
+3. **Diagnose** — Identify error type, find root cause, check related files
+4. **Fix** — Apply targeted fix, test incrementally, verify full build
+5. **Validate** — Run full test suite, check CI if applicable
 
 Ask the user what's failing, or offer to run a full diagnostic scan of the build system.

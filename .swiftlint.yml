@@ -1,5 +1,5 @@
-# SwiftLint Configuration for Confetti
-# Swift 6.0 / iOS 18+ / macOS 15+ 向けモダン設定
+# SwiftLint Configuration for MyToybox
+# Swift 6.3 / iOS 18+ / macOS 15+ 向けモダン設定
 
 # Paths to include
 included:
@@ -51,7 +51,6 @@ disabled_rules:
 # =============================================================================
 opt_in_rules:
   # --- Performance (パフォーマンス最適化) ---
-  - empty_count                       # .count == 0 より .isEmpty を推奨
   - empty_string                      # "" より .isEmpty を推奨
   - empty_collection_literal          # 空コレクションリテラルの最適化
   - first_where                       # filter().first より first(where:)
@@ -66,14 +65,11 @@ opt_in_rules:
   - final_test_case                   # テストクラスに final を付与
 
   # --- Safety (安全性) ---
-  - force_unwrapping                  # ! の使用を警告
-  - implicitly_unwrapped_optional     # 暗黙的アンラップを警告
   - overridden_super_call             # super 呼び出し漏れを検知
   - unowned_variable_capture          # unowned キャプチャの危険性
   - discarded_notification_center_observer  # Observer の解放漏れ
   - yoda_condition                    # 定数を左辺に置くスタイルを禁止
   - identical_operands                # 同一オペランドの比較を検知
-  - unhandled_throwing_task           # Task 内の未処理エラー
 
   # --- Swift Concurrency (Swift 6 対応) ---
   - async_without_await               # async 関数内で await がない場合
@@ -94,8 +90,6 @@ opt_in_rules:
   - redundant_self                    # クロージャ内の冗長な self（旧: redundant_self_in_closure）
   - toggle_bool                       # x = !x より x.toggle()
   - joined_default_parameter          # .joined() のデフォルト引数
-  - discouraged_optional_boolean      # Bool? を避ける
-  - discouraged_optional_collection   # [T]? より [T] を推奨
   - discouraged_none_name             # none という名前を避ける
 
   # --- Code Organization (コード整理) ---
@@ -103,7 +97,6 @@ opt_in_rules:
   - closure_end_indentation           # クロージャの閉じ括弧のインデント
   - closure_spacing                   # クロージャ内のスペース
   - collection_alignment              # コレクションリテラルの整列
-  - multiline_function_chains         # メソッドチェーンの改行
   - multiline_literal_brackets        # 複数行リテラルの括弧
   - multiline_parameters              # 関数パラメータの改行
   - operator_usage_whitespace         # 演算子周りのスペース
@@ -121,7 +114,6 @@ opt_in_rules:
   - period_spacing                    # ピリオド後のスペース
 
   # --- Other (その他) ---
-  - closure_body_length               # クロージャのボディ長制限
   - self_binding                      # self のバインディング名を統一
   - shorthand_argument                # 省略引数 ($0, $1) の制限
 
