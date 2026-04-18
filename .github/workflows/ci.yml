@@ -11,13 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate Screens.json ids
+      - name: Validate Screen.swift case names
         run: ./Scripts/check_screen_sync.sh
 
-      - name: Set up Xcode 16.2
+      - name: Set up Xcode 16.3
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.2'
+          xcode-version: '16.3'
 
       - name: Install xcpretty
         run: gem install xcpretty
@@ -27,12 +27,12 @@ jobs:
 
       - name: Build with xcodebuild
         run: |
-          xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
+          xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
             -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
             CODE_SIGNING_ALLOWED=NO clean build | xcpretty
 
       - name: Run Xcode tests
         run: |
-          xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
+          xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
             -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
             CODE_SIGNING_ALLOWED=NO test | xcpretty --test

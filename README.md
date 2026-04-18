@@ -1,7 +1,7 @@
 # my-toybox
 
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS-blue.svg)
-![Swift](https://img.shields.io/badge/swift-6.1-orange.svg)
+![Swift](https://img.shields.io/badge/swift-6.0-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
 
@@ -66,16 +66,23 @@ my-toybox/
   │   ├─ Plugins/
   │   │   └─ BuildMetalShaders/    # SPM plugin for Metal compilation
   │   ├─ Sources/
-  │   │   ├─ MyToyboxCore/         # Core utilities and shared code
-  │   │   │   ├─ Models/           # Shared models (Tag, etc.)
-  │   │   │   └─ Utils/            # Utilities and Metal shader headers
+  │   │   ├─ MyToyboxCore/         # Core protocols and shared utilities
+  │   │   │   ├─ ScreenMetadata.swift  # Protocol defining screen metadata & thumbnail
+  │   │   │   ├─ Tag.swift             # Tag enum for screen categorization
+  │   │   │   └─ ThumbnailView.swift   # Reusable thumbnail view wrapper
   │   │   └─ MyToyboxScreens/      # All screen implementations
   │   │       ├─ Screen.swift      # Screen enum definition
+  │   │       ├─ Exports.swift     # Public API exports
   │   │       ├─ Screens/          # Dozens of animation screens
+  │   │       │   └─ Root/         # Root screen and view model
   │   │       ├─ Shaders/          # Metal shader files
-  │   │       └─ Root/             # Root screen and view model
+  │   │       ├─ TagPicker/        # Tag filter UI components
+  │   │       ├─ Utils/            # Utilities and Metal shader headers
+  │   │       └─ Resources/        # Bundle resources (assets, xibs)
   │   └─ Tests/
   │       └─ MyToyboxCoreTests/    # Unit tests for core module
+  ├─ MetadatasMacros/              # @Metadatas / @Metadata macro package
+  ├─ ScreenMacros/                 # @Screens / @Screen macro package
   └─ Scripts/
       ├─ build_metallib.sh         # Metal shader build script (used by plugin)
       ├─ new_screen.sh             # Script to create new screens
@@ -85,7 +92,7 @@ my-toybox/
 **Key Files:**
 - `App.swift`: The app's `@main` entry point, launching the `RootScreen`.
 - `RootScreen.swift`: The master-detail view listing all available screens.
-- `RootScreenViewModel.swift`: Handles loading and storing screen data.
+- `RootViewModel.swift`: Handles loading and storing screen data.
 - `Screen.swift`: Enum defining all available screens with their metadata.
 
 ## Getting Started

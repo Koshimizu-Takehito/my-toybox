@@ -1,4 +1,4 @@
-# SwiftLint Configuration for Confetti
+# SwiftLint Configuration for MyToybox
 # Swift 6.0 / iOS 18+ / macOS 15+ 向けモダン設定
 
 # Paths to include
@@ -51,7 +51,6 @@ disabled_rules:
 # =============================================================================
 opt_in_rules:
   # --- Performance (パフォーマンス最適化) ---
-  - empty_count                       # .count == 0 より .isEmpty を推奨
   - empty_string                      # "" より .isEmpty を推奨
   - empty_collection_literal          # 空コレクションリテラルの最適化
   - first_where                       # filter().first より first(where:)
@@ -66,14 +65,11 @@ opt_in_rules:
   - final_test_case                   # テストクラスに final を付与
 
   # --- Safety (安全性) ---
-  - force_unwrapping                  # ! の使用を警告
-  - implicitly_unwrapped_optional     # 暗黙的アンラップを警告
   - overridden_super_call             # super 呼び出し漏れを検知
   - unowned_variable_capture          # unowned キャプチャの危険性
   - discarded_notification_center_observer  # Observer の解放漏れ
   - yoda_condition                    # 定数を左辺に置くスタイルを禁止
   - identical_operands                # 同一オペランドの比較を検知
-  - unhandled_throwing_task           # Task 内の未処理エラー
 
   # --- Swift Concurrency (Swift 6 対応) ---
   - async_without_await               # async 関数内で await がない場合

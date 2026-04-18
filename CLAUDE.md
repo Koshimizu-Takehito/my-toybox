@@ -23,17 +23,17 @@ make clean
 
 ```bash
 # Build
-xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
+xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
   -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
   CODE_SIGNING_ALLOWED=NO clean build
 
 # Run all tests
-xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
+xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
   -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
   CODE_SIGNING_ALLOWED=NO test
 
 # Run specific test
-xcodebuild test -project MyToybox.xcodeproj -scheme MyToybox \
+xcodebuild test -workspace MyToybox.xcworkspace -scheme MyToybox \
   -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
   -only-testing MyToyboxCoreTests/MyToyboxCoreTests/testName \
   CODE_SIGNING_ALLOWED=NO
@@ -45,12 +45,13 @@ This is an iOS/macOS visual effects showcase app (Swift 6.0, SwiftUI, Metal) wit
 
 **Module Structure:**
 - `App/MyToybox/` - Xcode app entry point (`App.swift` → `RootScreen`)
-- `Packages/Sources/MyToyboxCore/` - Shared models and utilities, Metal shader headers
+- `Packages/Sources/MyToyboxCore/` - Shared models and utilities (`ScreenMetadata`, `Tag`, `ThumbnailView`)
 - `Packages/Sources/MyToyboxScreens/` - Screen implementations, shaders, and `Screen.swift` enum
 
 **Code Generation via SPM Plugins:**
 - `BuildMetalShaders` plugin: `.metal` files → `default.metallib`
 - `@Screens` macro (from [ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)): converts `Screen` cases to View types
+- `@Metadatas` / `@Metadata` macros (from `MetadatasMacros/`): generate `ScreenMetadata` conformance (`title`, `description`, `tags`, `thumbnail`) for each screen
 
 **Screen Registration:**
 - Single source of truth: `Packages/Sources/MyToyboxScreens/Screen.swift`

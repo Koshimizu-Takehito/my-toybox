@@ -5,11 +5,19 @@
 # ============================================================================
 help:
 	@echo "Available commands:"
-	@echo "  make open                - Open project in Xcode"
-	@echo "  make new-screen          - Create a new screen (interactive)"
-	@echo "  make new-screen NAME=Foo - Create a new screen named Foo"
+	@echo "  make open                          - Open project in Xcode"
+	@echo "  make setup                         - Install Mint and dependencies"
+	@echo "  make sync                          - Pull latest changes and update dependencies"
+	@echo "  make new-screen                    - Create a new screen (interactive)"
+	@echo "  make new-screen NAME=Foo           - Create a new screen named Foo"
 	@echo "  make new-screen NAME=Foo SHADER=yes - With Metal shader"
-	@echo "  make clean               - Remove build artifacts"
+	@echo "  make lint                          - Run SwiftLint"
+	@echo "  make lint-fix                      - Run SwiftLint with auto-correction"
+	@echo "  make lint-strict                   - Run SwiftLint treating warnings as errors (CI)"
+	@echo "  make format                        - Format code with SwiftFormat"
+	@echo "  make format-check                  - Check code formatting (no changes)"
+	@echo "  make fix                           - Format and auto-fix all code"
+	@echo "  make clean                         - Remove build artifacts"
 	@echo ""
 	@echo "Note: Metal shaders are automatically compiled by SPM plugins during build."
 
@@ -39,7 +47,7 @@ sync: ## Pull latest changes and update all dependencies
 	@echo "📦 Updating Mint packages..."
 	@mint bootstrap
 	@echo "📦 Resolving Swift packages..."
-	@swift package resolve
+	@swift package --package-path Packages resolve
 	@echo "✅ Sync complete!"
 
 # ============================================================================

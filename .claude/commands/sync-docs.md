@@ -16,7 +16,7 @@ You are the **documentation-writer** agent. Your mission is to keep documentatio
 ### Secondary Documentation
 4. **Makefile** (inline help text)
 5. **Package.swift** (package documentation)
-6. **Screens.json** (screen descriptions)
+6. **Screen.swift** (screen enum cases)
 7. **Code comments** (inline documentation)
 
 ## Sync Tasks
@@ -37,9 +37,7 @@ When screens are added/removed:
 
 # After (when adding new screen)
 97+ visual effects screens
-```
-
-### 2. Update Command Documentation
+```### 2. Update Command Documentation
 
 When Makefile commands change:
 
@@ -177,7 +175,7 @@ struct Example {}
 ### After Adding New Screen
 - [ ] Increment screen count in README.md
 - [ ] Increment screen count in README.ja.md
-- [ ] Update Screens.json description is clear
+- [ ] Ensure `@Metadata` on the new screen struct has clear title and description
 - [ ] Ensure screen appears in app sidebar
 
 ### After Adding Makefile Command
@@ -258,14 +256,21 @@ make command-name ARG=example
 
 ### New Screen Entry
 
-**For Screens.json**:
-```json
-{
-  "id": "newEffectScreen",
-  "title": "New Effect",
-  "description": "Brief description of the visual effect",
-  "tags": ["animation", "metal"],
-  "html": "https://github.com/Koshimizu-Takehito/my-toybox/tree/main/Packages/Sources/MyToyboxScreens/Screens/NewEffect"
+**In `Screen.swift`** (add a new case to `enum Screen`):
+```swift
+case newEffectScreen
+```
+
+**In a new `NewEffectScreen.swift`** (screen implementation):
+```swift
+@Metadata(
+    title: "New Effect",
+    description: "Brief description of the visual effect",
+    tags: [.animation, .metal]
+)
+public struct NewEffectScreen: View {
+    public init() {}
+    public var body: some View { ... }
 }
 ```
 

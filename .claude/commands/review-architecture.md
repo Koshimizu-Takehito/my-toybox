@@ -25,7 +25,7 @@ struct ScreenUseCase {
 // ViewModel
 @MainActor
 @Observable
-final class RootScreenViewModel {
+final class RootViewModel {
     private(set) var screens: [Screen] = []
     private let useCase = ScreenUseCase()
 
@@ -36,7 +36,7 @@ final class RootScreenViewModel {
 
 // View
 struct RootScreen: View {
-    @State private var viewModel = RootScreenViewModel()
+    @State private var viewModel = RootViewModel()
 
     var body: some View {
         // UI implementation
@@ -153,7 +153,7 @@ struct ScreenUseCase {
 ```swift
 // DON'T: Caching for data loaded once
 @Observable
-final class RootScreenViewModel {
+final class RootViewModel {
     private static var cachedScreens: [Screen]?  // Unnecessary!
 }
 ```
@@ -161,7 +161,7 @@ final class RootScreenViewModel {
 ```swift
 // DO: Simple, direct loading
 @Observable
-final class RootScreenViewModel {
+final class RootViewModel {
     private(set) var screens: [Screen] = []
 }
 ```

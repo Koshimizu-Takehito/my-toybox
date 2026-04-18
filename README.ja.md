@@ -1,7 +1,7 @@
 # my-toybox
 
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS-blue.svg)
-![Swift](https://img.shields.io/badge/swift-6.1-orange.svg)
+![Swift](https://img.shields.io/badge/swift-6.0-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
 
@@ -65,16 +65,23 @@ my-toybox/
   │   ├─ Plugins/
   │   │   └─ BuildMetalShaders/    # Metal コンパイル用 SPM プラグイン
   │   ├─ Sources/
-  │   │   ├─ MyToyboxCore/         # コアユーティリティと共有コード
-  │   │   │   ├─ Models/           # 共有モデル（Tag など）
-  │   │   │   └─ Utils/            # ユーティリティと Metal シェーダーヘッダ
+  │   │   ├─ MyToyboxCore/         # コアプロトコルと共有ユーティリティ
+  │   │   │   ├─ ScreenMetadata.swift  # 画面メタデータ＆サムネイルのプロトコル定義
+  │   │   │   ├─ Tag.swift             # 画面カテゴリ用 Tag enum
+  │   │   │   └─ ThumbnailView.swift   # サムネイル表示ラッパー
   │   │   └─ MyToyboxScreens/      # 全画面の実装
   │   │       ├─ Screen.swift      # Screen enum 定義
+  │   │       ├─ Exports.swift     # パブリック API エクスポート
   │   │       ├─ Screens/          # 各種アニメーション画面
+  │   │       │   └─ Root/         # ルート画面とビューモデル
   │   │       ├─ Shaders/          # Metal シェーダーファイル
-  │   │       └─ Root/             # ルート画面とビューモデル
+  │   │       ├─ TagPicker/        # タグフィルター UI コンポーネント
+  │   │       ├─ Utils/            # ユーティリティと Metal シェーダーヘッダ
+  │   │       └─ Resources/        # バンドルリソース（アセット、xib）
   │   └─ Tests/
   │       └─ MyToyboxCoreTests/    # コアモジュールのユニットテスト
+  ├─ MetadatasMacros/              # @Metadatas / @Metadata マクロパッケージ
+  ├─ ScreenMacros/                 # @Screens / @Screen マクロパッケージ
   └─ Scripts/
       ├─ build_metallib.sh         # Metal シェーダービルドスクリプト（プラグイン使用）
       ├─ new_screen.sh             # 新規画面作成スクリプト
@@ -84,7 +91,7 @@ my-toybox/
 **主要ファイル:**
 - `App.swift`: アプリのエントリーポイント。`RootScreen` が初期画面として指定されています。
 - `RootScreen.swift`: アプリ起動時に表示される「画面一覧＋詳細表示」のメインビュー。
-- `RootScreenViewModel.swift`: 画面一覧データの取得など、ビジネスロジックを担当。
+- `RootViewModel.swift`: 画面一覧データの取得など、ビジネスロジックを担当。
 - `Screen.swift`: すべての画面を定義する enum とメタデータを含むファイル。
 
 ## インストール & ビルド手順
