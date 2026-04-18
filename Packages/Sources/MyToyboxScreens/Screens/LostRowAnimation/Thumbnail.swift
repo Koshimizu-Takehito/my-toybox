@@ -39,7 +39,7 @@ extension LostRowAnimationScreen {
             }
         }
 
-        func fetch() async {
+        func fetch() {
             show = false
             Task.detached {
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
