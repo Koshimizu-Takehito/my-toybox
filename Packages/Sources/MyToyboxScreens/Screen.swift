@@ -83,12 +83,12 @@ enum Screen: String, CaseIterable {
     case flowLayoutScreen
     case layoutProtocolSampleScreen
     case scrollYRotationScreen
-    case gradientAnimationScreen
     case juliaSetScreen
     case squreflowScreen
     case smoothMinScreen
+    case prettyHipScreen
     case dotsSpinnerDemoScreen
     case orbitingDotsLoaderDemoScreen
+    case gradientAnimationScreen
     case appleLogoScreen
-    case prettyHipScreen
 }
