@@ -22,13 +22,13 @@ struct SqureflowScreen: View {
 
 // MARK: - SquresHolder
 
-private final class SquresHolder {
+final class SquresHolder {
     private(set) var squre = Set<Squre>()
     private let maxCount = 10
 
-    func update(at date: Date, in size: CGSize) {
+    func update(at date: Date, in size: CGSize, allowSpawn: Bool = true) {
         squre = squre.filter { $0.isAlive(at: date, in: size) }
-        guard squre.count < maxCount else {
+        guard allowSpawn, squre.count < maxCount else {
             return
         }
         squre.insert(Squre(creationDate: date))
@@ -37,7 +37,7 @@ private final class SquresHolder {
 
 // MARK: - Squre
 
-private struct Squre: Hashable {
+struct Squre: Hashable {
     static let velocities = 0.02 ... 0.1
 
     var x: Double
