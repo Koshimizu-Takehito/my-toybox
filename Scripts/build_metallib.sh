@@ -124,6 +124,7 @@ for metal_file in "${METAL_FILES[@]}"; do
     xcrun -sdk "$SDK" metal -c "$metal_file" \
         -std=metal3.2 \
         -target "$TRIPLE" \
+        -fmetal-math-mode=fast \
         -o "$BUILD_DIR/$filename.air" \
         $INCLUDE_ARGS \
         2>&1 || {

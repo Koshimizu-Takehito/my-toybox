@@ -32,14 +32,6 @@ enum StableFluidImageContentMode: String, CaseIterable {
     /// 中央クロップ：正方形を隙間なく覆い、はみ出しを切り捨てる。
     case aspectFill
 
-    /// Value for `ImageParams.scalingMode` in MSL (`0` = fit, `1` = fill).
-    /// MSL の `ImageParams.scalingMode` 用（`0` = fit、`1` = fill）。
-    var metalScalingMode: UInt32 {
-        switch self {
-        case .aspectFit: 0
-        case .aspectFill: 1
-        }
-    }
 }
 
 // MARK: - BrushState

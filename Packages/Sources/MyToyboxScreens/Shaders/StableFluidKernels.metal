@@ -60,6 +60,22 @@ static inline int2 clampCoord(int2 coord, int2 bounds) {
     return clamp(coord, int2(0), bounds - 1);
 }
 
+/// Load an 18x18 tile (16x16 core + 1-pixel halo) from a float4 texture into
+/// threadgroup memory with clamped boundary handling.
+static inline void loadTile4(
+    threadgroup float4 tile[18][18],
+    texture2d<float, access::read> src,
+    uint2 ltid, uint2 lsize, uint2 gid, int2 bounds
+) {
+    const int2 origin = int2(gid) - int2(ltid) - 1;
+    for (int j = int(ltid.y); j < 18; j += int(lsize.y)) {
+        for (int i = int(ltid.x); i < 18; i += int(lsize.x)) {
+            int2 gp = clampCoord(origin + int2(i, j), bounds);
+            tile[j][i] = src.read(uint2(gp));
+        }
+    }
+}
+
 // ============================================================================
 // Compute: Brush – generate force and ink from touch input
 // ============================================================================
@@ -214,11 +230,11 @@ kernel void fluidAddForces(
  * @param gid   Thread position. スレッド位置。
  */
 kernel void fluidAdvect(
-    texture2d<float, access::sample> src    [[texture(0)]],
-    texture2d<float, access::write>  dst    [[texture(1)]],
-    sampler                          samp   [[sampler(0)]],
-    constant SimParams&              p      [[buffer(0)]],
-    uint2                            gid    [[thread_position_in_grid]]
+    texture2d<half, access::sample> src    [[texture(0)]],
+    texture2d<float, access::write> dst    [[texture(1)]],
+    sampler                         samp   [[sampler(0)]],
+    constant SimParams&             p      [[buffer(0)]],
+    uint2                           gid    [[thread_position_in_grid]]
 ) {
     uint w = src.get_width();
     uint h = src.get_height();
@@ -228,11 +244,11 @@ kernel void fluidAdvect(
         return;
     }
 
-    float2 vel = src.read(gid).xy;
+    float2 vel = float2(src.read(gid).xy);
     float2 prevPos = float2(gid) - p.deltaTime * vel;
     float2 clamped = clamp(prevPos, float2(-0.5), float2(float(w), float(h)) - 0.5);
     float2 uv = (clamped + 0.5) / float2(float(w), float(h));
-    float4 sampled = src.sample(samp, uv);
+    float4 sampled = float4(src.sample(samp, uv));
     dst.write(sampled, gid);
 }
 
@@ -287,19 +303,26 @@ kernel void fluidAdvect(
  * @param gid  Thread position. スレッド位置。
  */
 kernel void fluidDiffusion(
-    texture2d<float, access::read>  src [[texture(0)]],
-    texture2d<float, access::write> dst [[texture(1)]],
-    constant SimParams&             p   [[buffer(0)]],
-    uint2                           gid [[thread_position_in_grid]]
+    texture2d<float, access::read>  src  [[texture(0)]],
+    texture2d<float, access::write> dst  [[texture(1)]],
+    constant SimParams&             p    [[buffer(0)]],
+    uint2                           gid  [[thread_position_in_grid]],
+    uint2                           ltid [[thread_position_in_threadgroup]],
+    uint2                           lsize [[threads_per_threadgroup]]
 ) {
-    int2 pos = int2(gid);
+    threadgroup float4 tile[18][18];
     int2 size = int2(src.get_width(), src.get_height());
-    float4 center = src.read(gid);
+    loadTile4(tile, src, ltid, lsize, gid, size);
+    threadgroup_barrier(mem_flags::mem_threadgroup);
 
-    float4 left  = src.read(uint2(clampCoord(pos + int2(-1, 0), size)));
-    float4 right = src.read(uint2(clampCoord(pos + int2( 1, 0), size)));
-    float4 up    = src.read(uint2(clampCoord(pos + int2( 0,-1), size)));
-    float4 down  = src.read(uint2(clampCoord(pos + int2( 0, 1), size)));
+    if (int(gid.x) >= size.x || int(gid.y) >= size.y) return;
+
+    const uint lx = ltid.x + 1, ly = ltid.y + 1;
+    float4 center = tile[ly][lx];
+    float4 left   = tile[ly][lx - 1];
+    float4 right  = tile[ly][lx + 1];
+    float4 up     = tile[ly - 1][lx];
+    float4 down   = tile[ly + 1][lx];
 
     float alpha = 1.0 / max(p.viscosity * p.deltaTime, 1e-6);
     float blend = 1.0 / (4.0 + alpha);
@@ -341,17 +364,24 @@ kernel void fluidDiffusion(
  * @param gid  Thread position. スレッド位置。
  */
 kernel void fluidDivergence(
-    texture2d<float, access::read>  vel [[texture(0)]],
-    texture2d<float, access::write> div [[texture(1)]],
-    uint2                           gid [[thread_position_in_grid]]
+    texture2d<float, access::read>  vel   [[texture(0)]],
+    texture2d<float, access::write> div   [[texture(1)]],
+    uint2                           gid   [[thread_position_in_grid]],
+    uint2                           ltid  [[thread_position_in_threadgroup]],
+    uint2                           lsize [[threads_per_threadgroup]]
 ) {
-    int2 pos = int2(gid);
+    threadgroup float4 tile[18][18];
     int2 size = int2(vel.get_width(), vel.get_height());
+    loadTile4(tile, vel, ltid, lsize, gid, size);
+    threadgroup_barrier(mem_flags::mem_threadgroup);
 
-    float leftVx  = vel.read(uint2(clampCoord(pos + int2(-1, 0), size))).x;
-    float rightVx = vel.read(uint2(clampCoord(pos + int2( 1, 0), size))).x;
-    float upVy    = vel.read(uint2(clampCoord(pos + int2( 0,-1), size))).y;
-    float downVy  = vel.read(uint2(clampCoord(pos + int2( 0, 1), size))).y;
+    if (int(gid.x) >= size.x || int(gid.y) >= size.y) return;
+
+    const uint lx = ltid.x + 1, ly = ltid.y + 1;
+    float leftVx  = tile[ly][lx - 1].x;
+    float rightVx = tile[ly][lx + 1].x;
+    float upVy    = tile[ly - 1][lx].y;
+    float downVy  = tile[ly + 1][lx].y;
 
     float d = 0.5 * (rightVx - leftVx + downVy - upVy);
     div.write(float4(d, 0.0, 0.0, 1.0), gid);
@@ -396,18 +426,25 @@ kernel void fluidDivergence(
  * @param gid  Thread position. スレッド位置。
  */
 kernel void fluidPressure(
-    texture2d<float, access::read>  x   [[texture(0)]],
-    texture2d<float, access::read>  b   [[texture(1)]],
-    texture2d<float, access::write> out [[texture(2)]],
-    uint2                           gid [[thread_position_in_grid]]
+    texture2d<float, access::read>  x     [[texture(0)]],
+    texture2d<float, access::read>  b     [[texture(1)]],
+    texture2d<float, access::write> out   [[texture(2)]],
+    uint2                           gid   [[thread_position_in_grid]],
+    uint2                           ltid  [[thread_position_in_threadgroup]],
+    uint2                           lsize [[threads_per_threadgroup]]
 ) {
-    int2 pos = int2(gid);
+    threadgroup float4 tile[18][18];
     int2 size = int2(x.get_width(), x.get_height());
+    loadTile4(tile, x, ltid, lsize, gid, size);
+    threadgroup_barrier(mem_flags::mem_threadgroup);
 
-    float left  = x.read(uint2(clampCoord(pos + int2(-1, 0), size))).x;
-    float right = x.read(uint2(clampCoord(pos + int2( 1, 0), size))).x;
-    float up    = x.read(uint2(clampCoord(pos + int2( 0,-1), size))).x;
-    float down  = x.read(uint2(clampCoord(pos + int2( 0, 1), size))).x;
+    if (int(gid.x) >= size.x || int(gid.y) >= size.y) return;
+
+    const uint lx = ltid.x + 1, ly = ltid.y + 1;
+    float left  = tile[ly][lx - 1].x;
+    float right = tile[ly][lx + 1].x;
+    float up    = tile[ly - 1][lx].x;
+    float down  = tile[ly + 1][lx].x;
 
     float divergence = b.read(gid).x;
     float pressure = 0.25 * (left + right + up + down - divergence);
@@ -457,15 +494,22 @@ kernel void fluidProject(
     texture2d<float, access::read>  vel      [[texture(0)]],
     texture2d<float, access::read>  pressure [[texture(1)]],
     texture2d<float, access::write> out      [[texture(2)]],
-    uint2                           gid      [[thread_position_in_grid]]
+    uint2                           gid      [[thread_position_in_grid]],
+    uint2                           ltid     [[thread_position_in_threadgroup]],
+    uint2                           lsize    [[threads_per_threadgroup]]
 ) {
-    int2 pos = int2(gid);
+    threadgroup float4 pTile[18][18];
     int2 size = int2(vel.get_width(), vel.get_height());
+    loadTile4(pTile, pressure, ltid, lsize, gid, size);
+    threadgroup_barrier(mem_flags::mem_threadgroup);
 
-    float leftP  = pressure.read(uint2(clampCoord(pos + int2(-1, 0), size))).x;
-    float rightP = pressure.read(uint2(clampCoord(pos + int2( 1, 0), size))).x;
-    float upP    = pressure.read(uint2(clampCoord(pos + int2( 0,-1), size))).x;
-    float downP  = pressure.read(uint2(clampCoord(pos + int2( 0, 1), size))).x;
+    if (int(gid.x) >= size.x || int(gid.y) >= size.y) return;
+
+    const uint lx = ltid.x + 1, ly = ltid.y + 1;
+    float leftP  = pTile[ly][lx - 1].x;
+    float rightP = pTile[ly][lx + 1].x;
+    float upP    = pTile[ly - 1][lx].x;
+    float downP  = pTile[ly + 1][lx].x;
 
     float2 grad = float2(0.5 * (rightP - leftP), 0.5 * (downP - upP));
     float2 v = vel.read(gid).xy - grad;
@@ -496,12 +540,12 @@ kernel void fluidProject(
  * @param gid   Thread position. スレッド位置。
  */
 kernel void fluidAdvectInk(
-    texture2d<float, access::read>   vel  [[texture(0)]],
-    texture2d<float, access::sample> src  [[texture(1)]],
-    texture2d<float, access::write>  dst  [[texture(2)]],
-    sampler                          samp [[sampler(0)]],
-    constant SimParams&              p    [[buffer(0)]],
-    uint2                            gid  [[thread_position_in_grid]]
+    texture2d<float, access::read>  vel  [[texture(0)]],
+    texture2d<half, access::sample> src  [[texture(1)]],
+    texture2d<float, access::write> dst  [[texture(2)]],
+    sampler                         samp [[sampler(0)]],
+    constant SimParams&             p    [[buffer(0)]],
+    uint2                           gid  [[thread_position_in_grid]]
 ) {
     uint w = src.get_width();
     uint h = src.get_height();
@@ -510,7 +554,7 @@ kernel void fluidAdvectInk(
     float2 prevPos = float2(gid) - p.deltaTime * v;
     float2 clamped = clamp(prevPos, float2(-0.5), float2(float(w), float(h)) - 0.5);
     float2 uv = (clamped + 0.5) / float2(float(w), float(h));
-    float4 sampled = src.sample(samp, uv);
+    float4 sampled = float4(src.sample(samp, uv));
     dst.write(sampled, gid);
 }
 
@@ -582,13 +626,13 @@ vertex VSOut fluidFullscreenVS(uint vid [[vertex_id]]) {
  * @param samp  Linear sampler. リニアサンプラー。
  * @return      RGBA fragment color. RGBA フラグメントカラー。
  */
-fragment float4 fluidInkFS(
-    VSOut                           in   [[stage_in]],
-    texture2d<float, access::sample> tex [[texture(0)]],
-    sampler                         samp [[sampler(0)]]
+fragment half4 fluidInkFS(
+    VSOut                          in   [[stage_in]],
+    texture2d<half, access::sample> tex [[texture(0)]],
+    sampler                        samp [[sampler(0)]]
 ) {
-    float density = tex.sample(samp, in.uv).x;
-    return float4(density, density * 0.8, density * 0.5, 1.0);
+    half d = tex.sample(samp, in.uv).x;
+    return half4(d, d * 0.8h, d * 0.5h, 1.0h);
 }
 
 // ============================================================================
@@ -611,35 +655,31 @@ fragment float4 fluidInkFS(
  * @param samp  Linear sampler. リニアサンプラー。
  * @return      RGBA fragment color. RGBA フラグメントカラー。
  */
-fragment float4 fluidVelocityFS(
-    VSOut                           in   [[stage_in]],
-    texture2d<float, access::sample> tex [[texture(0)]],
-    sampler                         samp [[sampler(0)]]
+fragment half4 fluidVelocityFS(
+    VSOut                          in   [[stage_in]],
+    texture2d<half, access::sample> tex [[texture(0)]],
+    sampler                        samp [[sampler(0)]]
 ) {
-    float2 vel = tex.sample(samp, in.uv).xy;
-    float mag = length(vel);
-    return float4((vel.x + 1.0) * 0.5, (vel.y + 1.0) * 0.5, mag * 0.4, 1.0);
+    half2 vel = tex.sample(samp, in.uv).xy;
+    half mag = length(vel);
+    return half4((vel.x + 1.0h) * 0.5h, (vel.y + 1.0h) * 0.5h, mag * 0.4h, 1.0h);
 }
 
 // ============================================================================
 // Fragment: Image distortion via ink density gradient (aspect fit / fill)
 // ============================================================================
 
-/// `ImageParams.scalingMode`: letterbox entire image inside the square viewport.
-/// `ImageParams.scalingMode`：画像全体を正方形ビューポート内にレターボックス表示。
-constant uint kImageScalingAspectFit = 0u;
-/// `ImageParams.scalingMode`: cover the square with center-cropped image.
-/// `ImageParams.scalingMode`：中央クロップで正方形を覆う。
-constant uint kImageScalingAspectFill = 1u;
+/// Scaling mode resolved at PSO creation time.
+/// true = aspect fill (center crop), false = aspect fit (letterbox).
+constant bool kUseAspectFill [[function_constant(0)]];
 
 /**
  * @brief  Parameters for the image-distortion fragment shader.
  *         画像歪みフラグメントシェーダ用パラメータ。
  */
 struct ImageParams {
-    float pixelStep;  ///< One pixel in UV space (1/gridWidth), for finite-difference gradient. UV 空間での 1 ピクセル幅（1/グリッド幅）、有限差分勾配用。
+    float pixelStep;   ///< One pixel in UV space (1/gridWidth). UV 空間での 1 ピクセル幅。
     float imageAspect; ///< Background image width / height. 背景画像の幅/高さ比。
-    uint scalingMode;  ///< `kImageScalingAspectFit` or `kImageScalingAspectFill`. フィットまたはフィル。
 };
 
 /**
@@ -659,7 +699,8 @@ struct ImageParams {
  *      opposite to the UV's Y direction.
  *
  *   3. **Aspect mapping:** The simulation grid is square, but the background
- *      image may not be. `scalingMode` selects:
+ *      image may not be. The `kUseAspectFill` function constant (fixed at PSO
+ *      creation time) selects:
  *      - **Fit (letterbox):** entire image inside the square; bars may be black.
  *        - aspect > 1: letterbox top/bottom.
  *        - aspect <= 1: letterbox left/right.
@@ -684,7 +725,7 @@ struct ImageParams {
  *      勾配の Y 方向と UV の Y 方向が逆なので Y 成分は符号を反転。
  *
  *   3. **アスペクトマッピング：** シミュレーションは正方形だが背景画像はそうとは限らない。
- *      `scalingMode` で次を選択：
+ *      `kUseAspectFill` function constant（PSO 構築時に解決）で次を選択：
  *      - **フィット（レターボックス）：** 画像全体を正方形内に収める。帯は黒。
  *        - aspect > 1: 上下レターボックス。
  *        - aspect <= 1: 左右レターボックス。
@@ -704,29 +745,26 @@ struct ImageParams {
  * @param params  Image display parameters. 画像表示パラメータ。
  * @return        RGBA fragment color. RGBA フラグメントカラー。
  */
-fragment float4 fluidImageFS(
-    VSOut                            in      [[stage_in]],
-    texture2d<float, access::sample> inkTex  [[texture(0)]],
-    texture2d<float, access::sample> bgTex   [[texture(1)]],
-    sampler                          samp    [[sampler(0)]],
-    constant ImageParams&            params  [[buffer(0)]]
+fragment half4 fluidImageFS(
+    VSOut                           in      [[stage_in]],
+    texture2d<half, access::sample> inkTex  [[texture(0)]],
+    texture2d<float, access::sample> bgTex  [[texture(1)]],
+    sampler                         samp    [[sampler(0)]],
+    constant ImageParams&           params  [[buffer(0)]]
 ) {
     float ps = params.pixelStep;
-    float left  = inkTex.sample(samp, float2(in.uv.x - ps, in.uv.y)).x;
-    float right = inkTex.sample(samp, float2(in.uv.x + ps, in.uv.y)).x;
-    float up    = inkTex.sample(samp, float2(in.uv.x, in.uv.y + ps)).x;
-    float down  = inkTex.sample(samp, float2(in.uv.x, in.uv.y - ps)).x;
+    half left  = inkTex.sample(samp, float2(in.uv.x - ps, in.uv.y)).x;
+    half right = inkTex.sample(samp, float2(in.uv.x + ps, in.uv.y)).x;
+    half up    = inkTex.sample(samp, float2(in.uv.x, in.uv.y + ps)).x;
+    half down  = inkTex.sample(samp, float2(in.uv.x, in.uv.y - ps)).x;
 
-    float2 grad = float2(right - left, up - down);
+    float2 grad = float2(float(right - left), float(up - down));
     float strength = 0.8;
     float2 distorted = in.uv + grad * float2(strength, -strength);
 
     float aspect = params.imageAspect;
-    uint scaling = (params.scalingMode == kImageScalingAspectFill)
-        ? kImageScalingAspectFill
-        : kImageScalingAspectFit;
     float2 bgUV;
-    if (scaling == kImageScalingAspectFill) {
+    if (kUseAspectFill) {
         if (aspect > 1.0) {
             bgUV = float2(0.5 + (distorted.x - 0.5) / aspect, distorted.y);
         } else {
@@ -746,9 +784,9 @@ fragment float4 fluidImageFS(
     bgUV.y = 1.0 - bgUV.y;
 
     if (bgUV.x < 0.0 || bgUV.x > 1.0 || bgUV.y < 0.0 || bgUV.y > 1.0) {
-        return float4(0.0, 0.0, 0.0, 1.0);
+        return half4(0.0h, 0.0h, 0.0h, 1.0h);
     }
 
-    float4 color = bgTex.sample(samp, bgUV);
-    return float4(color.rgb, 1.0);
+    half4 color = half4(bgTex.sample(samp, bgUV));
+    return half4(color.rgb, 1.0h);
 }
