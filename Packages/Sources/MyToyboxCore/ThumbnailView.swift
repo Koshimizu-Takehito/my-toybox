@@ -8,6 +8,7 @@ public extension EnvironmentValues {
 
 public struct ThumbnailView<Content: View>: View {
     @State private var now = Date.now
+    @State private var scrollPauseAccumulator = ThumbnailScrollPauseAccumulator()
     @Environment(\.isScrolling) private var isScrolling
     private var content: (_ isScrolling: Bool, _ time: TimeInterval) -> Content
 
@@ -17,11 +18,18 @@ public struct ThumbnailView<Content: View>: View {
 
     public var body: some View {
         TimelineView(.animation(paused: isScrolling)) { context in
-            content(isScrolling, context.date.timeIntervalSince(now))
+            let wallElapsed = context.date.timeIntervalSince(now)
+            let logicalTime = scrollPauseAccumulator.logicalTime(wallElapsed: wallElapsed)
+            content(isScrolling, logicalTime)
                 .transaction { transaction in
                     transaction.animation = !isScrolling ? transaction.animation : nil
                     transaction.disablesAnimations = isScrolling
                 }
+        }
+        .onChange(of: isScrolling, initial: true) { oldValue, newValue in
+            var accumulator = scrollPauseAccumulator
+            accumulator.onScrollingChanged(oldValue: oldValue, newValue: newValue, now: Date())
+            scrollPauseAccumulator = accumulator
         }
     }
 }
