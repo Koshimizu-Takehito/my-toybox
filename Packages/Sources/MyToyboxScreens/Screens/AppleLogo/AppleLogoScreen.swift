@@ -5,7 +5,7 @@ import SwiftUI
 @Metadata(title: "Apple Logo", description: "Canvas を 画像でクリップ", tags: [])
 struct AppleLogoScreen: View {
     var body: some View {
-        MultiColorImage(image: .applelogo, colors: .rainbow)
+        MultiColorImage.appleLogoRainbow()
             .frame(maxWidth: 360)
             .padding()
     }
@@ -41,14 +41,10 @@ struct MultiColorImage: View {
     }
 }
 
-private extension Image {
-    static var applelogo: Self {
-        Image(systemName: "applelogo")
-    }
-}
+// MARK: - MultiColorImage + Apple logo preset
 
-private extension [Color] {
-    static let rainbow: Self = [
+extension MultiColorImage {
+    private static let appleLogoRainbowColors: [Color] = [
         .green,
         .green,
         .green,
@@ -58,6 +54,14 @@ private extension [Color] {
         .purple,
         .blue,
     ]
+
+    /// Single entry point for the rainbow apple (detail + thumbnail).
+    static func appleLogoRainbow() -> MultiColorImage {
+        MultiColorImage(
+            image: Image(systemName: "applelogo"),
+            colors: appleLogoRainbowColors
+        )
+    }
 }
 
 #Preview {
