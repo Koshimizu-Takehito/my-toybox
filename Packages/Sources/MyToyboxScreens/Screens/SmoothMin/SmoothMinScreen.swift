@@ -1,24 +1,18 @@
 import SwiftUI
 
+// MARK: - SmoothMinScreen
+
 @Metadata(title: "Smoothmin2d", description: "SmoothMin2d", tags: [.animation, .metal])
 struct SmoothMinScreen: View {
     @State private var value: Double = 0.8
-
     private let start = Date()
-    private let shader = ShaderFunction(library: .module, name: "SmoothMin2d::main")
 
     var body: some View {
         ZStack {
             TimelineView(.animation) { context in
                 let seconds = context.date.timeIntervalSince(start)
                 Rectangle()
-                    .colorEffect(
-                        shader(
-                            .boundingRect, // box
-                            .float(seconds), // sec
-                            .float(value) // k
-                        )
-                    )
+                    .colorEffect(.smoothMin2d(k: value, time: seconds))
             }
             .ignoresSafeArea()
 
@@ -29,6 +23,17 @@ struct SmoothMinScreen: View {
             }
             .padding(20)
         }
+    }
+}
+
+extension Shader {
+    static func smoothMin2d(k: Double, time: Double) -> Shader {
+        let shader = ShaderFunction(library: .module, name: "SmoothMin2d::main")
+        return shader(
+            .boundingRect, // box
+            .float(time), // sec
+            .float(k) // k
+        )
     }
 }
 
