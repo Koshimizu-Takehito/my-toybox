@@ -41,7 +41,7 @@ struct ColorCircleView: View, @MainActor Animatable {
     /// The color to display and animate.
     var color: Color
     var environment: EnvironmentValues
-    @State var fontSizde: CGFloat = 30
+    @State private var fontSizde: CGFloat = 30
 
     // Animate by interpolating the resolved color's components
     var animatableData: Color.Resolved.AnimatableData {

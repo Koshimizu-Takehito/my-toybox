@@ -484,9 +484,11 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
                     scalingMode: viewModel.imageContentMode.metalScalingMode
                 )
                 enc.setFragmentBytes(&imageParams, length: MemoryLayout<ImageParamsBuffer>.stride, index: 0)
+
             case .ink:
                 enc.setRenderPipelineState(inkRenderPSO)
                 enc.setFragmentTexture(inkTex[inkIndex], index: 0)
+
             case .velocity:
                 enc.setRenderPipelineState(velRenderPSO)
                 enc.setFragmentTexture(velTex[velIndex], index: 0)
