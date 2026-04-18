@@ -38,7 +38,6 @@ enum Screen: String, CaseIterable {
     case collisionColorChangeScreen
     case solarSystem1Screen
     case solarSystem2Screen
-    case pixelBasedColorChangeScreen
     case countdownAnimationScreen
     case infiniteScrollScreen
     case horizontalPickerScreen
@@ -49,7 +48,6 @@ enum Screen: String, CaseIterable {
     case monotoneMapScreen
     case waveParticleScreen
     case reverseListScreen
-    case viewIdentityAnimationScreen
     case progressiveBlurScreen
     case mosaicScreen
     case tileShaderScreen
