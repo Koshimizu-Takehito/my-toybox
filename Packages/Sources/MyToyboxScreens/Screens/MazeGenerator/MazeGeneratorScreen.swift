@@ -61,7 +61,7 @@ struct MazeGeneratorScreen: View {
 
 // MARK: - MazeTileView
 
-private struct MazeTileView: View {
+struct MazeTileView: View {
     var tile: MazeTile
 
     var body: some View {
