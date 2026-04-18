@@ -32,24 +32,25 @@ struct ProgressiveBlurScreen: View {
 /// A custom view modifier that applies a progressive Gaussian blur
 /// using a Metal shader. The blur radius can be dynamically adjusted.
 ///
-/// The shader will blur the image more toward the bottom of the view.
+/// Uses two separable 1D passes (horizontal then vertical) for O(r)+O(r)
+/// performance instead of the O(r^2) cost of a single 2D convolution.
 struct ProgressiveBlur: ViewModifier {
     /// The base blur radius applied in the shader.
     let radius: Double
 
     func body(content: Content) -> some View {
-        // Define the maximum sampling offset needed based on blur radius.
         let offset = CGSize(width: radius, height: radius)
 
-        // Load and configure the shader function.
-        let function = ShaderFunction(
+        let fn = ShaderFunction(
             library: .module,
-            name: "ProgressiveBlur::main"
+            name: "ProgressiveBlur::progressiveBlur1D"
         )
-        let shader = function(.boundingRect, .float(radius))
+        let horizontal = fn(.boundingRect, .float(radius), .float(0))
+        let vertical   = fn(.boundingRect, .float(radius), .float(1))
 
-        // Apply the shader as a layer effect.
-        content.layerEffect(shader, maxSampleOffset: offset)
+        content
+            .layerEffect(horizontal, maxSampleOffset: offset)
+            .layerEffect(vertical, maxSampleOffset: offset)
     }
 }
 
