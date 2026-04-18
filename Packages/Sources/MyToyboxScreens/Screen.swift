@@ -31,7 +31,7 @@ enum Screen: String, CaseIterable {
     case pipCardDemoScreen
     case voronoiDiagramDemoScreen1
     case voronoiDiagramDemoScreen2
-    case cosmicWebScreen
+    case cosmicWebDemoScreen
     case homeIconDemoScreen
     case colorSegmentedControlDemoScreen
     case gradientPolygonScreen
