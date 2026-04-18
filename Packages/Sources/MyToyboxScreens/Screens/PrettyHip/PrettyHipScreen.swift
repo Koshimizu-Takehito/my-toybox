@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - PrettyHipScreen
+
 /// PrettyHip screen demonstrating a custom visual effect.
 @Metadata(title: "PrettyHip", description: "PrettyHip", tags: [.animation, .metal])
 struct PrettyHipScreen: View {

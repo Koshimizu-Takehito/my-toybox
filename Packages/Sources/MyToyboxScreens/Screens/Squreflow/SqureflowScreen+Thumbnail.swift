@@ -7,6 +7,8 @@ extension SqureflowScreen {
     }
 }
 
+// MARK: - SqureflowScreenThumbnailContent
+
 private struct SqureflowScreenThumbnailContent: View {
     var isScrolling: Bool
     var time: TimeInterval

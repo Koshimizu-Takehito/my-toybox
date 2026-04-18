@@ -2,7 +2,7 @@ import SwiftUI
 
 extension ScrollYRotationScreen {
     @ViewBuilder
-    static func thumbnail(isScrolling: Bool, time _: TimeInterval) -> some View {
+    static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
         let rowCount = 8
         let rows = [Color].scrollYRotationRainbow(count: rowCount).enumerated().map(\.self)
         GeometryReader { geometry in
@@ -11,7 +11,7 @@ extension ScrollYRotationScreen {
             ScrollView {
                 LazyVStack(spacing: 0) {
                     ForEach(rows, id: \.offset) { row in
-                        ScrollYRotationRow(containerFrame: frame) { ratio in
+                        ScrollYRotationRow(containerFrame: frame) { _ in
                             row.element
                                 .frame(height: 0.1 * size)
                                 .padding(0.01 * size)

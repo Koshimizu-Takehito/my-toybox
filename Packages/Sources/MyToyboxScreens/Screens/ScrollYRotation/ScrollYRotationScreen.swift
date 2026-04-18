@@ -35,7 +35,7 @@ struct ScrollYRotationScreen: View {
     }
 }
 
-// MARK: - ScrollYRotationRowContent
+// MARK: - ScrollYRotationRow
 
 struct ScrollYRotationRow<Content: View>: View {
     var containerFrame: CGRect
