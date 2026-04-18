@@ -35,7 +35,7 @@ extension LostRowAnimationScreen {
                 self.refreshID = refreshID
             }
             .task(id: refreshID) {
-                await fetch()
+                fetch()
             }
         }
 

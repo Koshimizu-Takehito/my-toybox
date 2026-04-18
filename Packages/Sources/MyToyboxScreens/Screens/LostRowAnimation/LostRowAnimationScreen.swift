@@ -25,10 +25,10 @@ struct LostRowAnimationScreen: View {
         }
         .scrollIndicators(.hidden)
         .task {
-            await fetch()
+            fetch()
         }
         .refreshable {
-            await fetch()
+            fetch()
         }
     }
 
