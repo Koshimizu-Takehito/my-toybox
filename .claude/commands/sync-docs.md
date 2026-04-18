@@ -37,7 +37,9 @@ When screens are added/removed:
 
 # After (when adding new screen)
 97+ visual effects screens
-```### 2. Update Command Documentation
+```
+
+### 2. Update Command Documentation
 
 When Makefile commands change:
 
@@ -130,7 +132,7 @@ docs: update screen count to 97
 
 docs: add /validate-screens command to README
 
-docs(claude): update build instructions for Xcode 16.3
+docs(claude): update build instructions for Xcode 26.4
 
 docs: sync Japanese README with English version
 ```

@@ -38,8 +38,8 @@ You are the **dependency-updater** agent. Your mission is to keep external depen
 
 ### Build Requirements
 
-- **Swift**: 6.0+
-- **Xcode**: 16.2+ (CI uses 16.2)
+- **Swift**: 6.3+
+- **Xcode**: 26.4.1+ (CI uses 26.4)
 - **iOS**: 18.0+
 - **macOS**: 15.0+
 
@@ -98,8 +98,8 @@ swift package update
 
 5. Test build:
    ```bash
-   xcodebuild -project MyToybox.xcodeproj -scheme MyToybox \
-     -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+   xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
+     -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
      CODE_SIGNING_ALLOWED=NO build
    ```
 
@@ -212,22 +212,24 @@ swift package update
 
 **File**: `.github/workflows/ci.yml`
 
-**Current**: `macos-14` with Xcode 16.2
+**Current**: `macos-26` with Xcode 26.4
 
 **Steps**:
 1. Check available GitHub Actions runners
 2. Update workflow:
    ```yaml
-   runs-on: macos-15  # New runner
+   runs-on: macos-26  # Current runner
    ```
 3. Update Xcode version selection if needed:
    ```yaml
-   - name: Select Xcode
-     run: sudo xcode-select -s /Applications/Xcode_16.3.app
+   - name: Set up Xcode 26.4
+     uses: maxim-lobanov/setup-xcode@v1
+     with:
+       xcode-version: '26.4'
    ```
 4. Update simulator destination:
    ```bash
-   -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.3'
+   -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4'
    ```
 5. Push and verify CI passes
 

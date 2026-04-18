@@ -1,5 +1,5 @@
 # SwiftLint Configuration for MyToybox
-# Swift 6.0 / iOS 18+ / macOS 15+ 向けモダン設定
+# Swift 6.3 / iOS 18+ / macOS 15+ 向けモダン設定
 
 # Paths to include
 included:
@@ -88,18 +88,15 @@ opt_in_rules:
   - redundant_type_annotation         # 冗長な型注釈を排除
   - redundant_nil_coalescing          # 冗長な ?? nil を排除
   - redundant_self                    # クロージャ内の冗長な self（旧: redundant_self_in_closure）
-  - toggle_bool                       # x = !x より x.toggle()
+  -   toggle_bool                       # x = !x より x.toggle()
   - joined_default_parameter          # .joined() のデフォルト引数
-  - discouraged_optional_boolean      # Bool? を避ける
-  - discouraged_optional_collection   # [T]? より [T] を推奨
   - discouraged_none_name             # none という名前を避ける
 
   # --- Code Organization (コード整理) ---
   - sorted_imports                    # import 文をソート
-  - closure_end_indentation           # クロージャの閉じ括弧のインデント
+  -   closure_end_indentation           # クロージャの閉じ括弧のインデント
   - closure_spacing                   # クロージャ内のスペース
   - collection_alignment              # コレクションリテラルの整列
-  - multiline_function_chains         # メソッドチェーンの改行
   - multiline_literal_brackets        # 複数行リテラルの括弧
   - multiline_parameters              # 関数パラメータの改行
   - operator_usage_whitespace         # 演算子周りのスペース
@@ -117,7 +114,6 @@ opt_in_rules:
   - period_spacing                    # ピリオド後のスペース
 
   # --- Other (その他) ---
-  - closure_body_length               # クロージャのボディ長制限
   - self_binding                      # self のバインディング名を統一
   - shorthand_argument                # 省略引数 ($0, $1) の制限
 

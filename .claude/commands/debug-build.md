@@ -28,7 +28,7 @@ Ask the user or determine from context:
 **Run Full Build**:
 ```bash
 xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   CODE_SIGNING_ALLOWED=NO clean build
 ```
 
@@ -65,14 +65,14 @@ xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
 **Run All Tests**:
 ```bash
 xcodebuild test -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   CODE_SIGNING_ALLOWED=NO
 ```
 
 **Run Specific Test**:
 ```bash
 xcodebuild test -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   -only-testing MyToyboxCoreTests/MyToyboxCoreTests/testName \
   CODE_SIGNING_ALLOWED=NO
 ```
@@ -116,7 +116,7 @@ bash Scripts/build_metallib.sh
 **CI Pipeline Steps**:
 1. **Checkout code**: Should always succeed
 2. **Validate Screen.swift case names**: Runs `check_screen_sync.sh`
-3. **Set up Xcode 16.3**: Installs target Xcode version
+3. **Set up Xcode 26.4**: Installs target Xcode version
 4. **Build**: Runs xcodebuild
 5. **Test**: Runs xcodebuild test
 
@@ -130,11 +130,11 @@ bash Scripts/build_metallib.sh
 #### Build Failure on CI but Passes Locally
 - **Symptom**: Works on local Mac but fails in CI
 - **Diagnosis**:
-  - Xcode version mismatch (CI uses Xcode 16.3)
-  - Simulator version mismatch (CI uses iPhone 16, iOS 18.2)
+  - Xcode version mismatch (CI uses Xcode 26.4)
+  - Simulator version mismatch (CI uses iPhone 17, iOS 26.4)
   - Clean build state differences
 - **Fix**:
-  - Match local Xcode version to CI (16.3)
+  - Match local Xcode version to CI (26.4)
   - Test with clean build: `make clean`
   - Check for absolute paths or environment-specific code
 
@@ -167,7 +167,7 @@ bash Scripts/build_metallib.sh
 ```bash
 # Build with verbose output
 xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
   CODE_SIGNING_ALLOWED=NO build | xcpretty --color
 ```
 
@@ -198,7 +198,7 @@ make clean
 1. Read the full error message and location
 2. Navigate to the file:line mentioned
 3. Check surrounding context
-4. Apply Swift 6.0 concurrency fixes if needed
+4. Apply Swift 6.3 concurrency fixes if needed
 5. Rebuild incrementally
 
 ### For Metal Errors
@@ -217,7 +217,7 @@ make clean
 
 ### For CI Errors
 1. Reproduce locally with exact CI command
-2. Match environment (Xcode 16.3, simulator)
+2. Match environment (Xcode 26.4, simulator)
 3. Fix the root cause
 4. Push and verify CI passes
 5. Monitor for flaky tests
