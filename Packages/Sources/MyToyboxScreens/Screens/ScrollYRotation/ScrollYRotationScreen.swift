@@ -5,7 +5,7 @@ import SwiftUI
 @Metadata(title: "Y-Axis Rotation", description: "スクロール位置に応じてY軸回転", tags: [.layout])
 struct ScrollYRotationScreen: View {
     @State private var colors: [(offset: Int, element: Color)]
-        = Array(repeating: [Color].rainbow(count: 50), count: 300)
+        = Array(repeating: [Color].scrollYRotationRainbow(count: 50), count: 300)
         .flatMap(\.self)
         .enumerated()
         .map(\.self)
@@ -16,11 +16,17 @@ struct ScrollYRotationScreen: View {
             ScrollView {
                 LazyVStack(spacing: 0) {
                     ForEach(colors, id: \.offset) { color in
-                        RowContent(containerFrame: frame) {
+                        ScrollYRotationRow(containerFrame: frame) { ratio in
                             color.element
                                 .frame(height: 60)
                                 .padding(8)
                                 .padding(.horizontal, 20)
+                                .overlay {
+                                    Text(String(describing: Int(ratio * 100)) + "%")
+                                        .fontWeight(.medium)
+                                        .font(Font.title2.monospacedDigit())
+                                        .foregroundStyle(.black)
+                                }
                         }
                     }
                 }
@@ -29,21 +35,15 @@ struct ScrollYRotationScreen: View {
     }
 }
 
-// MARK: - RowContent
+// MARK: - ScrollYRotationRowContent
 
-private struct RowContent<Content: View>: View {
+struct ScrollYRotationRow<Content: View>: View {
     var containerFrame: CGRect
-    var content: () -> Content
+    var content: (_ ratio: Double) -> Content
     @State private var frame: CGRect = .zero
 
     var body: some View {
-        content()
-            .overlay {
-                Text(String(describing: Int(ratio * 100)) + "%")
-                    .fontWeight(.medium)
-                    .font(.title2.monospacedDigit())
-                    .foregroundStyle(.black)
-            }
+        content(ratio)
             .rotation3DEffect(
                 .radians((2.0 * (ratio + 0.12) - 1) * .pi / 3),
                 axis: (x: 0.0, y: 1.0, z: 0.0),
@@ -65,8 +65,8 @@ private struct RowContent<Content: View>: View {
     }
 }
 
-private extension [Color] {
-    static func rainbow(hue: Double = 0, count: Int) -> Self {
+extension [Color] {
+    static func scrollYRotationRainbow(hue: Double = 0, count: Int) -> Self {
         (0 ..< count).map { i in
             var value = hue + Double(i) / Double(count)
             value -= floor(value)
