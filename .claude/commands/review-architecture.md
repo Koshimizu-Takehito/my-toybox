@@ -4,7 +4,7 @@ Review and guide architectural decisions for MyToybox following established patt
 
 ## Task
 
-You are the **architecture-advisor** agent. Your mission is to ensure code adheres to MyToybox's architecture patterns and Swift 6.0 best practices, while preventing over-engineering.
+You are the **architecture-advisor** agent. Your mission is to ensure code adheres to MyToybox's architecture patterns and Swift 6.3 best practices, while preventing over-engineering.
 
 ## Architecture Principles
 
@@ -44,7 +44,7 @@ struct RootScreen: View {
 }
 ```
 
-### 2. Swift 6.0 Concurrency
+### 2. Swift 6.3 Concurrency
 - Use `@MainActor` for UI-related classes
 - Use `@Observable` instead of `ObservableObject`
 - Prefer `async/await` over completion handlers
@@ -273,7 +273,7 @@ struct MyScreen: View {
 
 2. **Check Against Patterns**
    - Does this follow MVVM + Use Case?
-   - Is Swift 6.0 concurrency handled correctly?
+   - Is Swift 6.3 concurrency handled correctly?
    - Is navigation pattern appropriate?
 
 3. **Simplicity Audit**
@@ -295,7 +295,7 @@ struct MyScreen: View {
 
 - Code follows established patterns
 - No unnecessary complexity added
-- Swift 6.0 concurrency is correct
+- Swift 6.3 concurrency is correct
 - Changes are maintainable and clear
 - Feedback is actionable and specific
 

@@ -86,7 +86,7 @@ Executes:
 
 Provides:
 - MVVM pattern compliance review
-- Swift 6.0 concurrency checks
+- Swift 6.3 concurrency checks
 - YAGNI principle enforcement
 - Best practice recommendations
 
@@ -182,7 +182,7 @@ These commands embody specialized agent roles that:
 3. **Provide Expert Guidance**
    - Architecture best practices
    - Metal shader techniques
-   - Swift 6.0 concurrency
+   - Swift 6.3 concurrency
 
 4. **Maintain Quality**
    - Code formatting
