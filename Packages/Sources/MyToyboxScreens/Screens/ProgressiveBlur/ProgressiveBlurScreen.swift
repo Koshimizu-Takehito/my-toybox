@@ -5,7 +5,8 @@ import SwiftUI
 /// A view that continuously animates a blur effect across a static image.
 ///
 /// The blur radius changes over time using a sine wave,
-/// and the effect is rendered using a custom Metal shader (`ProgressiveBlur::main`).
+/// and the effect is rendered with `ProgressiveBlur::progressiveBlur1D` applied twice
+/// (horizontal then vertical) via chained `.layerEffect` calls.
 @Metadata(title: "Progressive Blur", description: "ProgressiveBlur", tags: [.metal])
 struct ProgressiveBlurScreen: View {
     /// The reference start time of the animation.

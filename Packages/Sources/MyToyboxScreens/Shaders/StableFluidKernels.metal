@@ -699,7 +699,8 @@ struct ImageParams {
  *      opposite to the UV's Y direction.
  *
  *   3. **Aspect mapping:** The simulation grid is square, but the background
- *      image may not be. `scalingMode` selects:
+ *      image may not be. The `kUseAspectFill` function constant (fixed at PSO
+ *      creation time) selects:
  *      - **Fit (letterbox):** entire image inside the square; bars may be black.
  *        - aspect > 1: letterbox top/bottom.
  *        - aspect <= 1: letterbox left/right.
@@ -724,7 +725,7 @@ struct ImageParams {
  *      勾配の Y 方向と UV の Y 方向が逆なので Y 成分は符号を反転。
  *
  *   3. **アスペクトマッピング：** シミュレーションは正方形だが背景画像はそうとは限らない。
- *      `scalingMode` で次を選択：
+ *      `kUseAspectFill` function constant（PSO 構築時に解決）で次を選択：
  *      - **フィット（レターボックス）：** 画像全体を正方形内に収める。帯は黒。
  *        - aspect > 1: 上下レターボックス。
  *        - aspect <= 1: 左右レターボックス。

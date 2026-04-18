@@ -32,8 +32,7 @@ struct MetalGameOfLifeView: PlatformAgnosticViewRepresentable {
         private let viewModel: GameOfLifeViewModel
         let device: any MTLDevice
         private let queue: any MTLCommandQueue
-        private var computePSOWrap: (any MTLComputePipelineState)!
-        private var computePSOClamp: (any MTLComputePipelineState)!
+        private var computePSO: (any MTLComputePipelineState)!
         private var renderPSO: (any MTLRenderPipelineState)!
         private var srcTex: (any MTLTexture)!
         private var dstTex: (any MTLTexture)!
@@ -62,19 +61,15 @@ struct MetalGameOfLifeView: PlatformAgnosticViewRepresentable {
         private func buildPipelines() {
             let library = try! device.makeDefaultLibrary(bundle: .module)
 
-            // Compute – two variants via function constant (kWrap: bool at index 0)
-            func makeLifeStepPSO(wrap: Bool) -> any MTLComputePipelineState {
-                let fcv = MTLFunctionConstantValues()
-                var flag = wrap
-                fcv.setConstantValue(&flag, type: .bool, index: 0)
-                let fn = try! library.makeFunction(name: "lifeStep", constantValues: fcv)
-                let desc = MTLComputePipelineDescriptor()
-                desc.computeFunction = fn
-                desc.threadGroupSizeIsMultipleOfThreadExecutionWidth = true
-                return try! device.makeComputePipelineState(descriptor: desc, options: [], reflection: nil)
-            }
-            computePSOWrap = makeLifeStepPSO(wrap: true)
-            computePSOClamp = makeLifeStepPSO(wrap: false)
+            // Compute – torus (wrap) boundary via function constant kWrap=true at index 0
+            let fcv = MTLFunctionConstantValues()
+            var wrap = true
+            fcv.setConstantValue(&wrap, type: .bool, index: 0)
+            let lifeFn = try! library.makeFunction(name: "lifeStep", constantValues: fcv)
+            let cDesc = MTLComputePipelineDescriptor()
+            cDesc.computeFunction = lifeFn
+            cDesc.threadGroupSizeIsMultipleOfThreadExecutionWidth = true
+            computePSO = try! device.makeComputePipelineState(descriptor: cDesc, options: [], reflection: nil)
 
             // Render
             let vs = library.makeFunction(name: "fullscreenQuadVS")!
@@ -158,8 +153,7 @@ struct MetalGameOfLifeView: PlatformAgnosticViewRepresentable {
         private func encodeCompute(into cb: any MTLCommandBuffer) {
             guard let enc = cb.makeComputeCommandEncoder() else { return }
 
-            let pso = computePSOWrap!
-            enc.setComputePipelineState(pso)
+            enc.setComputePipelineState(computePSO)
             enc.setTexture(srcTex, index: 0)
             enc.setTexture(dstTex, index: 1)
 
