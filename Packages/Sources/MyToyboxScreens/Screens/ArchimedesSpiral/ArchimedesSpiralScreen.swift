@@ -16,31 +16,7 @@ struct ArchimedesSpiralScreen: View {
         TimelineView(.animation) { context in
             // Calculate the elapsed time in seconds, normalized over 120 seconds.
             let time = context.date.timeIntervalSince(start) / 120
-
-            // Rotation factor oscillates between 0.8 and 1.0 using a cosine wave.
-            let rotation = 0.8 + 0.2 * abs((cos(.pi * time) + 1.0) / 2.0)
-
-            Canvas { context, size in
-                let radius = 2.0
-
-                // Define the center point of the canvas.
-                let center = CGPoint(x: size.width / 2 - radius, y: size.height / 2 - radius)
-                let pointSize = CGSize(width: 2 * radius, height: 2 * radius)
-
-                for i in 0 ..< 3000 {
-                    let j = rotation * Double(i)
-
-                    // Calculate the point on the spiral, scaled down by half.
-                    let p = CGPoint.spiral(at: .radians(j)) / 2
-
-                    // Draw a small circle at the computed position.
-                    let path = Circle().path(in: CGRect(origin: center + p, size: pointSize))
-
-                    // Compute hue value to generate a colorful spiral effect.
-                    let hue = j.truncatingRemainder(dividingBy: 255) / 255
-                    context.fill(path, with: .color(Color(hue: hue)))
-                }
-            }
+            ArchimedesSpiralContent(time: time)
         }
         .background(.black)
         .onTapGesture {
@@ -48,6 +24,39 @@ struct ArchimedesSpiralScreen: View {
             start = .now
         }
         .ignoresSafeArea()
+    }
+}
+
+// MARK: - ArchimedesSpiralContent
+
+struct ArchimedesSpiralContent: View {
+    var time: Double
+
+    var body: some View {
+        // Rotation factor oscillates between 0.8 and 1.0 using a cosine wave.
+        let rotation = 0.8 + 0.2 * abs((cos(.pi * time) + 1.0) / 2.0)
+
+        Canvas { context, size in
+            let radius = 2.0
+
+            // Define the center point of the canvas.
+            let center = CGPoint(x: size.width / 2 - radius, y: size.height / 2 - radius)
+            let pointSize = CGSize(width: 2 * radius, height: 2 * radius)
+
+            for i in 0 ..< 3000 {
+                let j = rotation * Double(i)
+
+                // Calculate the point on the spiral, scaled down by half.
+                let p = CGPoint.spiral(at: .radians(j)) / 2
+
+                // Draw a small circle at the computed position.
+                let path = Circle().path(in: CGRect(origin: center + p, size: pointSize))
+
+                // Compute hue value to generate a colorful spiral effect.
+                let hue = j.truncatingRemainder(dividingBy: 255) / 255
+                context.fill(path, with: .color(Color(hue: hue)))
+            }
+        }
     }
 }
 

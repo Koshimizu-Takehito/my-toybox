@@ -66,7 +66,7 @@ struct LayoutProtocolSampleScreen: View {
 
 // MARK: - CustomGridLayout
 
-private struct CustomGridLayout: Layout {
+struct CustomGridLayout: Layout {
     var column: Int
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {

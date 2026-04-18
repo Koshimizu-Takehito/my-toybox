@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - CircleSDF2Screen
+
 /// A SwiftUI view that renders an animated visual using signed distance fields (SDFs) and a Metal shader.
 ///
 /// This view displays two animated circles blended together using a smooth minimum function.
@@ -15,7 +17,7 @@ struct CircleSDF2Screen: View {
         ZStack {
             // The shader background rendering area.
             Rectangle()
-                .colorEffect(shader)
+                .colorEffect(.circleSDF2(time: time, k: k))
 
             // User controls: reset button and two sliders.
             VStack {
@@ -38,19 +40,18 @@ struct CircleSDF2Screen: View {
         .ignoresSafeArea(edges: .all.subtracting(.top))
     }
 
-    /// Constructs a shader using the current time and smoothing factor.
-    private var shader: Shader {
-        let function = ShaderFunction(
-            library: .module,
-            name: "CircleSDF2Shader::main"
-        )
-        return function(.boundingRect, .float(time), .float(k))
-    }
-
     /// Resets the animation parameters to their default values.
     private func reset() {
         k = 0.36
         time = .pi
+    }
+}
+
+extension Shader {
+    /// Constructs a shader using the current time and smoothing factor.
+    static func circleSDF2(time: TimeInterval, k: Double) -> Shader {
+        let function = ShaderFunction(library: .module, name: "CircleSDF2Shader::main")
+        return function(.boundingRect, .float(time), .float(k))
     }
 }
 

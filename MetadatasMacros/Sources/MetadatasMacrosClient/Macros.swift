@@ -43,7 +43,7 @@ public protocol Metadatas {}
 ///
 /// The View type is inferred from the case name by converting it to UpperCamelCase.
 /// Each View must conform to `ScreenMetadata` protocol (typically via `@Metadata` macro).
-@attached(extension, conformances: Metadatas, names: named(metadata), named(title), named(description), named(tags))
+@attached(extension, conformances: Metadatas, names: named(metadata), named(title), named(description), named(tags), named(thumbnail))
 public macro Metadatas() = #externalMacro(
     module: "MetadatasMacrosImpl",
     type: "MetadatasMacro"

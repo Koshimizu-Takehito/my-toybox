@@ -24,9 +24,6 @@ struct CosmicWebDemoScreen: View {
 
 // MARK: - CosmicWebScreen
 
-/// The main screen that applies the custom Metal shader as a layer effect.
-/// Uses TimelineView to animate the shader over time.
-@Metadata(title: "CosmicWeb", description: "コズミックウェブ", tags: [.animation, .metal])
 struct CosmicWebScreen: View {
     var body: some View {
         TimelineView(.animation) { context in
@@ -41,7 +38,7 @@ struct CosmicWebScreen: View {
 
 // MARK: - Shader
 
-private extension Shader {
+extension Shader {
     /// Returns a Shader configured to generate the cosmic web effect.
     /// - Parameter time: The current animation time (seconds).
     /// - Returns: The configured Shader instance.

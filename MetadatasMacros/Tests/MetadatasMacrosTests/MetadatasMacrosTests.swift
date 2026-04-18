@@ -118,6 +118,13 @@ struct MetadatasMacrosTests {
                 var tags: [Tag] {
                     metadata.tags
                 }
+
+                var thumbnail: AnyView {
+                    func open(_ metadata: some MyToyboxCore.ScreenMetadata) -> AnyView {
+                        AnyView(type(of: metadata).thumbnail)
+                    }
+                    return open(metadata)
+                }
             }
             """
         )
@@ -179,6 +186,13 @@ struct MetadatasMacrosTests {
                 var tags: [Tag] {
                     metadata.tags
                 }
+
+                var thumbnail: AnyView {
+                    func open(_ metadata: some MyToyboxCore.ScreenMetadata) -> AnyView {
+                        AnyView(type(of: metadata).thumbnail)
+                    }
+                    return open(metadata)
+                }
             }
             """
         )
@@ -218,6 +232,13 @@ struct MetadatasMacrosTests {
 
                 var tags: [Tag] {
                     metadata.tags
+                }
+
+                var thumbnail: AnyView {
+                    func open(_ metadata: some MyToyboxCore.ScreenMetadata) -> AnyView {
+                        AnyView(type(of: metadata).thumbnail)
+                    }
+                    return open(metadata)
                 }
             }
             """
@@ -269,6 +290,13 @@ struct AssociatedValueTests {
                 var tags: [Tag] {
                     metadata.tags
                 }
+
+                var thumbnail: AnyView {
+                    func open(_ metadata: some MyToyboxCore.ScreenMetadata) -> AnyView {
+                        AnyView(type(of: metadata).thumbnail)
+                    }
+                    return open(metadata)
+                }
             }
             """
         )
@@ -309,6 +337,13 @@ struct AssociatedValueTests {
                 var tags: [Tag] {
                     metadata.tags
                 }
+
+                var thumbnail: AnyView {
+                    func open(_ metadata: some MyToyboxCore.ScreenMetadata) -> AnyView {
+                        AnyView(type(of: metadata).thumbnail)
+                    }
+                    return open(metadata)
+                }
             }
             """
         )
@@ -348,6 +383,13 @@ struct AssociatedValueTests {
 
                 var tags: [Tag] {
                     metadata.tags
+                }
+
+                var thumbnail: AnyView {
+                    func open(_ metadata: some MyToyboxCore.ScreenMetadata) -> AnyView {
+                        AnyView(type(of: metadata).thumbnail)
+                    }
+                    return open(metadata)
                 }
             }
             """
@@ -395,6 +437,13 @@ struct AccessLevelTests {
                 public var tags: [Tag] {
                     metadata.tags
                 }
+
+                public var thumbnail: AnyView {
+                    func open(_ metadata: some MyToyboxCore.ScreenMetadata) -> AnyView {
+                        AnyView(type(of: metadata).thumbnail)
+                    }
+                    return open(metadata)
+                }
             }
             """
         )
@@ -434,6 +483,13 @@ struct AccessLevelTests {
 
                 internal var tags: [Tag] {
                     metadata.tags
+                }
+
+                internal var thumbnail: AnyView {
+                    func open(_ metadata: some MyToyboxCore.ScreenMetadata) -> AnyView {
+                        AnyView(type(of: metadata).thumbnail)
+                    }
+                    return open(metadata)
                 }
             }
             """

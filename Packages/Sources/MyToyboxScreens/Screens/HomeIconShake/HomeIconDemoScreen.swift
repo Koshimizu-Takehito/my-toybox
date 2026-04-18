@@ -30,8 +30,8 @@ struct HomeIconView: View {
                 GridRow {
                     ForEach(items) { item in
                         Image(systemName: item.symbol)
-                            .modifier(IconModifier(color: item.color))
-                            .modifier(JiggleModifier(isEditingMode))
+                            .modifier(IconModifier(style: item.color))
+                            .modifier(JiggleModifier(isEnabled: isEditingMode))
                     }
                 }
             }
@@ -48,8 +48,8 @@ struct HomeIconView: View {
 
 // MARK: - IconModifier
 
-struct IconModifier: ViewModifier {
-    var color: Color
+struct IconModifier<S: ShapeStyle>: ViewModifier {
+    var style: S
 
     func body(content: Content) -> some View {
         content
@@ -58,7 +58,7 @@ struct IconModifier: ViewModifier {
             .frame(width: 70, height: 70)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scaledToFit()
-            .background(color)
+            .background(style)
             .clipShape(.rect(cornerRadius: 9))
             .padding(1)
             .background(.white.secondary)
@@ -79,7 +79,7 @@ struct JiggleModifier: ViewModifier {
     /// Normalized phase of the animation (`0…1`).
     @State private var animationPhase: Double = 0
 
-    init(_ isEnabled: Bool) {
+    init(isEnabled: Bool) {
         self.isEnabled = isEnabled
     }
 

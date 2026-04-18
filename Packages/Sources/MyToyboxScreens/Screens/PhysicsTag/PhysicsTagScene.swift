@@ -40,7 +40,7 @@ extension PhysicsTagScene {
         updatePhysicsBounds()
 
         if spawnRunner.parent == nil {
-            spawnRunner.zPosition = -10_000
+            spawnRunner.zPosition = -10000
             addChild(spawnRunner)
         }
 
@@ -74,8 +74,8 @@ extension PhysicsTagScene {
 
 // MARK: - CoreMotion
 
-extension PhysicsTagScene {
-    fileprivate func startMotionUpdates() {
+fileprivate extension PhysicsTagScene {
+    func startMotionUpdates() {
         #if !targetEnvironment(simulator)
         guard !motionManager.isDeviceMotionActive else { return }
         motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
@@ -99,7 +99,7 @@ extension PhysicsTagScene {
     private static let maxSpawnZRotation: CGFloat = .pi / 2.2
     private static let spawnWallPadding: CGFloat = 2
     private static let spawnBandAboveScreen: CGFloat = 4
-    private static let spawnAttemptsPerTag = 5_000
+    private static let spawnAttemptsPerTag = 5000
     private static let spawnBatchRetries = 5
     private static let maxThrowSpeed: CGFloat = 2000
     private static let minimumDragDeltaTime: TimeInterval = 1e-4
@@ -132,16 +132,16 @@ extension PhysicsTagScene {
         guard xMin <= xMax, yMin <= yMax else { return [] }
         let dSq = d * d
 
-        for _ in 0..<Self.spawnBatchRetries {
+        for _ in 0 ..< Self.spawnBatchRetries {
             var centers: [CGPoint] = []
             centers.reserveCapacity(Self.tagCount)
             var success = true
 
-            for _ in 0..<Self.tagCount {
+            for _ in 0 ..< Self.tagCount {
                 var placed = false
-                for _ in 0..<Self.spawnAttemptsPerTag {
-                    let cx = CGFloat.random(in: xMin...xMax)
-                    let cy = CGFloat.random(in: yMin...yMax)
+                for _ in 0 ..< Self.spawnAttemptsPerTag {
+                    let cx = CGFloat.random(in: xMin ... xMax)
+                    let cy = CGFloat.random(in: yMin ... yMax)
                     let overlaps = centers.contains { existing in
                         let dx = cx - existing.x
                         let dy = cy - existing.y
@@ -153,14 +153,16 @@ extension PhysicsTagScene {
                         break
                     }
                 }
-                if !placed { success = false; break }
+                if !placed { success = false
+                    break
+                }
             }
 
             if success {
                 return centers.map { center in
                     SpawnSpecification(
                         position: center,
-                        rotation: CGFloat.random(in: -Self.maxSpawnZRotation...Self.maxSpawnZRotation)
+                        rotation: CGFloat.random(in: -Self.maxSpawnZRotation ... Self.maxSpawnZRotation)
                     )
                 }
             }
@@ -199,7 +201,7 @@ extension PhysicsTagScene {
                 .run { [weak self] in
                     guard let self, index < specs.count else { return }
                     let s = specs[index]
-                    self.addTagNode(color: color, zOrder: index, position: s.position, rotation: s.rotation)
+                    addTagNode(color: color, zOrder: index, position: s.position, rotation: s.rotation)
                 },
             ])
         }
@@ -249,9 +251,8 @@ extension PhysicsTagScene {
         let attr = NSAttributedString(string: "example", attributes: [.font: font])
         return ceil(attr.size().width)
     }()
-    private static var tagWidth: CGFloat = {
-        leftPadding + dotDiameter + dotTextGap + textWidth + rightPadding
-    }()
+
+    private static var tagWidth: CGFloat = leftPadding + dotDiameter + dotTextGap + textWidth + rightPadding
 
     private static var textureCache: [TagColor: SKTexture] = [:]
 
@@ -319,7 +320,7 @@ extension PhysicsTagScene {
 // MARK: - Dragging
 
 extension PhysicsTagScene {
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
         guard let touch = touches.first, draggedNode == nil else { return }
         let location = touch.location(in: self)
         let tapped = nodes(at: location).first { $0.name == Self.tagNodeName } as? SKSpriteNode
@@ -333,7 +334,7 @@ extension PhysicsTagScene {
         draggedNode = node
     }
 
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with _: UIEvent?) {
         guard let touch = touches.first, let node = draggedNode else { return }
         let location = touch.location(in: self)
         let newPos = clampedPosition(
@@ -346,12 +347,12 @@ extension PhysicsTagScene {
         node.position = newPos
     }
 
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with _: UIEvent?) {
         applyThrowVelocity(from: touches.first)
         releaseDraggedNode()
     }
 
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesCancelled(_: Set<UITouch>, with _: UIEvent?) {
         releaseDraggedNode()
     }
 
@@ -398,16 +399,16 @@ enum TagColor: CaseIterable {
 
     var hue: CGFloat {
         switch self {
-        case .red:    return 0.00
-        case .pink:   return 0.92
-        case .orange: return 0.08
-        case .yellow: return 0.13
-        case .green:  return 0.33
-        case .mint:   return 0.47
-        case .blue:   return 0.58
-        case .indigo: return 0.70
-        case .purple: return 0.78
-        case .brown:  return 0.07
+        case .red: 0.00
+        case .pink: 0.92
+        case .orange: 0.08
+        case .yellow: 0.13
+        case .green: 0.33
+        case .mint: 0.47
+        case .blue: 0.58
+        case .indigo: 0.70
+        case .purple: 0.78
+        case .brown: 0.07
         }
     }
 

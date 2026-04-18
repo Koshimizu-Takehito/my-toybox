@@ -21,7 +21,7 @@ struct LissajousCurveDemoScreen2: View {
                 .font(.title)
                 .bold()
             // The animated curve visualization
-            LissajousCurveAnimationView(curve: $curve)
+            LissajousCurveAnimationView2(curve: $curve)
                 .background(.thinMaterial)
                 .clipShape(.rect(cornerRadius: 24))
                 .shadow(radius: 6)
@@ -32,7 +32,7 @@ struct LissajousCurveDemoScreen2: View {
     }
 }
 
-// MARK: - LissajousCurveAnimationView
+// MARK: - LissajousCurveAnimationView2
 
 /**
  Animates the phase parameter of the Lissajous curve for a smooth, continuous motion.
@@ -41,9 +41,10 @@ struct LissajousCurveDemoScreen2: View {
  - The phase parameter is updated in real time, making the curve "move".
  - Intended for embedding inside a larger UI or educational demo.
  */
-private struct LissajousCurveAnimationView: View {
+struct LissajousCurveAnimationView2: View {
     /// Shared binding to the curve parameter model.
     @Binding var curve: LissajousCurve2
+    var lineWidth: CGFloat = 4.0
 
     var body: some View {
         TimelineView(.animation) { context in
@@ -53,7 +54,7 @@ private struct LissajousCurveAnimationView: View {
                 .truncatingRemainder(dividingBy: 2 * .pi)
 
             // Update the phase, which animates the curve.
-            LissajousCurveView(curve: curve)
+            LissajousCurveView2(curve: curve, lineWidth: lineWidth)
                 .onChange(of: time, initial: true) { _, newTime in
                     curve.phase = newTime
                 }
@@ -61,7 +62,7 @@ private struct LissajousCurveAnimationView: View {
     }
 }
 
-// MARK: - LissajousCurveView
+// MARK: - LissajousCurveView2
 
 /**
  Renders the Lissajous curve using SwiftUI's Canvas API.
@@ -70,9 +71,10 @@ private struct LissajousCurveAnimationView: View {
  - Supports animation via the Animatable protocol.
  - Use this view wherever you need a visual representation of a Lissajous curve.
  */
-private struct LissajousCurveView: View, @MainActor Animatable {
+struct LissajousCurveView2: View, @MainActor Animatable {
     /// Parameter model containing all values needed to draw the curve.
     var curve: LissajousCurve2
+    var lineWidth: CGFloat
 
     nonisolated var animatableData: LissajousCurve2 {
         get { curve }
@@ -86,7 +88,7 @@ private struct LissajousCurveView: View, @MainActor Animatable {
                 .path(in: CGRect(origin: .zero, size: size))
 
             // Draw the path with a dynamically blended color.
-            context.stroke(path, with: .color(.color(curve)), lineWidth: 4)
+            context.stroke(path, with: .color(.color(curve)), lineWidth: lineWidth)
         }
         .scaledToFit()
     }

@@ -8,7 +8,7 @@ struct TileAnimationScreen: View {
 
     var body: some View {
         if let viewModel {
-            ContentView(viewModel: viewModel)
+            ContentView(viewModel: viewModel, lineWidth: 16)
                 .ignoresSafeArea()
                 .id([viewModel.row, viewModel.column])
         } else {
@@ -40,6 +40,7 @@ struct TileAnimationScreen: View {
 private extension TileAnimationScreen {
     struct ContentView: View {
         var viewModel: ViewModel
+        var lineWidth: Double
         @State private var lastUpdateDate = Date.now
 
         var body: some View {
@@ -51,7 +52,7 @@ private extension TileAnimationScreen {
                     ForEach(0 ..< rotations.count, id: \.self) { i in
                         GridRow {
                             ForEach(0 ..< rotations[i].count, id: \.self) { j in
-                                Tile(radians: Double(rotations[i][j]) * .pi / 2)
+                                Tile(radians: Double(rotations[i][j]) * .pi / 2, lineWidth: lineWidth)
                             }
                         }
                     }
@@ -71,19 +72,22 @@ private extension TileAnimationScreen {
     }
 }
 
-// MARK: - Tile
+// MARK: TileAnimationScreen.Tile
 
-private struct Tile: View {
-    let radians: Double
+extension TileAnimationScreen {
+    struct Tile: View {
+        let radians: Double
+        let lineWidth: Double
 
-    var body: some View {
-        ZStack {
-            QuarterArc()
-                .stroke(lineWidth: 16)
-                .rotationEffect(.radians(radians))
-            QuarterArc()
-                .stroke(lineWidth: 16)
-                .rotationEffect(.radians(.pi + radians))
+        var body: some View {
+            ZStack {
+                QuarterArc()
+                    .stroke(lineWidth: lineWidth)
+                    .rotationEffect(.radians(radians))
+                QuarterArc()
+                    .stroke(lineWidth: lineWidth)
+                    .rotationEffect(.radians(.pi + radians))
+            }
         }
     }
 }

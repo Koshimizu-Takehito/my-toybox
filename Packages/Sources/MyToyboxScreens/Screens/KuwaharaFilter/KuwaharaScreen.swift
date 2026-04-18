@@ -84,7 +84,7 @@ struct KuwaharaScreen: View {
     }
 }
 
-private extension Shader {
+extension Shader {
     /// Builds a SwiftUI `Shader` that invokes the `Kuwahara::main` Metal function.
     ///
     /// - Parameters:

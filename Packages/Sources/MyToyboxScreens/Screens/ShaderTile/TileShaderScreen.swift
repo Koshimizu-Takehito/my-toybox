@@ -20,21 +20,20 @@ struct TileShaderScreen: View {
             let scale = 1 + 10 * (sin(time) + 1)
 
             Rectangle()
-                .colorEffect(shader(scale: scale))
+                .colorEffect(.tile(scale: scale))
                 .foregroundStyle(.blue.mix(with: .white, by: 0.3))
                 .ignoresSafeArea()
         }
     }
+}
 
+extension Shader {
     /// Returns a Metal-based shader with a dynamically adjustable tile scale.
     ///
     /// - Parameter scale: The zoom level of the checkerboard pattern.
     /// - Returns: A `Shader` configured with the current scale.
-    func shader(scale: Double) -> Shader {
-        let function = ShaderFunction(
-            library: .module,
-            name: "TileShader::main"
-        )
+    static func tile(scale: Double) -> Shader {
+        let function = ShaderFunction(library: .module, name: "TileShader::main")
         return function(.boundingRect, .float(scale))
     }
 }

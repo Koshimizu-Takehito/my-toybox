@@ -99,7 +99,7 @@ struct OrbitingDotsLoadingView: View {
 
 /// Renders eight equally spaced dots, each offset by a unique phase so
 /// they animate in a perfect ring.
-private struct OrbitingDotsLayerView: View {
+struct OrbitingDotsLayerView: View {
     /// Shared rotation angle applied to every dot (0 … 2π).
     let sharedRotationAngle: Double
     /// Radius of the circular path.

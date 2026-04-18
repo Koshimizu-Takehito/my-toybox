@@ -34,14 +34,13 @@ struct LostRowAnimationScreen: View {
 
     func fetch() async {
         show = false
-        await Task {
+        Task.detached {
             try? await Task.sleep(nanoseconds: 1_000_000_000)
-        }.value
-
-        item = .samples()
-        await Task {
-            show = true
-        }.value
+            Task { @MainActor in
+                item = .samples()
+                show = true
+            }
+        }
     }
 }
 

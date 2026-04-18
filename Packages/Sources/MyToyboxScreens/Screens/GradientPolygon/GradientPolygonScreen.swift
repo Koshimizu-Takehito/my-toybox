@@ -6,7 +6,7 @@ import SwiftUI
 ///
 /// Users can adjust the number of vertices (3–9) and the "roundness" of the polygon
 /// using interactive controls. The polygon morphs smoothly between sharp and rounded corners.
-@Metadata(title: "Gradient Polygon", description: "グラデーションポリゴン", tags: [.animation])
+@Metadata(title: "Gradient Polygon", description: "グラデーション多角形", tags: [.animation])
 struct GradientPolygonScreen: View {
     /// The number of vertices of the polygon (e.g., 3 for triangle, 6 for hexagon).
     @State private var vertex = 6
@@ -17,7 +17,7 @@ struct GradientPolygonScreen: View {
         VStack {
             // Display the gradient-filled polygon.
             PolygonShape(vertex: vertex, roundness: roundness)
-                .fill(gradient)
+                .fill(Self.gradient)
                 .scaledToFit()
                 .id(vertex) // Forces redraw when vertex count changes
 
@@ -40,7 +40,7 @@ struct GradientPolygonScreen: View {
     }
 
     /// The linear gradient used to fill the polygon.
-    var gradient: some ShapeStyle {
+    static var gradient: some ShapeStyle {
         .linearGradient(
             colors: [
                 Color(red: 0xEF / 0xFF, green: 0x78 / 0xFF, blue: 0xDD / 0xFF),
@@ -58,7 +58,7 @@ struct GradientPolygonScreen: View {
 ///
 /// The number of vertices (`vertex`) determines the polygon's sides.
 /// The `roundness` value defines how rounded each corner is, allowing smooth morphing.
-private struct PolygonShape: Shape {
+struct PolygonShape: Shape {
     var vertex = 6
     var roundness: Double = 0.5
 

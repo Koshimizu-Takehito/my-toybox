@@ -11,7 +11,10 @@ struct WaveCircleScreen: View {
     var body: some View {
         VStack {
             // A view that renders the animated wave within a circle.
-            WaveCircleView(percent: percent)
+            WaveCircleAnimationView(percent: percent)
+                .font(.system(size: 60).monospacedDigit())
+                .fontWeight(.bold)
+                .fontDesign(.rounded)
 
             // A slider to change the percentage value interactively.
             Slider(value: $percent.animation(), in: 0 ... 1, step: 0.01)
@@ -22,40 +25,21 @@ struct WaveCircleScreen: View {
     }
 }
 
-// MARK: - WaveCircleView
+// MARK: - WaveCircleAnimationView
 
 /// A circular view that displays an animated water wave representing the given percentage.
 /// Two overlapping waves are rendered to create a layered effect.
-private struct WaveCircleView: View {
+struct WaveCircleAnimationView: View {
     let percent: Double
     @State private var transition: ContentTransition = .identity
 
     var body: some View {
         TimelineView(.animation) { context in
             let offset = offset(context.date)
-
-            ZStack {
-                // Circular outline
-                Circle()
-                    .stroke(lineWidth: 8)
-
-                // First wave layer
-                WaveShape(percent: percent, offset: offset)
-                    .opacity(0.4)
-
-                // Second wave layer with phase and position offset
-                WaveShape(percent: percent, offset: offset + .degrees(60), xOffset: 0.7)
-                    .opacity(0.4)
-
-                // Display percentage as text
-                Text(percent, format: .percent)
-            }
+            WaveCircleContentView(percent: percent, offset: offset)
         }
-        .aspectRatio(1, contentMode: .fit)
-        .clipShape(Circle())
-        .font(.system(size: 100).monospacedDigit())
-        .fontWeight(.bold)
-        .fontDesign(.rounded)
+        .scaledToFit()
+        .clipShape(.circle)
         .contentTransition(transition)
         .onChange(of: percent) { old, new in
             transition = .numericText(countsDown: old > new)
@@ -68,6 +52,33 @@ private struct WaveCircleView: View {
         value.formTruncatingRemainder(dividingBy: 2 * .pi)
         value *= 2
         return .radians(value)
+    }
+}
+
+// MARK: - WaveCircleContentView
+
+struct WaveCircleContentView: View {
+    var percent: Double
+    var offset: Angle
+    var lineWidth: Double = 8
+
+    var body: some View {
+        ZStack {
+            // Circular outline
+            Circle()
+                .stroke(lineWidth: lineWidth)
+
+            // First wave layer
+            WaveShape(percent: percent, offset: offset)
+                .opacity(0.4)
+
+            // Second wave layer with phase and position offset
+            WaveShape(percent: percent, offset: offset + .degrees(60), xOffset: 0.7)
+                .opacity(0.4)
+
+            // Display percentage as text
+            Text(percent, format: .percent)
+        }
     }
 }
 

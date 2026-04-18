@@ -9,9 +9,6 @@ import SwiftUI
 /// `TimelineView` and `Canvas` for efficient real-time rendering.
 @Metadata(title: "Prime Spiral", description: "素数のアルキメデスの螺旋", tags: [.animation])
 struct PrimeSpiralScreen: View {
-    /// List of all prime numbers up to 1,000,000.
-    private static let primeNumbers = sieveOfEratosthenes(upTo: 1_000_000)
-
     /// The start time of the animation.
     @State private var start = Date()
 
@@ -19,23 +16,10 @@ struct PrimeSpiralScreen: View {
         TimelineView(.animation) { context in
             // Compute elapsed time in seconds since `start`, looping every 30 seconds.
             let time = context.date.timeIntervalSince(start).truncatingRemainder(dividingBy: 30)
-
             // Prevent division by zero by clamping the minimum scale.
             let scale = max(time, 1)
 
-            Canvas { context, size in
-                // Each prime will be drawn as a small dot (circle) on the spiral.
-                let radius = 4 / min(scale, 4) // Point radius shrinks as scale increases.
-                let center = CGPoint(size: size) / 2 - radius
-                let pointSize = radius * CGSize(width: 2, height: 2)
-
-                for i in Self.primeNumbers {
-                    let j = Double(i)
-                    let p = CGPoint.spiral(at: .radians(j)) / (scale * 50)
-                    let path = Circle().path(in: CGRect(origin: center + p, size: pointSize))
-                    context.fill(path, with: .color(color))
-                }
-            }
+            PrimeSpiralContent(scale: scale, color: color)
         }
         .ignoresSafeArea()
         .background(.black)
@@ -48,6 +32,32 @@ struct PrimeSpiralScreen: View {
     /// The color used to draw each prime dot.
     var color: Color {
         Color(hue: 0.6, saturation: 0.6, brightness: 1)
+    }
+}
+
+// MARK: - PrimeSpiralContent
+
+struct PrimeSpiralContent: View {
+    /// List of all prime numbers up to 1,000,000.
+    private static let primeNumbers = sieveOfEratosthenes(upTo: 1_000_000)
+
+    var scale: Double
+    var color: Color
+
+    var body: some View {
+        Canvas { context, size in
+            // Each prime will be drawn as a small dot (circle) on the spiral.
+            let radius = 4 / min(scale, 4) // Point radius shrinks as scale increases.
+            let center = CGPoint(size: size) / 2 - radius
+            let pointSize = radius * CGSize(width: 2, height: 2)
+
+            for i in Self.primeNumbers {
+                let j = Double(i)
+                let p = CGPoint.spiral(at: .radians(j)) / (scale * 50)
+                let path = Circle().path(in: CGRect(origin: center + p, size: pointSize))
+                context.fill(path, with: .color(color))
+            }
+        }
     }
 }
 

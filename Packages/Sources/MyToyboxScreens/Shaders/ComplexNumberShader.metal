@@ -111,4 +111,35 @@ namespace ComplexNumber {
 
         return half4(rgb, 1.0h);
     }
+
+    // MARK: - Thumbnail
+
+    [[ stitchable ]] half4 thumbnail(float2 position, half4 color, float4 box) {
+        float functionIndex = 0;
+        // Scale to complex plane [-100, 100]
+        float scale = 100.0;
+
+        // Pixel -> normalized [-1, 1] with aspect ratio preservation
+        float2 uv = (position - box.zw * 0.5) / (min(box.z, box.w) * 0.5);
+        float2 z = uv * scale;
+
+        // Evaluate complex function with interpolation (clamp to avoid default branch on spring overshoot)
+        int idx0 = clamp(int(floor(functionIndex)), 0, 5);
+        int idx1 = clamp(idx0 + 1, 0, 5);
+        float t = clamp(functionIndex - float(idx0), 0.0f, 1.0f);
+        float2 fz0 = evaluate(z, idx0);
+        float2 fz1 = evaluate(z, idx1);
+        float2 fz = mix(fz0, fz1, t);
+
+        // Domain coloring: argument -> hue
+        float arg = atan2(fz.y, fz.x);
+        float hue = arg / (2.0 * M_PI_F) + 0.5;
+
+        // Magnitude -> brightness via atan mapping [0, inf) -> [0, 1)
+        float mag = length(fz);
+        float brightness = atan(mag) / (M_PI_F * 0.5);
+
+        half3 rgb = hsv2rgb(half3(half(hue), 0.65h, half(brightness)));
+        return half4(rgb, 1.0h);
+    }
 }

@@ -17,7 +17,11 @@ public struct RootScreen: View {
     /// The current horizontal size class (e.g., `.compact`, `.regular`).
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
+    @Environment(\.defaultMinListRowHeight) var thumbnailSize
+
     @Environment(\.openURL) var openURL
+
+    @State private var isScrolling: Bool = false
 
     public init() {}
 
@@ -42,17 +46,13 @@ private extension RootScreen {
     func sidebarView() -> some View {
         List(viewModel.filteredScreens(), id: \.self, selection: $selection) { screen in
             NavigationLink(value: screen) {
-                VStack(alignment: .leading) {
-                    Text(screen.title)
-                        .font(.body)
-                        .fontWeight(.semibold)
-                    Text(screen.description)
-                        .font(.subheadline)
-                        .foregroundStyle(.foreground.secondary)
-                }
-                .padding(.bottom)
+                cell(screen: screen)
             }
         }
+        .onScrollPhaseChange { _, newPhase in
+            isScrolling = newPhase.isScrolling
+        }
+        .listStyle(.plain)
         .toolbar {
             TagPicker()
         }
@@ -60,6 +60,41 @@ private extension RootScreen {
         .navigationBarTitle("MyToybox")
         .navigationBarTitleDisplayMode(.inline)
         #endif
+    }
+
+    @ViewBuilder
+    func cell(screen: Screen) -> some View {
+        HStack(alignment: .top) {
+            thumbnail(screen: screen)
+            label(screen: screen)
+        }
+        .alignmentGuide(.listRowSeparatorLeading) {
+            $0[.leading]
+        }
+    }
+
+    @ViewBuilder
+    func thumbnail(screen: Screen) -> some View {
+        ZStack {
+            Color.clear
+            screen.thumbnail
+                .environment(\.isScrolling, isScrolling)
+        }
+        .background(.black.gradient)
+        .frame(width: thumbnailSize, height: thumbnailSize)
+        .clipShape(.rect(cornerRadius: 8))
+    }
+
+    @ViewBuilder
+    func label(screen: Screen) -> some View {
+        VStack(alignment: .leading) {
+            Text(screen.title)
+                .font(.body)
+                .fontWeight(.semibold)
+            Text(screen.description)
+                .font(.subheadline)
+                .foregroundStyle(.foreground.secondary)
+        }
     }
 
     /// The detail view that renders the selected screen.

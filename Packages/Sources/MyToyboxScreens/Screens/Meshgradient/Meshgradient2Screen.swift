@@ -100,7 +100,7 @@ struct Meshgradient2Screen: View {
     }
 }
 
-private struct MeshView: View {
+struct MeshView: View {
     let width: Int
     let height: Int
     let colors: [Color]
