@@ -27,6 +27,8 @@ struct ColorHexAnimationScreen: View {
                         currentColor = .random
                     }
                 }
+                .padding()
+                .padding()
         }
     }
 }
@@ -35,11 +37,11 @@ struct ColorHexAnimationScreen: View {
 
 /// A view that draws a circle filled with a given color and displays its hex code in the center.
 /// It supports animating color transitions by implementing `Animatable`.
-private struct ColorCircleView: Animatable {
+struct ColorCircleView: View, @MainActor Animatable {
     /// The color to display and animate.
     var color: Color
     var environment: EnvironmentValues
-    @State var fontSizde: CGFloat = 30
+    @State private var fontSizde: CGFloat = 30
 
     // Animate by interpolating the resolved color's components
     var animatableData: Color.Resolved.AnimatableData {
@@ -52,11 +54,7 @@ private struct ColorCircleView: Animatable {
             color = Color(resolved)
         }
     }
-}
 
-// MARK: View
-
-extension ColorCircleView: View {
     var body: some View {
         ZStack {
             // Background circle with the current color
@@ -75,8 +73,6 @@ extension ColorCircleView: View {
                 .animation(.default, value: color)
                 .foregroundStyle(textColor)
         }
-        .padding()
-        .padding()
     }
 
     /// Converts the current resolved color into a `#RRGGBB` uppercase hex string.
@@ -97,6 +93,12 @@ extension ColorCircleView: View {
         let color = color.resolve(in: environment)
         let luminance = 0.299 * color.red + 0.587 * color.green + 0.114 * color.blue
         return luminance > 0.5 ? .black : .white
+    }
+}
+
+extension ColorHexAnimationScreen {
+    static func makeRandomColor() -> Color {
+        Color.random
     }
 }
 

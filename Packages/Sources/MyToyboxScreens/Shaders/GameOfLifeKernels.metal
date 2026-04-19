@@ -2,64 +2,68 @@
 using namespace metal;
 
 // ============================================================================
-// Compute: 1 step of Game of Life
+// Compute: 1 step of Game of Life  (threadgroup-tiled, function-constant boundary)
 // ============================================================================
+
+/// Boundary mode selected at PSO creation time.
+/// true = torus (wrap-around), false = clamp.
+constant bool kWrap [[function_constant(0)]];
 
 /**
  * @brief   Perform a single step update of Conway's Game of Life.
  *
+ * Uses a 16x16 threadgroup with a 1-pixel halo (18x18 shared tile) to reduce
+ * global texture reads from 9 per cell to ~1 per cell.  The boundary mode
+ * (wrap / clamp) is resolved at compile time via `kWrap` function constant.
+ *
  * @param src   Source grid (R8Uint). Cell value is taken from .r & 1u.
  * @param dst   Destination grid (R8Uint).
  * @param wh1   Packed width (x), height (y), dummy (z).
- * @param wrap  Boundary mode. 0 = clamp, 1 = torus (wrap-around).
  * @param gid   Global thread position in the grid.
- * @param ltid  Local thread position in the threadgroup (unused).
- * @param gsize Total grid size in threads (unused).
- * @param lsize Threadgroup size (unused).
- *
- * The kernel reads the eight neighbors of each cell and writes the next state
- * according to the Game of Life rules:
- *  - Live cell survives with 2 or 3 neighbors.
- *  - Dead cell becomes live with exactly 3 neighbors.
+ * @param ltid  Local thread position in the threadgroup.
+ * @param lsize Threadgroup size.
  */
 kernel void lifeStep(
     texture2d<uint, access::read>  src   [[texture(0)]],
     texture2d<uint, access::write> dst   [[texture(1)]],
-    constant uint3&                wh1   [[buffer(0)]], // width, height, dummy
-    constant uint&                 wrap  [[buffer(1)]], // 0: clamp, 1: torus
+    constant uint3&                wh1   [[buffer(0)]],
     uint2                          gid   [[thread_position_in_grid]],
     uint2                          ltid  [[thread_position_in_threadgroup]],
-    uint2                          gsize [[threads_per_grid]],
     uint2                          lsize [[threads_per_threadgroup]]
 ) {
-    const uint W = wh1.x;
-    const uint H = wh1.y;
-    if (gid.x >= W || gid.y >= H) {
-        return;
-    }
+    const int W = int(wh1.x);
+    const int H = int(wh1.y);
 
-    // Neighbor reader (integer coordinates).
-    auto r = [&](int x, int y) -> uint {
-        int ix = x, iy = y;
-        if (wrap == 1) {
-            ix = (ix % int(W) + int(W)) % int(W);
-            iy = (iy % int(H) + int(H)) % int(H);
-        } else {
-            ix = clamp(ix, 0, int(W) - 1);
-            iy = clamp(iy, 0, int(H) - 1);
+    // 18x18 shared tile = 16x16 core + 1-pixel halo on each side.
+    constexpr int TILE = 18;
+    threadgroup uint tile[TILE][TILE];
+
+    const int2 tileOrigin = int2(gid) - int2(ltid) - 1;
+
+    for (int j = int(ltid.y); j < TILE; j += int(lsize.y)) {
+        for (int i = int(ltid.x); i < TILE; i += int(lsize.x)) {
+            int2 gp = tileOrigin + int2(i, j);
+            if (kWrap) {
+                gp.x = ((gp.x % W) + W) % W;
+                gp.y = ((gp.y % H) + H) % H;
+            } else {
+                gp = clamp(gp, int2(0), int2(W - 1, H - 1));
+            }
+            tile[j][i] = src.read(uint2(gp)).r & 1u;
         }
-        return src.read(uint2(ix, iy)).r & 1u;
-    };
+    }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
 
-    const int x = int(gid.x);
-    const int y = int(gid.y);
+    if (int(gid.x) >= W || int(gid.y) >= H) return;
 
-    uint s =
-        r(x - 1, y - 1) + r(x, y - 1) + r(x + 1, y - 1) +
-        r(x - 1, y    ) +                 r(x + 1, y    ) +
-        r(x - 1, y + 1) + r(x, y + 1) + r(x + 1, y + 1);
+    const uint lx = ltid.x + 1;
+    const uint ly = ltid.y + 1;
 
-    uint c = src.read(uint2(gid)).r & 1u;
+    uint s = tile[ly - 1][lx - 1] + tile[ly - 1][lx] + tile[ly - 1][lx + 1]
+           + tile[ly    ][lx - 1] +                     tile[ly    ][lx + 1]
+           + tile[ly + 1][lx - 1] + tile[ly + 1][lx] + tile[ly + 1][lx + 1];
+
+    uint c = tile[ly][lx];
     uint n = (c == 1u) ? ((s == 2u || s == 3u) ? 1u : 0u)
                        : ((s == 3u) ? 1u : 0u);
     dst.write(n, gid);

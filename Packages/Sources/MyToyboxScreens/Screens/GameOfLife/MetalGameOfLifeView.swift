@@ -61,19 +61,25 @@ struct MetalGameOfLifeView: PlatformAgnosticViewRepresentable {
         private func buildPipelines() {
             let library = try! device.makeDefaultLibrary(bundle: .module)
 
-            // Compute
-            let cs = library.makeFunction(name: "lifeStep")!
-            computePSO = try! device.makeComputePipelineState(function: cs)
+            // Compute – torus (wrap) boundary via function constant kWrap=true at index 0
+            let fcv = MTLFunctionConstantValues()
+            var wrap = true
+            fcv.setConstantValue(&wrap, type: .bool, index: 0)
+            let lifeFn = try! library.makeFunction(name: "lifeStep", constantValues: fcv)
+            let cDesc = MTLComputePipelineDescriptor()
+            cDesc.computeFunction = lifeFn
+            cDesc.threadGroupSizeIsMultipleOfThreadExecutionWidth = true
+            computePSO = try! device.makeComputePipelineState(descriptor: cDesc, options: [], reflection: nil)
 
             // Render
             let vs = library.makeFunction(name: "fullscreenQuadVS")!
             let fs = library.makeFunction(name: "lifeBlitFS")!
 
-            let desc = MTLRenderPipelineDescriptor()
-            desc.vertexFunction = vs
-            desc.fragmentFunction = fs
-            desc.colorAttachments[0].pixelFormat = .bgra8Unorm
-            renderPSO = try! device.makeRenderPipelineState(descriptor: desc)
+            let rDesc = MTLRenderPipelineDescriptor()
+            rDesc.vertexFunction = vs
+            rDesc.fragmentFunction = fs
+            rDesc.colorAttachments[0].pixelFormat = .bgra8Unorm
+            renderPSO = try! device.makeRenderPipelineState(descriptor: rDesc)
         }
 
         /// 指定サイズでピンポン用テクスチャを生成し、乱数初期化する。
@@ -146,21 +152,18 @@ struct MetalGameOfLifeView: PlatformAgnosticViewRepresentable {
         /// ライフゲームの 1 ステップを計算するコンピュートパスをエンコードする。
         private func encodeCompute(into cb: any MTLCommandBuffer) {
             guard let enc = cb.makeComputeCommandEncoder() else { return }
+
             enc.setComputePipelineState(computePSO)
             enc.setTexture(srcTex, index: 0)
             enc.setTexture(dstTex, index: 1)
 
             var wh1 = SIMD3<UInt32>(UInt32(srcTex.width), UInt32(srcTex.height), 1)
-            var wrap: UInt32 = 1 // 1 にするとトーラス（ラップ）境界
             enc.setBytes(&wh1, length: MemoryLayout<SIMD3<UInt32>>.stride, index: 0)
-            enc.setBytes(&wrap, length: MemoryLayout<UInt32>.stride, index: 1)
 
-            let w = computePSO.threadExecutionWidth
-            let h = max(1, computePSO.maxTotalThreadsPerThreadgroup / w)
-            let tg = MTLSize(width: w, height: h, depth: 1)
+            let tg = MTLSize(width: 16, height: 16, depth: 1)
             let ng = MTLSize(
-                width: (srcTex.width + w - 1) / w,
-                height: (srcTex.height + h - 1) / h,
+                width: (srcTex.width + 15) / 16,
+                height: (srcTex.height + 15) / 16,
                 depth: 1
             )
             enc.dispatchThreadgroups(ng, threadsPerThreadgroup: tg)

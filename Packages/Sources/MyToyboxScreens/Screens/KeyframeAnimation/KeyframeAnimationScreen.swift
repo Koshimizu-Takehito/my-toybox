@@ -46,7 +46,7 @@ private extension KeyframeAnimationScreen {
     }
 
     @ViewBuilder
-    nonisolated private func content(content: PlaceholderContentView<some View>, values: AnimationValues) -> some View {
+    private nonisolated func content(content: PlaceholderContentView<some View>, values: AnimationValues) -> some View {
         content
             .scaleEffect(values.scale)
             .scaleEffect(x: values.stretchX, y: values.stretchY)
@@ -56,7 +56,7 @@ private extension KeyframeAnimationScreen {
     }
 
     @KeyframesBuilder<AnimationValues>
-    nonisolated private func keyframes(_: AnimationValues) -> some Keyframes<AnimationValues> {
+    private nonisolated func keyframes(_: AnimationValues) -> some Keyframes<AnimationValues> {
         // Scale: springy bounce.
         KeyframeTrack(\.scale) {
             SpringKeyframe(0.3, duration: 0.2, spring: .bouncy)

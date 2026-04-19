@@ -7,27 +7,36 @@ struct GradientAnimationScreen: View {
     private let startDate = Date()
 
     var body: some View {
-        GeometryReader { _ in
-            TimelineView(.animation) { context in
-                let time = context.date.timeIntervalSince(startDate)
-                Image(systemName: "apple.logo")
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(rainbow(at: time))
-                    .scaleEffect(0.1 * sin(time) + 1)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        TimelineView(.animation) { context in
+            let time = context.date.timeIntervalSince(startDate)
+            ContentView(time: time)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(40)
         }
-        .scaledToFit()
-        .padding(40)
     }
+}
 
-    private func rainbow(at time: TimeInterval) -> some ShapeStyle {
-        LinearGradient(
-            colors: .rainbow(hue: time / 5, count: 256).reversed(),
-            startPoint: .topTrailing,
-            endPoint: .bottom
-        )
+// MARK: GradientAnimationScreen.ContentView
+
+extension GradientAnimationScreen {
+    struct ContentView: View {
+        var time: TimeInterval
+
+        var body: some View {
+            Image(systemName: "apple.logo")
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(rainbow(at: time))
+                .scaleEffect(0.1 * sin(time) + 1)
+        }
+
+        private func rainbow(at time: TimeInterval) -> some ShapeStyle {
+            LinearGradient(
+                colors: .rainbow(hue: time / 5, count: 256).reversed(),
+                startPoint: .topTrailing,
+                endPoint: .bottom
+            )
+        }
     }
 }
 

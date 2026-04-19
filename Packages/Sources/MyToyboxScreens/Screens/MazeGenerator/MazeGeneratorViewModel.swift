@@ -67,12 +67,14 @@ final class MazeGeneratorViewModel {
     /// Sets up a task to subscribe to the actor's snapshot stream.
     /// actor のスナップショットストリームを購読するタスクを設定します。
     private func setUp() {
-        mazeSnapshotTask = Task { [weak self, mazeModel] in
+        mazeSnapshotTask = Task.detached { [weak self, mazeModel] in
             for await snapshot in await mazeModel.snapshots {
-                guard let self else { break }
+                guard let self, !Task.isCancelled else { break }
                 try? await Task.sleep(for: .milliseconds(30))
-                tiles = await makeTiles(snapshot: snapshot)
-                isGenerating = snapshot.isGenerating
+                await Task { @MainActor in
+                    tiles = await makeTiles(snapshot: snapshot)
+                    isGenerating = snapshot.isGenerating
+                }.value
             }
         }
     }

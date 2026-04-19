@@ -85,8 +85,8 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
             /// UV 空間での 1 ピクセル幅（`1.0 / グリッド幅`）。勾配サンプリング用。
             var pixelStep: Float
 
-            /// Background image aspect ratio (`width / height`), for aspect-fit mapping.
-            /// 背景画像アスペクト比（`幅 / 高さ`）。アスペクトフィットマッピング用。
+            /// Background image aspect ratio (`width / height`).
+            /// 背景画像アスペクト比（`幅 / 高さ`）。
             var imageAspect: Float
         }
 
@@ -129,7 +129,8 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
         // -- Render pipeline state objects (one per display mode) --
         private var inkRenderPSO: (any MTLRenderPipelineState)!
         private var velRenderPSO: (any MTLRenderPipelineState)!
-        private var imageRenderPSO: (any MTLRenderPipelineState)!
+        private var imageFitRenderPSO: (any MTLRenderPipelineState)!
+        private var imageFillRenderPSO: (any MTLRenderPipelineState)!
 
         /// Background image texture for the image-distortion display mode.
         /// 画像歪み表示モード用の背景画像テクスチャ。
@@ -167,6 +168,10 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
         /// Temporary texture storing the divergence of the velocity field.
         /// 速度場の発散を格納する一時テクスチャ。
         private var divergenceTex: (any MTLTexture)!
+
+        /// Heap used for all simulation textures.
+        /// シミュレーションテクスチャに使う MTLHeap。
+        private var simulationHeap: (any MTLHeap)?
 
         private var velIndex = 0
         private var inkIndex = 0
@@ -210,7 +215,10 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
 
             func computePSO(_ name: String) -> any MTLComputePipelineState {
                 let fn = library.makeFunction(name: name)!
-                return try! device.makeComputePipelineState(function: fn)
+                let desc = MTLComputePipelineDescriptor()
+                desc.computeFunction = fn
+                desc.threadGroupSizeIsMultipleOfThreadExecutionWidth = true
+                return try! device.makeComputePipelineState(descriptor: desc, options: [], reflection: nil)
             }
 
             brushPSO = computePSO("fluidBrush")
@@ -236,7 +244,20 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
 
             inkRenderPSO = renderPSO("fluidInkFS")
             velRenderPSO = renderPSO("fluidVelocityFS")
-            imageRenderPSO = renderPSO("fluidImageFS")
+
+            func imageRenderPSO(fill: Bool) -> any MTLRenderPipelineState {
+                let fcv = MTLFunctionConstantValues()
+                var flag = fill
+                fcv.setConstantValue(&flag, type: .bool, index: 0)
+                let fs = try! library.makeFunction(name: "fluidImageFS", constantValues: fcv)
+                let desc = MTLRenderPipelineDescriptor()
+                desc.vertexFunction = vs
+                desc.fragmentFunction = fs
+                desc.colorAttachments[0].pixelFormat = .bgra8Unorm
+                return try! device.makeRenderPipelineState(descriptor: desc)
+            }
+            imageFitRenderPSO = imageRenderPSO(fill: false)
+            imageFillRenderPSO = imageRenderPSO(fill: true)
         }
 
         /// Load the "waterwheel" image from the asset catalog into a Metal texture.
@@ -250,7 +271,8 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
             #if os(iOS) || os(tvOS)
             guard let cgImage = UIImage(named: "waterwheel", in: .module, compatibleWith: nil)?.cgImage else { return }
             #elseif os(macOS)
-            guard let cgImage = Bundle.module.image(forResource: "waterwheel")?.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
+            guard let cgImage = Bundle.module.image(forResource: "waterwheel")?.cgImage(forProposedRect: nil, context: nil, hints: nil)
+            else { return }
             #endif
             let loader = MTKTextureLoader(device: device)
             backgroundTex = try? loader.newTexture(cgImage: cgImage, options: [
@@ -271,23 +293,43 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
         /// - Parameter size: Number of cells along each axis.
         ///                   各軸のセル数。
         private func makeTextures(size: Int) {
-            func makeSimTexture() -> any MTLTexture {
-                let desc = MTLTextureDescriptor.texture2DDescriptor(
-                    pixelFormat: .rgba16Float,
-                    width: size,
-                    height: size,
-                    mipmapped: false
-                )
-                desc.usage = [.shaderRead, .shaderWrite]
-                return device.makeTexture(descriptor: desc)!
-            }
+            let texDesc = MTLTextureDescriptor.texture2DDescriptor(
+                pixelFormat: .rgba16Float,
+                width: size,
+                height: size,
+                mipmapped: false
+            )
+            texDesc.usage = [.shaderRead, .shaderWrite]
+            texDesc.storageMode = .private
 
-            velTex = [makeSimTexture(), makeSimTexture()]
-            inkTex = [makeSimTexture(), makeSimTexture()]
-            pressureTex = [makeSimTexture(), makeSimTexture()]
-            forceTex = makeSimTexture()
-            newInkTex = makeSimTexture()
-            divergenceTex = makeSimTexture()
+            let texCount = 9 // vel×2 + ink×2 + pressure×2 + force + newInk + divergence
+            let sizeAndAlign = device.heapTextureSizeAndAlign(descriptor: texDesc)
+            let alignedSize = (sizeAndAlign.size + sizeAndAlign.align - 1) & ~(sizeAndAlign.align - 1)
+
+            let heapDesc = MTLHeapDescriptor()
+            heapDesc.size = alignedSize * texCount
+            heapDesc.storageMode = .private
+            heapDesc.hazardTrackingMode = .tracked
+
+            if let heap = device.makeHeap(descriptor: heapDesc) {
+                simulationHeap = heap
+                func heapTexture() -> any MTLTexture { heap.makeTexture(descriptor: texDesc)! }
+                velTex = [heapTexture(), heapTexture()]
+                inkTex = [heapTexture(), heapTexture()]
+                pressureTex = [heapTexture(), heapTexture()]
+                forceTex = heapTexture()
+                newInkTex = heapTexture()
+                divergenceTex = heapTexture()
+            } else {
+                simulationHeap = nil
+                func deviceTexture() -> any MTLTexture { device.makeTexture(descriptor: texDesc)! }
+                velTex = [deviceTexture(), deviceTexture()]
+                inkTex = [deviceTexture(), deviceTexture()]
+                pressureTex = [deviceTexture(), deviceTexture()]
+                forceTex = deviceTexture()
+                newInkTex = deviceTexture()
+                divergenceTex = deviceTexture()
+            }
 
             velIndex = 0
             inkIndex = 0
@@ -468,7 +510,9 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
 
             switch viewModel.displayMode {
             case .image:
-                enc.setRenderPipelineState(imageRenderPSO)
+                let pso = viewModel.imageContentMode == .aspectFill
+                    ? imageFillRenderPSO! : imageFitRenderPSO!
+                enc.setRenderPipelineState(pso)
                 enc.setFragmentTexture(inkTex[inkIndex], index: 0)
                 enc.setFragmentTexture(backgroundTex, index: 1)
                 let bgW = Float(backgroundTex?.width ?? 1)
@@ -478,9 +522,11 @@ struct MetalStableFluidView: PlatformAgnosticViewRepresentable {
                     imageAspect: bgW / bgH
                 )
                 enc.setFragmentBytes(&imageParams, length: MemoryLayout<ImageParamsBuffer>.stride, index: 0)
+
             case .ink:
                 enc.setRenderPipelineState(inkRenderPSO)
                 enc.setFragmentTexture(inkTex[inkIndex], index: 0)
+
             case .velocity:
                 enc.setRenderPipelineState(velRenderPSO)
                 enc.setFragmentTexture(velTex[velIndex], index: 0)

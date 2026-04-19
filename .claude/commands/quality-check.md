@@ -261,7 +261,7 @@ For advanced needs, guide creation of custom SwiftLint rules:
 
 - `make lint` passes with 0 errors, 0 warnings
 - `make format-check` passes (no formatting changes needed)
-- Code follows Swift 6.0 conventions
+- Code follows Swift 6.3 conventions
 - CI quality checks pass
 - Code is readable and maintainable
 

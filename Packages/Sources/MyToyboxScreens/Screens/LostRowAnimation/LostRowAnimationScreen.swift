@@ -25,23 +25,22 @@ struct LostRowAnimationScreen: View {
         }
         .scrollIndicators(.hidden)
         .task {
-            await fetch()
+            fetch()
         }
         .refreshable {
-            await fetch()
+            fetch()
         }
     }
 
-    func fetch() async {
+    func fetch() {
         show = false
-        await Task {
+        Task.detached {
             try? await Task.sleep(nanoseconds: 1_000_000_000)
-        }.value
-
-        item = .samples()
-        await Task {
-            show = true
-        }.value
+            Task { @MainActor in
+                item = .samples()
+                show = true
+            }
+        }
     }
 }
 

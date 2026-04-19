@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - MosaicScreen
+
 /// A view that displays an animated mosaic effect applied to an image.
 ///
 /// The mosaic is driven by a custom Metal shader and animated over time
@@ -25,7 +27,7 @@ struct MosaicScreen: View {
                 .padding(-scale / 2)
                 .scaledToFit()
                 .layerEffect(
-                    mosaic(scale: scale),
+                    .mosaic(scale: scale),
                     maxSampleOffset: .init(width: scale, height: scale)
                 )
                 .mask {
@@ -34,20 +36,19 @@ struct MosaicScreen: View {
         }
     }
 
+    func scale(phase: Double) -> Double {
+        1 + 30 * (sin(phase) + 1) / 2
+    }
+}
+
+extension Shader {
     /// Creates a mosaic shader with a specified block scale.
     ///
     /// - Parameter scale: The size of each mosaic block in pixels.
     /// - Returns: A `Shader` that applies the mosaic effect.
-    func mosaic(scale: Double) -> Shader {
-        let function = ShaderFunction(
-            library: .module,
-            name: "Mosaic::main"
-        )
+    static func mosaic(scale: Double) -> Self {
+        let function = ShaderFunction(library: .module, name: "Mosaic::main")
         return function(.float(scale), .boundingRect)
-    }
-
-    func scale(phase: Double) -> Double {
-        1 + 30 * (sin(phase) + 1) / 2
     }
 }
 

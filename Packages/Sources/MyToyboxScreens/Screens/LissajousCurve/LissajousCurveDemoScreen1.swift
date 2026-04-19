@@ -51,7 +51,7 @@ struct LissajousCurveDemoScreen1: View {
             Text("Lissajous Curve")
                 .font(.title)
                 .bold()
-            LissajousCurveAnimationView(curve: $curve)
+            LissajousCurveAnimationView1(curve: $curve)
                 .background(.thinMaterial)
                 .clipShape(.rect(cornerRadius: 24))
                 .shadow(radius: 6)
@@ -61,13 +61,15 @@ struct LissajousCurveDemoScreen1: View {
     }
 }
 
-// MARK: - LissajousCurveAnimationView
+// MARK: - LissajousCurveAnimationView1
 
 /// A view that animates the phase parameter of the Lissajous curve,
 /// resulting in continuous motion.
-private struct LissajousCurveAnimationView: View {
+struct LissajousCurveAnimationView1: View {
     /// Binding to the shared curve parameter model.
     @Binding var curve: LissajousCurve1
+
+    var lineWidth: CGFloat = 4.0
 
     /// Reference date used as the starting point for the animation timer.
     private let animationStartDate = Date.now
@@ -80,7 +82,7 @@ private struct LissajousCurveAnimationView: View {
                 .truncatingRemainder(dividingBy: 2 * .pi)
 
             // Update the phase parameter, animating the curve.
-            LissajousCurveView(curve: curve)
+            LissajousCurveView1(curve: curve, lineWidth: lineWidth)
                 .onChange(of: time, initial: true) { _, newTime in
                     curve.phase = newTime
                 }
@@ -88,13 +90,14 @@ private struct LissajousCurveAnimationView: View {
     }
 }
 
-// MARK: - LissajousCurveView
+// MARK: - LissajousCurveView1
 
 /// Renders the Lissajous curve using SwiftUI's Canvas API.
 /// The stroke color is dynamically computed based on the current parameters.
-private struct LissajousCurveView: View {
+struct LissajousCurveView1: View {
     /// The parameter model providing all values needed to draw the curve.
     var curve: LissajousCurve1
+    var lineWidth: CGFloat
 
     var body: some View {
         Canvas { context, size in
@@ -103,7 +106,7 @@ private struct LissajousCurveView: View {
                 .path(in: CGRect(origin: .zero, size: size))
 
             // Stroke the curve path with a dynamically blended color.
-            context.stroke(path, with: .color(.color(curve)), lineWidth: 4)
+            context.stroke(path, with: .color(.color(curve)), lineWidth: lineWidth)
         }
         .scaledToFit()
     }

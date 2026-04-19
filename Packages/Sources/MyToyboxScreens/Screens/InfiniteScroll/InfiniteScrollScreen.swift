@@ -294,20 +294,22 @@ private final class InfiniteUIScrollView: UIScrollView {
 
 // MARK: - ItemView
 
-private struct ItemView: View {
-    var number: Int
+extension InfiniteScrollScreen {
+    struct ItemView: View {
+        var number: Int
 
-    var body: some View {
-        Color.blue
-            .overlay {
-                Text("\(number)")
-                    .foregroundStyle(.white)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .minimumScaleFactor(0.5)
-                    .padding(4)
-            }
-            .clipShape(.rect(cornerRadius: 10))
+        var body: some View {
+            Color.blue
+                .overlay {
+                    Text("\(number)")
+                        .foregroundStyle(.white)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .minimumScaleFactor(0.5)
+                        .padding(4)
+                }
+                .clipShape(.rect(cornerRadius: 10))
+        }
     }
 }
 
@@ -316,7 +318,7 @@ private struct ItemView: View {
 #Preview("InfiniteScrollView") {
     let numbers = (1 ... 5).map(\.self)
     InfiniteScrollView(numbers, numberOfDisplays: 5) {
-        ItemView(number: $0)
+        InfiniteScrollScreen.ItemView(number: $0)
     }
     .scrollIndicators(.visible)
 }

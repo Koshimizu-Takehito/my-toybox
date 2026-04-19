@@ -31,14 +31,13 @@ enum Screen: String, CaseIterable {
     case pipCardDemoScreen
     case voronoiDiagramDemoScreen1
     case voronoiDiagramDemoScreen2
-    case cosmicWebScreen
+    case cosmicWebDemoScreen
     case homeIconDemoScreen
     case colorSegmentedControlDemoScreen
     case gradientPolygonScreen
     case collisionColorChangeScreen
     case solarSystem1Screen
     case solarSystem2Screen
-    case pixelBasedColorChangeScreen
     case countdownAnimationScreen
     case infiniteScrollScreen
     case horizontalPickerScreen
@@ -49,7 +48,6 @@ enum Screen: String, CaseIterable {
     case monotoneMapScreen
     case waveParticleScreen
     case reverseListScreen
-    case viewIdentityAnimationScreen
     case progressiveBlurScreen
     case mosaicScreen
     case tileShaderScreen
@@ -85,12 +83,12 @@ enum Screen: String, CaseIterable {
     case flowLayoutScreen
     case layoutProtocolSampleScreen
     case scrollYRotationScreen
-    case gradientAnimationScreen
     case juliaSetScreen
     case squreflowScreen
     case smoothMinScreen
+    case prettyHipScreen
     case dotsSpinnerDemoScreen
     case orbitingDotsLoaderDemoScreen
+    case gradientAnimationScreen
     case appleLogoScreen
-    case prettyHipScreen
 }

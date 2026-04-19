@@ -95,46 +95,58 @@ struct DotsSpinnerView: View {
         let colors = model.colors
         GeometryReader { geometry in
             let side = geometry.size.width
-
             TimelineView(.animation) { context in
-                ZStack {
-                    let count = colors.count
-                    let dotSize = (30.0 / 340.0) * side // keeps dot size proportional
-                    let radius = 2 * dotSize
-                    ForEach(0 ..< count, id: \.self) { index in
-                        // Base angle that advances over time.
-                        let theta = 3 * context.date.timeIntervalSinceReferenceDate
-                            .truncatingRemainder(dividingBy: 2 * .pi)
-                        // Angular offset for the two rings
-                        let offset = Double(index) * (2 * .pi) / Double(count)
-                        let halfStep = (count % 2 == 0) ? .pi / Double(count) : .zero
-                        // Clockwise ring
-                        DotView(
-                            radius: radius,
-                            theta: theta,
-                            offset: offset,
-                            color: colors[index],
-                            reverse: false
-                        )
-                        // Counter‑clockwise ring
-                        DotView(
-                            radius: radius,
-                            theta: theta,
-                            offset: offset + halfStep,
-                            color: colors[index],
-                            reverse: true
-                        )
-                    }
-                    .frame(width: dotSize)
-                }
+                // Base angle that advances over time.
+                let phase = 3 * context.date
+                    .timeIntervalSinceReferenceDate
+                    .truncatingRemainder(dividingBy: 2 * .pi)
+                DotsSpinnerContentView(colors: colors, phase: phase, side: side)
+                    .background(.ultraThinMaterial)
+                    .clipShape(.rect(cornerRadius: 0.25 * side))
             }
-            .padding()
-            .frame(width: side, height: side)
-            .background(.ultraThinMaterial)
-            .clipShape(.rect(cornerRadius: 0.25 * side))
         }
         .scaledToFit()
         .frame(width: model.width)
+    }
+}
+
+// MARK: - DotsSpinnerContentView
+
+struct DotsSpinnerContentView: View {
+    var colors: [Color]
+    var phase: Double
+    var side: CGFloat
+
+    var body: some View {
+        ZStack {
+            let count = colors.count
+            let dotSize = (30.0 / 340.0) * side // keeps dot size proportional
+            let radius = 2 * dotSize
+            ForEach(0 ..< count, id: \.self) { index in
+                // Angular offset for the two rings
+                let offset = Double(index) * (2 * .pi) / Double(count)
+                let halfStep = (count % 2 == 0) ? .pi / Double(count) : .zero
+                // Clockwise ring
+                DotView(
+                    radius: radius,
+                    theta: phase,
+                    offset: offset,
+                    color: colors[index],
+                    reverse: false
+                )
+                // Counter‑clockwise ring
+                DotView(
+                    radius: radius,
+                    theta: phase,
+                    offset: offset + halfStep,
+                    color: colors[index],
+                    reverse: true
+                )
+            }
+            .frame(width: dotSize)
+        }
+        .padding(0.05 * side)
+        .frame(width: side, height: side)
     }
 }
 

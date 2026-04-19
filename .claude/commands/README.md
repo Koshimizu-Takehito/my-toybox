@@ -9,7 +9,7 @@ Custom slash commands for efficient MyToybox development workflows.
 | `/new-screen` | Create a new visual effects screen | Screen Creator |
 | `/fix-shader` | Debug and optimize Metal shaders | Shader Engineer |
 | `/review-architecture` | Review code architecture and patterns | Architecture Advisor |
-| `/validate-screens` | Validate Screens.json and implementations | Screen Validator |
+| `/validate-screens` | Validate Screen.swift case names and implementations | Screen Validator |
 | `/debug-build` | Diagnose build and CI failures | Build Debugger |
 | `/quality-check` | Run SwiftLint and SwiftFormat checks | Quality Enforcer |
 | `/update-deps` | Update dependencies and tools | Dependency Updater |
@@ -86,7 +86,7 @@ Executes:
 
 Provides:
 - MVVM pattern compliance review
-- Swift 6.0 concurrency checks
+- Swift 6.3 concurrency checks
 - YAGNI principle enforcement
 - Best practice recommendations
 
@@ -126,7 +126,7 @@ You: /new-screen
 [Command guides through creation process]
 
 Result:
-✓ Screens.json updated with particleExplosionScreen
+✓ Screen.swift updated with particleExplosionScreen
 ✓ ParticleExplosionScreen.swift created
 ✓ ParticleExplosionShader.metal created
 ✓ Build successful
@@ -182,7 +182,7 @@ These commands embody specialized agent roles that:
 3. **Provide Expert Guidance**
    - Architecture best practices
    - Metal shader techniques
-   - Swift 6.0 concurrency
+   - Swift 6.3 concurrency
 
 4. **Maintain Quality**
    - Code formatting

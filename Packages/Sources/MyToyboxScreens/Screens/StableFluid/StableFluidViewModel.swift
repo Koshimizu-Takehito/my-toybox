@@ -1,7 +1,7 @@
 import Foundation
 import Observation
 
-// MARK: - DisplayMode
+// MARK: - StableFluidDisplayMode
 
 /// Visualization mode for the stable fluid simulation output.
 /// 安定流体シミュレーションの出力を可視化するモード。
@@ -17,6 +17,20 @@ enum StableFluidDisplayMode: String, CaseIterable {
     /// Render the 2D velocity field as color (x -> red, y -> green, magnitude -> blue).
     /// 2D 速度場をカラーで描画する（x → 赤, y → 緑, 大きさ → 青）。
     case velocity
+}
+
+// MARK: - StableFluidImageContentMode
+
+/// How the background image is mapped onto the square simulation viewport (image display mode only).
+/// 背景画像を正方形のシミュレーション表示領域にどうマップするか（画像表示モード時のみ）。
+enum StableFluidImageContentMode: String, CaseIterable {
+    /// Letterbox: entire image visible inside the square.
+    /// レターボックス：画像全体を正方形内に収める。
+    case aspectFit
+
+    /// Center crop: image covers the square; excess is clipped.
+    /// 中央クロップ：正方形を隙間なく覆い、はみ出しを切り捨てる。
+    case aspectFill
 }
 
 // MARK: - BrushState
@@ -93,6 +107,10 @@ final class StableFluidViewModel {
     /// 現在の可視化モード（画像歪み、インク密度、または速度場）。
     var displayMode: StableFluidDisplayMode = .image
 
+    /// Aspect fit vs fill for the image distortion mode (`displayMode == .image`).
+    /// 画像歪みモード（`displayMode == .image`）のアスペクトフィット / フィル。
+    var imageContentMode: StableFluidImageContentMode = .aspectFit
+
     /// Whether the simulation is paused.
     /// シミュレーションが一時停止中かどうか。
     var paused: Bool = false
@@ -116,6 +134,10 @@ final class StableFluidViewModel {
     /// Hook called by the Coordinator when the grid size changes to reallocate textures.
     /// グリッドサイズ変更時にテクスチャを再確保するため Coordinator が呼び出すフック。
     @ObservationIgnored var onGridSizeChanged: ((Int) -> Void)?
+
+    init(imageContentMode: StableFluidImageContentMode = .aspectFit) {
+        self.imageContentMode = imageContentMode
+    }
 
     /// Trigger a grid-size change notification (used by the Reset button).
     /// グリッドサイズ変更通知を発火する（リセットボタンで使用）。

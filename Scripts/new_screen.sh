@@ -134,6 +134,28 @@ public struct ${UPPER_CAMEL}Screen: View {
 }
 EOF
 
+    # Generate thumbnail file (shader variant)
+    cat > "$TARGET_DIR/${UPPER_CAMEL}Screen+Thumbnail.swift" << EOF
+import SwiftUI
+
+extension ${UPPER_CAMEL}Screen {
+    @ViewBuilder
+    static func thumbnail(isScrolling _: Bool, time: TimeInterval) -> some View {
+        Rectangle()
+            .colorEffect(
+                ShaderLibrary.module.${LOWER_CAMEL}(
+                    .float(time)
+                )
+            )
+    }
+}
+
+#Preview {
+    ${UPPER_CAMEL}Screen.thumbnail
+        .colorScheme(.dark)
+}
+EOF
+
     # Generate Metal shader
     cat > "$SHADERS_DIR/${UPPER_CAMEL}Shader.metal" << EOF
 #include <metal_stdlib>
@@ -166,6 +188,7 @@ using namespace metal;
 EOF
 
     echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Screen.swift (with shader)"
+    echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Screen+Thumbnail.swift"
     echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Shader.metal"
 else
     # Without shader
@@ -193,7 +216,28 @@ public struct ${UPPER_CAMEL}Screen: View {
 }
 EOF
 
+    # Generate thumbnail file (placeholder variant)
+    cat > "$TARGET_DIR/${UPPER_CAMEL}Screen+Thumbnail.swift" << EOF
+import SwiftUI
+
+extension ${UPPER_CAMEL}Screen {
+    @ViewBuilder
+    static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
+        // TODO: Implement thumbnail
+        Text("${UPPER_CAMEL}")
+            .font(.caption2)
+            .fontWeight(.bold)
+    }
+}
+
+#Preview {
+    ${UPPER_CAMEL}Screen.thumbnail
+        .colorScheme(.dark)
+}
+EOF
+
     echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Screen.swift"
+    echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Screen+Thumbnail.swift"
 fi
 
 # Add to Screen.swift
@@ -231,10 +275,12 @@ echo -e "${YELLOW}Next steps:${NC}"
 echo "  1. Implement your view in ${TARGET_DIR}/${UPPER_CAMEL}Screen.swift"
 if [ "$INCLUDE_SHADER" = true ]; then
     echo "  2. Implement your shader in ${SHADERS_DIR}/${UPPER_CAMEL}Shader.metal"
+    echo "  3. Refine the thumbnail in ${TARGET_DIR}/${UPPER_CAMEL}Screen+Thumbnail.swift"
+    echo "  4. Update @Metadata in ${UPPER_CAMEL}Screen.swift with title, description, and tags"
+    echo "  5. Build and run to see your new screen"
+else
+    echo "  2. Refine the thumbnail in ${TARGET_DIR}/${UPPER_CAMEL}Screen+Thumbnail.swift"
     echo "  3. Update @Metadata in ${UPPER_CAMEL}Screen.swift with title, description, and tags"
     echo "  4. Build and run to see your new screen"
-else
-    echo "  2. Update @Metadata in ${UPPER_CAMEL}Screen.swift with title, description, and tags"
-    echo "  3. Build and run to see your new screen"
 fi
 

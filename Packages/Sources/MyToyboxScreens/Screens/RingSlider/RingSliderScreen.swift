@@ -38,7 +38,7 @@ struct RingSliderScreen: View {
 // MARK: - RingSlider
 
 /// A circular slider that allows users to adjust a value (0.0–1.0) by dragging around a ring.
-private struct RingSlider: View, Animatable {
+struct RingSlider: View, Animatable {
     @Binding private var ratio: Double
 
     /// Used by SwiftUI animation system to interpolate `ratio`

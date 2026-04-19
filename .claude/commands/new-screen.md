@@ -13,26 +13,19 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
    - Ask which tags apply: `layout`, `animation`, `metal` (can be multiple)
    - Ask if a Metal shader is needed (yes/no)
    - Ask for a brief description (English or Japanese)
-   - Optionally ask for GitHub source URL
 
 2. **Validate Naming**
    - Ensure screen name is UpperCamelCase
-   - Convert to lowerCamelCase for the ID (e.g., "ParticleExplosion" → "particleExplosionScreen")
-   - Verify the ID doesn't already exist in `Packages/Sources/MyToyboxScreens/Resources/Screens.json`
+   - Convert to lowerCamelCase for the enum case ID (e.g., "ParticleExplosion" → "particleExplosionScreen")
+   - Verify the ID doesn't already exist in `Packages/Sources/MyToyboxScreens/Screen.swift`
 
-3. **Update Screens.json**
-   - Read `Packages/Sources/MyToyboxScreens/Resources/Screens.json`
-   - Add new entry to the JSON array:
-     ```json
-     {
-       "id": "particleExplosionScreen",
-       "title": "Particle Explosion",
-       "description": "パーティクル爆発エフェクト",
-       "tags": ["animation", "metal"],
-       "html": "https://github.com/..."
-     }
+3. **Update Screen.swift**
+   - Read `Packages/Sources/MyToyboxScreens/Screen.swift`
+   - Add new case to the `enum Screen` in lowerCamelCase with "Screen" suffix:
+     ```swift
+     case particleExplosionScreen
      ```
-   - Ensure valid JSON formatting
+   - The `@Screens` and `@Metadatas` macros will automatically generate the required conformances
 
 4. **Create SwiftUI View File**
    - Create directory: `Packages/Sources/MyToyboxScreens/Screens/{ScreenName}/`
@@ -41,16 +34,12 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
      ```swift
      import SwiftUI
 
+     @Metadata(title: "{Title}", description: "{Description}", tags: [{tags}])
      public struct {ScreenName}Screen: View {
          public init() {}
 
          public var body: some View {
-             TimelineView(.animation) { context in
-                 Canvas { context, size in
-                     // Implementation here
-                 }
-             }
-             .navigationTitle("{Title}")
+             // TODO: Implement your view
          }
      }
 
@@ -59,35 +48,60 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
      }
      ```
 
-5. **Create Metal Shader (if requested)**
+5. **Create Thumbnail File**
+   - Create file: `{ScreenName}Screen+Thumbnail.swift` in the same directory
+   - Every screen **must** provide a thumbnail — the default implementation returns an empty view
+   - Use this template (no shader):
+     ```swift
+     import SwiftUI
+
+     extension {ScreenName}Screen {
+         @ViewBuilder
+         static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
+             // TODO: Implement thumbnail
+             Text("{ScreenName}")
+                 .font(.caption2)
+                 .fontWeight(.bold)
+         }
+     }
+
+     #Preview {
+         {ScreenName}Screen.thumbnail
+             .colorScheme(.dark)
+     }
+     ```
+
+6. **Create Metal Shader (if requested)**
    - Create file: `Packages/Sources/MyToyboxScreens/Shaders/{ScreenName}Shader.metal`
    - Use this template:
      ```metal
      #include <metal_stdlib>
-     #include "../../MyToyboxCore/Utils/Shaders/Common.h"
+     #include <SwiftUI/SwiftUI_Metal.h>
      using namespace metal;
 
-     [[stitchable]] half4 {functionName}Shader(
+     [[stitchable]] half4 {functionName}(
          float2 position,
          half4 color,
          float time
      ) {
-         // Shader implementation
+         // TODO: Implement shader effect
          return color;
      }
      ```
-   - Update SwiftUI view to use the shader:
+   - Update the thumbnail file to use the shader:
      ```swift
-     .layerEffect(
-         ShaderLibrary.module.{functionName}Shader(.float(time)),
-         maxSampleOffset: .zero
-     )
+     extension {ScreenName}Screen {
+         @ViewBuilder
+         static func thumbnail(isScrolling _: Bool, time: TimeInterval) -> some View {
+             Rectangle()
+                 .colorEffect(
+                     ShaderLibrary.module.{functionName}(
+                         .float(time)
+                     )
+                 )
+         }
+     }
      ```
-
-6. **Verify Build**
-   - Run: `xcodebuild -project MyToybox.xcodeproj -scheme MyToybox -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' CODE_SIGNING_ALLOWED=NO clean build`
-   - Check that the GenerateScreenID plugin generates the new enum case
-   - Check that Metal shaders compile (if applicable)
 
 7. **Run Validation Script**
    - Execute: `bash Scripts/check_screen_sync.sh`
@@ -97,21 +111,24 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
 
 - **Screen IDs**: Must be valid Swift identifiers in lowerCamelCase with "Screen" suffix
 - **File Names**: UpperCamelCase with "Screen" suffix (e.g., `GameOfLifeScreen.swift`)
+- **Thumbnail**: Every screen must override `thumbnail(isScrolling:time:)` — no empty thumbnails
 - **Tags**: Only use: `layout`, `animation`, `metal`
 - **Preview**: Always include `#Preview` macro
-- **Public Access**: Struct and init must be `public`
+- **Public Access**: Struct and init must be `public` (screens in `MyToyboxScreens` module)
 - **Shader Functions**: Use `[[stitchable]]` attribute and follow naming convention
+- **@Metadata**: Attach to the screen struct to provide `title`, `description`, `tags`
 
 ## Error Handling
 
 - If screen ID already exists, suggest an alternative name
 - If build fails, diagnose Metal compilation errors or Swift syntax issues
-- If validation fails, check Screens.json formatting
+- If validation fails, check Screen.swift formatting
 
 ## Success Criteria
 
-- Screens.json contains valid new entry
+- `Screen.swift` contains the new case
 - SwiftUI view file compiles without errors
+- Thumbnail file exists and provides a non-empty implementation
 - Metal shader compiles (if created)
 - `check_screen_sync.sh` passes
 - Screen appears in app's sidebar when run

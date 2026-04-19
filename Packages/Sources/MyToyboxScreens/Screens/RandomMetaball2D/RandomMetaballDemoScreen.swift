@@ -42,7 +42,7 @@ struct RandomMetaball2DView: View {
     var body: some View {
         RandomMetaballCanvas(scales: scales)
             .onAppear {
-                DispatchQueue.main.async {
+                Task {
                     update()
                 }
             }

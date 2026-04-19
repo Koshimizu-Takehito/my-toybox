@@ -3,13 +3,11 @@ import SwiftUI
 // MARK: - FlowDistortionScreen
 
 @Metadata(title: "Flow Distortion", description: "Flow Distortion シェーダ", tags: [.metal])
-public struct FlowDistortionScreen: View {
+struct FlowDistortionScreen: View {
     @State private var start = Date.now
     @State private var model = Model()
 
-    public init() {}
-
-    public var body: some View {
+    var body: some View {
         VStack {
             TimelineView(.animation) { context in
                 let time = context.date.timeIntervalSince(start)

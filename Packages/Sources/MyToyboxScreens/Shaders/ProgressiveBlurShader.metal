@@ -3,65 +3,43 @@
 using namespace metal;
 
 namespace ProgressiveBlur {
-    /// Maximum blur radius supported by the kernel
+    /// Maximum blur radius supported by the kernel.
     constant int MAX_RADIUS = 100;
 
-    /// Max kernel size: for a radius of 100, kernel size = 201
-    constant int MAX_KERNEL_SIZE = 2 * MAX_RADIUS + 1;
-
-    /// Standard Gaussian function used to build blur kernel.
-    float gaussian(float x, float sigma) {
-        return exp(-0.5 * x * x / (sigma * sigma)) / (sigma * sqrt(2.0 * M_PI_F));
-    }
-
-    /// Generates a 1D Gaussian kernel normalized to a total sum of 1.
-    void getKernel(int radius, float sigma, float _kernel[MAX_KERNEL_SIZE]) {
-        float sum = 0.0;
-        for (int i = -radius; i <= radius; i++) {
-            int index = i + MAX_RADIUS;
-            _kernel[index] = gaussian(float(i), sigma);
-            sum += _kernel[index];
-        }
-        // Normalize the kernel
-        for (int i = MAX_RADIUS - radius; i <= MAX_RADIUS + radius; i++) {
-            _kernel[i] /= sum;
-        }
-    }
-
-    /// Shader entry point: applies a separable 2D Gaussian blur
-    /// whose intensity increases toward the bottom of the view.
-    [[ stitchable ]] half4 main(
+    /// 1D separable progressive Gaussian blur.
+    /// Call twice (axis=0 for horizontal, axis=1 for vertical) to achieve
+    /// a full 2D Gaussian blur in O(r) + O(r) instead of O(r^2).
+    ///
+    /// @param position  Fragment position in layer coordinates.
+    /// @param layer     SwiftUI sampling layer.
+    /// @param box       (cx, cy, width, height); height is used for progress.
+    /// @param radius    Base blur radius (capped to MAX_RADIUS).
+    /// @param axis      0.0 = horizontal pass, 1.0 = vertical pass.
+    [[ stitchable ]] half4 progressiveBlur1D(
         float2 position,
         SwiftUI::Layer layer,
         float4 box,
-        float radius
+        float radius,
+        float axis
     ) {
-        // Compute vertical progress: 0.0 (top) → 1.0 (bottom)
         float ratio = clamp(position.y / box.w, 0.0, 1.0);
+        radius *= smoothstep(0.0, 1.0, ratio);
 
-        // Scale blur radius based on vertical position
-        radius = radius * smoothstep(0, 1, ratio);
+        if (radius <= 0.0) return layer.sample(position);
 
-        // Skip blurring for radius = 0
-        if (radius <= 0) {
-            return layer.sample(position);
+        int r = min(int(radius), MAX_RADIUS);
+        float sigma = max(radius / 3.0, 1e-3);
+        float invTwoSigmaSq = -0.5 / (sigma * sigma);
+
+        float2 step = (axis < 0.5) ? float2(1.0, 0.0) : float2(0.0, 1.0);
+
+        half4 sum = half4(0.0h);
+        float wsum = 0.0;
+        for (int i = -r; i <= r; ++i) {
+            float w = exp(float(i * i) * invTwoSigmaSq);
+            sum  += half4(layer.sample(position + float(i) * step)) * half(w);
+            wsum += w;
         }
-
-        // Apply separable Gaussian blur
-        half4 sum = half4(0);
-        const int offset = int(radius);
-        const float sigma = radius / 3.0;
-        float _kernel[MAX_KERNEL_SIZE];
-        getKernel(offset, sigma, _kernel);
-
-        for (int y = -offset; y <= offset; y++) {
-            for (int x = -offset; x <= offset; x++) {
-                float2 point = position + float2(x, y);
-                sum += layer.sample(point)
-                    * _kernel[y + MAX_RADIUS] * _kernel[x + MAX_RADIUS];
-            }
-        }
-
-        return sum;
+        return sum / half(wsum);
     }
 }

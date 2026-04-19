@@ -21,42 +21,6 @@ struct JuliaSetScreen: View {
     }
 }
 
-// MARK: - JuliaSetShaderView
-
-struct JuliaSetShaderView: View, Animatable {
-    typealias Animatable2 = AnimatablePair<Double, Double>
-    typealias Animatable4 = AnimatablePair<Animatable2, Animatable2>
-    typealias Animatable5 = AnimatablePair<Double, Animatable4>
-
-    var scale: Double
-    var constant: CGPoint
-    var location: CGPoint
-
-    nonisolated var animatableData: Animatable5 {
-        get {
-            .init(scale, .init(.init(constant.x, constant.y), .init(location.x, location.y)))
-        }
-        set {
-            scale = newValue.first
-            constant.x = newValue.second.first.first
-            constant.y = newValue.second.first.second
-            location.x = newValue.second.second.first
-            location.y = newValue.second.second.second
-        }
-    }
-
-    var body: some View {
-        Rectangle().colorEffect(
-            ShaderFunction(library: .module, name: "JuliaSet::main")(
-                .boundingRect,
-                .float(scale),
-                .float2(constant.x, constant.y),
-                .float2(location.x, location.y)
-            )
-        )
-    }
-}
-
 // MARK: - JuliaSetGestureView
 
 private struct JuliaSetGestureView: View {
@@ -146,6 +110,26 @@ private struct JuliaSetGestureView: View {
                 constant = CGPoint(x: 0.3575, y: 0.3575)
             }
         }
+    }
+}
+
+// MARK: - JuliaSetShaderView
+
+@Animatable
+struct JuliaSetShaderView: View {
+    var scale: Double
+    var constant: CGPoint
+    var location: CGPoint
+
+    var body: some View {
+        Rectangle().colorEffect(
+            ShaderFunction(library: .module, name: "JuliaSet::main")(
+                .boundingRect,
+                .float(scale),
+                .float2(constant.x, constant.y),
+                .float2(location.x, location.y)
+            )
+        )
     }
 }
 

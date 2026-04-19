@@ -150,7 +150,8 @@ private struct ProgressControl: View {
 /// - `text` is a ViewBuilder that receives the current progress value (0.0...1.0) and returns any overlay View.
 ///
 /// Conforms to `Animatable` so SwiftUI can smoothly animate changes to `value`.
-private struct ProgressRing<ProgressText: View>: Animatable {
+struct ProgressRing<ProgressText: View>: View, @MainActor Animatable {
+    var lineWidth: CGFloat
     /// The current progress value (0.0 to 1.0).
     var value = 0.0
 
@@ -168,15 +169,12 @@ private struct ProgressRing<ProgressText: View>: Animatable {
     /// - Parameters:
     ///   - value: The initial progress value. Defaults to 0.0.
     ///   - text: A ViewBuilder closure that renders the overlay given the current progress.
-    init(value: Double = 0.0, @ViewBuilder text: @escaping (Double) -> ProgressText) {
+    init(lineWidth: CGFloat = 15.0, value: Double = 0.0, @ViewBuilder text: @escaping (Double) -> ProgressText) {
+        self.lineWidth = lineWidth
         self.value = value
         self.text = text
     }
-}
 
-// MARK: View
-
-extension ProgressRing: View {
     /// Draws a circular progress indicator with a background circle,
     /// a foreground arc showing the current progress,
     /// and an overlaid content view (e.g., progress text).
@@ -184,14 +182,14 @@ extension ProgressRing: View {
         ZStack {
             // Background ring
             Circle()
-                .stroke(lineWidth: 15)
+                .stroke(lineWidth: lineWidth)
                 .foregroundStyle(.gray.opacity(0.3))
 
             // Animated progress arc
             Circle()
                 .trim(from: 0, to: value)
                 .stroke(
-                    style: StrokeStyle(lineWidth: 18, lineCap: .round, lineJoin: .round)
+                    style: StrokeStyle(lineWidth: (18.0 / 15.0) * lineWidth, lineCap: .round, lineJoin: .round)
                 )
                 .foregroundStyle(
                     LinearGradient(

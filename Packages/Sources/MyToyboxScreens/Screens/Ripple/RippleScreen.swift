@@ -39,7 +39,7 @@ struct RippleScreen: View {
 
 /// Drives the shader by linearly interpolating elapsed time from 0 to `duration`
 /// with `keyframeAnimator`, then passing it to `RippleModifier`.
-private struct RippleEffect<Trigger: Equatable & Sendable>: ViewModifier {
+struct RippleEffect<Trigger: Equatable & Sendable>: ViewModifier {
     /// Ripple center in view coordinates.
     var origin: CGPoint
     /// Value that changes each time the animation should replay.
@@ -98,12 +98,12 @@ private struct RippleModifier: ViewModifier {
     /// Binds arguments into a `Shader` for `Ripple::main`.
     private var shader: Shader {
         ShaderFunction(library: .module, name: "Ripple::main")(
-            .float2(origin),      // Ripple center
-            .float(elapsedTime),  // Elapsed time (seconds)
-            .float(amplitude),    // Max displacement
-            .float(frequency),    // Oscillation frequency
-            .float(decay),        // Decay rate
-            .float(speed)         // Propagation speed
+            .float2(origin), // Ripple center
+            .float(elapsedTime), // Elapsed time (seconds)
+            .float(amplitude), // Max displacement
+            .float(frequency), // Oscillation frequency
+            .float(decay), // Decay rate
+            .float(speed) // Propagation speed
         )
     }
 
@@ -114,7 +114,7 @@ private struct RippleModifier: ViewModifier {
 
     /// Enable the shader only while the animation is running (not at start/end).
     private var isEnabled: Bool {
-        0 < elapsedTime && elapsedTime < duration
+        elapsedTime > 0 && elapsedTime < duration
     }
 }
 
