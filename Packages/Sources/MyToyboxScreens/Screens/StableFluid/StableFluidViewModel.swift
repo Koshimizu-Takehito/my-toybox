@@ -31,7 +31,6 @@ enum StableFluidImageContentMode: String, CaseIterable {
     /// Center crop: image covers the square; excess is clipped.
     /// 中央クロップ：正方形を隙間なく覆い、はみ出しを切り捨てる。
     case aspectFill
-
 }
 
 // MARK: - BrushState
