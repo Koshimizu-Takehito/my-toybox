@@ -47,7 +47,7 @@ struct ProgressiveBlur: ViewModifier {
             name: "ProgressiveBlur::progressiveBlur1D"
         )
         let horizontal = fn(.boundingRect, .float(radius), .float(0))
-        let vertical   = fn(.boundingRect, .float(radius), .float(1))
+        let vertical = fn(.boundingRect, .float(radius), .float(1))
 
         content
             .layerEffect(horizontal, maxSampleOffset: offset)
