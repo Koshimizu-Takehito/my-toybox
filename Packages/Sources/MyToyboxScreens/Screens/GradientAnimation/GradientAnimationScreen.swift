@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - GradientAnimationScreen
 
-@Metadata(title: "GradientAnimation", description: "グラデーションアニメーション", tags: [.animation])
+@Metadata(title: .screenGradientAnimationTitle, description: .screenGradientAnimationDescription, tags: [.animation])
 struct GradientAnimationScreen: View {
     private let startDate = Date()
 

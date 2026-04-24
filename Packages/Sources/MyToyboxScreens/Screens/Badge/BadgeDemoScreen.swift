@@ -4,7 +4,7 @@ import SwiftUI
 
 /// A playground‑style screen that showcases `BadgeView` along with
 /// interactive controls for both value and appearance.
-@Metadata(title: "Badge", description: "Badge Shape Demo", tags: [.animation])
+@Metadata(title: .screenBadgeDemoTitle, description: .screenBadgeDemoDescription, tags: [.animation])
 struct BadgeDemoScreen: View {
     /// The observable model that drives the badge.
     @State private var model = BadgeModel(number: -1)
@@ -109,29 +109,37 @@ private struct BadgeStyleControl: View {
 
     var body: some View {
         VStack {
-            Picker("Font", selection: $model.style.font.animation()) {
-                Text("Large").tag(Font.largeTitle)
-                Text("Title").tag(Font.title)
-                Text("Body").tag(Font.body)
-                Text("Caption").tag(Font.caption)
+            Picker(selection: $model.style.font.animation()) {
+                Text(verbatim: "Large").tag(Font.largeTitle)
+                Text(verbatim: "Title").tag(Font.title)
+                Text(verbatim: "Body").tag(Font.body)
+                Text(verbatim: "Caption").tag(Font.caption)
+            } label: {
+                Text(verbatim: "Font")
             }
 
-            Picker("Font Weight", selection: $model.style.weight.animation()) {
-                Text("Black").tag(Font.Weight.black)
-                Text("Bold").tag(Font.Weight.bold)
-                Text("Regular").tag(Font.Weight.regular)
-                Text("Ultra‑Light").tag(Font.Weight.ultraLight)
+            Picker(selection: $model.style.weight.animation()) {
+                Text(verbatim: "Black").tag(Font.Weight.black)
+                Text(verbatim: "Bold").tag(Font.Weight.bold)
+                Text(verbatim: "Regular").tag(Font.Weight.regular)
+                Text(verbatim: "Ultra‑Light").tag(Font.Weight.ultraLight)
+            } label: {
+                Text(verbatim: "Font Weight")
             }
 
-            Picker("Tint", selection: $model.style.tint.animation()) {
-                Text("Red").tag(Color.red)
-                Text("Blue").tag(Color.blue)
-                Text("Yellow").tag(Color.yellow)
-                Text("Purple").tag(Color.purple)
+            Picker(selection: $model.style.tint.animation()) {
+                Text(verbatim: "Red").tag(Color.red)
+                Text(verbatim: "Blue").tag(Color.blue)
+                Text(verbatim: "Yellow").tag(Color.yellow)
+                Text(verbatim: "Purple").tag(Color.purple)
+            } label: {
+                Text(verbatim: "Tint")
             }
 
-            Button("Reset") {
+            Button {
                 withAnimation { model.style.reset() }
+            } label: {
+                Text(verbatim: "Reset")
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
             .padding(.top)
@@ -147,12 +155,16 @@ private struct BadgeValueControl: View {
 
     var body: some View {
         VStack {
-            Stepper("Count \(model.number)", value: $model.number, in: -1 ... 1000)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+            Stepper(value: $model.number, in: -1 ... 1000) {
+                Text(verbatim: "Count \(model.number)")
+            }
+            .frame(maxWidth: .infinity, alignment: .trailing)
             Slider(value: $model.slider, in: -1 ... 1000)
 
-            Button("Reset") {
+            Button {
                 withAnimation { model.number = 0 }
+            } label: {
+                Text(verbatim: "Reset")
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
         }

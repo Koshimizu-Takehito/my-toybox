@@ -20,7 +20,7 @@ import SwiftUI
 ///   - `layerEffect(_:maxSampleOffset:)` uses `.zero` because the shader clamps all
 ///     sample coordinates to the layer's bounds; no off-rect sampling occurs.
 ///   - This file adds documentation only; there are no behavioral changes.
-@Metadata(title: "Kuwahara Filter", description: "Kuwahara フィルタ", tags: [.metal])
+@Metadata(title: .screenKuwaharaTitle, description: .screenKuwaharaDescription, tags: [.metal])
 struct KuwaharaScreen: View {
     /// Sampling radius used by the Kuwahara filter.
     /// - Note: The shader clamps the final radius to **[1, 16]**. A UI value of `0`
@@ -52,12 +52,12 @@ struct KuwaharaScreen: View {
                 .resizable()
                 .scaledToFit()
                 .layerEffect(.kuwahara(radius: radius, blend: blend), maxSampleOffset: .zero)
-            Text("Kuwahara filter")
+            Text(verbatim: "Kuwahara filter")
             Spacer()
             Image("waterwheel", bundle: .module)
                 .resizable()
                 .scaledToFit()
-            Text("Original")
+            Text(verbatim: "Original")
             Spacer()
         }
         .font(.footnote)
@@ -72,11 +72,11 @@ struct KuwaharaScreen: View {
         VStack {
             HStack {
                 Stepper(value: $radius, in: 0 ... 6) {
-                    Text("Radius \(radius.formatted())")
+                    Text(verbatim: "Radius \(radius.formatted())")
                 }
             }
             HStack {
-                Text("Blend \(blend, specifier: "%.2f")")
+                Text(verbatim: "Blend \(String(format: "%.2f", blend))")
                 Slider(value: $blend, in: 0 ... 1)
             }
         }

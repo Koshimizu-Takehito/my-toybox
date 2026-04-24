@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - WavingTextScreen
 
-@Metadata(title: "Waving Text", description: "Waving Text", tags: [.animation])
+@Metadata(title: .screenWavingTextTitle, description: .screenWavingTextDescription, tags: [.animation])
 struct WavingTextScreen: View {
     var body: some View {
         WavingText()

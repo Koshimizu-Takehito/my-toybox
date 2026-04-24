@@ -15,8 +15,8 @@ extension ProgressRingScreen {
                 let width = min(geometry.size.width, geometry.size.height)
                 ProgressRing(lineWidth: 0.08 * width, value: viewModel.progress) { progressValue in
                     HStack(alignment: .bottom, spacing: 0) {
-                        Text("\(Int(progressValue * 100))")
-                        Text("%")
+                        Text(verbatim: "\(Int(progressValue * 100))")
+                        Text(verbatim: "%")
                     }
                     .font(.system(size: 0.16 * width))
                     .minimumScaleFactor(0.1)

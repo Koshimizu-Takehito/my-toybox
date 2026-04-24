@@ -3,7 +3,7 @@ import SwiftUI
 extension WavingTextScreen {
     static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
         GeometryReader { geometry in
-            Text("Loading...")
+            Text(verbatim: "Loading...")
                 .minimumScaleFactor(0.1)
                 .bold()
                 .foregroundStyle(.white)

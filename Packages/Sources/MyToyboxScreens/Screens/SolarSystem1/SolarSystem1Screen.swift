@@ -8,7 +8,7 @@ import SwiftUI
 /// representing varying orbital periods.
 ///
 /// The animation restarts when the screen is tapped.
-@Metadata(title: "Heliocentric Animation", description: "地動説っぽいアニメーション", tags: [.animation])
+@Metadata(title: .screenSolarSystemHeliocentricTitle, description: .screenSolarSystemHeliocentricDescription, tags: [.animation])
 struct SolarSystem1Screen: View {
     /// The time when the animation started.
     @State private var start: Date = .now
@@ -28,7 +28,7 @@ struct SolarSystem1Screen: View {
                     Sphere(color: .red.mix(with: .orange, by: 0.2))
                         .frame(width: 1.5 * radius)
                         .overlay {
-                            Text("S")
+                            Text(verbatim: "S")
                                 .fontWeight(.bold)
                         }
                     // Orbital paths

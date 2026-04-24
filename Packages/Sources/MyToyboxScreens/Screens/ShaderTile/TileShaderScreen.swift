@@ -7,7 +7,7 @@ import SwiftUI
 /// The shader applies a tile-based color effect that animates over time by modulating the scale.
 ///
 /// The screen uses a `TimelineView` to update continuously with animation timing.
-@Metadata(title: "Shader Tile", description: "シェーダー関数でタイル", tags: [.animation, .metal])
+@Metadata(title: .screenTileShaderTitle, description: .screenTileShaderDescription, tags: [.animation, .metal])
 struct TileShaderScreen: View {
     /// The reference timestamp used to calculate elapsed animation time.
     @State private var start = Date.now

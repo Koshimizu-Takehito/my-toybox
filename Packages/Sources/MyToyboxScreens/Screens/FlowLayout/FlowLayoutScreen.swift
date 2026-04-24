@@ -1,6 +1,6 @@
 import SwiftUI
 
-@Metadata(title: "Flow Layout", description: "改行を考慮した FlowLayout", tags: [.layout])
+@Metadata(title: .screenFlowLayoutTitle, description: .screenFlowLayoutDescription, tags: [.layout])
 struct FlowLayoutScreen: View {
     @State private var width: CGFloat = 180
 

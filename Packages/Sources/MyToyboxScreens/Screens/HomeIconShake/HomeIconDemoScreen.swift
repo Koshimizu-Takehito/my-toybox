@@ -5,7 +5,7 @@ import SwiftUI
 /// Shows a 4×4 grid of SF Symbols that can enter "jiggle mode"
 /// like the iOS Home‑Screen icons.
 ///
-@Metadata(title: "Home Icon", description: "Home Icon Shake", tags: [.animation])
+@Metadata(title: .screenHomeIconDemoTitle, description: .screenHomeIconDemoDescription, tags: [.animation])
 struct HomeIconDemoScreen: View {
     var body: some View {
         NavigationStack {
@@ -38,8 +38,10 @@ struct HomeIconView: View {
         }
         .padding()
         .toolbar {
-            Button(isEditingMode ? "Done" : "Edit") {
+            Button {
                 isEditingMode.toggle()
+            } label: {
+                Text(verbatim: isEditingMode ? "Done" : "Edit")
             }
             .fontWeight(isEditingMode ? .regular : .semibold)
         }

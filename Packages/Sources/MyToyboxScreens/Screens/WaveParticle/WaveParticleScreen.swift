@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - WaveParticleScreen
 
-@Metadata(title: "WaveParticle", description: "MSLでパーティクル", tags: [.animation, .metal])
+@Metadata(title: .screenWaveParticleTitle, description: .screenWaveParticleDescription, tags: [.animation, .metal])
 struct WaveParticleScreen: View {
     private let start = Date()
 

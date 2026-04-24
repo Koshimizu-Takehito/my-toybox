@@ -2,7 +2,7 @@ import SwiftUI
 
 /// A screen that demonstrates animated transitions between light and dark mode using SwiftUI.
 /// Users can toggle dark mode via a switch, and the color scheme changes with a smooth animation.
-@Metadata(title: "Color Scheme Animation", description: "外観モードの変更にアニメーションをつける", tags: [])
+@Metadata(title: .screenColorSchemeAnimationTitle, description: .screenColorSchemeAnimationDescription, tags: [])
 struct ColorSchemeAnimationScreen: View {
     /// Indicates whether dark mode is enabled by the user toggle.
     @State private var isDarkModeOn = false
@@ -16,13 +16,15 @@ struct ColorSchemeAnimationScreen: View {
     var body: some View {
         NavigationStack {
             Form {
-                Toggle("Dark Mode", isOn: $isDarkModeOn)
-                    .listRowBackground(rowBackground)
+                Toggle(isOn: $isDarkModeOn) {
+                    Text(verbatim: "Dark Mode")
+                }
+                .listRowBackground(rowBackground)
             }
             .scrollContentBackground(.hidden) // Hides the default form background
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(background)
-            .navigationTitle("Color Scheme")
+            .navigationTitle(Text(verbatim: "Color Scheme"))
             .environment(\.colorScheme, currentScheme) // Updates the environment manually
             .preferredColorScheme(currentScheme) // Also sets it for the current view
             .onChange(of: colorScheme, initial: true) { _, value in

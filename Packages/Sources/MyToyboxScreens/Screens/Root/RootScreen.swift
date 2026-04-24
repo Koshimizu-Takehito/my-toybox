@@ -57,7 +57,7 @@ private extension RootScreen {
             TagPicker()
         }
         #if os(iOS)
-        .navigationBarTitle("MyToybox")
+        .navigationTitle(.appTitle)
         .navigationBarTitleDisplayMode(.inline)
         #endif
     }
@@ -106,11 +106,11 @@ private extension RootScreen {
                     // Render the selected screen
                     selection
                 } else {
-                    Text("Please select a screen")
+                    Text(.appSelectScreen)
                         .foregroundStyle(.secondary)
                 }
             }
-            .navigationTitle(selection?.title ?? "")
+            .navigationTitle(selection?.title ?? .appTitle)
             .toolbarTitleDisplayMode(.inline)
         }
     }

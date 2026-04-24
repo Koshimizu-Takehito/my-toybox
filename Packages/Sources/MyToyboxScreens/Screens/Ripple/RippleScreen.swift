@@ -14,7 +14,7 @@ import SwiftUI
 /// This file contains **original implementation** in this repository for demonstration
 /// and learning. It is **not** Apple sample code, **not** sponsored or endorsed by Apple,
 /// and **Swift**, **SwiftUI**, and other Apple marks are trademarks of Apple Inc.
-@Metadata(title: "Ripple Effect", description: "水面の波紋のような歪み効果", tags: [.metal])
+@Metadata(title: .screenRippleTitle, description: .screenRippleDescription, tags: [.metal])
 struct RippleScreen: View {
     /// Regenerates each tap to retrigger the animation (new UUID per tap).
     @State private var trigger = UUID()

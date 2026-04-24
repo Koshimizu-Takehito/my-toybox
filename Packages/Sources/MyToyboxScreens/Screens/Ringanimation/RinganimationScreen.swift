@@ -4,7 +4,7 @@ import SwiftUI
 
 /// A screen that displays three animated concentric progress rings.
 /// Each ring rotates at a different speed and animates continuously using `TimelineView`.
-@Metadata(title: "Ringanimation", description: "Ring Animation", tags: [.animation])
+@Metadata(title: .screenRingAnimationTitle, description: .screenRingAnimationDescription, tags: [.animation])
 struct RinganimationScreen: View {
     let startTime: Date = .now
 

@@ -20,7 +20,7 @@ import SwiftUI
 /// ユーザーが Metal ビュー上をドラッグしてインクを注入し力を加え、
 /// シミュレーションがリアルタイムで応答する。下部のコントロールで
 /// 表示モードの切り替えやシミュレーションパラメータの調整が可能。
-@Metadata(title: "Stable Fluid", description: "安定流体シミュレーション", tags: [.animation, .metal])
+@Metadata(title: .screenStableFluidTitle, description: .screenStableFluidDescription, tags: [.animation, .metal])
 struct StableFluidScreen: View {
     @State private var viewModel = StableFluidViewModel()
 
@@ -96,51 +96,64 @@ struct StableFluidScreen: View {
     private var controls: some View {
         VStack(spacing: 12) {
             HStack {
-                Text("Display")
+                Text(verbatim: "Display")
                     .font(.subheadline.weight(.semibold))
-                Picker("Display", selection: $viewModel.displayMode) {
+                Picker(selection: $viewModel.displayMode) {
                     ForEach(StableFluidDisplayMode.allCases, id: \.self) { mode in
-                        Text(mode.rawValue.capitalized).tag(mode)
+                        Text(verbatim: mode.rawValue.capitalized).tag(mode)
                     }
+                } label: {
+                    Text(verbatim: "Display")
                 }
                 .pickerStyle(.segmented)
             }
 
             if viewModel.displayMode == .image {
                 HStack {
-                    Text("Image")
+                    Text(verbatim: "Image")
                         .font(.subheadline.weight(.semibold))
-                    Picker("Image", selection: $viewModel.imageContentMode) {
-                        Text("Fit").tag(StableFluidImageContentMode.aspectFit)
-                        Text("Fill").tag(StableFluidImageContentMode.aspectFill)
+                    Picker(selection: $viewModel.imageContentMode) {
+                        Text(verbatim: "Fit").tag(StableFluidImageContentMode.aspectFit)
+                        Text(verbatim: "Fill").tag(StableFluidImageContentMode.aspectFill)
+                    } label: {
+                        Text(verbatim: "Image")
                     }
                     .pickerStyle(.segmented)
                 }
             }
 
-            LabeledContent("Time Step: \(viewModel.deltaTime, specifier: "%.2f")") {
+            LabeledContent(content: {
+                Text(verbatim: "Time Step: \(String(format: "%.2f", viewModel.deltaTime))")
+            }, label: {
                 Slider(value: $viewModel.deltaTime, in: 0.05 ... 2.0, step: 0.01)
-            }
+            })
 
-            LabeledContent("Viscosity: \(viewModel.viscosity, specifier: "%.6f")") {
+            LabeledContent(content: {
+                Text(verbatim: "Viscosity: \(String(format: "%.6f", viewModel.viscosity))")
+            }, label: {
                 Slider(value: $viewModel.viscosity, in: 0 ... 0.01, step: 0.000001)
-            }
+            })
 
             HStack(spacing: 16) {
                 Button {
                     viewModel.paused.toggle()
                 } label: {
-                    Label(
-                        viewModel.paused ? "Resume" : "Pause",
-                        systemImage: viewModel.paused ? "play.fill" : "pause.fill"
-                    )
+                    Label {
+                        Text(verbatim: viewModel.paused ? "Resume" : "Pause")
+                    } icon: {
+                        Image(systemName: viewModel.paused ? "play.fill" : "pause.fill")
+                    }
                 }
 
                 Button {
                     viewModel.paused = false
                     viewModel.notifyGridSizeChanged()
                 } label: {
-                    Label("Reset", systemImage: "arrow.counterclockwise")
+                    Label {
+                        Text(verbatim: "Reset")
+                    } icon: {
+                        Image(systemName: "arrow.counterclockwise")
+                    }
                 }
             }
             .buttonStyle(.borderedProminent)
@@ -155,7 +168,7 @@ struct StableFluidScreen: View {
 #Preview {
     NavigationStack {
         StableFluidScreen()
-            .navigationTitle("Stable Fluid")
+            .navigationTitle(Text(verbatim: "Stable Fluid"))
             .toolbarTitleDisplayMode(.inlineLarge)
     }
     .colorScheme(.dark)

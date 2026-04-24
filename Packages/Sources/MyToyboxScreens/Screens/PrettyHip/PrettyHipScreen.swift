@@ -3,7 +3,7 @@ import SwiftUI
 // MARK: - PrettyHipScreen
 
 /// PrettyHip screen demonstrating a custom visual effect.
-@Metadata(title: "PrettyHip", description: "PrettyHip", tags: [.animation, .metal])
+@Metadata(title: .screenPrettyHipTitle, description: .screenPrettyHipDescription, tags: [.animation, .metal])
 struct PrettyHipScreen: View {
     private let startDate = Date()
 

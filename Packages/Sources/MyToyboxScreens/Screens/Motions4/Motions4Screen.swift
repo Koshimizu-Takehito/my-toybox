@@ -9,7 +9,7 @@ import SwiftUI
 ///
 /// Each animated view demonstrates a different visual transformation, from geometry changes
 /// to transformations and path-based drawing, all driven by a single shared progress value.
-@Metadata(title: "4 motions", description: "4 motions", tags: [.animation])
+@Metadata(title: .screenFourMotionsTitle, description: .screenFourMotionsDescription, tags: [.animation])
 struct Motions4Screen: View {
     /// The animation progress value, ranging from 0 to 1.
     /// It is updated on appear and drives all subview animations.
@@ -294,10 +294,10 @@ extension Motions4Screen {
 }
 
 #elseif os(macOS)
-@Metadata(title: "4 motions", description: "4 motions", tags: [.animation])
+@Metadata(title: .screenFourMotionsTitle, description: .screenFourMotionsDescription, tags: [.animation])
 struct Motions4Screen: View {
     var body: some View {
-        Text("This feature is not available on macOS")
+        Text(verbatim: "This feature is not available on macOS")
             .foregroundStyle(.secondary)
     }
 }

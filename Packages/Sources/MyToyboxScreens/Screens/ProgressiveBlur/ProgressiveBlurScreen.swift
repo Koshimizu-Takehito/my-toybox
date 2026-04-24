@@ -7,7 +7,7 @@ import SwiftUI
 /// The blur radius changes over time using a sine wave,
 /// and the effect is rendered with `ProgressiveBlur::progressiveBlur1D` applied twice
 /// (horizontal then vertical) via chained `.layerEffect` calls.
-@Metadata(title: "Progressive Blur", description: "ProgressiveBlur", tags: [.metal])
+@Metadata(title: .screenProgressiveBlurTitle, description: .screenProgressiveBlurDescription, tags: [.metal])
 struct ProgressiveBlurScreen: View {
     /// The reference start time of the animation.
     let start = Date()

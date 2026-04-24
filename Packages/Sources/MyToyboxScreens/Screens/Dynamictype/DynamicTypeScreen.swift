@@ -4,11 +4,11 @@ import SwiftUI
 
 /// A screen demonstrating the difference between system font scaling
 /// and manually scaled font sizes using `@ScaledMetric`.
-@Metadata(title: "Scaledmetric Dynamictype", description: "ScaledMetric と DynamicTypeSizeでフォントサイズを変更するサンプル", tags: [])
+@Metadata(title: .screenDynamicTypeTitle, description: .screenDynamicTypeDescription, tags: [])
 struct DynamicTypeScreen: View {
     @State private var dynamicTypeIndex: Double = 4.0
     // Sample text reused for layout clarity
-    private let sampleText = Text("Hello")
+    private let sampleText = Text(verbatim: "Hello")
 
     var body: some View {
         VStack {

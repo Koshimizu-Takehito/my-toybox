@@ -100,9 +100,10 @@
 				};
 			};
 			buildConfigurationList = 3A682A8A2D8D471000B110AC /* Build configuration list for PBXProject "MyToybox" */;
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				ja,
 				en,
 				Base,
 			);

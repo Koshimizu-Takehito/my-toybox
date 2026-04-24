@@ -5,7 +5,7 @@ import SwiftUI
 /// A screen that displays a randomly changing color inside a circle,
 /// showing its hexadecimal color code in the center.
 /// The color smoothly transitions every ~1.8 seconds.
-@Metadata(title: "ColorCircleAnimation", description: "Color HEX Animation", tags: [.animation])
+@Metadata(title: .screenColorHexAnimationTitle, description: .screenColorHexAnimationDescription, tags: [.animation])
 struct ColorHexAnimationScreen: View {
     /// The currently displayed color.
     @State private var currentColor: Color = .random

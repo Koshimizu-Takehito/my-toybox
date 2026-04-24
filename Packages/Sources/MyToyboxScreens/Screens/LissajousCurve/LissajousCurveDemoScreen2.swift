@@ -10,14 +10,14 @@ import SwiftUI
  - Users can visually explore how changing the Lissajous curve's parameters (k, l, phase) affects its shape.
  - Animation and UI controls are provided for a real-time experience.
  */
-@Metadata(title: "Lissajous Curve 2", description: "リサージュ曲線アニメーション 2", tags: [.animation])
+@Metadata(title: .screenLissajousCurveVariantTitle, description: .screenLissajousCurveVariantDescription, tags: [.animation])
 struct LissajousCurveDemoScreen2: View {
     /// State model that holds all the current curve parameters.
     @State private var curve = LissajousCurve2()
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("Lissajous Curve")
+            Text(verbatim: "Lissajous Curve")
                 .font(.title)
                 .bold()
             // The animated curve visualization
@@ -155,11 +155,11 @@ private struct LissajousCurveControlView: View {
                     .number.precision(.fractionLength(3))
                 )
                 HStack(spacing: 0) {
-                    Text("x = cos(\(Int(curve.k))t")
-                    Text(" + \(phaseString)π)")
+                    Text(verbatim: "x = cos(\(Int(curve.k))t")
+                    Text(verbatim: " + \(phaseString)π)")
                 }
                 .flipsForRightToLeftLayoutDirection(false)
-                Text("y = sin(\(Int(curve.l))t)")
+                Text(verbatim: "y = sin(\(Int(curve.l))t)")
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .fontDesign(.monospaced)
@@ -168,8 +168,8 @@ private struct LissajousCurveControlView: View {
             Grid(horizontalSpacing: 8, verticalSpacing: 4) {
                 GridRow {
                     ZStack(alignment: .trailing) {
-                        Text("99").hidden() // Placeholder for alignment.
-                        Text("\(Int(curve.k))")
+                        Text(verbatim: "99").hidden() // Placeholder for alignment.
+                        Text(verbatim: "\(Int(curve.k))")
                     }
                     Slider(value: $curve.k.animation(), in: 1 ... 10) { value in
                         if !value { // On drag end, snap to nearest integer.
@@ -182,8 +182,8 @@ private struct LissajousCurveControlView: View {
                 }
                 GridRow {
                     ZStack(alignment: .trailing) {
-                        Text("99").hidden()
-                        Text("\(Int(curve.l))")
+                        Text(verbatim: "99").hidden()
+                        Text(verbatim: "\(Int(curve.l))")
                     }
                     Slider(value: $curve.l.animation(), in: 1 ... 10) { value in
                         if !value {

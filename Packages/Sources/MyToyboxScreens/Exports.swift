@@ -1,3 +1,5 @@
+import Foundation
+
 @_exported import MetadatasMacros
 @_exported import MyToyboxCore
 
@@ -9,7 +11,7 @@
 /// because it's defined in MyToyboxCore.
 @attached(extension, conformances: ScreenMetadata, names: named(title), named(description), named(tags))
 public macro Metadata(
-    title: String,
-    description: String,
+    title: LocalizedStringResource,
+    description: LocalizedStringResource,
     tags: [Tag]
 ) = #externalMacro(module: "MetadatasMacrosImpl", type: "MetadataMacro")

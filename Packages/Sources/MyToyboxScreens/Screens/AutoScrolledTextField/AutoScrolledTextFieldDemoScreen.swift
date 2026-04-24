@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - AutoScrolledTextFieldDemoScreen
 
-@Metadata(title: "Auto Scrolled TextField 1", description: "テキストフィールドに入力した時に自動でスクロール 1", tags: [])
+@Metadata(title: .screenAutoScrollTailFollowTitle, description: .screenAutoScrollTailFollowDescription, tags: [])
 struct AutoScrolledTextFieldDemoScreen: View {
     var body: some View {
         AutoScrolledTextField()
@@ -39,10 +39,12 @@ struct AutoScrolledTextField: View {
             ScrollViewReader { scrollProxy in
                 ScrollView {
                     // Multiline TextField with dynamic vertical sizing.
-                    TextField("Sample", text: $text, axis: .vertical)
-                        .focused($focused)
-                        .padding()
-                        .id(textFieldID) // Required for scrolling to this field.
+                    TextField(text: $text, axis: .vertical) {
+                        Text(verbatim: "Sample")
+                    }
+                    .focused($focused)
+                    .padding()
+                    .id(textFieldID) // Required for scrolling to this field.
                 }
                 // When the text changes, determine if the edit was at the end.
                 .onChange(of: text) { oldValue, newValue in
@@ -61,7 +63,7 @@ struct AutoScrolledTextField: View {
             }
             // Always show the vertical scroll indicator for clarity.
             .scrollIndicators(.visible, axes: .vertical)
-            .navigationTitle("Scroll to new line")
+            .navigationTitle(Text(verbatim: "Scroll to new line"))
         }
     }
 }

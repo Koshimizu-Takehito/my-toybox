@@ -3,13 +3,13 @@ import SwiftUI
 // MARK: - GameOfLifeScreen
 
 /// Conway のライフゲーム画面（メタル描画 + コントロール）。
-@Metadata(title: "Game of Life", description: "ライフゲーム (Conway)", tags: [.animation, .metal])
+@Metadata(title: .screenGameOfLifeTitle, description: .screenGameOfLifeDescription, tags: [.animation, .metal])
 struct GameOfLifeScreen: View {
     @State private var viewModel = GameOfLifeViewModel()
 
     var body: some View {
         VStack(spacing: 24) {
-            Text("Number of Cycles: \(viewModel.numberOfCycles)")
+            Text(verbatim: "Number of Cycles: \(viewModel.numberOfCycles)")
                 .font(.headline)
                 .foregroundStyle(.secondary)
 
@@ -21,9 +21,9 @@ struct GameOfLifeScreen: View {
                     .overlay(alignment: .topLeading) {
                         // デバッグ表示
                         HStack(spacing: 12) {
-                            Text("Size: \(viewModel.size)×\(viewModel.size)")
-                            Text("Interval: \(Int(viewModel.cycleIntervalMS)) ms")
-                            Text(viewModel.isRunning ? "Running" : "Stopped")
+                            Text(verbatim: "Size: \(viewModel.size)×\(viewModel.size)")
+                            Text(verbatim: "Interval: \(Int(viewModel.cycleIntervalMS)) ms")
+                            Text(verbatim: viewModel.isRunning ? "Running" : "Stopped")
                         }
                         .monospaced()
                         .font(.caption)
@@ -42,7 +42,7 @@ struct GameOfLifeScreen: View {
                 .padding()
         }
         .monospacedDigit()
-        .navigationTitle("Conway's Game of Life")
+        .navigationTitle(Text(verbatim: "Conway's Game of Life"))
         .toolbar(content: toolbar)
         .toolbarTitleDisplayMode(.inlineLarge)
         .tint(.blue)
@@ -88,10 +88,12 @@ struct GameOfLifeScreen: View {
     @ViewBuilder
     private var controls: some View {
         VStack(spacing: 12) {
-            Picker("Grid Size", selection: $viewModel.size) {
+            Picker(selection: $viewModel.size) {
                 ForEach([64, 128, 256, 512, 1024], id: \.self) { n in
-                    Text("\(n)").tag(n)
+                    Text(verbatim: "\(n)").tag(n)
                 }
+            } label: {
+                Text(verbatim: "Grid Size")
             }
             .disabled(viewModel.isRunning)
 
@@ -101,14 +103,22 @@ struct GameOfLifeScreen: View {
                 Button {
                     viewModel.isRunning = true
                 } label: {
-                    Label("Start", systemImage: "play.fill")
+                    Label {
+                        Text(verbatim: "Start")
+                    } icon: {
+                        Image(systemName: "play.fill")
+                    }
                 }
                 .disabled(viewModel.isRunning)
 
                 Button {
                     viewModel.isRunning = false
                 } label: {
-                    Label("Stop", systemImage: "pause.fill")
+                    Label {
+                        Text(verbatim: "Stop")
+                    } icon: {
+                        Image(systemName: "pause.fill")
+                    }
                 }
                 .disabled(!viewModel.isRunning)
 
@@ -119,7 +129,11 @@ struct GameOfLifeScreen: View {
                     let s = viewModel.size // 再初期化
                     viewModel.size = s
                 } label: {
-                    Label("Reset", systemImage: "arrow.counterclockwise")
+                    Label {
+                        Text(verbatim: "Reset")
+                    } icon: {
+                        Image(systemName: "arrow.counterclockwise")
+                    }
                 }
             }
         }

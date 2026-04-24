@@ -11,7 +11,7 @@ import SwiftUI
 /// The preview is powered by ``MultiHelixAnimationView``, which renders
 /// an animated field of equally spaced marbles that vertically oscillate
 /// with a phase offset per color lane.
-@Metadata(title: "Multi Helix", description: "TimelineView + Canvas を使ったアニメーション", tags: [.animation])
+@Metadata(title: .screenMultiHelixTitle, description: .screenMultiHelixDescription, tags: [.animation])
 struct MultiHelixScreen: View {
     /// Total number of marbles to render across the canvas.
     /// This effectively sets the horizontal density (the grid resolution).
@@ -46,9 +46,13 @@ struct MultiHelixScreen: View {
             )
             .border(.cyan)
 
-            Stepper("marbles: \(marbleCount)", value: $marbleCount, in: 1 ... 20)
+            Stepper(value: $marbleCount, in: 1 ... 20) {
+                Text(verbatim: "marbles: \(marbleCount)")
+            }
             // Changing this clamps how many lanes (gradients) are active.
-            Stepper("lanes: \(laneCount)", value: $laneCount, in: 1 ... gradientLanes.count)
+            Stepper(value: $laneCount, in: 1 ... gradientLanes.count) {
+                Text(verbatim: "lanes: \(laneCount)")
+            }
         }
         .padding()
     }

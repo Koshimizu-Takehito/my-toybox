@@ -41,14 +41,14 @@ nonisolated struct LissajousCurve1 {
 
 /// The main screen displaying the animated Lissajous curve with interactive controls.
 /// Users can adjust parameters and observe their effects in real time.
-@Metadata(title: "Lissajous Curve 1", description: "リサージュ曲線アニメーション 1", tags: [.animation])
+@Metadata(title: .screenLissajousCurveInteractiveTitle, description: .screenLissajousCurveInteractiveDescription, tags: [.animation])
 struct LissajousCurveDemoScreen1: View {
     /// State model holding all curve parameters.
     @State private var curve = LissajousCurve1()
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("Lissajous Curve")
+            Text(verbatim: "Lissajous Curve")
                 .font(.title)
                 .bold()
             LissajousCurveAnimationView1(curve: $curve)
@@ -152,11 +152,11 @@ private struct LissajousCurveControlView: View {
                 // Show current equation and phase (as multiples of π, rounded for clarity).
                 let phaseString = (curve.phase / .pi).formatted(.number.precision(.fractionLength(3)))
                 HStack(spacing: 0) {
-                    Text("x = cos(\(Int(curve.k))t")
-                    Text(" + \(phaseString)π)")
+                    Text(verbatim: "x = cos(\(Int(curve.k))t")
+                    Text(verbatim: " + \(phaseString)π)")
                 }
                 .flipsForRightToLeftLayoutDirection(false)
-                Text("y = sin(\(Int(curve.l))t)")
+                Text(verbatim: "y = sin(\(Int(curve.l))t)")
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .fontDesign(.monospaced)
@@ -164,16 +164,16 @@ private struct LissajousCurveControlView: View {
             Grid(horizontalSpacing: 8, verticalSpacing: 4) {
                 GridRow {
                     ZStack(alignment: .trailing) {
-                        Text("99").hidden() // Alignment placeholder.
-                        Text("\(Int(curve.k))")
+                        Text(verbatim: "99").hidden() // Alignment placeholder.
+                        Text(verbatim: "\(Int(curve.k))")
                     }
                     Slider(value: $curve.k.animation(), in: 1 ... 10)
                         .tint(.colorX(curve))
                 }
                 GridRow {
                     ZStack(alignment: .trailing) {
-                        Text("99").hidden()
-                        Text("\(Int(curve.l))")
+                        Text(verbatim: "99").hidden()
+                        Text(verbatim: "\(Int(curve.l))")
                     }
                     Slider(value: $curve.l.animation(), in: 1 ... 10)
                         .tint(.colorY(curve))

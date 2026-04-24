@@ -6,7 +6,7 @@ import SwiftUI
 /// `StrokeModifier`.
 /// Each call to `.stroke(_:width:)` adds an additional blurred outline,
 /// resulting in a multi-layered border.
-@Metadata(title: "Stroke modifier", description: "ビューに枠線を引く", tags: [])
+@Metadata(title: .screenStrokeModifierDemoTitle, description: .screenStrokeModifierDemoDescription, tags: [])
 struct StrokeModifierDemoScreen: View {
     var body: some View {
         VStack {
@@ -22,7 +22,7 @@ struct StrokeModifierDemoScreen: View {
                         endPoint: .bottom
                     )
                 )
-            Text("Hello, World!!")
+            Text(verbatim: "Hello, World!!")
                 .font(.system(size: 56, weight: .bold, design: .default))
                 .foregroundStyle(.foreground)
                 .padding(16)
