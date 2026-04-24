@@ -4,7 +4,7 @@ import SwiftUI
 
 /// A full-screen view that displays a shimmering animated visual effect
 /// using a custom Metal shader and `TimelineView` to update the animation over time.
-@Metadata(title: "Shine Shader", description: "シェーダーを使った光アニメーション", tags: [.animation, .metal])
+@Metadata(title: .screenShineTitle, description: .screenShineDescription, tags: [.animation, .metal])
 struct ShineScreen: View {
     /// The reference start time used to calculate animation progress.
     private let start = Date()

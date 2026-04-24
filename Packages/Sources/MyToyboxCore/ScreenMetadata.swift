@@ -9,10 +9,10 @@ public protocol ScreenMetadata {
     associatedtype ThumbnailContent: View
 
     /// The display title of the screen.
-    var title: String { get }
+    var title: LocalizedStringResource { get }
 
     /// A short description of what the screen shows or does.
-    var description: String { get }
+    var description: LocalizedStringResource { get }
 
     /// Tags categorizing this screen.
     var tags: [Tag] { get }

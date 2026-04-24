@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - TileAnimationScreen
 
-@Metadata(title: "Tile Animation", description: "タイルアニメーション", tags: [.animation])
+@Metadata(title: .screenTileAnimationTitle, description: .screenTileAnimationDescription, tags: [.animation])
 struct TileAnimationScreen: View {
     @State private var viewModel: ViewModel?
 

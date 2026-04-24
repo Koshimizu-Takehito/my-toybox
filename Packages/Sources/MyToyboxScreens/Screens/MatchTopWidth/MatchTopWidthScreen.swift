@@ -7,7 +7,7 @@ import SwiftUI
 ///
 /// Users can toggle these modifiers and observe how they affect
 /// the width of components in a stacked layout.
-@Metadata(title: "Match top width", description: "上のHStackの幅に下のViewの幅を揃える", tags: [.layout])
+@Metadata(title: .screenMatchTopWidthTitle, description: .screenMatchTopWidthDescription, tags: [.layout])
 struct MatchTopWidthScreen: View {
     // Whether to apply `.frame(maxWidth: .infinity)` to a label in the layout.
     @State private var isInfinityWidth = false
@@ -18,8 +18,12 @@ struct MatchTopWidthScreen: View {
     var body: some View {
         Form {
             Section {
-                Toggle("maxWidth: .infinity", isOn: $isInfinityWidth.animation())
-                Toggle("fixedSize", isOn: $isFixedSize.animation())
+                Toggle(isOn: $isInfinityWidth.animation()) {
+                    Text(verbatim: "maxWidth: .infinity")
+                }
+                Toggle(isOn: $isFixedSize.animation()) {
+                    Text(verbatim: "fixedSize")
+                }
             }
 
             Section {
@@ -69,8 +73,16 @@ private struct Sample: View {
         VStack {
             HStack {
                 Group {
-                    Label("PS", systemImage: "playstation.logo")
-                    Label("XBox", systemImage: "xbox.logo")
+                    Label {
+                        Text(verbatim: "PS")
+                    } icon: {
+                        Image(systemName: "playstation.logo")
+                    }
+                    Label {
+                        Text(verbatim: "XBox")
+                    } icon: {
+                        Image(systemName: "xbox.logo")
+                    }
                     Image(systemName: "gamecontroller.fill")
                 }
                 .frame(maxHeight: .infinity)
@@ -78,9 +90,13 @@ private struct Sample: View {
             }
             .fixedSize()
 
-            Label("message", systemImage: "message.badge.filled.fill")
-                .frame(maxWidth: isInfinityWidth ? .infinity : nil)
-                .modifier(MyStyle())
+            Label {
+                Text(verbatim: "message")
+            } icon: {
+                Image(systemName: "message.badge.filled.fill")
+            }
+            .frame(maxWidth: isInfinityWidth ? .infinity : nil)
+            .modifier(MyStyle())
         }
         .fontWeight(.bold)
         .fixedSize(horizontal: isFixedSize, vertical: true)

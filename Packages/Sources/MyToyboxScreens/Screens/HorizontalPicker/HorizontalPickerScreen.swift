@@ -4,7 +4,7 @@ import SwiftUI
 
 /// A demo screen showcasing a horizontal 3D-style picker built with `HPicker`.
 /// Users can scroll through numbered items, and the currently selected item is highlighted.
-@Metadata(title: "Horizontal Picker", description: "水平方向のピッカー", tags: [.layout])
+@Metadata(title: .screenHorizontalPickerTitle, description: .screenHorizontalPickerDescription, tags: [.layout])
 struct HorizontalPickerScreen: View {
     @State private var selection: Int?
     let items = Array(0 ..< 20)
@@ -150,7 +150,7 @@ private struct ItemView: View {
         Rectangle()
             .foregroundStyle(.blue)
             .overlay {
-                Text("\(item)")
+                Text(verbatim: "\(item)")
                     .font(.title)
                     .fontWeight(isSelected ? .bold : .regular)
                     .foregroundStyle(isSelected ? .yellow : .white)

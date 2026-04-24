@@ -4,7 +4,7 @@ import SwiftUI
 
 /// Demo screen that showcases the AutoScrolledTextField2 component.
 /// Presents a single screen with an automatically scrolling email text field.
-@Metadata(title: "Auto Scrolled TextField 2", description: "テキストフィールドに入力した時に自動でスクロール 2", tags: [])
+@Metadata(title: .screenAutoScrollKeyboardAvoidanceTitle, description: .screenAutoScrollKeyboardAvoidanceDescription, tags: [])
 struct AutoScrolledTextFieldDemoScreen2: View {
     var body: some View {
         #if os(iOS) || os(tvOS)
@@ -39,17 +39,19 @@ struct AutoScrolledTextField2: View {
                         .frame(height: 400)
 
                     // Email input field.
-                    TextField("Email Address", text: $email)
-                        .textFieldStyle(.roundedBorder)
-                        .keyboardType(.emailAddress)
-                        .autocapitalization(.none)
-                        .focused($focused)
-                        .submitLabel(.done)
-                        .padding(.vertical)
+                    TextField(text: $email) {
+                        Text(verbatim: "Email Address")
+                    }
+                    .textFieldStyle(.roundedBorder)
+                    .keyboardType(.emailAddress)
+                    .autocapitalization(.none)
+                    .focused($focused)
+                    .submitLabel(.done)
+                    .padding(.vertical)
 
                     // Dummy submit button.
                     Button(action: {}) {
-                        Text("Submit")
+                        Text(verbatim: "Submit")
                             .font(.title3)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, idealHeight: 44, alignment: .center)

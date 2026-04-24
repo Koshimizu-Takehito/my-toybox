@@ -1,6 +1,6 @@
 import SwiftUI
 
-@Metadata(title: "Implicit Equation", description: "陰関数 SDF", tags: [.animation, .metal])
+@Metadata(title: .screenImplicitEquationTitle, description: .screenImplicitEquationDescription, tags: [.animation, .metal])
 struct ImplicitEquationScreen: View {
     private struct Ranges {
         let ab = 0.0 ... 10.0
@@ -30,41 +30,43 @@ struct ImplicitEquationScreen: View {
             .scaledToFit()
             .layerEffect(implicitShader, maxSampleOffset: .zero)
 
-            Text("Implicit Equation Explorer")
+            Text(verbatim: "Implicit Equation Explorer")
                 .font(.headline)
-            Text("f(x,y) = sin(\(a)(x²+y²)) - cos(\(b)xy)")
+            Text(verbatim: "f(x,y) = sin(\(a)(x²+y²)) - cos(\(b)xy)")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .monospacedDigit()
             // Sliders
             Grid(alignment: .leading) {
                 GridRow {
-                    Text("Radial Freq")
+                    Text(verbatim: "Radial Freq")
                     Slider(value: $radialFreq, in: range.ab, step: 0.1)
                     text(a)
                 }
                 GridRow {
-                    Text("Mix Freq")
+                    Text(verbatim: "Mix Freq")
                     Slider(value: $mixFreq, in: range.ab, step: 0.1)
                     text(b)
                 }
                 GridRow {
-                    Text("Iso Level")
+                    Text(verbatim: "Iso Level")
                     Slider(value: $isoLevel, in: range.iso, step: 0.01)
                     text(String(format: "%.2f", isoLevel))
                 }
                 GridRow {
-                    Text("Zoom")
+                    Text(verbatim: "Zoom")
                     Slider(value: $zoom, in: range.zoom, step: 0.01)
                     text(String(format: "%.2f", zoom))
                 }
             }
             .monospacedDigit()
-            Button("Reset") {
+            Button {
                 radialFreq = 1.0
                 mixFreq = 1.0
                 isoLevel = 0.0
                 zoom = 0.15
+            } label: {
+                Text(verbatim: "Reset")
             }
         }
         .contentTransition(.numericText())

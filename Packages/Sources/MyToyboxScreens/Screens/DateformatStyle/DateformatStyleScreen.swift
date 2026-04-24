@@ -5,7 +5,7 @@ import SwiftUI
 /// A screen that demonstrates how a date is formatted using
 /// different combinations of calendar, locale, and time zone,
 /// via `Date.FormatStyle`.
-@Metadata(title: "Dateformat Style", description: "Date.FormatStyle の出力サンプル", tags: [])
+@Metadata(title: .screenDateFormatStyleTitle, description: .screenDateFormatStyleDescription, tags: [])
 struct DateformatStyleScreen: View {
     /// A sample date to be formatted and displayed.
     @State private var sampleDate = ISO8601DateFormatter().date(from: "2025-01-01T00:00:00+09:00")!
@@ -20,30 +20,38 @@ struct DateformatStyleScreen: View {
         NavigationStack {
             List {
                 // Output preview
-                Section("出力") {
+                Section {
                     DateCell($sampleDate, style: fullStyle)
                     DateCell($sampleDate, style: compactStyle)
+                } header: {
+                    Text(verbatim: "出力")
                 }
 
                 // Calendar selection
-                Section("暦法") {
+                Section {
                     ForEach(CalendarName.allCases, id: \.self) {
                         SelectionCell($selectedCalendar, value: $0)
                     }
+                } header: {
+                    Text(verbatim: "暦法")
                 }
 
                 // Locale (language) selection
-                Section("ロケール") {
+                Section {
                     ForEach(LanguageCode.allCases, id: \.self) {
                         SelectionCell($selectedLanguage, value: $0)
                     }
+                } header: {
+                    Text(verbatim: "ロケール")
                 }
 
                 // Time zone selection
-                Section("タイムゾーン") {
+                Section {
                     ForEach(TimeZoneID.allCases, id: \.self) {
                         SelectionCell($selectedTimeZone, value: $0)
                     }
+                } header: {
+                    Text(verbatim: "タイムゾーン")
                 }
             }
             // Apply selected values into the environment
@@ -55,7 +63,7 @@ struct DateformatStyleScreen: View {
             .animation(.default, value: selectedTimeZone)
             .animation(.default, value: selectedCalendar)
             .tint(.orange)
-            .navigationTitle("Date Format Style")
+            .navigationTitle(Text(verbatim: "Date Format Style"))
         }
     }
 

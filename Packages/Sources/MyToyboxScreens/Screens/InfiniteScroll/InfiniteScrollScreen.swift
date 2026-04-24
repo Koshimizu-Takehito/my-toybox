@@ -1,7 +1,7 @@
 import SwiftUI
 
 #if os(iOS)
-@Metadata(title: "Infinite Scroll", description: "ページング無しの循環スクロールビュー", tags: [])
+@Metadata(title: .screenInfiniteScrollTitle, description: .screenInfiniteScrollDescription, tags: [])
 struct InfiniteScrollScreen: View {
     private var items: [Int] = (1 ... 5).map(\.self)
     @State private var numberOfDisplays = 5
@@ -17,9 +17,15 @@ struct InfiniteScrollScreen: View {
             .scrollIndicators(showsIndicator ? .visible : .hidden)
 
             VStack(alignment: .trailing, spacing: 16) {
-                Stepper("Display Items", value: $numberOfDisplays, in: 1 ... 10)
-                Toggle("Shows Scroll Indicator", isOn: $showsIndicator)
-                Button("Reset", action: reset)
+                Stepper(value: $numberOfDisplays, in: 1 ... 10) {
+                    Text(verbatim: "Display Items")
+                }
+                Toggle(isOn: $showsIndicator) {
+                    Text(verbatim: "Shows Scroll Indicator")
+                }
+                Button(action: reset) {
+                    Text(verbatim: "Reset")
+                }
             }
             .padding()
             .background(.ultraThinMaterial)
@@ -301,7 +307,7 @@ extension InfiniteScrollScreen {
         var body: some View {
             Color.blue
                 .overlay {
-                    Text("\(number)")
+                    Text(verbatim: "\(number)")
                         .foregroundStyle(.white)
                         .font(.title)
                         .fontWeight(.bold)
@@ -324,10 +330,10 @@ extension InfiniteScrollScreen {
 }
 
 #elseif os(macOS)
-@Metadata(title: "Infinite Scroll", description: "ページング無しの循環スクロールビュー", tags: [])
+@Metadata(title: .screenInfiniteScrollTitle, description: .screenInfiniteScrollDescription, tags: [])
 struct InfiniteScrollScreen: View {
     var body: some View {
-        Text("This feature is not available on macOS")
+        Text(verbatim: "This feature is not available on macOS")
             .foregroundStyle(.secondary)
     }
 }

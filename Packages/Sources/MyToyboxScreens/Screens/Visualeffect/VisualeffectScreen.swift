@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - VisualeffectScreen
 
-@Metadata(title: "Visualeffect", description: "VisualEffect サンプル", tags: [.layout])
+@Metadata(title: .screenVisualEffectTitle, description: .screenVisualEffectDescription, tags: [.layout])
 struct VisualeffectScreen: View {
     var body: some View {
         GeometryReader { geometry in

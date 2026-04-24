@@ -6,7 +6,7 @@ import SwiftUI
 ///
 /// This screen displays a vocabulary card that can be flipped by tapping.
 /// The front side shows the word; the back side shows its meaning.
-@Metadata(title: "Flip Transition", description: "Flip Transition アニメーション", tags: [.animation])
+@Metadata(title: .screenFlipTransitionDemoTitle, description: .screenFlipTransitionDemoDescription, tags: [.animation])
 struct FlipTransitionDemoScreen: View {
     var body: some View {
         VStack {
@@ -14,7 +14,7 @@ struct FlipTransitionDemoScreen: View {
                 word: "Hello, World!",
                 meaning: "こんにちは世界"
             )
-            Text("Tap card to flip.")
+            Text(verbatim: "Tap card to flip.")
                 .font(.title2)
                 .fontWeight(.semibold)
         }

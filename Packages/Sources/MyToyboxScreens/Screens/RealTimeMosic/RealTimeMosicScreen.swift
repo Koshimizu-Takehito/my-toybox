@@ -10,7 +10,7 @@ import SwiftUI
 /// - Apply a custom Metal-based mosaic effect using `ShaderLibrary`
 /// - Interactively control both the video playback position and the
 ///   mosaic split position with SwiftUI gestures and controls.
-@Metadata(title: "Real-time Mosaic", description: "モザイクを動画にリアルタイムで描画", tags: [.metal])
+@Metadata(title: .screenRealTimeMosaicTitle, description: .screenRealTimeMosaicDescription, tags: [.metal])
 struct RealTimeMosicScreen: View {
     /// A Boolean value that toggles the mosaic shader on and off.
     @State private var isOn = true
@@ -110,9 +110,11 @@ struct RealTimeMosicScreen: View {
                         }
                     }
                     Spacer()
-                    Toggle("Filter", isOn: $isOn.animation())
-                        .fixedSize()
-                        .shadow(radius: 1)
+                    Toggle(isOn: $isOn.animation()) {
+                        Text(verbatim: "Filter")
+                    }
+                    .fixedSize()
+                    .shadow(radius: 1)
                 }
                 if showsControls {
                     slider()
@@ -138,7 +140,7 @@ struct RealTimeMosicScreen: View {
     @ViewBuilder
     private func slider() -> some View {
         Slider(value: $provider.progress, in: 0 ... 1) {
-            Text("Position")
+            Text(verbatim: "Position")
         } minimumValueLabel: {
             Text(timeString(from: provider.currentTime))
         } maximumValueLabel: {

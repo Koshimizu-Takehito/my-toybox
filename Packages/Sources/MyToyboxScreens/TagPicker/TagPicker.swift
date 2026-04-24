@@ -75,13 +75,17 @@ private struct PickerPopover: View {
 
             // Action buttons
             HStack(spacing: 0) {
-                Button("Deselect All", action: deselectAll)
-                    .disabled(selectedTags.isEmpty)
-                    .frame(maxWidth: .infinity)
+                Button(action: deselectAll) {
+                    Text(.tagPickerClearAll)
+                }
+                .disabled(selectedTags.isEmpty)
+                .frame(maxWidth: .infinity)
 
-                Button("Select All", action: selectAll)
-                    .disabled(selectedTags == Tag.allCases)
-                    .frame(maxWidth: .infinity)
+                Button(action: selectAll) {
+                    Text(.tagPickerSelectAll)
+                }
+                .disabled(selectedTags == Tag.allCases)
+                .frame(maxWidth: .infinity)
             }
         }
         .animation(.default, value: selectedTags)
@@ -120,19 +124,21 @@ private struct PickerToggle: View {
     }
 
     var body: some View {
-        Toggle(String(describing: selection.tag).capitalized, isOn: $isOn)
-            .toggleStyle(.button)
-            .tint(selection.color)
-            .onChange(of: selection.isSelected, initial: true) { _, isSelected in
-                withAnimation {
-                    isOn = isSelected
-                }
+        Toggle(isOn: $isOn) {
+            Text(selection.tag.localizedTitle)
+        }
+        .toggleStyle(.button)
+        .tint(selection.color)
+        .onChange(of: selection.isSelected, initial: true) { _, isSelected in
+            withAnimation {
+                isOn = isSelected
             }
-            .onChange(of: isOn, initial: true) { _, isOn in
-                withAnimation {
-                    selection.isSelected = isOn
-                }
+        }
+        .onChange(of: isOn, initial: true) { _, isOn in
+            withAnimation {
+                selection.isSelected = isOn
             }
+        }
     }
 }
 

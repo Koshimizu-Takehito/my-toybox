@@ -1,3 +1,4 @@
+import Foundation
 import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
@@ -107,11 +108,11 @@ struct MetadatasMacrosTests {
                     }
                 }
 
-                var title: String {
+                var title: LocalizedStringResource {
                     metadata.title
                 }
 
-                var description: String {
+                var description: LocalizedStringResource {
                     metadata.description
                 }
 
@@ -175,11 +176,11 @@ struct MetadatasMacrosTests {
                     }
                 }
 
-                var title: String {
+                var title: LocalizedStringResource {
                     metadata.title
                 }
 
-                var description: String {
+                var description: LocalizedStringResource {
                     metadata.description
                 }
 
@@ -222,11 +223,11 @@ struct MetadatasMacrosTests {
                     }
                 }
 
-                var title: String {
+                var title: LocalizedStringResource {
                     metadata.title
                 }
 
-                var description: String {
+                var description: LocalizedStringResource {
                     metadata.description
                 }
 
@@ -279,11 +280,11 @@ struct AssociatedValueTests {
                     }
                 }
 
-                var title: String {
+                var title: LocalizedStringResource {
                     metadata.title
                 }
 
-                var description: String {
+                var description: LocalizedStringResource {
                     metadata.description
                 }
 
@@ -326,11 +327,11 @@ struct AssociatedValueTests {
                     }
                 }
 
-                var title: String {
+                var title: LocalizedStringResource {
                     metadata.title
                 }
 
-                var description: String {
+                var description: LocalizedStringResource {
                     metadata.description
                 }
 
@@ -373,11 +374,11 @@ struct AssociatedValueTests {
                     }
                 }
 
-                var title: String {
+                var title: LocalizedStringResource {
                     metadata.title
                 }
 
-                var description: String {
+                var description: LocalizedStringResource {
                     metadata.description
                 }
 
@@ -426,11 +427,11 @@ struct AccessLevelTests {
                     }
                 }
 
-                public var title: String {
+                public var title: LocalizedStringResource {
                     metadata.title
                 }
 
-                public var description: String {
+                public var description: LocalizedStringResource {
                     metadata.description
                 }
 
@@ -473,11 +474,11 @@ struct AccessLevelTests {
                     }
                 }
 
-                internal var title: String {
+                internal var title: LocalizedStringResource {
                     metadata.title
                 }
 
-                internal var description: String {
+                internal var description: LocalizedStringResource {
                     metadata.description
                 }
 
@@ -517,11 +518,11 @@ struct MetadataMacroTests {
             }
 
             extension TestScreen: @MainActor ScreenMetadata {
-                var title: String {
-                    "Test Screen"
+                var title: LocalizedStringResource {
+                    LocalizedStringResource("Test Screen", bundle: .module)
                 }
-                var description: String {
-                    "A test"
+                var description: LocalizedStringResource {
+                    LocalizedStringResource("A test", bundle: .module)
                 }
                 var tags: [Tag] {
                     [.animation]
@@ -546,11 +547,11 @@ struct MetadataMacroTests {
             }
 
             extension MultiTagScreen: @MainActor ScreenMetadata {
-                var title: String {
-                    "Multi Tag"
+                var title: LocalizedStringResource {
+                    LocalizedStringResource("Multi Tag", bundle: .module)
                 }
-                var description: String {
-                    "Multiple tags"
+                var description: LocalizedStringResource {
+                    LocalizedStringResource("Multiple tags", bundle: .module)
                 }
                 var tags: [Tag] {
                     [.animation, .metal, .layout]
@@ -575,11 +576,11 @@ struct MetadataMacroTests {
             }
 
             extension NoTagScreen: @MainActor ScreenMetadata {
-                var title: String {
-                    "No Tags"
+                var title: LocalizedStringResource {
+                    LocalizedStringResource("No Tags", bundle: .module)
                 }
-                var description: String {
-                    "No tags"
+                var description: LocalizedStringResource {
+                    LocalizedStringResource("No tags", bundle: .module)
                 }
                 var tags: [Tag] {
                     []
@@ -604,11 +605,11 @@ struct MetadataMacroTests {
             }
 
             extension PublicScreen: @MainActor ScreenMetadata {
-                public var title: String {
-                    "Public"
+                public var title: LocalizedStringResource {
+                    LocalizedStringResource("Public", bundle: .module)
                 }
-                public var description: String {
-                    "Public screen"
+                public var description: LocalizedStringResource {
+                    LocalizedStringResource("Public screen", bundle: .module)
                 }
                 public var tags: [Tag] {
                     []
@@ -633,11 +634,11 @@ struct MetadataMacroTests {
             }
 
             extension GameOfLifeScreen: @MainActor ScreenMetadata {
-                var title: String {
-                    "ゲームオブライフ"
+                var title: LocalizedStringResource {
+                    LocalizedStringResource("ゲームオブライフ", bundle: .module)
                 }
-                var description: String {
-                    "コンウェイのライフゲーム"
+                var description: LocalizedStringResource {
+                    LocalizedStringResource("コンウェイのライフゲーム", bundle: .module)
                 }
                 var tags: [Tag] {
                     [.animation]

@@ -12,10 +12,10 @@ extension FlipTransitionDemoScreen {
             GeometryReader { geometry in
                 ZStack {
                     if isFlipped {
-                        Text("こんにちは!")
+                        Text(verbatim: "こんにちは!")
                             .transition(.flip)
                     } else {
-                        Text("Hello!")
+                        Text(verbatim: "Hello!")
                             .transition(.flip)
                     }
                 }

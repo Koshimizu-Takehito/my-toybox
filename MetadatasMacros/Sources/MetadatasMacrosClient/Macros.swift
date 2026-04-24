@@ -1,3 +1,5 @@
+import Foundation
+
 // MARK: - Metadatas Protocol
 
 /// Marker protocol used by `@Metadatas` macro for conformance declaration.
@@ -35,8 +37,8 @@ public protocol Metadatas {}
 ///         case .mosaicScreen: MosaicScreen()
 ///         }
 ///     }
-///     var title: String { metadata.title }
-///     var description: String { metadata.description }
+///     var title: LocalizedStringResource { metadata.title }
+///     var description: LocalizedStringResource { metadata.description }
 ///     var tags: [Tag] { metadata.tags }
 /// }
 /// ```
@@ -82,7 +84,7 @@ public macro Metadatas() = #externalMacro(
 ///   - tags: An array of Tag values categorizing this screen.
 @attached(extension, names: named(title), named(description), named(tags))
 public macro Metadata<T>(
-    title: String,
-    description: String,
+    title: LocalizedStringResource,
+    description: LocalizedStringResource,
     tags: [T]
 ) = #externalMacro(module: "MetadatasMacrosImpl", type: "MetadataMacro")

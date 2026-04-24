@@ -4,7 +4,7 @@ extension HierarchicalShapeStyleScreen {
     static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
-            Text("あのイーハトーヴォのすきとおった風")
+            Text(verbatim: "あのイーハトーヴォのすきとおった風")
                 .font(.system(size: 0.24 * size))
                 .bold()
                 .monospacedDigit()

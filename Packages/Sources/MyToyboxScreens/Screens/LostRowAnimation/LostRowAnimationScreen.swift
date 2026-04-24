@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - LostRowAnimationScreen
 
-@Metadata(title: "Lost Row Animation", description: "ScrollView + LazyVStack アニメーション", tags: [.animation])
+@Metadata(title: .screenLostRowAnimationTitle, description: .screenLostRowAnimationDescription, tags: [.animation])
 struct LostRowAnimationScreen: View {
     @State private var item: [Item] = .samples()
     @State private var show = false

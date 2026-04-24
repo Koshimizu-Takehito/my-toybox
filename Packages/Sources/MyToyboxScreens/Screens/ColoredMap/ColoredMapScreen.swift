@@ -5,7 +5,7 @@ import SwiftUI
 ///
 /// Users can adjust the red, green, and blue components of the overlay color using sliders.
 /// The overlay is blended using the `.screen` blend mode to softly tint the map.
-@Metadata(title: "Colored Map", description: "色付きマップ", tags: [])
+@Metadata(title: .screenColoredMapTitle, description: .screenColoredMapDescription, tags: [])
 struct ColoredMapScreen: View {
     /// The current map camera position, initially centered on Tokyo.
     @State private var position = MapCameraPosition.region(

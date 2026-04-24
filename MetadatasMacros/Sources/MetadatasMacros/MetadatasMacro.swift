@@ -133,11 +133,11 @@ extension MetadatasMacro: ExtensionMacro {
                     }
                 }
 
-                \(raw: accessModifier)var title: String {
+                \(raw: accessModifier)var title: LocalizedStringResource {
                     metadata.title
                 }
 
-                \(raw: accessModifier)var description: String {
+                \(raw: accessModifier)var description: LocalizedStringResource {
                     metadata.description
                 }
 
@@ -297,8 +297,8 @@ public struct MetadataMacro: ExtensionMacro {
         // Note: Access modifier cannot be applied to extension with protocol conformance
         let extensionDecl: DeclSyntax = """
             extension \(type.trimmed): @MainActor ScreenMetadata {
-                \(raw: accessModifier)var title: String { \(raw: title) }
-                \(raw: accessModifier)var description: String { \(raw: description) }
+                \(raw: accessModifier)var title: LocalizedStringResource { \(raw: title) }
+                \(raw: accessModifier)var description: LocalizedStringResource { \(raw: description) }
                 \(raw: accessModifier)var tags: [Tag] { \(raw: tags) }
             }
             """

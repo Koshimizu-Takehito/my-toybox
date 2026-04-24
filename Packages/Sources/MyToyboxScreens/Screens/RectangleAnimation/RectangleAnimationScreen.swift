@@ -5,7 +5,7 @@ import SwiftUI
 /// A screen that displays thousands of animated rectangles
 /// which appear, grow, move, shrink, and disappear over time.
 /// The animation is frame-driven using `TimelineView` and rendered via `Canvas`.
-@Metadata(title: "RectangleAnimation", description: "長方形アニメーション", tags: [.animation])
+@Metadata(title: .screenRectangleAnimationTitle, description: .screenRectangleAnimationDescription, tags: [.animation])
 struct RectangleAnimationScreen: View {
     @StateObject private var viewModel = ViewModel()
 

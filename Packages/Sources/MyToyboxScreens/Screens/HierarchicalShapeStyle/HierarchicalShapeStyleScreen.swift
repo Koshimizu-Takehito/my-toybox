@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - HierarchicalShapeStyleScreen
 
-@Metadata(title: "Hierarchical Style", description: "Hierarchical ShapeStyle", tags: [])
+@Metadata(title: .screenHierarchicalShapeStyleTitle, description: .screenHierarchicalShapeStyleDescription, tags: [])
 struct HierarchicalShapeStyleScreen: View {
     var body: some View {
         VStack {
@@ -27,13 +27,13 @@ private struct TextSampleView<Style: ShapeStyle>: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("あのイーハトーヴォの")
+            Text(verbatim: "あのイーハトーヴォの")
                 .foregroundStyle(.primary)
-            Text("すきとおった風、")
+            Text(verbatim: "すきとおった風、")
                 .foregroundStyle(.secondary)
-            Text("祓辻飴葛蝸鯛驢赳曇危箸")
+            Text(verbatim: "祓辻飴葛蝸鯛驢赳曇危箸")
                 .foregroundStyle(.tertiary)
-            Text("1234567890")
+            Text(verbatim: "1234567890")
                 .foregroundStyle(.quaternary)
         }
         .foregroundStyle(style)

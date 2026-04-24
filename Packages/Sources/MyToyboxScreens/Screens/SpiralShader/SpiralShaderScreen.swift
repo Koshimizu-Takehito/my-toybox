@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - SpiralShaderScreen
 
-@Metadata(title: "Shader Spiral", description: "シェーダー関数で螺旋", tags: [.animation, .metal])
+@Metadata(title: .screenSpiralShaderTitle, description: .screenSpiralShaderDescription, tags: [.animation, .metal])
 struct SpiralShaderScreen: View {
     @State private var start = Date()
 

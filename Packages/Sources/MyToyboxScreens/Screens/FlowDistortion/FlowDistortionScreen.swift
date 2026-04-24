@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - FlowDistortionScreen
 
-@Metadata(title: "Flow Distortion", description: "Flow Distortion シェーダ", tags: [.metal])
+@Metadata(title: .screenFlowDistortionTitle, description: .screenFlowDistortionDescription, tags: [.metal])
 struct FlowDistortionScreen: View {
     @State private var start = Date.now
     @State private var model = Model()
@@ -51,7 +51,11 @@ private extension FlowDistortionScreen {
                 Slider(value: $model.damping, in: 0.10 ... 1.00)
                 Slider(value: $model.noiseScale, in: 1.0 ... 3.0)
                 Divider()
-                Button("Reset") { model = Model() }
+                Button {
+                    model = Model()
+                } label: {
+                    Text(verbatim: "Reset")
+                }
             }
         }
     }

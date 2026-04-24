@@ -5,7 +5,7 @@ import SwiftUI
 /// A demonstration screen showcasing a custom spiral layout.
 /// Users can increase or decrease the number of cells, which are colored rectangles arranged in a spiral pattern.
 /// The layout dynamically adapts to the number of cells using the Stepper control.
-@Metadata(title: "Spiral Layout", description: "Spiral Layout サンプル", tags: [.animation, .layout])
+@Metadata(title: .screenSpiralLayoutDemoTitle, description: .screenSpiralLayoutDemoDescription, tags: [.animation, .layout])
 struct SpiralLayoutDemoScreen: View {
     @State private var count: Int = 1
 
@@ -19,7 +19,7 @@ struct SpiralLayoutDemoScreen: View {
             }
             Spacer()
             Stepper(value: $count.animation(), in: 1 ... 21) {
-                Text("Count \(count.formatted())")
+                Text(verbatim: "Count \(count.formatted())")
             }
         }
         .padding()

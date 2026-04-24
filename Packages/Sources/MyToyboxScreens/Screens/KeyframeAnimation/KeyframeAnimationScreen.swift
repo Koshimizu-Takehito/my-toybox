@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - KeyframeAnimationScreen
 
-@Metadata(title: "Keyframe Animation", description: "keyframeAnimatorによる多軸アニメーション", tags: [.animation])
+@Metadata(title: .screenKeyframeAnimationTitle, description: .screenKeyframeAnimationDescription, tags: [.animation])
 struct KeyframeAnimationScreen: View {
     @State private var trigger = UUID()
 
@@ -16,7 +16,7 @@ struct KeyframeAnimationScreen: View {
             Spacer()
 
             Button(action: launch) {
-                Text("Launch")
+                Text(verbatim: "Launch")
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(.white)
