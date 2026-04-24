@@ -4,7 +4,7 @@ import SwiftUI
 /// A screen that presents an authentication code (OTP) input interface.
 ///
 /// Displays six input fields for numeric digits. The entered code is printed to the console whenever it changes.
-@Metadata(title: "Auth code UI", description: "認証コード入力っぽいUI", tags: [])
+@Metadata(title: .screenAuthCodeTitle, description: .screenAuthCodeDescription, tags: [])
 struct AuthCodeScreen: View {
     /// The digits entered by the user, updated in real-time.
     @State private var digits: [Int] = []
@@ -46,17 +46,19 @@ private struct AuthCodeInput: View {
                 Circle()
                     .fill(.orange)
                     .overlay {
-                        TextField("", text: $values[index])
-                            .textContentType(.oneTimeCode)
-                            .multilineTextAlignment(.center)
-                            .keyboardType(.numberPad)
-                            .autocorrectionDisabled(true)
-                            .textInputAutocapitalization(.never)
-                            .focused($focusedIndex, equals: index)
-                            .font(.title.monospacedDigit())
-                            .fontWeight(.black)
-                            .foregroundStyle(.white)
-                            .tint(.white)
+                        TextField(text: $values[index]) {
+                            Text(verbatim: "")
+                        }
+                        .textContentType(.oneTimeCode)
+                        .multilineTextAlignment(.center)
+                        .keyboardType(.numberPad)
+                        .autocorrectionDisabled(true)
+                        .textInputAutocapitalization(.never)
+                        .focused($focusedIndex, equals: index)
+                        .font(.title.monospacedDigit())
+                        .fontWeight(.black)
+                        .foregroundStyle(.white)
+                        .tint(.white)
                     }
             }
         }
@@ -106,10 +108,10 @@ private struct AuthCodeInput: View {
 }
 
 #elseif os(macOS)
-@Metadata(title: "Auth code UI", description: "認証コード入力っぽいUI", tags: [])
+@Metadata(title: .screenAuthCodeTitle, description: .screenAuthCodeDescription, tags: [])
 struct AuthCodeScreen: View {
     var body: some View {
-        Text("This feature is not available on macOS")
+        Text(verbatim: "This feature is not available on macOS")
             .foregroundStyle(.secondary)
     }
 }

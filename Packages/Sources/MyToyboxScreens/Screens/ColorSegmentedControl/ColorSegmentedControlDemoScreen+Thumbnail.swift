@@ -4,7 +4,7 @@ extension ColorSegmentedControlDemoScreen {
     static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
-            Text("Apple")
+            Text(verbatim: "Apple")
                 .foregroundStyle(.white)
                 .fixedSize()
                 .font(.system(size: 0.2 * size, weight: .semibold))

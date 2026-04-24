@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - UnevenRoundedRectangle1Screen
 
-@Metadata(title: "Uneven Rounded Rectangle 1", description: "UnevenRoundedRectangle Sample", tags: [])
+@Metadata(title: .screenUnevenRoundedRectanglePerSideTitle, description: .screenUnevenRoundedRectanglePerSideDescription, tags: [])
 struct UnevenRoundedRectangle1Screen: View {
     var body: some View {
         Group {
@@ -26,7 +26,7 @@ struct UnevenRoundedRectangle1Screen: View {
 
 private struct HelloWorld: View {
     var body: some View {
-        Text("Hello, world!")
+        Text(verbatim: "Hello, world!")
             .font(.largeTitle.bold())
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -4,7 +4,7 @@ import SwiftUI
 
 /// A screen demonstrating a circular progress ring with a slider and control panel.
 /// Uses a `ProgressRingViewModel` to track and animate the progress state.
-@Metadata(title: "Progress Ring", description: "Progress Ring", tags: [.animation])
+@Metadata(title: .screenProgressRingTitle, description: .screenProgressRingDescription, tags: [.animation])
 struct ProgressRingScreen: View {
     /// A view model that tracks and animates the progress value.
     @State private var viewModel = ProgressRingViewModel()
@@ -222,9 +222,9 @@ private struct ProgressText: View {
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
-            Text("\(Int(progressValue * 100))")
+            Text(verbatim: "\(Int(progressValue * 100))")
                 .font(.largeTitle)
-            Text("%")
+            Text(verbatim: "%")
                 // Shift the percent sign slightly downward to visually align with the number
                 .padding(.bottom, 5)
         }

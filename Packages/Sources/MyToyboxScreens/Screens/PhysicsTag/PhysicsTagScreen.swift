@@ -7,7 +7,7 @@ import SwiftUI
 
 /// Tag cloud demo combining SpriteKit physics and CoreMotion.
 /// Gravity follows device tilt; touch to drag and nudge tags.
-@Metadata(title: "Physics Tag", description: "SpriteKitとCoreMotion", tags: [.animation])
+@Metadata(title: .screenPhysicsTagTitle, description: .screenPhysicsTagDescription, tags: [.animation])
 struct PhysicsTagScreen: View {
     @State private var scene: PhysicsTagScene = {
         let scene = PhysicsTagScene()
@@ -23,11 +23,17 @@ struct PhysicsTagScreen: View {
             .ignoresSafeArea()
             .overlay(alignment: .topTrailing) {
                 VStack(alignment: .leading, spacing: 10) {
-                    Toggle("Motion", isOn: $usesDeviceMotion)
+                    Toggle(isOn: $usesDeviceMotion) {
+                        Text(verbatim: "Motion")
+                    }
                     Button {
                         scene.resetSimulation()
                     } label: {
-                        Label("Reset", systemImage: "arrow.counterclockwise")
+                        Label {
+                            Text(verbatim: "Reset")
+                        } icon: {
+                            Image(systemName: "arrow.counterclockwise")
+                        }
                     }
                 }
                 .fixedSize()
@@ -49,10 +55,10 @@ struct PhysicsTagScreen: View {
 
 // MARK: - PhysicsTagScreen
 
-@Metadata(title: "Physics Tag", description: "SpriteKitとCoreMotion", tags: [.animation])
+@Metadata(title: .screenPhysicsTagTitle, description: .screenPhysicsTagDescription, tags: [.animation])
 struct PhysicsTagScreen: View {
     var body: some View {
-        Text("This feature is not available on macOS")
+        Text(verbatim: "This feature is not available on macOS")
             .foregroundStyle(.secondary)
     }
 }

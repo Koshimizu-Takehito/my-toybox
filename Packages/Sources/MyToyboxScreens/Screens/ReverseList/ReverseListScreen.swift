@@ -7,7 +7,7 @@ import SwiftUI
 ///
 /// This effect is achieved by applying a `.rotationEffect(.pi)` to both the `List`
 /// and its rows, effectively inverting the scroll direction while preserving layout order.
-@Metadata(title: "ReverseListView", description: "逆向きのリスト", tags: [.layout])
+@Metadata(title: .screenReverseListTitle, description: .screenReverseListDescription, tags: [.layout])
 struct ReverseListScreen: View {
     /// The array of list items, with new elements added to the beginning.
     @State private var items = [Item()]
@@ -27,13 +27,25 @@ struct ReverseListScreen: View {
             .listStyle(.plain)
             .toolbar {
                 // Adds a new item to the top of the list (bottom of UI)
-                Button("plus", systemImage: "plus") {
+                Button {
                     items.insert(Item(), at: 0)
+                } label: {
+                    Label {
+                        Text(verbatim: "plus")
+                    } icon: {
+                        Image(systemName: "plus")
+                    }
                 }
                 // Removes the first item (top of data, bottom of UI)
-                Button("minus", systemImage: "minus") {
+                Button {
                     if !items.isEmpty {
                         items.removeFirst()
+                    }
+                } label: {
+                    Label {
+                        Text(verbatim: "minus")
+                    } icon: {
+                        Image(systemName: "minus")
                     }
                 }
             }
@@ -63,7 +75,7 @@ private struct RowContent: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(color)
-            Text("Hello, world!")
+            Text(verbatim: "Hello, world!")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()

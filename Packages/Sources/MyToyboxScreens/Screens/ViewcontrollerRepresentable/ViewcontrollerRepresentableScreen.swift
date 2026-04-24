@@ -6,7 +6,7 @@ import SwiftUI
 
 /// A SwiftUI screen that demonstrates the integration of a UIKit UIViewController
 /// using UIViewControllerRepresentable, and updates its layout in response to Dynamic Type changes.
-@Metadata(title: "Uiviewcontrollerrepresentable", description: "UIViewControllerRepresentableのレイアウト処理のサンプル", tags: [.layout])
+@Metadata(title: .screenViewControllerRepresentableTitle, description: .screenViewControllerRepresentableDescription, tags: [.layout])
 struct ViewcontrollerRepresentableScreen: View {
     @State private var tapCount = 0
 
@@ -93,10 +93,10 @@ final class SampleViewController: UIViewController {
 }
 
 #elseif os(macOS)
-@Metadata(title: "Uiviewcontrollerrepresentable", description: "UIViewControllerRepresentableのレイアウト処理のサンプル", tags: [.layout])
+@Metadata(title: .screenViewControllerRepresentableTitle, description: .screenViewControllerRepresentableDescription, tags: [.layout])
 struct ViewcontrollerRepresentableScreen: View {
     var body: some View {
-        Text("This feature is not available on macOS")
+        Text(verbatim: "This feature is not available on macOS")
             .foregroundStyle(.secondary)
     }
 }

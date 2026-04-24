@@ -4,7 +4,7 @@ import SwiftUI
 
 /// A demo screen showcasing a custom color-based segmented control component.
 /// Displays a list of segments and shows the selected segment's value in a large, bold title.
-@Metadata(title: "Color Segmented Control", description: "色付きセグメンテッドコントロール", tags: [.animation])
+@Metadata(title: .screenColorSegmentedControlDemoTitle, description: .screenColorSegmentedControlDemoDescription, tags: [.animation])
 struct ColorSegmentedControlDemoScreen: View {
     /// The static list of selectable segments.
     private static let demoItems: [ColorItem] = [

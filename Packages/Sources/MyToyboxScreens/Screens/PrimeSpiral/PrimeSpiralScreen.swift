@@ -7,7 +7,7 @@ import SwiftUI
 ///
 /// The spiral continuously animates outward as time progresses, using
 /// `TimelineView` and `Canvas` for efficient real-time rendering.
-@Metadata(title: "Prime Spiral", description: "素数のアルキメデスの螺旋", tags: [.animation])
+@Metadata(title: .screenPrimeSpiralTitle, description: .screenPrimeSpiralDescription, tags: [.animation])
 struct PrimeSpiralScreen: View {
     /// The start time of the animation.
     @State private var start = Date()

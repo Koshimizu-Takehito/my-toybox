@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - ComplexNumberScreen
 
-@Metadata(title: "Complex Number", description: "複素関数の可視化", tags: [.metal, .animation])
+@Metadata(title: .screenComplexNumberTitle, description: .screenComplexNumberDescription, tags: [.metal, .animation])
 struct ComplexNumberScreen: View {
     @State private var selection: ComplexFunction = .zSquared
     @State private var shaderMode: ShaderMode = .domainColoring
@@ -16,11 +16,13 @@ struct ComplexNumberScreen: View {
 
     @ViewBuilder
     private func picker() -> some View {
-        Picker("f(z)", selection: $selection.animation()) {
+        Picker(selection: $selection.animation()) {
             ForEach(ComplexFunction.allCases) { function in
                 Text(function.label)
                     .tag(function)
             }
+        } label: {
+            Text(verbatim: "f(z)")
         }
         .pickerStyle(.segmented)
         .colorScheme(.light)

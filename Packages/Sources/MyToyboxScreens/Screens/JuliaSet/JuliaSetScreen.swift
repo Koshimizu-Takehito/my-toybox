@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - JuliaSetScreen
 
-@Metadata(title: "Julia Set", description: "Julia Set", tags: [.metal])
+@Metadata(title: .screenJuliaSetTitle, description: .screenJuliaSetDescription, tags: [.metal])
 struct JuliaSetScreen: View {
     @State private var id = UUID()
     var body: some View {
@@ -14,8 +14,10 @@ struct JuliaSetScreen: View {
     }
 
     var barItem: some View {
-        Button("Reset") {
+        Button {
             id = UUID()
+        } label: {
+            Text(verbatim: "Reset")
         }
         .fontWeight(.semibold)
     }

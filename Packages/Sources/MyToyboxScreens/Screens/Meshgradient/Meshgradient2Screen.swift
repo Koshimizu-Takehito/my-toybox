@@ -12,7 +12,7 @@ private let gradationColors: [Color] = [
     .cyan,
 ]
 
-@Metadata(title: "Mesh Gradient", description: "MeshGradient サンプル", tags: [])
+@Metadata(title: .screenMeshGradientControlPointsTitle, description: .screenMeshGradientControlPointsDescription, tags: [])
 struct Meshgradient2Screen: View {
     @State private var id = UUID()
     @State private var isDotsHidden = false
@@ -80,15 +80,19 @@ struct Meshgradient2Screen: View {
             HStack {
                 Spacer()
                     .frame(maxWidth: .infinity)
-                Button(isDotsHidden ? "Show" : "Hide") {
+                Button {
                     withAnimation {
                         isDotsHidden.toggle()
                     }
+                } label: {
+                    Text(verbatim: isDotsHidden ? "Show" : "Hide")
                 }
-                Button("Reset") {
+                Button {
                     id = .init()
                     isDotsHidden = false
                     angle = 0
+                } label: {
+                    Text(verbatim: "Reset")
                 }
             }
             .opacity(toolbarHidden ? 0 : 1)
@@ -264,10 +268,10 @@ private extension SIMD2<Float> {
 }
 
 #elseif os(macOS)
-@Metadata(title: "Mesh Gradient", description: "MeshGradient サンプル", tags: [])
+@Metadata(title: .screenMeshGradientControlPointsTitle, description: .screenMeshGradientControlPointsDescription, tags: [])
 struct Meshgradient2Screen: View {
     var body: some View {
-        Text("This feature is not available on macOS")
+        Text(verbatim: "This feature is not available on macOS")
             .foregroundStyle(.secondary)
     }
 }

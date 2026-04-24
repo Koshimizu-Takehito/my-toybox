@@ -4,7 +4,7 @@ import SwiftUI
 
 /// A SwiftUI view that simulates a solar system with adjustable perspective between
 /// the geocentric and heliocentric models using a faith slider.
-@Metadata(title: "Solar System Animation", description: "地動説と天動説のアニメーション", tags: [.animation])
+@Metadata(title: .screenSolarSystemBlendTitle, description: .screenSolarSystemBlendDescription, tags: [.animation])
 struct SolarSystem2Screen: View {
     let start: Date = .now
     @State private var faith = 0.0

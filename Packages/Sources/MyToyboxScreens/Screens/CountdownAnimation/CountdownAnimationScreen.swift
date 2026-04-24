@@ -9,7 +9,7 @@ import SwiftUI
 /// - Displays a numeric countdown (e.g., 10 → 0) in the center.
 /// - A circular ring around the number gradually erases as the countdown progresses.
 /// - Tapping the view restarts the countdown animation.
-@Metadata(title: "Countdown Animation", description: "カウントダウンアニメーション", tags: [.animation])
+@Metadata(title: .screenCountdownAnimationTitle, description: .screenCountdownAnimationDescription, tags: [.animation])
 struct CountdownAnimationScreen: View {
     /// The countdown state and animation logic.
     @State private var viewModel = CountdownAnimationScreenViewModel()
@@ -32,7 +32,7 @@ struct CountdownAnimationView: View {
 
             ZStack {
                 // Countdown number (rounded up to avoid showing 0 prematurely)
-                Text("\(Int(count + 0.99))")
+                Text(verbatim: "\(Int(count + 0.99))")
                     .fontDesign(.rounded)
                     .font(.system(size: 0.4 * radius, weight: .bold))
                     .monospacedDigit()

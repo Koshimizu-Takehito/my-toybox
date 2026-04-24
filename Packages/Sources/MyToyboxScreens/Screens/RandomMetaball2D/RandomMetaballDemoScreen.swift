@@ -6,7 +6,7 @@ import SwiftUI
 /// A demo screen showcasing the `RandomMetaball2DView`.
 ///
 /// This screen expands to fill the entire safe area.
-@Metadata(title: "Random Metaball 2D", description: "TimelineView + Canvas を使ったアニメーション", tags: [.animation])
+@Metadata(title: .screenRandomMetaballDemoTitle, description: .screenRandomMetaballDemoDescription, tags: [.animation])
 struct RandomMetaballDemoScreen: View {
     var body: some View {
         RandomMetaball2DView(particleCount: 50)

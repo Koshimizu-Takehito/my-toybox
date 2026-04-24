@@ -3,7 +3,7 @@ import SwiftUI
 extension UnevenRoundedRectangle1Screen {
     static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
         GeometryReader { geometry in
-            Text("Hello!")
+            Text(verbatim: "Hello!")
                 .bold()
                 .minimumScaleFactor(0.1)
                 .foregroundStyle(.white)

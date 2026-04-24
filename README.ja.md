@@ -150,6 +150,15 @@ make new-screen NAME=MyNewAnimation
 make new-screen NAME=MyShaderEffect SHADER=yes
 ```
 
+`make new-screen` は localization 同期（`Scripts/sync_screen_localization.py`）も自動実行します。  
+localization の検証/同期に失敗した場合、コマンドは失敗します。
+
+### ローカライゼーション運用
+
+semantic key ルール、CI での強制、運用方針の詳細は以下を参照してください：
+
+- `LOCALIZATION_WORKFLOW.md`（英語）
+
 ## 使い方
 
 1. アプリを起動すると、一覧（サイドバー）に多数のサンプルが並びます。
