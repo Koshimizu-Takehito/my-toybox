@@ -271,6 +271,18 @@ fi
 echo ""
 echo -e "${GREEN}✅ Successfully created ${UPPER_CAMEL}Screen${NC}"
 echo ""
+
+echo -e "${BLUE}🔤 Syncing localization catalog...${NC}"
+if python3 "$PROJECT_ROOT/Scripts/sync_screen_localization.py"; then
+    echo -e "  ${GREEN}✓${NC} Localization catalog synced"
+else
+    echo -e "${RED}❌ Localization sync failed.${NC}"
+    echo -e "${YELLOW}Hint:${NC} fix @Metadata / key issues, then rerun:"
+    echo "  python3 Scripts/sync_screen_localization.py"
+    exit 1
+fi
+echo ""
+
 echo -e "${YELLOW}Next steps:${NC}"
 echo "  1. Implement your view in ${TARGET_DIR}/${UPPER_CAMEL}Screen.swift"
 if [ "$INCLUDE_SHADER" = true ]; then

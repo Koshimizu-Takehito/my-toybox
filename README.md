@@ -151,6 +151,14 @@ make new-screen NAME=MyNewAnimation
 make new-screen NAME=MyShaderEffect SHADER=yes
 ```
 
+`make new-screen` also runs localization synchronization (`Scripts/sync_screen_localization.py`) and fails if localization validation/sync fails.
+
+### Localization workflow
+
+For localization policy, semantic key rules, and CI enforcement details, see:
+
+- `LOCALIZATION_WORKFLOW.md`
+
 ## How to Use
 
 - On launch, the app displays a list of demo screens.
