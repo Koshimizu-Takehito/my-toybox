@@ -1,6 +1,7 @@
 import SwiftUI
 
 #if os(iOS)
+import MyToyboxScreensUIKit
 
 // MARK: - ViewControllerRepresentableScreen
 
@@ -19,7 +20,7 @@ struct ViewcontrollerRepresentableScreen: View {
 
         VStack {
             // Embed the custom UIViewController into SwiftUI with layout constraints.
-            ViewControllerRepresentable<SampleViewController>()
+            ViewControllerRepresentable(SampleViewController())
                 .fixedSize()
                 .padding()
                 .background(Color.blue.secondary)
@@ -44,20 +45,21 @@ struct ViewcontrollerRepresentableScreen: View {
 /// A generic wrapper for any UIViewController to be used inside SwiftUI.
 /// Implements layout measurement using `systemLayoutSizeFitting`.
 private struct ViewControllerRepresentable<ViewController: UIViewController>: UIViewControllerRepresentable {
+    private let viewController: () -> ViewController
+
+    init(_ viewController: @autoclosure @escaping () -> ViewController) {
+        self.viewController = viewController
+    }
+
     func makeUIViewController(context _: Context) -> ViewController {
-        // Load from .xib in SPM module bundle using type name
-        ViewController(nibName: String(describing: ViewController.self), bundle: .module)
+        viewController()
     }
 
     func updateUIViewController(_: ViewController, context _: Context) {
         // No-op: no external updates needed
     }
 
-    func sizeThatFits(
-        _ proposal: ProposedViewSize,
-        uiViewController: ViewController,
-        context _: Context
-    ) -> CGSize? {
+    func sizeThatFits(_ proposal: ProposedViewSize, uiViewController: ViewController, context _: Context) -> CGSize? {
         // Provide a size fitting logic using Auto Layout from UIKit
         let proposedSize = CGSize(
             width: proposal.width ?? UIView.noIntrinsicMetric,
@@ -68,21 +70,6 @@ private struct ViewControllerRepresentable<ViewController: UIViewController>: UI
             withHorizontalFittingPriority: .fittingSizeLevel,
             verticalFittingPriority: .defaultLow
         )
-    }
-}
-
-// MARK: - SampleViewController
-
-/// A simple UIViewController that invalidates its intrinsic content size
-/// when the preferred content size category (Dynamic Type) changes.
-final class SampleViewController: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let traits = [UITraitPreferredContentSizeCategory.self]
-        registerForTraitChanges(traits) { (self: Self, _) in
-            self.view.invalidateIntrinsicContentSize()
-        }
     }
 }
 

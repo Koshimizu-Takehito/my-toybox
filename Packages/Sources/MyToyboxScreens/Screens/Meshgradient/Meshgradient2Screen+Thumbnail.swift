@@ -3,6 +3,7 @@ import SwiftUI
 extension Meshgradient2Screen {
     @ViewBuilder
     static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
+        #if os(iOS)
         MeshView(
             id: .constant(.init()),
             isDotsHidden: .constant(true),
@@ -11,6 +12,7 @@ extension Meshgradient2Screen {
             height: 3,
             colors: [.black, .blue, .green]
         )
+        #endif
     }
 }
 

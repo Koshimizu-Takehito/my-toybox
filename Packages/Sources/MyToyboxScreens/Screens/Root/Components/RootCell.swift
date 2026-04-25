@@ -10,7 +10,8 @@ struct RootCell: View {
     /// Indicates whether the list is actively scrolling.
     let isScrolling: Bool
     /// Baseline row height used for square thumbnail sizing.
-    @Environment(\.defaultMinListRowHeight) private var thumbnailSize
+    @Environment(\.defaultMinListRowHeight) private var defaultMinListRowHeight
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
         HStack(alignment: .top) {
@@ -24,15 +25,20 @@ struct RootCell: View {
 }
 
 private extension RootCell {
+    @ViewBuilder
     var thumbnailView: some View {
-        ZStack {
-            Color.clear
-            screen.thumbnail
-                .environment(\.isScrolling, isScrolling)
+#if os(iOS)
+        if horizontalSizeClass == .compact {
+            ZStack {
+                Color.clear
+                screen.thumbnail
+                    .environment(\.isScrolling, isScrolling)
+            }
+            .background(.black.gradient)
+            .frame(width: defaultMinListRowHeight, height: defaultMinListRowHeight)
+            .clipShape(.rect(cornerRadius: 8))
         }
-        .background(.black.gradient)
-        .frame(width: thumbnailSize, height: thumbnailSize)
-        .clipShape(.rect(cornerRadius: 8))
+#endif
     }
 
     var labelView: some View {
