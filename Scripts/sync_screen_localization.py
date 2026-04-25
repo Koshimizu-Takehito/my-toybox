@@ -6,6 +6,7 @@ Run from repo root: python3 Scripts/sync_screen_localization.py
 """
 from __future__ import annotations
 
+import argparse
 import ast
 import json
 import re
@@ -87,6 +88,52 @@ class Entry:
     symbol: str
     en: str
     ja: str
+
+
+MANAGED_KEY_PREFIXES: tuple[str, ...] = (
+    'screen.',
+    'app.',
+    'tag.',
+)
+
+
+def is_managed_key(key: str) -> bool:
+    return key.startswith(MANAGED_KEY_PREFIXES)
+
+
+def build_catalog_payload(entries: list[Entry], existing: dict | None) -> dict:
+    strings: dict[str, dict] = {}
+    # Keep manually-maintained keys (e.g. runtime UI copy) outside managed prefixes.
+    if isinstance(existing, dict):
+        existing_strings = existing.get('strings', {})
+        if isinstance(existing_strings, dict):
+            for key, value in existing_strings.items():
+                if not is_managed_key(key):
+                    strings[key] = value
+
+    for e in entries:
+        strings[e.key] = {
+            'extractionState': 'manual',
+            'localizations': {
+                'en': {'stringUnit': {'state': 'translated', 'value': e.en}},
+                'ja': {'stringUnit': {'state': 'translated', 'value': e.ja}},
+            }
+        }
+    return {
+        'sourceLanguage': 'en',
+        'strings': strings,
+        'version': '1.0',
+    }
+
+
+def canonical_json(value: object) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+
+
+def load_catalog_json() -> dict | None:
+    if not CATALOG_PATH.exists():
+        return None
+    return json.loads(CATALOG_PATH.read_text(encoding='utf-8'))
 
 
 def unescape_swift_string(lit: str) -> str:
@@ -244,23 +291,17 @@ def metadata_entries(ja_to_en: dict[str, str], semantic_existing: dict[str, tupl
     return sorted(entries.values(), key=lambda e: e.key), errors
 
 
-def write_catalog(entries: list[Entry]) -> None:
-    strings: dict[str, dict] = {}
-    for e in entries:
-        strings[e.key] = {
-            'extractionState': 'manual',
-            'localizations': {
-                'en': {'stringUnit': {'state': 'translated', 'value': e.en}},
-                'ja': {'stringUnit': {'state': 'translated', 'value': e.ja}},
-            }
-        }
-    payload = {
-        'sourceLanguage': 'en',
-        'strings': strings,
-        'version': '1.0',
-    }
+def write_catalog(entries: list[Entry], *, apply: bool) -> bool:
+    existing = load_catalog_json()
+    payload = build_catalog_payload(entries, existing=existing)
+    changed = existing is None or canonical_json(existing) != canonical_json(payload)
+    if not changed:
+        return False
+    if not apply:
+        return True
     CATALOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     CATALOG_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    return True
 
 
 def validate_symbol_collisions(entries: list[Entry]) -> None:
@@ -280,8 +321,9 @@ def validate_symbol_collisions(entries: list[Entry]) -> None:
         raise SystemExit(1)
 
 
-def rewrite_metadata_files(entries: list[Entry]) -> None:
+def rewrite_metadata_files(entries: list[Entry], *, apply: bool) -> bool:
     symbol_by_key = {e.key: e.symbol for e in entries}
+    changed_any = False
 
     for path in sorted(SCREEN_DIR.rglob('*.swift')):
         if 'Root' in str(path) or 'TagPicker' in str(path):
@@ -309,10 +351,22 @@ def rewrite_metadata_files(entries: list[Entry]) -> None:
 
         new_text = ''.join(parts)
         if new_text != text:
-            path.write_text(new_text, encoding='utf-8')
+            changed_any = True
+            if apply:
+                path.write_text(new_text, encoding='utf-8')
+
+    return changed_any
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--check',
+        action='store_true',
+        help='Validate synchronization without writing files (ignores JSON formatting/key order differences).'
+    )
+    args = parser.parse_args()
+
     ja_to_en, semantic_existing = parse_existing_catalog()
     entries, errors = metadata_entries(ja_to_en=ja_to_en, semantic_existing=semantic_existing)
     if errors:
@@ -321,9 +375,21 @@ def main() -> int:
             print(e, file=sys.stderr)
         return 1
 
-    rewrite_metadata_files(entries)
-    write_catalog(entries)
+    metadata_changed = rewrite_metadata_files(entries, apply=not args.check)
+    catalog_changed = write_catalog(entries, apply=not args.check)
     validate_symbol_collisions(entries)
+
+    if args.check:
+        if metadata_changed or catalog_changed:
+            print('Localization sync check failed: semantic drift detected.')
+            if metadata_changed:
+                print('- @Metadata references are out of sync.')
+            if catalog_changed:
+                print('- Localizable.xcstrings semantic content is out of sync.')
+            return 1
+        print('Localization sync check passed.')
+        return 0
+
     print(f'Wrote {CATALOG_PATH} with {len(entries)} keys')
     print('Using Xcode-generated type-safe symbols from Localizable.xcstrings')
     return 0
