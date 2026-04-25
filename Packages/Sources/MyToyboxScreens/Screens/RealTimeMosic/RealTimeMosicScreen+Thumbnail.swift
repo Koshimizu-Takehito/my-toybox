@@ -5,7 +5,7 @@ extension RealTimeMosicScreen {
         Image("waterwheel", bundle: .module)
             .resizable()
             .scaledToFill()
-            .layerEffect(.mosic, maxSampleOffset: .zero)
+            .layerEffect(.mosic, maxSampleOffset: CGSize(width: 4, height: 4))
     }
 }
 

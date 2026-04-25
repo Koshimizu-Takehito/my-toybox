@@ -1,42 +1,29 @@
 import AVFoundation
 import CoreImage
+import QuartzCore
 
 /// An observable video provider that pulls frames from `AVPlayer` for use in SwiftUI.
 ///
-/// `VideoImageProvider` is responsible for:
-/// - Loading a remote video asset
-/// - Driving playback via `AVPlayer`
-/// - Extracting frames using `AVPlayerItemVideoOutput`
-/// - Providing the latest frame as a `CGImage`
-/// - Tracking duration and current playback time
-/// - Exposing a normalized progress value suitable for scrubbing with a slider
+/// The provider drives the playback pipeline through a single linear async task,
+/// so state transitions are deterministic and resource ownership is easy to reason
+/// about: cancelling the task is equivalent to tearing the pipeline down.
 @MainActor
 @Observable
 final class VideoImageProvider {
+    /// The externally visible state of the playback pipeline.
+    enum State: Equatable {
+        case idle
+        case loading
+        case playing
+        case paused
+        case failed(String)
+    }
+
     /// The most recent video frame as a `CGImage`.
-    ///
-    /// This value is updated on every display refresh when a new pixel buffer
-    /// is available from `AVPlayerItemVideoOutput`.
     private(set) var image: CGImage?
 
-    /// A Boolean value that indicates whether playback is currently paused.
-    ///
-    /// Updating this property also pauses or resumes the associated
-    /// display link so that frame extraction is aligned with playback.
-    private(set) var isPaused: Bool = false {
-        didSet {
-            #if os(iOS) || os(tvOS)
-            displayLink?.isPaused = isPaused
-            #else
-            if isPaused {
-                displayLink?.invalidate()
-                displayLink = nil
-            } else {
-                makeDisplayLinkIfNeeded()
-            }
-            #endif
-        }
-    }
+    /// The current lifecycle state of the video pipeline.
+    private(set) var state: State = .idle
 
     /// The total duration of the loaded video, in seconds.
     private(set) var duration: Double = 0
@@ -44,44 +31,20 @@ final class VideoImageProvider {
     /// The current playback time, in seconds.
     private(set) var currentTime: Double = 0
 
-    /// The Core Image context used to convert pixel buffers into `CGImage` values.
-    private let context = CIContext()
-
-    /// The remote video URL used to create the `AVPlayerItem`.
-    private let url: URL
-
-    /// The underlying `AVPlayer` instance that manages playback.
-    @ObservationIgnored private var player: AVPlayer?
-
-    /// The video output used to pull decoded frames from the player item.
-    @ObservationIgnored private var output: AVPlayerItemVideoOutput!
-
-    /// A key-value observation used to detect when the player item becomes ready to play.
-    @ObservationIgnored private var observer: NSKeyValueObservation?
-
-    /// A display link that synchronizes frame extraction with the screen refresh rate.
-    ///
-    /// The display link is created lazily when the player item becomes ready
-    /// and is invalidated when ``stop()`` is called or when the provider
-    /// is deallocated.
-    #if os(iOS) || os(tvOS)
-    @ObservationIgnored private var displayLink: CADisplayLink?
-    #else
-    @ObservationIgnored private var displayLink: Timer?
-    #endif
+    /// A Boolean value that indicates whether playback is currently paused.
+    var isPaused: Bool {
+        switch state {
+        case .playing: false
+        default: true
+        }
+    }
 
     /// The audio volume applied to the underlying player.
-    ///
-    /// Valid values are in the range `0.0` (muted) to `1.0` (full volume).
-    var volume: Float = 1.00 {
+    var volume: Float = 1.0 {
         didSet { player?.volume = volume }
     }
 
     /// A normalized progress value for the current playback position.
-    ///
-    /// The value is in the range `0.0...1.0` and is derived from
-    /// ``currentTime`` and ``duration``. Assigning a new value
-    /// seeks the player to the corresponding position.
     var progress: Double {
         get {
             guard duration > 0 else { return 0 }
@@ -89,193 +52,236 @@ final class VideoImageProvider {
         }
         set {
             guard duration > 0 else { return }
-            let clamped = max(0, min(1, newValue))
-            let seconds = clamped * duration
-            seek(to: seconds)
+            seek(to: max(0, min(1, newValue)) * duration)
         }
     }
 
-    /// Creates a new video provider for the specified URL.
-    ///
-    /// The actual loading and playback setup is performed by calling ``start()``.
-    ///
-    /// - Parameter url: The remote video URL to load and play.
+    private let context = CIContext()
+    private let url: URL
+
+    @ObservationIgnored private var player: AVPlayer?
+    @ObservationIgnored private var output: AVPlayerItemVideoOutput?
+    @ObservationIgnored private var playbackTask: Task<Void, Never>?
+
+    #if os(iOS) || os(tvOS)
+    @ObservationIgnored private var displayLink: CADisplayLink?
+    #else
+    @ObservationIgnored private var displayLink: Timer?
+    #endif
+
     init(url: URL) {
         self.url = url
     }
 
-    /// Cleans up playback resources when the provider is deallocated.
-    ///
-    /// The display link is invalidated, the player is paused, and any
-    /// KVO observers are invalidated.
     isolated deinit {
-        displayLink?.invalidate()
-        player?.pause()
-        observer?.invalidate()
+        playbackTask?.cancel()
+        teardown()
     }
 
-    /// Pauses video playback.
-    ///
-    /// This method does nothing if the player has not been created yet.
-    func pause() {
-        player?.pause()
-        isPaused = true
+    // MARK: - Public control
+
+    /// Starts the playback pipeline. Idempotent: calling again while already running
+    /// is a no-op until ``stop()`` is invoked.
+    func start() {
+        guard playbackTask == nil else { return }
+
+        state = .loading
+        image = nil
+        duration = 0
+        currentTime = 0
+
+        playbackTask = Task { [weak self] in
+            guard let self else { return }
+            await runPlayback()
+        }
     }
 
-    /// Stops playback and releases underlying playback resources.
-    ///
-    /// This method invalidates the display link, removes the KVO observer,
-    /// pauses the player, and releases the player instance. After calling
-    /// this method, you can call ``start()`` again to recreate the pipeline.
+    /// Cancels the playback pipeline and releases all resources.
     func stop() {
-        displayLink?.invalidate()
-        displayLink = nil
-        observer?.invalidate()
-        observer = nil
-        player?.pause()
-        player = nil
+        playbackTask?.cancel()
+        playbackTask = nil
+        teardown()
+        state = .idle
     }
 
-    /// Starts or resumes video playback.
-    ///
-    /// If the player has not been created yet, this method initializes it
-    /// and starts playback once the asset is ready. Otherwise, it simply
-    /// resumes playback from the current position.
+    /// Tears down a failed pipeline and rebuilds it from scratch.
+    func retry() {
+        stop()
+        start()
+    }
+
+    /// Resumes playback if it was paused. No-op while loading or in failure.
     func resume() {
         guard let player else {
-            return start()
+            if case .idle = state { start() }
+            return
         }
+        guard case .paused = state else { return }
         player.play()
-        isPaused = false
+        setDisplayLinkPaused(false)
+        state = .playing
     }
 
-    /// Toggles between playing and pausing the video.
+    /// Pauses playback if it is currently playing.
+    func pause() {
+        guard let player, case .playing = state else { return }
+        player.pause()
+        setDisplayLinkPaused(true)
+        state = .paused
+    }
+
+    /// Toggles between playing and pausing.
     func toggle() {
-        isPaused ? resume() : pause()
+        switch state {
+        case .playing: pause()
+        case .paused, .idle: resume()
+        case .loading, .failed: break
+        }
     }
 
     /// Resets playback to the beginning of the video.
-    ///
-    /// If the player has not been created yet, this method does nothing.
-    /// Use ``resume()`` afterwards to immediately start playback from the start.
     func reset() {
-        // If the player does not exist, there is nothing to reset.
         guard let player else { return }
-
-        // Seek to the beginning (0 seconds).
-        player.seek(to: .zero)
-        currentTime = .zero
+        let zero = CMTime.zero
+        currentTime = 0
+        player.seek(to: zero, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
+            Task { @MainActor in
+                self?.copyFrame(at: zero)
+            }
+        }
     }
 
     /// Seeks the player to the specified time.
-    ///
-    /// - Parameter seconds: The new playback time in seconds.
     func seek(to seconds: Double) {
         guard let player else { return }
         let time = CMTime(seconds: seconds, preferredTimescale: 600)
-        player.seek(to: time, toleranceBefore: .zero, toleranceAfter: .zero)
         currentTime = seconds
+        player.seek(to: time, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
+            Task { @MainActor in
+                self?.copyFrame(at: time)
+            }
+        }
     }
 
-    /// Creates and configures the underlying `AVPlayer` and its video output.
-    ///
-    /// This method is typically called once when the view appears. It sets up
-    /// the player item, video output, and KVO observer used to detect when
-    /// the asset becomes ready for playback. Once ready, a display link is
-    /// created and playback begins.
-    func start() {
-        guard player == nil else {
-            return resume()
-        }
-        let item = AVPlayerItem(url: url)
-        player = AVPlayer(playerItem: item)
-        player?.volume = volume
+    // MARK: - Pipeline
 
-        let output = AVPlayerItemVideoOutput(outputSettings: [
-            AVVideoAllowWideColorKey: true,
-            AVVideoColorPropertiesKey: [
-                AVVideoColorPrimariesKey: AVVideoColorPrimaries_P3_D65,
-                AVVideoTransferFunctionKey: AVVideoTransferFunction_Linear,
-                AVVideoYCbCrMatrixKey: AVVideoYCbCrMatrix_ITU_R_2020,
-            ],
-            kCVPixelBufferPixelFormatTypeKey as String: NSNumber(
-                value: kCVPixelFormatType_64RGBAHalf
-            ),
-        ])
-        self.output = output
-        observer = item.observe(\.status, options: [.new, .old], changeHandler: { item, _ in
-            guard item.status == .readyToPlay else {
+    private func runPlayback() async {
+        do {
+            let asset = AVURLAsset(url: url)
+            let (isPlayable, loadedDuration) = try await asset.load(.isPlayable, .duration)
+            try Task.checkCancellation()
+            guard isPlayable else {
+                state = .failed("The video is not playable on this device.")
                 return
             }
+
+            let output = AVPlayerItemVideoOutput(outputSettings: [
+                AVVideoAllowWideColorKey: true,
+                AVVideoColorPropertiesKey: [
+                    AVVideoColorPrimariesKey: AVVideoColorPrimaries_P3_D65,
+                    AVVideoTransferFunctionKey: AVVideoTransferFunction_Linear,
+                    AVVideoYCbCrMatrixKey: AVVideoYCbCrMatrix_ITU_R_2020,
+                ],
+                kCVPixelBufferPixelFormatTypeKey as String: NSNumber(
+                    value: kCVPixelFormatType_64RGBAHalf
+                ),
+            ])
+            let item = AVPlayerItem(asset: asset)
             item.add(output)
-            MainActor.assumeIsolated {
-                Task {
-                    self.duration = try await item.asset.load(.duration).seconds
-                }
-                self.currentTime = 0
-                self.makeDisplayLinkIfNeeded()
-                self.resume()
-            }
-        })
+
+            let player = AVPlayer(playerItem: item)
+            player.volume = volume
+            player.automaticallyWaitsToMinimizeStalling = true
+
+            // Pipeline ownership transfers to `self` here. Subsequent teardown
+            // is the responsibility of `stop()` / `pause()` / `fail`-path below.
+            self.output = output
+            self.player = player
+            duration = loadedDuration.seconds.isFinite && loadedDuration.seconds > 0
+                ? loadedDuration.seconds : 0
+
+            makeDisplayLink()
+            player.play()
+            state = .playing
+        } catch is CancellationError {
+            // Cancelled via stop(); resources (if any) are torn down by stop() itself.
+        } catch {
+            teardown()
+            state = .failed("The video could not be loaded: \(error.localizedDescription)")
+        }
     }
 
-    /// Lazily creates and registers the display link used for frame extraction.
-    ///
-    /// The display link is added to the main run loop with the `.common` mode
-    /// and configured to call ``copyPixelBuffers(link:)`` on every screen refresh.
-    private func makeDisplayLinkIfNeeded() {
+    private func teardown() {
+        displayLink?.invalidate()
+        displayLink = nil
+        player?.pause()
+        player = nil
+        output = nil
+    }
+
+    // MARK: - Frame clock
+
+    private func makeDisplayLink() {
         guard displayLink == nil else { return }
         #if os(iOS) || os(tvOS)
         let link = CADisplayLink(
             target: self,
-            selector: #selector(copyPixelBuffers(link:))
+            selector: #selector(displayLinkFired(link:))
         )
         link.add(to: .main, forMode: .common)
         displayLink = link
         #else
-        // On macOS, use a Timer as a simple alternative to CADisplayLink
         let timer = Timer.scheduledTimer(withTimeInterval: 1.0 / 60.0, repeats: true) { [weak self] _ in
             Task { @MainActor in
-                self?.copyPixelBuffers()
+                self?.copyPixelBuffer(hostTime: CACurrentMediaTime())
             }
         }
         displayLink = timer
         #endif
     }
 
-    #if os(iOS) || os(tvOS)
-    /// Copies the latest video frame from the player into ``image``.
-    ///
-    /// This method is invoked on every screen refresh by the display link.
-    /// When a new pixel buffer is available, it is converted into a `CGImage`
-    /// via Core Image and published to SwiftUI. The current playback time is
-    /// also updated from the underlying player.
-    ///
-    /// - Parameter link: The display link that triggered this callback.
-    @objc private func copyPixelBuffers(link: CADisplayLink) {
-        let time = output.itemTime(forHostTime: link.timestamp)
-        let hasBuffer = output.hasNewPixelBuffer(forItemTime: time)
-        if hasBuffer, let buffer = output.copyPixelBuffer(forItemTime: time, itemTimeForDisplay: nil) {
-            let image = CIImage(cvPixelBuffer: buffer)
-            self.image = context.createCGImage(image, from: image.extent)
-            if let player {
-                currentTime = player.currentTime().seconds
-            }
+    private func setDisplayLinkPaused(_ paused: Bool) {
+        #if os(iOS) || os(tvOS)
+        displayLink?.isPaused = paused
+        #else
+        if paused {
+            displayLink?.invalidate()
+            displayLink = nil
+        } else {
+            makeDisplayLink()
         }
+        #endif
     }
-    #else
-    /// Copies the latest video frame from the player into ``image``.
-    ///
-    /// On macOS, this method is called by a Timer instead of CADisplayLink.
-    private func copyPixelBuffers() {
-        guard let player else { return }
-        let time = player.currentTime()
-        let hasBuffer = output.hasNewPixelBuffer(forItemTime: time)
-        if hasBuffer, let buffer = output.copyPixelBuffer(forItemTime: time, itemTimeForDisplay: nil) {
-            let image = CIImage(cvPixelBuffer: buffer)
-            self.image = context.createCGImage(image, from: image.extent)
-            currentTime = time.seconds
-        }
+
+    #if os(iOS) || os(tvOS)
+    @objc private func displayLinkFired(link: CADisplayLink) {
+        copyPixelBuffer(hostTime: link.timestamp)
     }
     #endif
+
+    private func copyPixelBuffer(hostTime: CFTimeInterval) {
+        guard let player, let output else { return }
+
+        let current = player.currentTime().seconds
+        if current.isFinite {
+            currentTime = current
+        }
+
+        let itemTime = output.itemTime(forHostTime: hostTime)
+        guard itemTime.isValid, output.hasNewPixelBuffer(forItemTime: itemTime) else {
+            return
+        }
+        copyFrame(at: itemTime)
+    }
+
+    private func copyFrame(at itemTime: CMTime) {
+        guard let output else { return }
+        guard let buffer = output.copyPixelBuffer(forItemTime: itemTime, itemTimeForDisplay: nil) else {
+            return
+        }
+        let ciImage = CIImage(cvPixelBuffer: buffer)
+        if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
+            image = cgImage
+        }
+    }
 }

@@ -16,8 +16,7 @@ jobs:
 
       - name: Validate localization sync
         run: |
-          python3 Scripts/sync_screen_localization.py
-          git diff --exit-code
+          python3 Scripts/sync_screen_localization.py --check
 
       - name: Set up Xcode 26.4
         uses: maxim-lobanov/setup-xcode@v1

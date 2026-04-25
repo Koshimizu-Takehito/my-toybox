@@ -39,6 +39,7 @@ let package = Package(
             name: "MyToyboxScreens",
             dependencies: [
                 "MyToyboxCore",
+                .target(name: "MyToyboxScreensUIKit", condition: .when(platforms: [.iOS])),
                 .product(name: "MetadatasMacros", package: "MetadatasMacros"),
                 .product(name: "ScreenMacros", package: "ScreenMacros"),
             ],
@@ -52,6 +53,16 @@ let package = Package(
             ],
             plugins: [
                 .plugin(name: "BuildMetalShaders"),
+            ]
+        ),
+
+        // MARK: - iOS-only UIKit resources
+        .target(
+            name: "MyToyboxScreensUIKit",
+            dependencies: [],
+            path: "Sources/MyToyboxScreensUIKit",
+            resources: [
+                .process("Resources"),
             ]
         ),
 
