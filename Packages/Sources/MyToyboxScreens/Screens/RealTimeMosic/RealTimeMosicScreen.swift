@@ -39,7 +39,10 @@ struct RealTimeMosicScreen: View {
     var body: some View {
         screen()
             .overlay(content: mosaicBar)
-            .onTapGesture { showsControls.toggle() }
+            .onTapGesture {
+                guard provider.image != nil else { return }
+                showsControls.toggle()
+            }
             .overlay(content: control)
             .onGeometryChange(for: CGSize.self, of: \.size) { size = $1 }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -62,7 +65,35 @@ struct RealTimeMosicScreen: View {
                 .scaledToFit()
                 .modifier(MosaicEffect(isOn: isOn, offset: barOffset / max(size.width, 1) + 0.5))
         } else {
+            placeholder()
+        }
+    }
+
+    /// Renders loading and error states before decoded frames are available.
+    @ViewBuilder
+    private func placeholder() -> some View {
+        ZStack {
             Rectangle().foregroundStyle(.background)
+
+            switch provider.state {
+            case .idle, .loading, .playing, .paused:
+                ProgressView {
+                    Text(verbatim: "Loading Video")
+                }
+            case let .failed(message):
+                VStack(spacing: 12) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.largeTitle)
+                    Text(verbatim: "Video Unavailable")
+                        .font(.headline)
+                    Text(message)
+                        .font(.caption)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
+                    Button("Retry", systemImage: "arrow.clockwise", action: provider.retry)
+                }
+                .padding()
+            }
         }
     }
 
@@ -73,24 +104,26 @@ struct RealTimeMosicScreen: View {
     /// mosaic shader so that the shader can adjust where the effect is applied.
     @ViewBuilder
     private func mosaicBar() -> some View {
-        Color.red
-            .opacity(isOn ? 1.0 : 0.0)
-            .frame(width: 2)
-            .padding(.horizontal)
-            .contentShape(.rect)
-            .offset(x: barOffset)
-            .gesture(
-                DragGesture()
-                    .onChanged { value in
-                        // Drag from the original offset plus the translation.
-                        barOffset = barStartOffset + value.translation.width
-                        barOffset = min(max(-size.width / 2, barOffset), size.width / 2)
-                    }
-                    .onEnded { _ in
-                        // Persist the offset as the new baseline for the next drag.
-                        barStartOffset = barOffset
-                    }
-            )
+        if provider.image != nil {
+            Color.red
+                .opacity(isOn ? 1.0 : 0.0)
+                .frame(width: 2)
+                .padding(.horizontal)
+                .contentShape(.rect)
+                .offset(x: barOffset)
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            // Drag from the original offset plus the translation.
+                            barOffset = barStartOffset + value.translation.width
+                            barOffset = min(max(-size.width / 2, barOffset), size.width / 2)
+                        }
+                        .onEnded { _ in
+                            // Persist the offset as the new baseline for the next drag.
+                            barStartOffset = barOffset
+                        }
+                )
+        }
     }
 
     /// Renders the playback controls and scrubber overlay.
@@ -189,7 +222,7 @@ struct MosaicEffect: ViewModifier {
     var offset: Double
 
     func body(content: Content) -> some View {
-        content.layerEffect(shader(), maxSampleOffset: .zero)
+        content.layerEffect(shader(), maxSampleOffset: CGSize(width: scale, height: scale))
     }
 
     /// Creates a shader for the current configuration.
@@ -200,9 +233,13 @@ struct MosaicEffect: ViewModifier {
     ///
     /// - Returns: A configured `Shader` instance.
     private func shader() -> Shader {
-        let scale = isOn ? 10.0 : 1.0
         let function = ShaderFunction(library: .module, name: "RealTimeMosicShader::main")
         return function(.boundingRect, .float(scale), .float(offset))
+    }
+
+    /// The sampling radius required by the mosaic shader.
+    private var scale: Double {
+        isOn ? 10.0 : 1.0
     }
 }
 
