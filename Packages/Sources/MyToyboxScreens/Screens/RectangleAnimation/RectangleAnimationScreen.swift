@@ -39,7 +39,7 @@ struct RectangleAnimationScreen: View {
             }
             .id(geometry.size)
             .background(Color(red: 0.137, green: 0.137, blue: 0.137))
-            .ignoresSafeArea()
+            .backgroundExtensionEffect()
         }
     }
 }

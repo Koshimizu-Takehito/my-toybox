@@ -60,7 +60,7 @@ private struct AnimatableShaderView: View {
                         .shadow(radius: 4)
                         .shadow(radius: 5)
                 }
-                .ignoresSafeArea()
+                .backgroundExtensionEffect()
         }
     }
 

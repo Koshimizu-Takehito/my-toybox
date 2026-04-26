@@ -9,11 +9,11 @@ struct TileAnimationScreen: View {
     var body: some View {
         if let viewModel {
             ContentView(viewModel: viewModel, lineWidth: 16)
-                .ignoresSafeArea()
+                .backgroundExtensionEffect()
                 .id([viewModel.row, viewModel.column])
         } else {
             Color.clear
-                .ignoresSafeArea()
+                .backgroundExtensionEffect()
                 .onGeometryChange(for: CGSize.self, of: \.size) { _, size in
                     setup(with: size)
                 }
@@ -59,7 +59,7 @@ private extension TileAnimationScreen {
                 }
                 .scaledToFit()
                 .foregroundStyle(.blue)
-                .ignoresSafeArea()
+                .backgroundExtensionEffect()
                 .animation(.spring(duration: 0.8), value: viewModel.rotations)
                 .onChange(of: interval, initial: true) { _, interval in
                     if interval > 1 {

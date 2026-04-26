@@ -20,7 +20,7 @@ struct ShineScreen: View {
                 .colorEffect(.shine(time: seconds))
         }
         // Extend the effect to fill the entire screen
-        .ignoresSafeArea()
+        .backgroundExtensionEffect()
     }
 }
 

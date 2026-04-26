@@ -30,7 +30,7 @@ struct CosmicWebScreen: View {
             // The current time, used to animate the shader pattern.
             let time = context.date.timeIntervalSinceReferenceDate
             Rectangle()
-                .ignoresSafeArea()
+                .backgroundExtensionEffect()
                 .layerEffect(.cosmicWeb(time: time), maxSampleOffset: .zero)
         }
     }

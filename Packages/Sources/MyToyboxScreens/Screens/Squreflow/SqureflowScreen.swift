@@ -16,7 +16,7 @@ struct SqureflowScreen: View {
                 }
             }
         }
-        .ignoresSafeArea()
+        .backgroundExtensionEffect()
     }
 }
 

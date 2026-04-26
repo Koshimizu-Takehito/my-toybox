@@ -12,7 +12,7 @@ struct WaveParticleScreen: View {
             Rectangle()
                 .colorEffect(.waveParticle(time: time))
         }
-        .ignoresSafeArea()
+        .backgroundExtensionEffect()
     }
 }
 

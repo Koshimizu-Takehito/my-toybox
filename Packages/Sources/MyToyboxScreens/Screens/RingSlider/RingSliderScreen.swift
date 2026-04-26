@@ -13,7 +13,7 @@ struct RingSliderScreen: View {
             // Background color with hue rotation based on slider value
             Color(hue: 1, saturation: 0.3, brightness: 1)
                 .hueRotation(.degrees(360 * ratio))
-                .ignoresSafeArea()
+                .backgroundExtensionEffect()
 
             // The interactive ring slider
             RingSlider(ratio: $ratio)

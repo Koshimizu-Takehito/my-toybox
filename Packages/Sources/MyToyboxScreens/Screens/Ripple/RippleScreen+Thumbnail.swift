@@ -48,5 +48,5 @@ private struct IsEnabledModifier<M: ViewModifier>: ViewModifier {
 
 #Preview {
     RippleScreen.thumbnail
-        .ignoresSafeArea()
+        .backgroundExtensionEffect()
 }

@@ -21,7 +21,7 @@ struct MonotoneMapScreen: View {
             .overlay {
                 // This overlay desaturates the underlying map using blend mode.
                 Rectangle()
-                    .ignoresSafeArea()
+                    .backgroundExtensionEffect()
                     .blendMode(.saturation)
                     .allowsHitTesting(false)
             }

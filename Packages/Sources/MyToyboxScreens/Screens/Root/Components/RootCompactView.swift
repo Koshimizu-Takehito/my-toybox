@@ -11,6 +11,8 @@ struct RootCompactView: View {
     var body: some View {
         NavigationStack {
             RootSidebarView(screens: screens)
+                // Compact layouts keep the richer row style with leading previews.
+                .environment(\.rootCellStyle, .previewLeading)
         }
     }
 }
