@@ -1,0 +1,20 @@
+Toybox is a hand-crafted showcase of SwiftUI animations and Metal shader experiments — a small sandbox where each screen is an interactive visual idea you can open, run, and play with.
+
+Open the app and you're greeted with a list of screens. Tap one and a self-contained piece comes to life: cellular automata, generative patterns, particle waves, mosaics, badge animations, the Apple logo reimagined, and many more. Every screen is a single, focused experiment built with modern SwiftUI and, where it makes sense, custom Metal shaders.
+
+What's inside
+• Dozens of bite-sized visual experiments
+• SwiftUI animations built on the latest APIs
+• GPU-driven effects written in Metal Shading Language
+• Adaptive layout that feels at home on iPhone, iPad, and Mac
+• Tag-based filtering to find effects by category
+
+Who it's for
+Designers looking for a moodboard of motion and graphics ideas. Developers studying how a particular SwiftUI or Metal technique is put together. Anyone who simply enjoys playing with visual toys.
+
+Built with
+• SwiftUI and the @Observable model
+• Metal shaders compiled by a Swift Package Manager build plugin
+• A modular, package-driven architecture
+
+Toybox is open-source and growing — new screens are added regularly. If you're curious about what modern Apple platforms can do visually, open it up and start tapping.

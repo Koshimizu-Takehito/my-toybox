@@ -1,0 +1,63 @@
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    key_path = ENV["ASC_KEY_PATH"] || Dir[File.expand_path("AuthKey_*.p8", __dir__)].first
+    UI.user_error!("ASC API key (.p8) not found under fastlane/. Set ASC_KEY_PATH or place AuthKey_*.p8 there.") if key_path.nil?
+    UI.user_error!("ASC_KEY_ID is not set.") if ENV["ASC_KEY_ID"].to_s.empty?
+    UI.user_error!("ASC_ISSUER_ID is not set.") if ENV["ASC_ISSUER_ID"].to_s.empty?
+
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: key_path,
+      in_house: false,
+    )
+  end
+
+  desc "Download current metadata and screenshots from App Store Connect"
+  lane :pull do
+    require "json"
+    require "tmpdir"
+
+    # `deliver download_metadata` / `download_screenshots` are CLI subcommands that
+    # spawn a fresh Ruby process, so the API key set in `before_all` doesn't carry
+    # over. Materialize it into a temporary JSON file and hand it to the child
+    # process via `--api_key_path`.
+    key_path = ENV["ASC_KEY_PATH"] || Dir[File.expand_path("AuthKey_*.p8", __dir__)].first
+
+    Dir.mktmpdir do |tmp|
+      json_path = File.join(tmp, "asc_api_key.json")
+      File.write(json_path, JSON.generate(
+        key_id: ENV["ASC_KEY_ID"],
+        issuer_id: ENV["ASC_ISSUER_ID"],
+        key: File.read(key_path),
+        duration: 1200,
+        in_house: false,
+      ))
+      sh("cd .. && bundle exec fastlane deliver download_metadata --force --api_key_path '#{json_path}'")
+      sh("cd .. && bundle exec fastlane deliver download_screenshots --force --api_key_path '#{json_path}'")
+    end
+  end
+
+  desc "Upload metadata, screenshots, and release notes (no binary)"
+  lane :push do
+    deliver(
+      skip_binary_upload: true,
+      skip_metadata: false,
+      skip_screenshots: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: true,
+      submit_for_review: false,
+      automatic_release: false,
+    )
+  end
+
+  desc "Validate local metadata without uploading"
+  lane :precheck_metadata do
+    precheck(
+      include_in_app_purchases: false,
+    )
+  end
+end
