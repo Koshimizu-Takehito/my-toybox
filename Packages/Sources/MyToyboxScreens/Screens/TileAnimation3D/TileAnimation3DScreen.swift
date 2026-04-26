@@ -23,7 +23,7 @@ struct TileAnimation3DScreen: View {
             viewModel = ViewModel(row: row, column: column)
             lineWidth = min(size.height, size.width) / Double(min(row, column)) / 5
         }
-        .ignoresSafeArea()
+        .backgroundExtensionEffect()
     }
 }
 

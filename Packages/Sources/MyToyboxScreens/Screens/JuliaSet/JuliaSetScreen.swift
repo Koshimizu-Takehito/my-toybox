@@ -45,7 +45,7 @@ private struct JuliaSetGestureView: View {
                     .gesture(dragGesture(size: size))
                     .gesture(magnification)
             }
-            .ignoresSafeArea()
+            .backgroundExtensionEffect()
 
             VStack {
                 Spacer()

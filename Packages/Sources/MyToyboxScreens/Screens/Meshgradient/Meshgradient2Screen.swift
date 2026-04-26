@@ -46,7 +46,7 @@ struct Meshgradient2Screen: View {
             .fontWeight(.semibold)
             .background {
                 Color.black
-                    .ignoresSafeArea()
+                    .backgroundExtensionEffect()
             }
             .onChange(of: colors.count) { _, _ in
                 offsets = [CGSize](repeating: .zero, count: colors.count * colors.count)
@@ -175,7 +175,7 @@ struct MeshView: View {
                     offsets = [CGSize](repeating: .zero, count: width * height)
                 }
             }
-            .ignoresSafeArea()
+            .backgroundExtensionEffect()
         }
     }
 

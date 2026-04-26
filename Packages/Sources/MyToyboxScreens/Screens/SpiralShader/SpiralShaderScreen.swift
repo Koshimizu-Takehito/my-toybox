@@ -14,7 +14,7 @@ struct SpiralShaderScreen: View {
             Rectangle()
                 .colorEffect(.spiral(scale: scale))
                 .foregroundStyle(.red.mix(with: .white, by: 0.3))
-                .ignoresSafeArea()
+                .backgroundExtensionEffect()
         }
     }
 }

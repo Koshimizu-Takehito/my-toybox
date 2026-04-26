@@ -23,7 +23,7 @@ struct ArchimedesSpiralScreen: View {
             // Reset the animation by setting a new start time.
             start = .now
         }
-        .ignoresSafeArea()
+        .backgroundExtensionEffect()
     }
 }
 

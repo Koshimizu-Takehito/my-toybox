@@ -10,7 +10,7 @@ import SwiftUI
 struct RandomMetaballDemoScreen: View {
     var body: some View {
         RandomMetaball2DView(particleCount: 50)
-            .ignoresSafeArea()
+            .backgroundExtensionEffect()
     }
 }
 

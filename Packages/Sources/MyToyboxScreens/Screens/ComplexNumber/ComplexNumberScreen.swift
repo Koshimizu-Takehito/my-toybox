@@ -9,7 +9,7 @@ struct ComplexNumberScreen: View {
 
     var body: some View {
         ComplexShaderView(shaderMode: shaderMode, functionIndex: selection.rawValue)
-            .ignoresSafeArea()
+            .backgroundExtensionEffect()
             .overlay(content: picker)
             .toolbar(content: menu)
     }

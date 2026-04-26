@@ -1,6 +1,35 @@
 import MyToyboxCore
 import SwiftUI
 
+// MARK: - RootCellStyle
+
+/// Visual variants for a root list row.
+///
+/// The style controls whether the cell shows a leading preview thumbnail
+/// or renders as text-only.
+enum RootCellStyle {
+    /// Text-focused row style without a leading preview.
+    case textOnly
+    /// Row style that shows a leading preview thumbnail.
+    case previewLeading
+
+    /// Returns whether the style renders a leading preview.
+    var showsLeadingPreview: Bool {
+        switch self {
+        case .textOnly:
+            false
+        case .previewLeading:
+            true
+        }
+    }
+}
+
+/// Environment value used by `RootCell` to resolve its visual style.
+extension EnvironmentValues {
+    /// The current style applied to root list cells.
+    @Entry var rootCellStyle: RootCellStyle = .textOnly
+}
+
 // MARK: - RootCell
 
 /// A single row view used by the root screen list.
@@ -11,7 +40,8 @@ struct RootCell: View {
     let isScrolling: Bool
     /// Baseline row height used for square thumbnail sizing.
     @Environment(\.defaultMinListRowHeight) private var defaultMinListRowHeight
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    /// The style context that controls whether a leading preview is shown.
+    @Environment(\.rootCellStyle) private var style
 
     var body: some View {
         HStack(alignment: .top) {
@@ -27,8 +57,7 @@ struct RootCell: View {
 private extension RootCell {
     @ViewBuilder
     var thumbnailView: some View {
-#if os(iOS)
-        if horizontalSizeClass == .compact {
+        if style.showsLeadingPreview {
             ZStack {
                 Color.clear
                 screen.thumbnail
@@ -38,7 +67,6 @@ private extension RootCell {
             .frame(width: defaultMinListRowHeight, height: defaultMinListRowHeight)
             .clipShape(.rect(cornerRadius: 8))
         }
-#endif
     }
 
     var labelView: some View {

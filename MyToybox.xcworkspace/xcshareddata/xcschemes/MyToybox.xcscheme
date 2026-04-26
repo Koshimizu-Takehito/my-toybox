@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3A682A8E2D8D471000B110AC"
-               BuildableName = "MyToybox.app"
+               BuildableName = "Toybox.app"
                BlueprintName = "MyToybox"
                ReferencedContainer = "container:App/MyToybox.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3A682A8E2D8D471000B110AC"
-            BuildableName = "MyToybox.app"
+            BuildableName = "Toybox.app"
             BlueprintName = "MyToybox"
             ReferencedContainer = "container:App/MyToybox.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3A682A8E2D8D471000B110AC"
-            BuildableName = "MyToybox.app"
+            BuildableName = "Toybox.app"
             BlueprintName = "MyToybox"
             ReferencedContainer = "container:App/MyToybox.xcodeproj">
          </BuildableReference>

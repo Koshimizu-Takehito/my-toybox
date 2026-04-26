@@ -9,7 +9,7 @@ extension TileShaderScreen {
         Rectangle()
             .colorEffect(.tile(scale: scale))
             .foregroundStyle(.blue.mix(with: .white, by: 0.3))
-            .ignoresSafeArea()
+            .backgroundExtensionEffect()
     }
 }
 
