@@ -1,34 +1,48 @@
-# fastlane (App Store metadata only)
+fastlane documentation
+----
 
-このプロジェクトでは fastlane を **App Store Connect のメタデータ・スクリーンショット・リリースノート** の同期にのみ使う。
-ビルドとアップロードは XcodeCloud が担当しており、`build_app` / `upload_to_testflight` などのビルド系 lane は意図的に持たない。
+# Installation
 
-## ローカルでの初回セットアップ
+Make sure you have the latest version of the Xcode command line tools installed:
 
-1. App Store Connect → **Users and Access → Integrations → Keys** から API Key を取得し、`AuthKey_<KEYID>.p8` をこのディレクトリ直下に配置する（`.gitignore` で除外済）。
-2. リポジトリ直下の `.env.template` を `.env` にコピーし、Key ID / Issuer ID を埋める。`.env` は gitignore 済み。
-   ```sh
-   cp .env.template .env
-   $EDITOR .env   # ASC_KEY_ID, ASC_ISSUER_ID を記入
-   ```
-   （`make` がこの `.env` を自動 include するため、`export` は不要。）
-3. リポジトリ直下で `make fastlane-setup` を実行する。bundler 経由で fastlane が入り、ASC 側の現状メタデータが `fastlane/metadata/` と `fastlane/screenshots/` にダウンロードされる。
+```sh
+xcode-select --install
+```
 
-## 日常運用
+For _fastlane_ installation instructions, see [Installing _fastlane_](https://docs.fastlane.tools/#installing-fastlane)
 
-| 操作 | コマンド |
-|---|---|
-| ASC 側の最新を取り込む | `make metadata-pull` |
-| ローカル変更を検証する | `make metadata-precheck` |
-| ローカル変更を ASC に反映する | `make metadata-push` |
+# Available Actions
 
-## Lanes
+## iOS
 
-- `bundle exec fastlane pull` — メタデータとスクリーンショットを ASC からダウンロードする。
-- `bundle exec fastlane push` — メタデータ・スクリーンショット・リリースノートを ASC へアップロードする（バイナリは触らない）。
-- `bundle exec fastlane precheck_metadata` — ローカルファイルを ASC ガイドライン違反などについて検証する（アップロードしない）。
+### ios pull
 
-## CI
+```sh
+[bundle exec] fastlane ios pull
+```
 
-`.github/workflows/app-store-metadata.yml` から `workflow_dispatch` で同じ make ターゲットが叩ける。
-詳細はリポジトリ直下の `README.md` の「App Store メタデータ管理」セクションを参照。
+Download current metadata and screenshots from App Store Connect
+
+### ios push
+
+```sh
+[bundle exec] fastlane ios push
+```
+
+Upload metadata, screenshots, and release notes (no binary)
+
+### ios precheck_metadata
+
+```sh
+[bundle exec] fastlane ios precheck_metadata
+```
+
+Validate local metadata without uploading
+
+----
+
+This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
+
+More information about _fastlane_ can be found on [fastlane.tools](https://fastlane.tools).
+
+The documentation of _fastlane_ can be found on [docs.fastlane.tools](https://docs.fastlane.tools).
