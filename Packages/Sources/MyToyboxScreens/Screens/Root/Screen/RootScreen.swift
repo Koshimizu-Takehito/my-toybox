@@ -20,7 +20,6 @@ public struct RootScreen: View {
 
     public var body: some View {
         contentView
-            .tint(.white)
             // Force dark mode appearance 😎
             .preferredColorScheme(.dark)
             .environment(viewModel.tags)
