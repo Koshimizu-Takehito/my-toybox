@@ -136,6 +136,10 @@ xed .
 | `make format-check` | コードフォーマットをチェック（変更なし） |
 | `make fix` | コードをフォーマットし、自動修正を適用 |
 | `make clean` | ビルドアーティファクトを削除 |
+| `make fastlane-setup` | fastlane を導入し、ASC のメタデータを取得 |
+| `make metadata-pull` | App Store Connect から最新メタデータ・スクリーンショットを取得 |
+| `make metadata-precheck` | アップロードせずにメタデータを検証 |
+| `make metadata-push` | メタデータ・スクリーンショット・リリースノートを ASC へ反映 |
 
 ### 新規画面の作成
 
@@ -158,6 +162,34 @@ localization の検証/同期に失敗した場合、コマンドは失敗しま
 semantic key ルール、CI での強制、運用方針の詳細は以下を参照してください：
 
 - `LOCALIZATION_WORKFLOW.md`（英語）
+
+## App Store メタデータ管理
+
+ビルドのアップロードは **Xcode Cloud** が担当します。
+App Store Connect 側のメタデータ（説明文・キーワード・スクリーンショット・
+リリースノート等）は **fastlane `deliver` のメタデータ専用モード** で管理し、
+バイナリのアップロードは行いません。
+
+### ローカル運用
+
+1. App Store Connect API キー（`.p8`）を `fastlane/AuthKey_<KEYID>.p8` に配置（gitignore 済）。
+2. `cp .env.template .env` を作成し、`ASC_KEY_ID` / `ASC_ISSUER_ID` を記入（`.env` は gitignore 済み・`make` が自動 include）。
+3. `make fastlane-setup` で fastlane 導入＋ ASC 側現状を `fastlane/metadata/` `fastlane/screenshots/` に取得。
+4. 編集後、`make metadata-precheck` で検証 → `make metadata-push` で反映。
+
+詳細は `fastlane/README.md` を参照。
+
+### CI 運用（GitHub Actions）
+
+`.github/workflows/app-store-metadata.yml` から `workflow_dispatch` で同じ
+`make metadata-*` を手動実行できます。認証情報は `app-store-connect`
+Environment の secret に Required reviewers 付きで保管します。
+
+- `ASC_KEY_ID` — API Key ID
+- `ASC_ISSUER_ID` — Issuer ID
+- `ASC_KEY_BASE64` — `.p8` を `base64 -i AuthKey_XXX.p8` でエンコードしたもの
+
+`pull` モードを実行すると、ASC からの取り込み結果が `chore/metadata-pull` ブランチで develop に向けて自動 PR されます。
 
 ## 使い方
 
