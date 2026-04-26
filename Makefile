@@ -1,4 +1,11 @@
-.PHONY: clean help new-screen open setup sync lint lint-fix lint-strict format format-check fix
+.PHONY: clean help new-screen open setup sync lint lint-fix lint-strict format format-check fix fastlane-setup metadata-pull metadata-push metadata-precheck
+
+# Auto-load local environment variables (e.g. ASC_KEY_ID, ASC_ISSUER_ID)
+# from `.env` if present. `.env` is gitignored; copy `.env.template` to start.
+ifneq (,$(wildcard .env))
+include .env
+export
+endif
 
 # ============================================================================
 # Default target
@@ -18,6 +25,12 @@ help:
 	@echo "  make format-check                  - Check code formatting (no changes)"
 	@echo "  make fix                           - Format and auto-fix all code"
 	@echo "  make clean                         - Remove build artifacts"
+	@echo ""
+	@echo "App Store metadata (fastlane deliver):"
+	@echo "  make fastlane-setup                - Install fastlane and download current metadata from ASC"
+	@echo "  make metadata-pull                 - Pull latest metadata & screenshots from ASC"
+	@echo "  make metadata-precheck             - Validate local metadata without uploading"
+	@echo "  make metadata-push                 - Upload metadata, screenshots, and release notes to ASC"
 	@echo ""
 	@echo "Note: Metal shaders are automatically compiled by SPM plugins during build."
 
@@ -98,6 +111,31 @@ endif
 # ============================================================================
 open:
 	@xed .
+
+# ============================================================================
+# App Store metadata (fastlane deliver)
+# ============================================================================
+
+fastlane-setup: ## Install fastlane and pull current metadata from App Store Connect
+	@command -v bundle >/dev/null 2>&1 || (echo "❌ bundler is missing. Run: gem install bundler" && exit 1)
+	@echo "📦 Installing fastlane via bundler..."
+	@bundle install
+	@echo "🔐 Verifying App Store Connect API credentials..."
+	@test -n "$$ASC_KEY_ID"    || (echo "❌ ASC_KEY_ID is not set"    && exit 1)
+	@test -n "$$ASC_ISSUER_ID" || (echo "❌ ASC_ISSUER_ID is not set" && exit 1)
+	@ls fastlane/AuthKey_*.p8 >/dev/null 2>&1 || (echo "❌ fastlane/AuthKey_<KEYID>.p8 not found" && exit 1)
+	@echo "⬇️  Pulling current metadata & screenshots from App Store Connect..."
+	@bundle exec fastlane pull
+	@echo "✅ fastlane setup complete."
+
+metadata-pull: ## Pull latest metadata & screenshots from App Store Connect
+	@bundle exec fastlane pull
+
+metadata-precheck: ## Validate local metadata without uploading
+	@bundle exec fastlane precheck_metadata
+
+metadata-push: ## Upload metadata, screenshots, and release notes (no binary)
+	@bundle exec fastlane push
 
 # ============================================================================
 # Clean build artifacts

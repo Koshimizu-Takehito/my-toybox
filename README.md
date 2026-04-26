@@ -137,6 +137,10 @@ This project includes a `Makefile` for common development tasks:
 | `make format-check` | Check code formatting (no changes) |
 | `make fix` | Format and auto-fix all code |
 | `make clean` | Remove build artifacts |
+| `make fastlane-setup` | Install fastlane and pull current App Store metadata |
+| `make metadata-pull` | Pull latest metadata & screenshots from App Store Connect |
+| `make metadata-precheck` | Validate local metadata without uploading |
+| `make metadata-push` | Upload metadata, screenshots, and release notes to ASC |
 
 ### Creating a New Screen
 
@@ -158,6 +162,33 @@ make new-screen NAME=MyShaderEffect SHADER=yes
 For localization policy, semantic key rules, and CI enforcement details, see:
 
 - `LOCALIZATION_WORKFLOW.md`
+
+## App Store metadata management
+
+Builds are uploaded by **Xcode Cloud**. App Store Connect metadata
+(description, keywords, screenshots, release notes, etc.) is managed
+through **fastlane `deliver`** in metadata-only mode — no binary upload.
+
+### Local
+
+1. Place your App Store Connect API key as `fastlane/AuthKey_<KEYID>.p8` (gitignored).
+2. `cp .env.template .env` and fill in `ASC_KEY_ID` / `ASC_ISSUER_ID` (the `.env` file is gitignored and auto-loaded by `make`).
+3. Run `make fastlane-setup` to install fastlane and pull the current ASC metadata into `fastlane/metadata/` and `fastlane/screenshots/`.
+4. Edit, then `make metadata-precheck` and `make metadata-push`.
+
+See `fastlane/README.md` for details.
+
+### CI (GitHub Actions)
+
+Workflow `.github/workflows/app-store-metadata.yml` runs the same `make metadata-*`
+targets on demand via `workflow_dispatch`. Credentials are stored as Environment
+secrets under the `app-store-connect` environment with required reviewers:
+
+- `ASC_KEY_ID` — API Key ID
+- `ASC_ISSUER_ID` — Issuer ID
+- `ASC_KEY_BASE64` — `.p8` encoded with `base64 -i AuthKey_XXX.p8`
+
+`pull` mode opens an automated PR (`chore/metadata-pull`) against `develop`.
 
 ## How to Use
 

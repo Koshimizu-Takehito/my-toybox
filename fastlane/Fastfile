@@ -1,0 +1,42 @@
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    key_path = ENV["ASC_KEY_PATH"] || Dir[File.expand_path("AuthKey_*.p8", __dir__)].first
+    UI.user_error!("ASC API key (.p8) not found under fastlane/. Set ASC_KEY_PATH or place AuthKey_*.p8 there.") if key_path.nil?
+    UI.user_error!("ASC_KEY_ID is not set.") if ENV["ASC_KEY_ID"].to_s.empty?
+    UI.user_error!("ASC_ISSUER_ID is not set.") if ENV["ASC_ISSUER_ID"].to_s.empty?
+
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: key_path,
+      in_house: false,
+    )
+  end
+
+  desc "Download current metadata and screenshots from App Store Connect"
+  lane :pull do
+    sh("cd .. && bundle exec fastlane deliver download_metadata --force")
+    sh("cd .. && bundle exec fastlane deliver download_screenshots --force")
+  end
+
+  desc "Upload metadata, screenshots, and release notes (no binary)"
+  lane :push do
+    deliver(
+      skip_binary_upload: true,
+      skip_metadata: false,
+      skip_screenshots: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: true,
+      submit_for_review: false,
+      automatic_release: false,
+    )
+  end
+
+  desc "Validate local metadata without uploading"
+  lane :precheck_metadata do
+    precheck
+  end
+end

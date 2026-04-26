@@ -1,0 +1,69 @@
+name: app-store-metadata
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "fastlane action to run"
+        required: true
+        default: precheck
+        type: choice
+        options: [precheck, push, pull]
+
+concurrency:
+  group: app-store-metadata
+  cancel-in-progress: false
+
+jobs:
+  metadata:
+    runs-on: macos-26
+    environment: app-store-connect
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      ASC_KEY_ID:     ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID:  ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_BASE64: ${{ secrets.ASC_KEY_BASE64 }}
+      LC_ALL: en_US.UTF-8
+      LANG:   en_US.UTF-8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Restore App Store Connect API key from secret
+        run: |
+          mkdir -p fastlane
+          KEY_PATH="fastlane/AuthKey_${ASC_KEY_ID}.p8"
+          printf "%s" "$ASC_KEY_BASE64" | base64 --decode > "$KEY_PATH"
+          chmod 600 "$KEY_PATH"
+          echo "ASC_KEY_PATH=$(pwd)/$KEY_PATH" >> "$GITHUB_ENV"
+
+      - name: Run fastlane (${{ inputs.mode }})
+        run: |
+          case "${{ inputs.mode }}" in
+            precheck) make metadata-precheck ;;
+            push)     make metadata-push ;;
+            pull)     make metadata-pull ;;
+          esac
+
+      - name: Open PR with pulled metadata changes
+        if: ${{ inputs.mode == 'pull' }}
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/metadata-pull
+          base: develop
+          commit-message: "chore(metadata): sync from App Store Connect"
+          title: "chore(metadata): sync from App Store Connect"
+          body: |
+            App Store Connect 上の現状メタデータ・スクリーンショットを取り込みました。
+            自動生成 PR (workflow: app-store-metadata, mode: pull)。
+
+      - name: Cleanup API key
+        if: always()
+        run: |
+          rm -f "fastlane/AuthKey_${ASC_KEY_ID}.p8" || true
