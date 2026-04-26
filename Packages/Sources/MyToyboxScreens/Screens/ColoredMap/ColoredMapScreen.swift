@@ -24,7 +24,7 @@ struct ColoredMapScreen: View {
                 // Overlay a color-tinted transparent rectangle on top of the map.
                 Rectangle()
                     .foregroundStyle(Color(color))
-                    .ignoresSafeArea()
+                    .backgroundExtensionEffect()
                     .blendMode(.screen)
                     .allowsHitTesting(false)
             }

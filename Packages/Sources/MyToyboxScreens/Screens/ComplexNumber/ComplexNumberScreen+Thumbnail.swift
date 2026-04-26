@@ -13,5 +13,5 @@ extension ComplexNumberScreen {
 
 #Preview {
     RippleScreen.thumbnail
-        .ignoresSafeArea()
+        .backgroundExtensionEffect()
 }

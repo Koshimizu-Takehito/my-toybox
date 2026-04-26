@@ -13,7 +13,7 @@ struct PrettyHipScreen: View {
             Rectangle()
                 .foregroundStyle(.white)
                 .colorEffect(.prettyHip(elapsed: elapsed))
-                .ignoresSafeArea()
+                .backgroundExtensionEffect()
         }
     }
 }

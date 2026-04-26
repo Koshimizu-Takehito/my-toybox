@@ -21,7 +21,7 @@ struct PrimeSpiralScreen: View {
 
             PrimeSpiralContent(scale: scale, color: color)
         }
-        .ignoresSafeArea()
+        .backgroundExtensionEffect()
         .background(.black)
         .onTapGesture {
             // Restart the animation from zero on tap.

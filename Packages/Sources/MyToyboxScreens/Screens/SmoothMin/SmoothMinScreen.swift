@@ -14,7 +14,7 @@ struct SmoothMinScreen: View {
                 Rectangle()
                     .colorEffect(.smoothMin2d(k: value, time: seconds))
             }
-            .ignoresSafeArea()
+            .backgroundExtensionEffect()
 
             VStack {
                 Spacer()

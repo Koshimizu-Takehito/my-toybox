@@ -20,7 +20,7 @@ struct PhysicsTagScreen: View {
 
     var body: some View {
         SpriteView(scene: scene)
-            .ignoresSafeArea()
+            .backgroundExtensionEffect()
             .overlay(alignment: .topTrailing) {
                 VStack(alignment: .leading, spacing: 10) {
                     Toggle(isOn: $usesDeviceMotion) {
