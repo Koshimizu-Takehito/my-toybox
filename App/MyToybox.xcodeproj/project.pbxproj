@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3A682A8F2D8D471000B110AC /* MyToybox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyToybox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A682A8F2D8D471000B110AC /* Toybox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Toybox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -53,7 +53,7 @@
 		3A682A902D8D471000B110AC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3A682A8F2D8D471000B110AC /* MyToybox.app */,
+				3A682A8F2D8D471000B110AC /* Toybox.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -81,7 +81,7 @@
 				3A2AAF0A2EE4036F00CAF02D /* MyToyboxScreens */,
 			);
 			productName = MyToybox;
-			productReference = 3A682A8F2D8D471000B110AC /* MyToybox.app */;
+			productReference = 3A682A8F2D8D471000B110AC /* Toybox.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -305,7 +305,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.takehito.koshimizu.MyToybox;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Toybox;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -344,7 +344,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.takehito.koshimizu.MyToybox;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Toybox;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
