@@ -38,6 +38,8 @@ struct RootCell: View {
     let screen: Screen
     /// Indicates whether the list is actively scrolling.
     let isScrolling: Bool
+    /// The namespace used for coordinating a navigation transition.
+    var namespace: Namespace.ID? = nil
     /// Baseline row height used for square thumbnail sizing.
     @Environment(\.defaultMinListRowHeight) private var defaultMinListRowHeight
     /// The style context that controls whether a leading preview is shown.
@@ -57,7 +59,7 @@ struct RootCell: View {
 private extension RootCell {
     @ViewBuilder
     var thumbnailView: some View {
-        if style.showsLeadingPreview {
+        if style.showsLeadingPreview, let namespace {
             ZStack {
                 Color.clear
                 screen.thumbnail
@@ -66,6 +68,7 @@ private extension RootCell {
             .background(.black.gradient)
             .frame(width: defaultMinListRowHeight, height: defaultMinListRowHeight)
             .clipShape(.rect(cornerRadius: 8))
+            .matchedTransitionSource(id: screen, in: namespace)
         }
     }
 
