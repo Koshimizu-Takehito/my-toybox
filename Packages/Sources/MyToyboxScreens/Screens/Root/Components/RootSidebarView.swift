@@ -12,6 +12,9 @@ struct RootSidebarView: View {
     /// Tracks scroll activity for thumbnail rendering optimization.
     @State private var isScrolling = false
 
+    /// The namespace used for coordinating a navigation transition.
+    @Namespace private var namespace
+
     init(screens: [Screen], selection: Binding<Screen?>? = nil) {
         self.screens = screens
         self.selection = selection
@@ -46,8 +49,9 @@ private extension RootSidebarView {
             List(screens, id: \.self) { screen in
                 NavigationLink {
                     RootDetailView(selection: screen)
+                        .navigationTransition(.zoom(sourceID: screen, in: namespace))
                 } label: {
-                    RootCell(screen: screen, isScrolling: isScrolling)
+                    RootCell(screen: screen, isScrolling: isScrolling, namespace: namespace)
                 }
             }
         }
