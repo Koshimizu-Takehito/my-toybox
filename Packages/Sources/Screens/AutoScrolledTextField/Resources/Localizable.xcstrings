@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.autoScrollTailFollow.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Long text stays tailed so the latest typing stays visible"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "長文でも末尾の入力が見えるよう自動で追従する"
+          }
+        }
+      }
+    },
+    "screen.autoScrollTailFollow.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto Scrolled TextField 1"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動スクロールテキストフィールド 1"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

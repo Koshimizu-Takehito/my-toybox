@@ -4,26 +4,20 @@ import PackagePlugin
 @main
 struct BuildMetalShadersPlugin: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) throws -> [Command] {
-        // Only apply to MyToyboxScreens target
-        guard target.name == "MyToyboxScreens" else {
-            return []
-        }
-
         let packageDir = context.package.directoryURL
         let workDir = context.pluginWorkDirectoryURL
         let outputFile = workDir.appending(path: "default.metallib")
 
-        // Path to Scripts/build_metallib.sh (in parent directory of Packages/)
         let projectRoot = packageDir.deletingLastPathComponent()
         let scriptPath = projectRoot.appending(path: "Scripts/build_metallib.sh")
 
-        // Source directories for Metal shaders
-        let coreShaders = packageDir.appending(path: "Sources/MyToyboxScreens/Utils/Shaders")
-        let screenShaders = packageDir.appending(path: "Sources/MyToyboxScreens/Shaders")
+        let sourceRoot = target.directoryURL
+        let coreShaders = sourceRoot.appending(path: "Utils/Shaders")
+        let screenShaders = sourceRoot.appending(path: "Shaders")
 
         return [
             .prebuildCommand(
-                displayName: "Build Metal Shaders",
+                displayName: "Build Metal Shaders (\(target.name))",
                 executable: URL(filePath: "/bin/bash"),
                 arguments: [
                     scriptPath.path(),

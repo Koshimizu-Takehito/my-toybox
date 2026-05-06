@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.collisionColorChange.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bouncing spheres that swap colors as they collide"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跳ね返りながら色が切り替わる球の運動"
+          }
+        }
+      }
+    },
+    "screen.collisionColorChange.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collision Color Change"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "衝突で色が変わるデモ"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.viewControllerRepresentable.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hosted UIKit content that responds to text size changes"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UIKit の画面を埋め込み、文字サイズの変化に合わせて見た目を確かめる"
+          }
+        }
+      }
+    },
+    "screen.viewControllerRepresentable.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UIViewControllerRepresentable"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UIKit連携（Representable）"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

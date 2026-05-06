@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.tileAnimation3D.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiles move in depth as a bright wave sweeps through"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タイルが立体的に動き、波のような明るさの筋が走る"
+          }
+        }
+      }
+    },
+    "screen.tileAnimation3D.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tile Animation 3D"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タイルアニメーション3D"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

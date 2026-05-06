@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.unevenRoundedRectanglePerSide.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rectangle with different corner softness per side"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "角丸を面ごとに変えられる長方形"
+          }
+        }
+      }
+    },
+    "screen.unevenRoundedRectanglePerSide.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uneven Rounded Rectangle 1"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不均一な角丸長方形 1"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
