@@ -1,1 +1,10 @@
-初回リリース。
+バージョン 1.1.0 — App Clip & ディープリンク対応
+
+App Clip（新機能）
+インストールなしで、MetalシェーダーエフェクトをSafariのSmart App Bannerやシェアリンクからすぐに体験できます。収録エフェクト：Stable Fluid・Flow Distortion・Kuwahara Filter・Progressive Blur・Mosaic・Julia Set・Smooth Min・Circle SDF 2・Voronoi Diagram
+
+ディープリンク（新機能）
+各スクリーンに固有のURLを追加。Safariやメッセージアプリからリンクを開くと、フルアプリまたはApp Clipで直接そのエフェクトが起動します。
+
+内部改善
+全スクリーンを独立したSwift Package Managerモジュールに分割。Xcode PreviewsでアプリをビルドせずにエフェクトをPreviewできるようになりました。共有アセットを専用モジュールに集約し、バイナリサイズも削減しています。
