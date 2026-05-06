@@ -1,12 +1,97 @@
 import MetadatasMacros
+import MyToyboxCore
+import MyToyboxUI
 import ScreenMacros
 import SwiftUI
+
+import Screen_AppleLogo
+import Screen_ArchimedesSpiral
+import Screen_AuthCode
+import Screen_AutoScrolledTextField
+import Screen_AutoScrolledTextField2
+import Screen_Badge
+import Screen_CircleSDF1
+import Screen_CircleSDF2
+import Screen_CollisionColorChange
+import Screen_ColoredMap
+import Screen_ColorHexAnimation
+import Screen_ColorSchemeAnimation
+import Screen_ColorSegmentedControl
+import Screen_ComplexNumber
+import Screen_ContentTransition
+import Screen_CosmicWeb
+import Screen_CountdownAnimation
+import Screen_DateformatStyle
+import Screen_DotsSpinner
+import Screen_Dynamictype
+import Screen_DynamicTypeScaling
+import Screen_EnumPicker
+import Screen_FlipTransition
+import Screen_FlowDistortion
+import Screen_FlowLayout
+import Screen_GameOfLife
+import Screen_GradientAnimation
+import Screen_GradientPolygon
+import Screen_HierarchicalShapeStyle
+import Screen_HomeIconShake
+import Screen_HorizontalPicker
+import Screen_ImplicitEquation
+import Screen_InfiniteScroll
+import Screen_JuliaSet
+import Screen_KeyframeAnimation
+import Screen_KuwaharaFilter
+import Screen_LayoutProtocolSample
+import Screen_LissajousCurve
+import Screen_LoadingAnimation2
+import Screen_LostRowAnimation
+import Screen_MatchTopWidth
+import Screen_MazeGenerator
+import Screen_Meshgradient
+import Screen_MonotoneMap
+import Screen_Mosaic
+import Screen_Motions4
+import Screen_MultiHelix
+import Screen_PhysicsTag
+import Screen_PipCardDemo
+import Screen_PrettyHip
+import Screen_PrimeSpiral
+import Screen_ProgressiveBlur
+import Screen_ProgressRing
+import Screen_RadialLayout
+import Screen_RandomMetaball2D
+import Screen_RealTimeMosic
+import Screen_RectangleAnimation
+import Screen_ReverseList
+import Screen_Ringanimation
+import Screen_RingSlider
+import Screen_Ripple
+import Screen_ScrollYRotation
+import Screen_ShaderTile
+import Screen_Shine
+import Screen_SmoothMin
+import Screen_SolarSystem1
+import Screen_SolarSystem2
+import Screen_SpiralLayout
+import Screen_SpiralShader
+import Screen_Squreflow
+import Screen_StableFluid
+import Screen_StrokeModifier
+import Screen_TileAnimation
+import Screen_TileAnimation3D
+import Screen_UnevenRoundedRectangle1
+import Screen_UnevenRoundedRectangle2
+import Screen_ViewcontrollerRepresentable
+import Screen_Visualeffect
+import Screen_VoronoiDiagram
+import Screen_WaveCircle
+import Screen_WaveParticle
+import Screen_WavingText
 
 // MARK: - Screen
 
 @Screens
 @Metadatas
-enum Screen: String, CaseIterable {
+public enum Screen: String, MyToyboxScreen {
     case strokeModifierDemoScreen
     case rippleScreen
     case stableFluidScreen
@@ -91,4 +176,10 @@ enum Screen: String, CaseIterable {
     case orbitingDotsLoaderDemoScreen
     case gradientAnimationScreen
     case appleLogoScreen
+}
+
+// MARK: - Preview
+
+#Preview {
+    RootScreen<Screen>()
 }

@@ -223,8 +223,10 @@ extension ScreensMacro: ExtensionMacro {
         // Generate the extension that conforms to View and Screens protocols
         // Use fully-qualified `ScreenMacros.Screens` to avoid name collisions
         // with user-defined types named `Screens` in the client module.
+        // Note: Access modifiers cannot be placed on extensions that declare
+        // protocol conformances, so only the body property gets the modifier.
         let extensionDecl: DeclSyntax = """
-            \(raw: accessModifier)extension \(type.trimmed): View, ScreenMacros.Screens {
+            extension \(type.trimmed): View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 \(raw: accessModifier)var body: some View {
                     switch self {
@@ -241,11 +243,11 @@ extension ScreensMacro: ExtensionMacro {
         return [extensionDeclSyntax]
     }
 
-    /// Resolves the access modifier to use for the generated extension and `body` property.
+    /// Resolves the access modifier to use for the generated `body` property.
     ///
     /// The rule is simple:
     /// - If the enum is declared as `public`/`open`/`internal`/`fileprivate`/`private`,
-    ///   use the same modifier for the generated extension and property.
+    ///   use the same modifier for the generated property.
     /// - If no explicit access modifier is present, the default is `internal`,
     ///   which we represent by returning an empty string (no keyword emitted).
     private static func resolveAccessModifier(from enumDecl: EnumDeclSyntax) -> String {

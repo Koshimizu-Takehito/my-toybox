@@ -877,8 +877,8 @@ struct GenericsAndModuleQualifierTests {
 @Suite("Access Level Tests")
 struct AccessLevelTests {
 
-    /// Ensures that public enums generate public extensions and public body properties.
-    @Test("Public enum generates public extension and public body")
+    /// Ensures that public enums generate extensions with public body properties.
+    @Test("Public enum generates extension with public body")
     func publicEnumGeneratesPublicAPI() {
         assertScreenMacroExpansion(
             """
@@ -892,7 +892,7 @@ struct AccessLevelTests {
                 case simpleScreen
             }
 
-            public extension ScreenID: View, ScreenMacros.Screens {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 public var body: some View {
                     switch self {
@@ -905,8 +905,8 @@ struct AccessLevelTests {
         )
     }
 
-    /// Ensures that internal enums (default) generate internal extensions without explicit modifier.
-    @Test("Internal enum generates extension without explicit modifier")
+    /// Ensures that internal enums (default) generate extensions with internal body.
+    @Test("Internal enum generates extension with internal body")
     func internalEnumGeneratesInternalAPI() {
         assertScreenMacroExpansion(
             """
@@ -920,7 +920,7 @@ struct AccessLevelTests {
                 case simpleScreen
             }
 
-            internal extension ScreenID: View, ScreenMacros.Screens {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 internal var body: some View {
                     switch self {
@@ -933,8 +933,8 @@ struct AccessLevelTests {
         )
     }
 
-    /// Ensures that fileprivate enums generate fileprivate extensions.
-    @Test("Fileprivate enum generates fileprivate extension")
+    /// Ensures that fileprivate enums generate extensions with fileprivate body.
+    @Test("Fileprivate enum generates extension with fileprivate body")
     func fileprivateEnumGeneratesFileprivateAPI() {
         assertScreenMacroExpansion(
             """
@@ -948,7 +948,7 @@ struct AccessLevelTests {
                 case simpleScreen
             }
 
-            fileprivate extension ScreenID: View, ScreenMacros.Screens {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 fileprivate var body: some View {
                     switch self {
@@ -961,8 +961,8 @@ struct AccessLevelTests {
         )
     }
 
-    /// Ensures that private enums generate private extensions.
-    @Test("Private enum generates private extension")
+    /// Ensures that private enums generate extensions with private body.
+    @Test("Private enum generates extension with private body")
     func privateEnumGeneratesPrivateAPI() {
         assertScreenMacroExpansion(
             """
@@ -976,7 +976,7 @@ struct AccessLevelTests {
                 case simpleScreen
             }
 
-            private extension ScreenID: View, ScreenMacros.Screens {
+            extension ScreenID: View, ScreenMacros.Screens {
                 @MainActor @ViewBuilder
                 private var body: some View {
                     switch self {
