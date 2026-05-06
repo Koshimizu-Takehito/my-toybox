@@ -1,5 +1,19 @@
 import Foundation
+import MetadatasMacros
 import SwiftUI
+
+/// Generates a `ScreenMetadata` conformance for the annotated enum case or type.
+///
+/// Apply this macro to a `Screen` enum case to synthesize the `title`, `description`,
+/// and `tags` properties required by ``ScreenMetadata`` without boilerplate.
+/// The `@Metadatas` macro collects all `@Metadata` annotations in the enum and
+/// dispatches to the per-case implementations generated here.
+@attached(extension, conformances: ScreenMetadata, names: named(title), named(description), named(tags))
+public macro Metadata(
+    title: LocalizedStringResource,
+    description: LocalizedStringResource,
+    tags: [Tag]
+) = #externalMacro(module: "MetadatasMacrosImpl", type: "MetadataMacro")
 
 // MARK: - ScreenMetadata
 

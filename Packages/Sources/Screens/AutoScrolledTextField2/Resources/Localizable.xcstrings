@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.autoScrollKeyboardAvoidance.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focused field scrolls clear of the keyboard"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キーボードに隠れないよう、注目した欄へ自動で寄せる"
+          }
+        }
+      }
+    },
+    "screen.autoScrollKeyboardAvoidance.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto Scrolled TextField 2"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動スクロールテキストフィールド 2"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

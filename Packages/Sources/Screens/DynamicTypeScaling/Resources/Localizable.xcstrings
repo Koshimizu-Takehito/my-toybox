@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.dynamicTypeScaling.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How body text scales as text size settings change"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文字サイズ段階を切り替えたときの本文の大きさの推移"
+          }
+        }
+      }
+    },
+    "screen.dynamicTypeScaling.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dynamic Type Scaling"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダイナミックタイプのスケール"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

@@ -21,8 +21,8 @@
 ## 特徴
 
 ### 🔹 豊富なサンプル画面 (Screen)
-`Packages/Sources/MyToyboxScreens/Screens/` 以下に多数の画面が定義されており、それぞれが独自のアニメーションや描画ロジックを持ちます。  
-`Screen.swift` で画面の識別子を一元管理しています。  
+`Packages/Sources/Screens/` 以下の各フォルダに画面モジュールがあり、それぞれが独自のアニメーションや描画ロジックを持ちます。  
+`Packages/Sources/MyToyboxCatalog/Screen.swift` で画面の識別子を一元管理しています。  
 `enum Screen` の case 名は**Swift の識別子として有効な lowerCamelCase（例: `gameOfLifeScreen`）** で記述する必要があります。
 
 ### 🔹 SPM ビルドツールプラグイン
@@ -69,15 +69,13 @@ my-toybox/
   │   │   │   ├─ ScreenMetadata.swift  # 画面メタデータ＆サムネイルのプロトコル定義
   │   │   │   ├─ Tag.swift             # 画面カテゴリ用 Tag enum
   │   │   │   └─ ThumbnailView.swift   # サムネイル表示ラッパー
-  │   │   └─ MyToyboxScreens/      # 全画面の実装
-  │   │       ├─ Screen.swift      # Screen enum 定義
-  │   │       ├─ Exports.swift     # パブリック API エクスポート
-  │   │       ├─ Screens/          # 各種アニメーション画面
-  │   │       │   └─ Root/         # ルート画面とビューモデル
-  │   │       ├─ Shaders/          # Metal シェーダーファイル
-  │   │       ├─ TagPicker/        # タグフィルター UI コンポーネント
-  │   │       ├─ Utils/            # ユーティリティと Metal シェーダーヘッダ
-  │   │       └─ Resources/        # バンドルリソース（アセット、xib）
+  │   │   ├─ MyToyboxUI/           # ルートナビゲーション（RootScreen、レイアウト）
+  │   │   ├─ MyToyboxCatalog/      # Screen.swift と全画面モジュールの配線
+  │   │   ├─ MyToyboxClipCatalog/  # App Clip 向け画面カタログ（サブセット）
+  │   │   ├─ MyToyboxMedia/        # シェーダー画面向け共有メディア
+  │   │   └─ Screens/              # 画面ごとの SPM モジュール（SwiftUI ＋任意で Metal）
+  │   │       ├─ TagPicker/        # タグフィルター UI（SPM モジュール TagPicker）
+  │   │       └─ …                 # その他の画面モジュール（Badge、GameOfLife など）
   │   └─ Tests/
   │       └─ MyToyboxCoreTests/    # コアモジュールのユニットテスト
   ├─ MetadatasMacros/              # @Metadatas / @Metadata マクロパッケージ
@@ -90,9 +88,9 @@ my-toybox/
 
 **主要ファイル:**
 - `App.swift`: アプリのエントリーポイント。`RootScreen` が初期画面として指定されています。
-- `RootScreen.swift`: アプリ起動時に表示される「画面一覧＋詳細表示」のメインビュー。
-- `RootViewModel.swift`: 画面一覧データの取得など、ビジネスロジックを担当。
-- `Screen.swift`: すべての画面を定義する enum とメタデータを含むファイル。
+- `Packages/Sources/MyToyboxUI/RootScreen.swift`: アプリ起動時に表示される「画面一覧＋詳細表示」のメインビュー。
+- `Packages/Sources/MyToyboxUI/RootScreenModel.swift`: カタログ一覧の取得・タグによるフィルタリングなどを担当。
+- `Packages/Sources/MyToyboxCatalog/Screen.swift`: すべての画面を定義する enum とメタデータを含むファイル。
 
 ## インストール & ビルド手順
 
@@ -154,8 +152,7 @@ make new-screen NAME=MyNewAnimation
 make new-screen NAME=MyShaderEffect SHADER=yes
 ```
 
-`make new-screen` は localization 同期（`Scripts/sync_screen_localization.py`）も自動実行します。  
-localization の検証/同期に失敗した場合、コマンドは失敗します。
+`make new-screen` は新規画面モジュールに `Resources/Localizable.xcstrings` を生成し、`screen.<id>.title` / `screen.<id>.description` キーを定義します。各画面モジュールは自身の localization カタログを所有し、モジュール固有の bundle 経由でシンボルを解決します。
 
 ### ローカライゼーション運用
 

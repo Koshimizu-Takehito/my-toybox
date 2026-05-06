@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.meshGradientControlPoints.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gradient whose color spread slowly reshapes"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "色の広がりがゆっくり形を変えるグラデーション"
+          }
+        }
+      }
+    },
+    "screen.meshGradientControlPoints.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesh Gradient"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メッシュグラデーション"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

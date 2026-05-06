@@ -11,7 +11,8 @@ public extension EnvironmentValues {
 /// Thumbnails used to advance via ``TimelineView`` with a scroll-adjusted clock so motion stayed phase-continuous while scrolling.
 /// That setup crashed when pushing the detail screen or popping back to the list, so timeline-driven updates were removed.
 ///
-/// `isScrolling` is still read from the environment for API compatibility and possible future use; animation time is held constant so thumbnails stay visually static.
+/// `isScrolling` is still read from the environment for API compatibility and possible future use; animation time is held constant so thumbnails stay
+/// visually static.
 public struct ThumbnailView<Content: View>: View {
     @Environment(\.isScrolling) private var isScrolling
     private var content: (_ isScrolling: Bool, _ time: TimeInterval) -> Content

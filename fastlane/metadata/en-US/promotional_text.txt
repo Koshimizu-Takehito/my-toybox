@@ -1,1 +1,1 @@
-Discover dozens of interactive SwiftUI animations and Metal shader experiments. A hand-crafted sandbox where every screen is a small visual idea you can play with.
+Try Toybox instantly with App Clip — no install needed. Launch Metal shader effects straight from Safari. The full app holds 80+ hand-crafted SwiftUI & Metal experiments.

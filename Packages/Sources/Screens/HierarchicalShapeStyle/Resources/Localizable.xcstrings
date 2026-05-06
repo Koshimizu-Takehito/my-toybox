@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.hierarchicalShapeStyle.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foreground styling that mirrors text emphasis levels"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文字の強さに応じた色の階層を、前景の装飾で表現する"
+          }
+        }
+      }
+    },
+    "screen.hierarchicalShapeStyle.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hierarchical Style"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "階層型スタイル"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

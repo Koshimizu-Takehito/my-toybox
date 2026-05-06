@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.solarSystemBlend.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blend geocentric and heliocentric views with one control"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "天動説と地動説の見え方を、一本のつまみで行き来する"
+          }
+        }
+      }
+    },
+    "screen.solarSystemBlend.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heliocentric blend"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "地動説と天動のブレンド"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

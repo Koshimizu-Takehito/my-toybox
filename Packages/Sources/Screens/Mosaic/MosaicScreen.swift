@@ -1,0 +1,61 @@
+import MyToyboxCore
+import MyToyboxMedia
+import SwiftUI
+
+// MARK: - MosaicScreen
+
+/// A view that displays an animated mosaic effect applied to an image.
+///
+/// The mosaic is driven by a custom Metal shader and animated over time
+/// using `TimelineView` with the `.animation` schedule.
+///
+/// The shader dynamically scales the mosaic blocks using a sine wave,
+/// creating a smooth pulsating effect.
+@Metadata(title: .screenMosaicTitle, description: .screenMosaicDescription, tags: [.animation, .metal])
+public struct MosaicScreen: View {
+    public init() {}
+
+    /// The reference start time used to calculate animation progress.
+    @State private var start = Date()
+
+    public var body: some View {
+        TimelineView(.animation) { context in
+            // Calculate the elapsed time since view appeared.
+            let time = context.date.timeIntervalSince(start)
+
+            // Compute the scale value for the mosaic effect.
+            // Scale oscillates smoothly using a sine wave.
+            let scale = scale(phase: time)
+            Image("waterwheel", bundle: MyToyboxMedia.bundle)
+                .resizable()
+                .padding(-scale / 2)
+                .scaledToFit()
+                .layerEffect(
+                    .mosaic(scale: scale),
+                    maxSampleOffset: .init(width: scale, height: scale)
+                )
+                .mask {
+                    Rectangle()
+                }
+        }
+    }
+
+    func scale(phase: Double) -> Double {
+        1 + 30 * (sin(phase) + 1) / 2
+    }
+}
+
+extension Shader {
+    /// Creates a mosaic shader with a specified block scale.
+    ///
+    /// - Parameter scale: The size of each mosaic block in pixels.
+    /// - Returns: A `Shader` that applies the mosaic effect.
+    static func mosaic(scale: Double) -> Self {
+        let function = ShaderFunction(library: .screenModule, name: "Mosaic::main")
+        return function(.float(scale), .boundingRect)
+    }
+}
+
+#Preview {
+    MosaicScreen()
+}

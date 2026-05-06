@@ -17,4 +17,7 @@ Built with
 • Metal shaders compiled by a Swift Package Manager build plugin
 • A modular, package-driven architecture
 
+Try it before you install — App Clip
+Not ready to commit to a download? Open Toybox as an App Clip straight from a Safari Smart App Banner or a shared link. No App Store visit, no waiting — a curated selection of Metal shader effects runs immediately. If you like what you see, the full gallery is one tap away.
+
 Toybox is open-source and growing — new screens are added regularly. If you're curious about what modern Apple platforms can do visually, open it up and start tapping.

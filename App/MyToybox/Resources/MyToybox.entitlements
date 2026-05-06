@@ -4,5 +4,9 @@
 <dict>
 	<key>com.apple.security.network.client</key>
 	<true/>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:$(APP_CLIP_ASSOCIATED_DOMAIN)</string>
+	</array>
 </dict>
 </plist>

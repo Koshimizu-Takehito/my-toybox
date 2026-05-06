@@ -73,19 +73,20 @@ case "$PLATFORM" in
 esac
 
 # Set default paths if not provided (matches Plugins/BuildMetalShaders)
+# Each Screen module owns its own Shaders/ directory; specify -s <dir> for a
+# particular screen, or the plugin handles compilation automatically during build.
 if [ ${#SRC_DIRS[@]} -eq 0 ]; then
     SRC_DIRS=(
-        "$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Utils/Shaders"
-        "$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Shaders"
+        "$PROJECT_ROOT/Packages/Sources/MyToyboxCore/Utils/Shaders"
     )
 fi
 
 if [ -z "$OUTPUT_FILE" ]; then
-    OUTPUT_FILE="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Resources/default.metallib"
+    OUTPUT_FILE="$PROJECT_ROOT/Packages/Sources/MyToyboxCore/Resources/default.metallib"
 fi
 
 if [ -z "$INCLUDE_DIR" ]; then
-    INCLUDE_DIR="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Utils/Shaders"
+    INCLUDE_DIR="$PROJECT_ROOT/Packages/Sources/MyToyboxCore/Utils/Shaders"
 fi
 
 # Temporary directory

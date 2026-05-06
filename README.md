@@ -23,8 +23,8 @@ Screens are loaded dynamically from the `Screen` enum and rendered using SwiftUI
 ## Key Features
 
 ### 🔹 Dozens of Sample Screens
-Each screen lives under `Packages/Sources/MyToyboxScreens/Screens/` and showcases a specific animation, layout, or rendering technique.  
-The screen list is defined using `Screen.swift`.  
+Each screen lives under `Packages/Sources/Screens/<ScreenName>/` and showcases a specific animation, layout, or rendering technique.  
+The screen list is defined in `Packages/Sources/MyToyboxCatalog/Screen.swift`.  
 Each case name in `enum Screen` **must be a valid Swift identifier in lowerCamelCase (e.g. `gameOfLifeScreen`)**.
 
 ### 🔹 SPM Build Tool Plugins
@@ -70,15 +70,13 @@ my-toybox/
   │   │   │   ├─ ScreenMetadata.swift  # Protocol defining screen metadata & thumbnail
   │   │   │   ├─ Tag.swift             # Tag enum for screen categorization
   │   │   │   └─ ThumbnailView.swift   # Reusable thumbnail view wrapper
-  │   │   └─ MyToyboxScreens/      # All screen implementations
-  │   │       ├─ Screen.swift      # Screen enum definition
-  │   │       ├─ Exports.swift     # Public API exports
-  │   │       ├─ Screens/          # Dozens of animation screens
-  │   │       │   └─ Root/         # Root screen and view model
-  │   │       ├─ Shaders/          # Metal shader files
-  │   │       ├─ TagPicker/        # Tag filter UI components
-  │   │       ├─ Utils/            # Utilities and Metal shader headers
-  │   │       └─ Resources/        # Bundle resources (assets, xibs)
+  │   │   ├─ MyToyboxUI/           # Root navigation shell (RootScreen, layouts)
+  │   │   ├─ MyToyboxCatalog/      # Screen.swift enum; wires all screen modules
+  │   │   ├─ MyToyboxClipCatalog/  # App Clip screen catalog (subset)
+  │   │   ├─ MyToyboxMedia/        # Shared media for shader-based screens
+  │   │   └─ Screens/              # One SPM module per screen (SwiftUI + optional Metal)
+  │   │       ├─ TagPicker/        # Tag filter UI (SPM module TagPicker)
+  │   │       └─ …                 # Other screen modules (Badge, GameOfLife, …)
   │   └─ Tests/
   │       └─ MyToyboxCoreTests/    # Unit tests for core module
   ├─ MetadatasMacros/              # @Metadatas / @Metadata macro package
@@ -91,9 +89,9 @@ my-toybox/
 
 **Key Files:**
 - `App.swift`: The app's `@main` entry point, launching the `RootScreen`.
-- `RootScreen.swift`: The master-detail view listing all available screens.
-- `RootViewModel.swift`: Handles loading and storing screen data.
-- `Screen.swift`: Enum defining all available screens with their metadata.
+- `Packages/Sources/MyToyboxUI/RootScreen.swift`: The master-detail view listing all available screens.
+- `Packages/Sources/MyToyboxUI/RootScreenModel.swift`: Handles sidebar selection and tag filtering state for the catalog.
+- `Packages/Sources/MyToyboxCatalog/Screen.swift`: Enum defining all available screens with their metadata.
 
 ## Getting Started
 
@@ -155,7 +153,7 @@ make new-screen NAME=MyNewAnimation
 make new-screen NAME=MyShaderEffect SHADER=yes
 ```
 
-`make new-screen` also runs localization synchronization (`Scripts/sync_screen_localization.py`) and fails if localization validation/sync fails.
+`make new-screen` generates a per-module `Resources/Localizable.xcstrings` for the new screen with `screen.<id>.title` / `screen.<id>.description` keys. Each screen module owns its own localization catalog and resolves symbols through its own bundle.
 
 ### Localization workflow
 
