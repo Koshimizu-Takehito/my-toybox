@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.dynamicType.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System text beside layout-friendly scaling text"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "標準フォントと、レイアウト用の伸縮フォントを並べて比較"
+          }
+        }
+      }
+    },
+    "screen.dynamicType.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ScaledMetric and Dynamic Type"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ScaledMetricとダイナミックタイプ"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

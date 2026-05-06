@@ -61,7 +61,7 @@ struct RootScreen: View {
 - Bundle resources via SPM resource bundles
 - Metal shaders: Accessed via `ShaderLibrary.module`
 - JSON loading: Use `Bundle.module.url(forResource:withExtension:)`
-- Assets: `Media.xcassets` in MyToyboxScreens
+- Assets: `Media.xcassets` in `MyToyboxUI`
 
 ### 5. YAGNI (You Aren't Gonna Need It)
 **DO**:

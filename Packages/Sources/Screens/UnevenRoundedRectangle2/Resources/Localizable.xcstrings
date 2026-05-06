@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.unevenRoundedRectanglePresets.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side-by-side looks at uneven corner treatments"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "いくつかの角丸の出方を並べて比較"
+          }
+        }
+      }
+    },
+    "screen.unevenRoundedRectanglePresets.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uneven Rounded Rectangle 2"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不均一な角丸長方形 2"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

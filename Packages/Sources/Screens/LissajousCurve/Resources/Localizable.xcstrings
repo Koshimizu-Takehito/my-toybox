@@ -1,0 +1,74 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.lissajousCurveInteractive.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Second control layout for exploring Lissajous curves"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "別の操作まわりでリサージュ曲線のパラメーターを試す"
+          }
+        }
+      }
+    },
+    "screen.lissajousCurveInteractive.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lissajous Curve 2"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リサージュ曲線 2"
+          }
+        }
+      }
+    },
+    "screen.lissajousCurveVariant.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Second control layout for exploring Lissajous curves"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "別の操作まわりでリサージュ曲線のパラメーターを試す"
+          }
+        }
+      }
+    },
+    "screen.lissajousCurveVariant.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lissajous Curve 2"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リサージュ曲線 2"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

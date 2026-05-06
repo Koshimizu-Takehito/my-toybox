@@ -24,17 +24,17 @@ make clean
 ```bash
 # Build
 xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4.1' \
   CODE_SIGNING_ALLOWED=NO clean build
 
 # Run all tests
 xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4.1' \
   CODE_SIGNING_ALLOWED=NO test
 
 # Run specific test
 xcodebuild test -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4.1' \
   -only-testing MyToyboxCoreTests/MyToyboxCoreTests/testName \
   CODE_SIGNING_ALLOWED=NO
 ```
@@ -45,8 +45,11 @@ This is an iOS/macOS visual effects showcase app (Swift 6.3, SwiftUI, Metal) wit
 
 **Module Structure:**
 - `App/MyToybox/` - Xcode app entry point (`App.swift` → `RootScreen`)
-- `Packages/Sources/MyToyboxCore/` - Shared models and utilities (`ScreenMetadata`, `Tag`, `ThumbnailView`)
-- `Packages/Sources/MyToyboxScreens/` - Screen implementations, shaders, and `Screen.swift` enum
+- `Packages/Sources/MyToyboxCore/` - Shared models and utilities (`ScreenMetadata`, `Tag`, `ThumbnailView`) + URL routing
+- `Packages/Sources/MyToyboxUI/` - Root navigation UI shell: `RootScreen`, adaptive layouts, `DeepLinkSheet`
+- `Packages/Sources/Screens/TagPicker/` - Tag filter UI (SPM module `TagPicker`): `TagPicker`, flow layout
+- `Packages/Sources/MyToyboxCatalog/` - Screen catalog: `Screen.swift` enum defining all available screens
+- `Packages/Sources/MyToyboxClipCatalog/` - App Clip screen catalog (subset of screens)
 
 **Code Generation via SPM Plugins:**
 - `BuildMetalShaders` plugin: `.metal` files → `default.metallib`
@@ -54,9 +57,9 @@ This is an iOS/macOS visual effects showcase app (Swift 6.3, SwiftUI, Metal) wit
 - `@Metadatas` / `@Metadata` macros (from `MetadatasMacros/`): generate `ScreenMetadata` conformance (`title`, `description`, `tags`, `thumbnail`) for each screen
 
 **Screen Registration:**
-- Single source of truth: `Packages/Sources/MyToyboxScreens/Screen.swift`
+- Single source of truth: `Packages/Sources/MyToyboxCatalog/Screen.swift`
 - Each screen case name must be a valid Swift identifier in lowerCamelCase (e.g., `gameOfLifeScreen`)
-- Screen implementations live in `Packages/Sources/MyToyboxScreens/Screens/{ScreenName}/`
+- Screen implementations live in `Packages/Sources/Screens/{ScreenName}/`
 
 **Key Patterns:**
 - `@Observable` + `@MainActor` for reactive view models

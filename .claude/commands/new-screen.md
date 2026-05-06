@@ -17,10 +17,10 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
 2. **Validate Naming**
    - Ensure screen name is UpperCamelCase
    - Convert to lowerCamelCase for the enum case ID (e.g., "ParticleExplosion" → "particleExplosionScreen")
-   - Verify the ID doesn't already exist in `Packages/Sources/MyToyboxScreens/Screen.swift`
+   - Verify the ID doesn't already exist in `Packages/Sources/MyToyboxCatalog/Screen.swift`
 
 3. **Update Screen.swift**
-   - Read `Packages/Sources/MyToyboxScreens/Screen.swift`
+   - Read `Packages/Sources/MyToyboxCatalog/Screen.swift`
    - Add new case to the `enum Screen` in lowerCamelCase with "Screen" suffix:
      ```swift
      case particleExplosionScreen
@@ -28,7 +28,7 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
    - The `@Screens` and `@Metadatas` macros will automatically generate the required conformances
 
 4. **Create SwiftUI View File**
-   - Create directory: `Packages/Sources/MyToyboxScreens/Screens/{ScreenName}/`
+   - Create directory: `Packages/Sources/Screens/{ScreenName}/`
    - Create file: `{ScreenName}Screen.swift`
    - Use this template:
      ```swift
@@ -72,7 +72,7 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
      ```
 
 6. **Create Metal Shader (if requested)**
-   - Create file: `Packages/Sources/MyToyboxScreens/Shaders/{ScreenName}Shader.metal`
+   - Create file: `Packages/Sources/Screens/{ScreenName}/Shaders/{ScreenName}Shader.metal`
    - Use this template:
      ```metal
      #include <metal_stdlib>
@@ -114,7 +114,7 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
 - **Thumbnail**: Every screen must override `thumbnail(isScrolling:time:)` — no empty thumbnails
 - **Tags**: Only use: `layout`, `animation`, `metal`
 - **Preview**: Always include `#Preview` macro
-- **Public Access**: Struct and init must be `public` (screens in `MyToyboxScreens` module)
+- **Public Access**: Struct and init must be `public` (screens live in their own SPM module under `Packages/Sources/Screens/`)
 - **Shader Functions**: Use `[[stitchable]]` attribute and follow naming convention
 - **@Metadata**: Attach to the screen struct to provide `title`, `description`, `tags`
 

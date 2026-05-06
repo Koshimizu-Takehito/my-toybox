@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.randomMetaballDemo.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random blobs that merge with a soft glow"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "粒がランダムに重なり、溶け合うような発光風の塊"
+          }
+        }
+      }
+    },
+    "screen.randomMetaballDemo.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random Metaball 2D"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ランダムメタボール2D"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

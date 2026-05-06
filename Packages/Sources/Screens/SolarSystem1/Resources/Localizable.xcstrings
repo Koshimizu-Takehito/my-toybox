@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.solarSystemHeliocentric.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simple toy view of the sun and orbiting planets"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "太陽と惑星の周回をシンプルに眺める模型"
+          }
+        }
+      }
+    },
+    "screen.solarSystemHeliocentric.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heliocentric Animation"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "地動説アニメーション"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

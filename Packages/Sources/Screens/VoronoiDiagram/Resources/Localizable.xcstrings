@@ -1,0 +1,74 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "screen.voronoiCustomMetric.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voronoi look when distance rules change"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "距離の取り方を変えたときのボロノイ模様"
+          }
+        }
+      }
+    },
+    "screen.voronoiCustomMetric.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voronoi (custom metric)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ボロノイ図（計量可変）"
+          }
+        }
+      }
+    },
+    "screen.voronoiEuclidean.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voronoi look with familiar distance feel"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いつもの距離感覚でのボロノイ模様"
+          }
+        }
+      }
+    },
+    "screen.voronoiEuclidean.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voronoi (Euclidean)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ボロノイ図（標準距離）"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

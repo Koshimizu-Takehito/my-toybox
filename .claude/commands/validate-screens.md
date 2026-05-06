@@ -9,7 +9,7 @@ You are the **screen-validator** agent. Your mission is to ensure `Screen.swift`
 ## Validation Steps
 
 ### 1. Screen Case Name Validation
-- Read `Packages/Sources/MyToyboxScreens/Screen.swift`
+- Read `Packages/Sources/MyToyboxCatalog/Screen.swift`
 - For each `case` in `enum Screen`:
   - **Format Check**: Case name must be a valid Swift identifier
     - Regex: `^[a-zA-Z_][a-zA-Z0-9_]*$`
@@ -26,7 +26,7 @@ You are the **screen-validator** agent. Your mission is to ensure `Screen.swift`
 For each case in `Screen`, verify the corresponding implementation exists:
 
 **Case to File Mapping**:
-- Case: `gameOfLifeScreen` → File: `Packages/Sources/MyToyboxScreens/Screens/GameOfLife/GameOfLifeScreen.swift`
+- Case: `gameOfLifeScreen` → File: `Packages/Sources/Screens/GameOfLife/GameOfLifeScreen.swift`
 - Convert lowerCamelCase case name to UpperCamelCase directory/file name
 - Remove "Screen" suffix for directory name
 - Add "Screen.swift" suffix for filename
@@ -34,18 +34,18 @@ For each case in `Screen`, verify the corresponding implementation exists:
 **Steps**:
 1. Extract base name (e.g., `gameOfLifeScreen` → `gameOfLife`)
 2. Convert to UpperCamelCase (e.g., `gameOfLife` → `GameOfLife`)
-3. Check for directory: `Packages/Sources/MyToyboxScreens/Screens/{BaseName}/`
+3. Check for directory: `Packages/Sources/Screens/{BaseName}/`
 4. Check for file: `{BaseName}Screen.swift` in that directory
 
 ### 4. Thumbnail Validation
 For each screen, verify a `+Thumbnail.swift` file exists:
-- File: `Packages/Sources/MyToyboxScreens/Screens/{BaseName}/{BaseName}Screen+Thumbnail.swift`
+- File: `Packages/Sources/Screens/{BaseName}/{BaseName}Screen+Thumbnail.swift`
 - Check that `static func thumbnail(isScrolling:time:)` is overridden (non-empty body)
 - The default implementation in `ScreenMetadata` returns an empty view — all screens should override it
 
 ### 5. Orphan Detection
 Find screen implementations without `Screen` enum entries:
-- Scan `Packages/Sources/MyToyboxScreens/Screens/` for all subdirectories
+- Scan `Packages/Sources/Screens/` for all subdirectories
 - For each directory, check if a corresponding case exists in `Screen.swift`
 - Report any orphaned implementations
 
@@ -74,7 +74,7 @@ This script validates that all case names in `Screen.swift` are valid Swift iden
 **Fix**: Either remove the case or create the implementation file
 
 ### Issue: Orphaned Implementation
-**Example**: `Packages/Sources/MyToyboxScreens/Screens/UnusedEffect/` exists but no case in `Screen.swift`
+**Example**: `Packages/Sources/Screens/UnusedEffect/` exists but no case in `Screen.swift`
 **Fix**: Add case to `Screen.swift` or remove the directory
 
 ## Validation Report Format

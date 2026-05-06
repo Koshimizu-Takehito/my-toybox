@@ -1,83 +1,50 @@
-# Localization Workflow (Xcode 26 + Semantic Keys)
+# Localization Workflow
 
-This project uses Xcode String Catalogs with generated type-safe Swift symbols, plus a sync script that keeps semantic keys and metadata aligned.
+Each screen module owns its own `Localizable.xcstrings`; there is no central
+catalog. Xcode generates type-safe Swift symbols (e.g. `.screenBadgeDemoTitle`)
+from each catalog, scoped to the module's bundle.
 
 ## Required Xcode setting
 
-Generated symbol usage in this repository assumes:
+Generated symbol usage assumes:
 
 - Build Setting: **Generate String Catalog Symbols** = `YES`
 - Build setting key: `STRING_CATALOG_GENERATE_SYMBOLS`
 
-You can verify this in the target's Build Settings under Localization.
+Verify under each target's Build Settings → Localization.
 
-## Source of truth
+## Layout
 
-- `Packages/Sources/MyToyboxScreens/Resources/Localizable.xcstrings`
-  - Canonical localization data
-  - `sourceLanguage` is English
-  - Keys are semantic (for example: `screen.badgeDemo.title`)
-
-`Localizable.xcstrings` is the canonical data source.  
-`Scripts/sync_screen_localization.py` is a normalizer/enforcer that validates and reshapes files to follow repository policy.
-
-## Why `Scripts/sync_screen_localization.py` exists
-
-`Scripts/sync_screen_localization.py` is an operational consistency tool.
-
-It is responsible for:
-
-- Validating semantic key/symbol naming collisions before build-time surprises
-- Rewriting `@Metadata(...)` references in screen files to the expected key-derived symbols
-- Regenerating `Localizable.xcstrings` in a normalized format
-- Marking catalog entries as manual extraction state for Xcode-generated symbols
-
-It is **not** a replacement for Xcode localization features. It complements them to keep this repository's key policy consistent.
-
-## Enforced workflow
-
-### 1) New screen creation path
-
-Use `make new-screen` (or its `NAME=` variants).
-
-The underlying script `Scripts/new_screen.sh` now runs:
-
-```bash
-python3 Scripts/sync_screen_localization.py
+```
+Packages/Sources/
+├── MyToyboxCore/Resources/Localizable.xcstrings       # app.*
+├── MyToyboxUI/Resources/Localizable.xcstrings         # app.title
+├── Screens/TagPicker/Resources/Localizable.xcstrings  # tag.*
+└── Screens/<Name>/Resources/Localizable.xcstrings    # screen.<id>.title / .description
 ```
 
-and fails if synchronization fails.
+Each module's catalog is the source of truth for that module. Symbols resolve
+through the module's own bundle, so there is no cross-module collision risk.
 
-### 2) CI enforcement
+## Adding a new screen
 
-CI runs:
+`make new-screen NAME=...` (or `Scripts/new_screen.sh ...`) generates the new
+module's `Localizable.xcstrings` with `screen.<id>.title` and
+`screen.<id>.description` keys, both pre-translated to en/ja with placeholder
+text. Edit the catalog in Xcode to refine the copy.
 
-```bash
-python3 Scripts/sync_screen_localization.py
-git diff --exit-code
-```
+## Editing existing localization
 
-If running the sync script changes tracked files, CI fails.
-This prevents unsynced localization changes from being merged.
+Edit each module's `Localizable.xcstrings` directly in Xcode. The
+`@Metadata(title: .screenXxxTitle, description: .screenXxxDescription, ...)`
+references resolve to the module-local symbols automatically; renaming a key
+in Xcode regenerates the symbol and surfaces compile errors at the call site.
 
-## Developer expectations
+## Key naming convention
 
-- Prefer semantic keys and generated symbols over ad-hoc string literals.
-- If you edit localization-relevant metadata manually, run:
+- `app.*` — app-wide UI strings (`MyToyboxCore` / `MyToyboxUI`)
+- `tag.*` — tag labels and tag picker UI (`TagPicker`)
+- `screen.<id>.title` / `screen.<id>.description` — per-screen metadata
 
-```bash
-python3 Scripts/sync_screen_localization.py
-```
-
-before committing.
-- Do not hand-format `Localizable.xcstrings`; let the script/Xcode manage it.
-
-## Troubleshooting
-
-- **Sync fails with missing localization mapping**
-  - Add or correct metadata/localization entries so each required key resolves.
-- **CI fails on `git diff --exit-code` after sync**
-  - Run sync locally, review generated changes, and commit them.
-- **Build fails with missing generated symbols**
-  - Ensure the catalog is in sync and build settings keep string catalog symbol generation enabled.
-
+`<id>` is the lowerCamelCase form of the `Screen` enum case name (without the
+`Screen` suffix). For example, `case badgeDemoScreen` → `screen.badgeDemo.*`.

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to create a new screen with boilerplate code
+# Script to create a new screen as an individual SPM module
 #
 # Usage:
 #   ./Scripts/new_screen.sh                    # Interactive mode
@@ -15,6 +15,9 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+WORK_DIR=$(mktemp -d)
+trap 'rm -rf "$WORK_DIR"' EXIT
 
 # Colors for output
 RED='\033[0;31m'
@@ -55,21 +58,19 @@ done
 if [ -z "$SCREEN_NAME" ]; then
     echo -e "${BLUE}🆕 Create New Screen${NC}"
     echo ""
-    
-    # Prompt for screen name
+
     read -p "Screen name (e.g., ParticleEffect): " SCREEN_NAME
-    
+
     if [ -z "$SCREEN_NAME" ]; then
         echo -e "${RED}❌ Error: Screen name is required${NC}"
         exit 1
     fi
-    
-    # Prompt for shader
+
     read -p "Include Metal shader? (y/N): " SHADER_ANSWER
     if [[ "$SHADER_ANSWER" =~ ^[Yy]$ ]]; then
         INCLUDE_SHADER=true
     fi
-    
+
     echo ""
 fi
 
@@ -83,45 +84,93 @@ fi
 UPPER_CAMEL="$SCREEN_NAME"
 LOWER_CAMEL="$(echo "${SCREEN_NAME:0:1}" | tr '[:upper:]' '[:lower:]')${SCREEN_NAME:1}"
 SCREEN_ID="${LOWER_CAMEL}Screen"
+TARGET_NAME="Screen_${UPPER_CAMEL}"
 
 # Paths
-SCREENS_DIR="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Screens"
-SHADERS_DIR="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Shaders"
-SCREEN_SWIFT="$PROJECT_ROOT/Packages/Sources/MyToyboxScreens/Screen.swift"
-TARGET_DIR="$SCREENS_DIR/$UPPER_CAMEL"
+PACKAGE_DIR="$PROJECT_ROOT/Packages"
+MODULE_DIR="$PACKAGE_DIR/Sources/Screens/$UPPER_CAMEL"
+PACKAGE_SWIFT="$PACKAGE_DIR/Package.swift"
+SCREEN_SWIFT="$PACKAGE_DIR/Sources/MyToyboxCatalog/Screen.swift"
 
 # Check if screen already exists
-if [ -d "$TARGET_DIR" ]; then
-    echo -e "${RED}❌ Error: Screen '$UPPER_CAMEL' already exists at $TARGET_DIR${NC}"
+if [ -d "$MODULE_DIR" ]; then
+    echo -e "${RED}❌ Error: Screen '$UPPER_CAMEL' already exists at $MODULE_DIR${NC}"
     exit 1
 fi
 
-echo -e "${BLUE}📁 Creating screen: ${UPPER_CAMEL}${NC}"
+echo -e "${BLUE}📁 Creating screen module: ${TARGET_NAME}${NC}"
 
-# Create directory
-mkdir -p "$TARGET_DIR"
+# Create directories
+mkdir -p "$MODULE_DIR/Resources"
 
-# Generate Swift file
+# --- Generate Localizable.xcstrings ---
+cat > "$MODULE_DIR/Resources/Localizable.xcstrings" << EOF
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.${LOWER_CAMEL}.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TODO: Add description"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TODO: 説明を追加"
+          }
+        }
+      }
+    },
+    "screen.${LOWER_CAMEL}.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "${UPPER_CAMEL}"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "${UPPER_CAMEL}"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
+EOF
+echo -e "  ${GREEN}✓${NC} Created Resources/Localizable.xcstrings"
+
+# --- Generate Swift files ---
 if [ "$INCLUDE_SHADER" = true ]; then
-    # With shader
-    cat > "$TARGET_DIR/${UPPER_CAMEL}Screen.swift" << EOF
-import SwiftUI
+    mkdir -p "$MODULE_DIR/Shaders"
 
-/// ${UPPER_CAMEL} screen demonstrating a custom visual effect.
+    # Screen file (shader variant)
+    cat > "$MODULE_DIR/${UPPER_CAMEL}Screen.swift" << EOF
+import SwiftUI
+import MyToyboxCore
+
 @Metadata(title: "${UPPER_CAMEL}", description: "TODO: Add description", tags: [])
 public struct ${UPPER_CAMEL}Screen: View {
     @State private var time: Double = 0
     private let startDate = Date()
-    
+
     public init() {}
-    
+
     public var body: some View {
         TimelineView(.animation) { timeline in
             let elapsed = timeline.date.timeIntervalSince(startDate)
-            
+
             Rectangle()
                 .colorEffect(
-                    ShaderLibrary.module.${LOWER_CAMEL}(
+                    ShaderLibrary.screenModule.${LOWER_CAMEL}(
                         .float(elapsed)
                     )
                 )
@@ -134,16 +183,16 @@ public struct ${UPPER_CAMEL}Screen: View {
 }
 EOF
 
-    # Generate thumbnail file (shader variant)
-    cat > "$TARGET_DIR/${UPPER_CAMEL}Screen+Thumbnail.swift" << EOF
+    # Thumbnail file (shader variant)
+    cat > "$MODULE_DIR/${UPPER_CAMEL}Screen+Thumbnail.swift" << EOF
 import SwiftUI
 
 extension ${UPPER_CAMEL}Screen {
     @ViewBuilder
-    static func thumbnail(isScrolling _: Bool, time: TimeInterval) -> some View {
+    public static func thumbnail(isScrolling _: Bool, time: TimeInterval) -> some View {
         Rectangle()
             .colorEffect(
-                ShaderLibrary.module.${LOWER_CAMEL}(
+                ShaderLibrary.screenModule.${LOWER_CAMEL}(
                     .float(time)
                 )
             )
@@ -156,57 +205,62 @@ extension ${UPPER_CAMEL}Screen {
 }
 EOF
 
-    # Generate Metal shader
-    cat > "$SHADERS_DIR/${UPPER_CAMEL}Shader.metal" << EOF
+    # ShaderLibrary+ScreenModule.swift
+    cat > "$MODULE_DIR/ShaderLibrary+ScreenModule.swift" << EOF
+import SwiftUI
+
+extension ShaderLibrary {
+    static var screenModule: ShaderLibrary {
+        if let url = Bundle.module.url(forResource: "default", withExtension: "metallib") {
+            return ShaderLibrary(url: url)
+        }
+        return .default
+    }
+}
+EOF
+
+    # Metal shader file
+    cat > "$MODULE_DIR/Shaders/${UPPER_CAMEL}Shader.metal" << EOF
 #include <metal_stdlib>
 #include <SwiftUI/SwiftUI_Metal.h>
 using namespace metal;
 
-/// ${UPPER_CAMEL} shader effect.
-///
-/// - Parameters:
-///   - position: The pixel position in the view.
-///   - color: The current color at this position.
-///   - time: Elapsed time in seconds.
-/// - Returns: The modified color.
 [[stitchable]] half4 ${LOWER_CAMEL}(
     float2 position,
     half4 color,
     float time
 ) {
-    // TODO: Implement shader effect
     float2 uv = position / 400.0;
-    
+
     half3 result = half3(
         sin(uv.x * 10.0 + time) * 0.5 + 0.5,
         sin(uv.y * 10.0 + time * 1.5) * 0.5 + 0.5,
         sin((uv.x + uv.y) * 5.0 + time * 2.0) * 0.5 + 0.5
     );
-    
+
     return half4(result, 1.0);
 }
 EOF
 
     echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Screen.swift (with shader)"
     echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Screen+Thumbnail.swift"
-    echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Shader.metal"
+    echo -e "  ${GREEN}✓${NC} Created ShaderLibrary+ScreenModule.swift"
+    echo -e "  ${GREEN}✓${NC} Created Shaders/${UPPER_CAMEL}Shader.metal"
 else
-    # Without shader
-    cat > "$TARGET_DIR/${UPPER_CAMEL}Screen.swift" << EOF
+    # Screen file (no shader)
+    cat > "$MODULE_DIR/${UPPER_CAMEL}Screen.swift" << EOF
 import SwiftUI
+import MyToyboxCore
 
-/// ${UPPER_CAMEL} screen.
 @Metadata(title: "${UPPER_CAMEL}", description: "TODO: Add description", tags: [])
 public struct ${UPPER_CAMEL}Screen: View {
     public init() {}
-    
+
     public var body: some View {
         VStack {
             Text("${UPPER_CAMEL}")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-            
-            // TODO: Implement your view
         }
     }
 }
@@ -216,14 +270,13 @@ public struct ${UPPER_CAMEL}Screen: View {
 }
 EOF
 
-    # Generate thumbnail file (placeholder variant)
-    cat > "$TARGET_DIR/${UPPER_CAMEL}Screen+Thumbnail.swift" << EOF
+    # Thumbnail file (no shader)
+    cat > "$MODULE_DIR/${UPPER_CAMEL}Screen+Thumbnail.swift" << EOF
 import SwiftUI
 
 extension ${UPPER_CAMEL}Screen {
     @ViewBuilder
-    static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
-        // TODO: Implement thumbnail
+    public static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
         Text("${UPPER_CAMEL}")
             .font(.caption2)
             .fontWeight(.bold)
@@ -240,59 +293,80 @@ EOF
     echo -e "  ${GREEN}✓${NC} Created ${UPPER_CAMEL}Screen+Thumbnail.swift"
 fi
 
-# Add to Screen.swift
+# --- Update Package.swift (add target + add dependency to MyToyboxCatalog) ---
+awk -v name="$TARGET_NAME" -v upper="$UPPER_CAMEL" -v shader="$INCLUDE_SHADER" '
+    /MARK: - MyToyboxClipCatalog/ && !target_inserted {
+        print "        .target("
+        print "            name: \"" name "\","
+        print "            dependencies: [\"MyToyboxCore\"],"
+        print "            path: \"Sources/Screens/" upper "\","
+        if (shader == "true") {
+            print "            exclude: [\"Shaders\"],"
+        }
+        print "            resources: [.process(\"Resources\")]" (shader == "true" ? "," : "")
+        if (shader == "true") {
+            print "            plugins: [.plugin(name: \"BuildMetalShaders\")]"
+        }
+        print "        ),"
+        print ""
+        target_inserted = 1
+    }
+    /MARK: - MyToyboxCatalog/ { in_screens = 1 }
+    in_screens && !dep_inserted && /\.product\(name: "MetadatasMacros"/ {
+        print "                \"" name "\","
+        dep_inserted = 1
+    }
+    { print }
+' "$PACKAGE_SWIFT" > "$WORK_DIR/Package.swift"
+mv "$WORK_DIR/Package.swift" "$PACKAGE_SWIFT"
+
+if ! grep -q "name: \"${TARGET_NAME}\"" "$PACKAGE_SWIFT"; then
+    echo -e "  ${RED}❌ Error: Failed to add target to Package.swift${NC}"
+    exit 1
+fi
+echo -e "  ${GREEN}✓${NC} Added target to Package.swift"
+
+if ! grep -q "^                \"${TARGET_NAME}\"," "$PACKAGE_SWIFT"; then
+    echo -e "  ${RED}❌ Error: Failed to add dependency to MyToyboxCatalog${NC}"
+    exit 1
+fi
+echo -e "  ${GREEN}✓${NC} Added dependency to MyToyboxCatalog"
+
+# --- Add case to Screen.swift ---
 if [ -f "$SCREEN_SWIFT" ]; then
-    # Insert new case before the closing brace
-    TEMP_FILE=$(mktemp)
-    
-    # Check if case already exists
     if grep -q "^    case ${SCREEN_ID}" "$SCREEN_SWIFT"; then
         echo -e "  ${YELLOW}⚠${NC} Case '${SCREEN_ID}' already exists in Screen.swift"
     else
-        # Insert new case before the closing brace of the enum
         awk -v new_case="    case ${SCREEN_ID}" '
             /^}/ {
-                # Found the closing brace, insert new case before it
                 print new_case
                 print
                 next
             }
-            {
-                print
-            }
-        ' "$SCREEN_SWIFT" > "$TEMP_FILE"
-        
-        mv "$TEMP_FILE" "$SCREEN_SWIFT"
-        
+            { print }
+        ' "$SCREEN_SWIFT" > "$WORK_DIR/Screen.swift"
+        mv "$WORK_DIR/Screen.swift" "$SCREEN_SWIFT"
+        if ! grep -q "^    case ${SCREEN_ID}$" "$SCREEN_SWIFT"; then
+            echo -e "  ${RED}❌ Error: Failed to add case to Screen.swift${NC}"
+            exit 1
+        fi
         echo -e "  ${GREEN}✓${NC} Added case to Screen.swift"
     fi
 fi
 
 echo ""
-echo -e "${GREEN}✅ Successfully created ${UPPER_CAMEL}Screen${NC}"
-echo ""
-
-echo -e "${BLUE}🔤 Syncing localization catalog...${NC}"
-if python3 "$PROJECT_ROOT/Scripts/sync_screen_localization.py"; then
-    echo -e "  ${GREEN}✓${NC} Localization catalog synced"
-else
-    echo -e "${RED}❌ Localization sync failed.${NC}"
-    echo -e "${YELLOW}Hint:${NC} fix @Metadata / key issues, then rerun:"
-    echo "  python3 Scripts/sync_screen_localization.py"
-    exit 1
-fi
+echo -e "${GREEN}✅ Successfully created ${TARGET_NAME} module${NC}"
 echo ""
 
 echo -e "${YELLOW}Next steps:${NC}"
-echo "  1. Implement your view in ${TARGET_DIR}/${UPPER_CAMEL}Screen.swift"
+echo "  1. Implement your view in ${MODULE_DIR}/${UPPER_CAMEL}Screen.swift"
 if [ "$INCLUDE_SHADER" = true ]; then
-    echo "  2. Implement your shader in ${SHADERS_DIR}/${UPPER_CAMEL}Shader.metal"
-    echo "  3. Refine the thumbnail in ${TARGET_DIR}/${UPPER_CAMEL}Screen+Thumbnail.swift"
-    echo "  4. Update @Metadata in ${UPPER_CAMEL}Screen.swift with title, description, and tags"
+    echo "  2. Implement your shader in ${MODULE_DIR}/Shaders/${UPPER_CAMEL}Shader.metal"
+    echo "  3. Refine the thumbnail in ${MODULE_DIR}/${UPPER_CAMEL}Screen+Thumbnail.swift"
+    echo "  4. Update @Metadata with title, description, and tags"
     echo "  5. Build and run to see your new screen"
 else
-    echo "  2. Refine the thumbnail in ${TARGET_DIR}/${UPPER_CAMEL}Screen+Thumbnail.swift"
-    echo "  3. Update @Metadata in ${UPPER_CAMEL}Screen.swift with title, description, and tags"
+    echo "  2. Refine the thumbnail in ${MODULE_DIR}/${UPPER_CAMEL}Screen+Thumbnail.swift"
+    echo "  3. Update @Metadata with title, description, and tags"
     echo "  4. Build and run to see your new screen"
 fi
-

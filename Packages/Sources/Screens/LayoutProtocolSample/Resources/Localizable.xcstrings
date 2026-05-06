@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.layoutProtocolSample.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom grid with cells and gutters for children"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "升目とすき間に子を並べる、独自のグリッドレイアウト"
+          }
+        }
+      }
+    },
+    "screen.layoutProtocolSample.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Layout Protocol Sample"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Layoutプロトコルサンプル"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
