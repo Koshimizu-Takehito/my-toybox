@@ -53,7 +53,7 @@ xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
 #### Macro Expansion Errors
 - **Symptom**: "Cannot find type 'XxxScreen' in scope" (from `@Screens` macro)
 - **Diagnosis**: The screen View type referenced by a `Screen` enum case does not exist
-- **Fix**: Create the missing View type in `Packages/Sources/MyToyboxScreens/Screens/`
+- **Fix**: Create the missing View type in `Packages/Sources/Screens/`
 
 #### Concurrency Errors (Swift 6)
 - **Symptom**: "Call to main actor-isolated ... from non-isolated context"
@@ -100,7 +100,7 @@ bash Scripts/build_metallib.sh
    ```bash
    xcrun -sdk iphonesimulator metal -c \
      -I Packages/Sources/MyToyboxCore/Utils/Shaders \
-     Packages/Sources/MyToyboxScreens/Shaders/GameOfLifeShader.metal \
+     Packages/Sources/Screens/GameOfLife/Shaders/GameOfLifeShader.metal \
      -o test.air
    ```
 2. Check for syntax errors
@@ -176,7 +176,7 @@ xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
 # Check shader syntax
 xcrun -sdk iphonesimulator metal \
   -I Packages/Sources/MyToyboxCore/Utils/Shaders \
-  -c Packages/Sources/MyToyboxScreens/Shaders/{ShaderName}.metal
+  -c Packages/Sources/Screens/<Name>/Shaders/{ShaderName}.metal
 ```
 
 ### SPM Package Resolution

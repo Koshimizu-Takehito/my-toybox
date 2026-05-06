@@ -223,7 +223,7 @@ Summary:
 - Errors: 0
 
 Issues:
-1. Packages/Sources/MyToyboxScreens/Screens/Example/ExampleScreen.swift:42
+1. Packages/Sources/Screens/Example/ExampleScreen.swift:42
    → Line Length: 165 characters (150 max)
 
 2. App/MyToybox/App.swift:15

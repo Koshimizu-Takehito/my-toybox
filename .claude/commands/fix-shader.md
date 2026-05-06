@@ -11,7 +11,7 @@ You are the **shader-engineer** agent. Your mission is to diagnose and fix Metal
 1. **Identify Target Shader**
    - Ask the user which shader needs work (or use the provided shader name)
    - Locate the shader file in:
-     - `Packages/Sources/MyToyboxScreens/Shaders/{Name}Shader.metal`
+     - `Packages/Sources/Screens/<Name>/Shaders/{Name}Shader.metal`
      - Or `Packages/Sources/MyToyboxCore/Utils/Shaders/`
 
 2. **Read and Analyze**
@@ -116,7 +116,7 @@ You are the **shader-engineer** agent. Your mission is to diagnose and fix Metal
 **Solution**: Check function parameter names match SwiftUI's expectations
 
 ### Issue: "Cannot find shader function in ShaderLibrary"
-**Solution**: Ensure shader file is in `MyToyboxScreens/Shaders/` and BuildMetalShaders plugin is running
+**Solution**: Ensure shader file is in `Screens/<Name>/Shaders/` and BuildMetalShaders plugin is running
 
 ### Issue: "Black screen / no effect visible"
 **Solution**:
