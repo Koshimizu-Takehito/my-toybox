@@ -134,6 +134,9 @@ xcuserdata/
 
 # Xcode app build output (project-relative build folder)
 App/build/
+Packages/build/
+ScreenMacros/build/
+MetadatasMacros/build/
 
 # Xcode SPM scheme files (auto-generated)
 Packages/.swiftpm/

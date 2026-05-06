@@ -1,4 +1,4 @@
-.PHONY: clean help new-screen open setup sync lint lint-fix lint-strict format format-check fix fastlane-setup metadata-pull metadata-push metadata-precheck
+.PHONY: clean xcode-deep-clean help new-screen open setup sync lint lint-fix lint-strict format format-check fix fastlane-setup metadata-pull metadata-push metadata-precheck
 
 # Auto-load local environment variables (e.g. ASC_KEY_ID, ASC_ISSUER_ID)
 # from `.env` if present. `.env` is gitignored; copy `.env.template` to start.
@@ -25,6 +25,9 @@ help:
 	@echo "  make format-check                  - Check code formatting (no changes)"
 	@echo "  make fix                           - Format and auto-fix all code"
 	@echo "  make clean                         - Remove build artifacts"
+	@echo ""
+	@echo "System-wide (destructive):"
+	@echo "  make xcode-deep-clean              - Wipe Xcode/Simulator caches"
 	@echo ""
 	@echo "App Store metadata (fastlane deliver):"
 	@echo "  make fastlane-setup                - Install fastlane and download current metadata from ASC"
@@ -140,8 +143,12 @@ metadata-push: ## Upload metadata, screenshots, and release notes (no binary)
 # ============================================================================
 # Clean build artifacts
 # ============================================================================
-clean:
+clean: ## Remove project-scoped build artifacts (DerivedData prefix + Packages/.build)
 	@echo "🧹 Cleaning build artifacts..."
 	@rm -rf ~/Library/Developer/Xcode/DerivedData/MyToybox-*
 	@rm -rf Packages/.build
 	@echo "✅ Clean complete"
+
+xcode-deep-clean: ## Wipe Xcode/Simulator caches machine-wide (destructive; affects all projects)
+	@echo "🧹 Deep-cleaning Xcode/Simulator caches (machine-wide)..."
+	@./Scripts/xcode_deep_clean.sh
