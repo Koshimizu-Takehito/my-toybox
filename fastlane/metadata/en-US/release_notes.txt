@@ -1,1 +1,10 @@
-Initial release.
+Version 1.1.0 — App Clip & Deep-Link Routing
+
+App Clip (new)
+Experience a curated set of Metal shader effects instantly — no install required. Open Toybox directly from a Safari Smart App Banner or a shared link and the effects run immediately. Included: Stable Fluid, Flow Distortion, Kuwahara Filter, Progressive Blur, Mosaic, Julia Set, Smooth Min, Circle SDF 2, and Voronoi Diagram.
+
+Deep-link routing (new)
+Every screen now has a unique URL. Tap a link from Safari, Messages, or any app and land directly on that effect — whether the full app or the App Clip is installed.
+
+Under the hood
+Each screen is now its own Swift Package Manager module, so Xcode Previews work per-screen without building the whole app. Shared assets have been consolidated into a dedicated module, trimming overall binary size.
