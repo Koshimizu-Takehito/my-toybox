@@ -738,7 +738,7 @@ let package = Package(
         // MARK: - Tests
         .testTarget(
             name: "MyToyboxCoreTests",
-            dependencies: ["MyToyboxCore", "MyToyboxClipScreens"],
+            dependencies: ["MyToyboxCore", "MyToyboxScreens"],
             path: "Tests/MyToyboxCoreTests"
         ),
     ]
