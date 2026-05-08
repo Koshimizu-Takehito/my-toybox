@@ -1,5 +1,5 @@
 import Foundation
-import MyToyboxClipScreens
+import MyToyboxScreens
 @testable import MyToyboxCore
 import Testing
 
@@ -24,6 +24,18 @@ import Testing
 
     @Test func pathSegmentWithoutTrailingSlash() {
         let url = URL(string: "https://example.com/my-toybox-clip/badgeDemoScreen")!
+        let id: Screen? = ScreenResolver.screen(from: url)
+        #expect(id == .badgeDemoScreen)
+    }
+
+    @Test func firebaseDomainPath() {
+        let url = URL(string: "https://my-toybox.web.app/my-toybox-clip/badgeDemoScreen/")!
+        let id: Screen? = ScreenResolver.screen(from: url)
+        #expect(id == .badgeDemoScreen)
+    }
+
+    @Test func firebaseDomainQuery() {
+        let url = URL(string: "https://my-toybox.web.app/?screen=badgeDemoScreen")!
         let id: Screen? = ScreenResolver.screen(from: url)
         #expect(id == .badgeDemoScreen)
     }
