@@ -6,7 +6,8 @@
 	<true/>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:$(APP_CLIP_ASSOCIATED_DOMAIN)</string>
+		<string>applinks:koshimizu-takehito.github.io</string>
+		<string>applinks:my-toybox.web.app</string>
 	</array>
 </dict>
 </plist>

@@ -1,7 +1,9 @@
 # App Clip Runbook
 
 ## URL Routing
-- GitHub Pages project site: `/my-toybox-clip/<screen-id>` (exactly two path segments from the host root: `my-toybox-clip`, `<screen-id>`).
+- Path route: `/my-toybox-clip/<screen-id>` (exactly two path segments: `my-toybox-clip`, `<screen-id>`).
+  - GitHub Pages: `https://koshimizu-takehito.github.io/my-toybox-clip/<screen-id>`
+  - Firebase: `https://my-toybox.web.app/my-toybox-clip/<screen-id>`
 - Query route: `?screen=<screen-id>` (higher priority than path)
 - Strict path rule: accept only the **two-segment** pattern above; reject any other component counts or leading segments.
 - Deprecated (intentionally unsupported): `/clip/<screen-id>`, `/.well-known/clip/<screen-id>`.
@@ -86,8 +88,10 @@ This runbook describes the same behavior enforced by the following code paths:
 | 13 | `https://example.com/?screen=RingSliderScreen` | `RingSliderScreen` | false | fallback | case-sensitive (routeID mismatch) |
 | 14 | `https://example.com/foo/my-toybox-clip/ringSliderScreen?screen=badgeDemoScreen` | `badgeDemoScreen` | true | destination | query priority overrides path reject |
 | 15 | `https://koshimizu-takehito.github.io/my-toybox-clip/ringSliderScreen` | `ringSliderScreen` | true | destination | production GitHub Pages URL |
-| 16 | `https://example.com/other-repo/ringSliderScreen` | nil | false | fallback | first segment is not `my-toybox-clip` |
-| 17 | `https://example.com/clip/ringSliderScreen` | nil | false | fallback | deprecated path (no longer supported) |
+| 16 | `https://my-toybox.web.app/my-toybox-clip/ringSliderScreen` | `ringSliderScreen` | true | destination | production Firebase URL |
+| 17 | `https://my-toybox.web.app/?screen=ringSliderScreen` | `ringSliderScreen` | true | destination | Firebase query route |
+| 18 | `https://example.com/other-repo/ringSliderScreen` | nil | false | fallback | first segment is not `my-toybox-clip` |
+| 19 | `https://example.com/clip/ringSliderScreen` | nil | false | fallback | deprecated path (no longer supported) |
 
 ### Notes
 - Resolver output is based on the return value of `RouteResolver`.
@@ -95,10 +99,11 @@ This runbook describes the same behavior enforced by the following code paths:
 - The expected "decode once" behavior depends on Foundation URL parsing semantics, so update the table if it changes in the future.
 
 ## Associated Domains
-- Configure both app and clip entitlements with:
-  - `applinks:<your-domain>`
-  - `appclips:<your-domain>` (clip target)
-- Update `APP_CLIP_ASSOCIATED_DOMAIN` build setting per configuration.
+- Domains are hardcoded directly in entitlements (no build variables):
+  - `koshimizu-takehito.github.io` — GitHub Pages
+  - `my-toybox.web.app` — Firebase Hosting
+- App Clip entitlements: `applinks:` + `appclips:` for both domains.
+- Parent app entitlements: `applinks:` for both domains.
 
 ## Validation Checklist
 - App / App Clip targets compile without any direct `Screen` references.

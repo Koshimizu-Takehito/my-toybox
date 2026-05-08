@@ -1,7 +1,9 @@
 # App Clip Runbook（日本語）
 
 ## URLルーティング
-- GitHub Pages プロジェクトサイト: `/my-toybox-clip/<screen-id>`（ホスト直下から **2 要素**: `my-toybox-clip`、`<screen-id>`）
+- パスルート: `/my-toybox-clip/<screen-id>`（ホスト直下から **2 要素**: `my-toybox-clip`、`<screen-id>`）
+  - GitHub Pages: `https://koshimizu-takehito.github.io/my-toybox-clip/<screen-id>`
+  - Firebase: `https://my-toybox.web.app/my-toybox-clip/<screen-id>`
 - クエリルート: `?screen=<screen-id>`（パスより優先）
 - 厳密パス規則: 上記の **2 要素パターン**のみ受理。それ以外の区切り数・先頭セグメントは拒否
 - **廃止**（意図的に未対応）: `/clip/<screen-id>`、`/.well-known/clip/<screen-id>`
@@ -86,8 +88,10 @@ sequenceDiagram
 | 13 | `https://example.com/?screen=RingSliderScreen` | `RingSliderScreen` | false | fallback | case-sensitive（routeID不一致） |
 | 14 | `https://example.com/foo/my-toybox-clip/ringSliderScreen?screen=badgeDemoScreen` | `badgeDemoScreen` | true | destination | query優先のため path reject を無視 |
 | 15 | `https://koshimizu-takehito.github.io/my-toybox-clip/ringSliderScreen` | `ringSliderScreen` | true | destination | 本番 GitHub Pages URL |
-| 16 | `https://example.com/other-repo/ringSliderScreen` | nil | false | fallback | 先頭セグメントが `my-toybox-clip` でない |
-| 17 | `https://example.com/clip/ringSliderScreen` | nil | false | fallback | 廃止パス（未対応） |
+| 16 | `https://my-toybox.web.app/my-toybox-clip/ringSliderScreen` | `ringSliderScreen` | true | destination | 本番 Firebase URL |
+| 17 | `https://my-toybox.web.app/?screen=ringSliderScreen` | `ringSliderScreen` | true | destination | Firebase クエリルート |
+| 18 | `https://example.com/other-repo/ringSliderScreen` | nil | false | fallback | 先頭セグメントが `my-toybox-clip` でない |
+| 19 | `https://example.com/clip/ringSliderScreen` | nil | false | fallback | 廃止パス（未対応） |
 
 ### 注記
 - Resolverの出力は `RouteResolver` の返り値に基づく。
@@ -95,10 +99,11 @@ sequenceDiagram
 - decode once の期待値は Foundation のURLパース挙動に依存するため、将来差分が出た場合は表も更新する。
 
 ## 関連ドメイン
-- 次でアプリ/クリップ双方の entitlements を設定する:
-  - `applinks:<your-domain>`
-  - `appclips:<your-domain>`（クリップターゲット）
-- 設定ごとに `APP_CLIP_ASSOCIATED_DOMAIN` のビルド設定を更新する。
+- ドメインはエンタイトルメントに直接記述（ビルド変数不使用）:
+  - `koshimizu-takehito.github.io` — GitHub Pages
+  - `my-toybox.web.app` — Firebase Hosting
+- App Clip エンタイトルメント: 両ドメインに `applinks:` + `appclips:`
+- 親アプリ エンタイトルメント: 両ドメインに `applinks:`
 
 ## 検証チェックリスト
 - App / App Clip ターゲットが `Screen` を直接参照せずにコンパイルできること
