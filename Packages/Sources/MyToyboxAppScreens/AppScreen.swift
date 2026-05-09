@@ -1,6 +1,6 @@
 import MetadatasMacros
 import MyToyboxCore
-import MyToyboxUI
+import RootScreen
 import ScreenMacros
 import SwiftUI
 
@@ -87,11 +87,11 @@ import Screen_WaveCircle
 import Screen_WaveParticle
 import Screen_WavingText
 
-// MARK: - Screen
+// MARK: - AppScreen
 
 @Screens
 @Metadatas
-public enum Screen: String, MyToyboxScreen {
+public enum AppScreen: String, MyToyboxScreen {
     case strokeModifierDemoScreen
     case rippleScreen
     case stableFluidScreen
@@ -181,5 +181,5 @@ public enum Screen: String, MyToyboxScreen {
 // MARK: - Preview
 
 #Preview {
-    RootScreen<Screen>()
+    RootScreen<AppScreen>()
 }

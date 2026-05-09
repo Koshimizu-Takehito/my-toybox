@@ -1,3 +1,4 @@
+import DetailScreen
 import MyToyboxCore
 import SwiftUI
 
@@ -20,7 +21,7 @@ struct RootSplitView<Screen: MyToyboxScreen>: View {
             RootSidebarView(screens: screens, selection: $selection)
         } detail: {
             NavigationStack {
-                MyToyboxDetailView(screen: selection)
+                DetailScreen(screen: selection)
                     .toolbarTitleDisplayMode(.inline)
             }
         }

@@ -1,5 +1,5 @@
 import MyToyboxClipScreens
-import MyToyboxUI
+import RootScreen
 import SwiftUI
 
 // MARK: - App
@@ -8,8 +8,8 @@ import SwiftUI
 struct App: SwiftUI::App {
     var body: some Scene {
         WindowGroup {
-            RootScreen<Screen>()
-                .rootListStyle(.appClip)
+            RootScreen<ClipScreen>()
+                .rootScreenStyle(.appClip)
         }
     }
 }

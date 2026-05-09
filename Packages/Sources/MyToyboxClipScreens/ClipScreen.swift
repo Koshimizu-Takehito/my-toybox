@@ -1,6 +1,6 @@
 import MetadatasMacros
 import MyToyboxCore
-import MyToyboxUI
+import RootScreen
 import ScreenMacros
 import SwiftUI
 
@@ -14,7 +14,7 @@ import Screen_SmoothMin
 import Screen_StableFluid
 import Screen_VoronoiDiagram
 
-// MARK: - Screen
+// MARK: - ClipScreen
 
 /// The set of screens available in the App Clip.
 ///
@@ -23,7 +23,7 @@ import Screen_VoronoiDiagram
 /// Each case maps 1-to-1 to a per-screen SPM module imported above.
 @Screens
 @Metadatas
-public enum Screen: String, MyToyboxScreen {
+public enum ClipScreen: String, MyToyboxScreen {
     case stableFluidScreen
     case flowDistortionScreen
     case kuwaharaScreen
@@ -39,6 +39,6 @@ public enum Screen: String, MyToyboxScreen {
 // MARK: - Preview
 
 #Preview {
-    RootScreen<Screen>()
-        .rootListStyle(.appClip)
+    RootScreen<ClipScreen>()
+        .rootScreenStyle(.appClip)
 }

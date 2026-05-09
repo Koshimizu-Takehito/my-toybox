@@ -1,14 +1,14 @@
 import SwiftUI
 
 extension EnvironmentValues {
-    /// The list style injected into root list views via ``View/rootListStyle(_:)``.
-    @Entry var rootListStyle: RootListStyle = .default
+    /// The list style injected into root list views via ``View/rootScreenStyle(_:)``.
+    @Entry var rootScreenStyle: RootListStyle = .default
 }
 
 public extension View {
     /// Sets the visual style applied to root list views within this view hierarchy.
-    func rootListStyle(_ style: RootListStyle) -> some View {
-        environment(\.rootListStyle, style)
+    func rootScreenStyle(_ style: RootListStyle) -> some View {
+        environment(\.rootScreenStyle, style)
     }
 }
 
@@ -16,7 +16,7 @@ public extension View {
 
 /// Visual configuration for the root screen list (background gradient and separator tint).
 ///
-/// Pass a preset or a custom instance via ``View/rootListStyle(_:)`` to
+/// Pass a preset or a custom instance via ``View/rootScreenStyle(_:)`` to
 /// theme the sidebar/compact list without touching the list implementation.
 public struct RootListStyle {
     /// A closure that produces the full-bleed background view drawn behind the list.
