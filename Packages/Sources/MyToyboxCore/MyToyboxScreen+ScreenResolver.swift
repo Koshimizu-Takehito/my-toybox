@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - MyToyboxScreen+ScreenResolver
 
-extension MyToyboxScreen {
+public extension MyToyboxScreen {
     static func resolve(from url: URL) -> Self? {
         ScreenResolver.screen(from: url)
     }

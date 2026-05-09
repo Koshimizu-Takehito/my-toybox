@@ -3,6 +3,7 @@ import MetalKit
 import MyToyboxCore
 import MyToyboxMedia
 import Observation
+import PlatformSupport
 import simd
 import SwiftUI
 

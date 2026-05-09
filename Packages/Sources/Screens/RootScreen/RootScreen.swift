@@ -1,3 +1,4 @@
+import DetailScreen
 import MyToyboxCore
 import SwiftUI
 
@@ -20,7 +21,7 @@ public struct RootScreen<Screen: MyToyboxScreen>: View {
 
     public var body: some View {
         contentView
-            .deepLinkSheet(content: MyToyboxDetailView<Screen>.init)
+            .deepLinkSheet(content: DetailScreen<Screen>.init)
             // Force dark mode appearance 😎
             .preferredColorScheme(.dark)
             .environment(viewModel.tags)

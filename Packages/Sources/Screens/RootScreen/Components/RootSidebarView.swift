@@ -1,3 +1,4 @@
+import DetailScreen
 import MyToyboxCore
 import SwiftUI
 
@@ -16,7 +17,7 @@ struct RootSidebarView<Screen: MyToyboxScreen>: View {
     @Namespace private var namespace
 
     @Environment(\.rootToolbar) private var rootToolbar
-    @Environment(\.rootListStyle) private var rootListStyle
+    @Environment(\.rootScreenStyle) private var rootListStyle
 
     init(screens: [Screen], selection: Binding<Screen?>? = nil) {
         self.screens = screens
@@ -56,7 +57,7 @@ private extension RootSidebarView {
         } else {
             List(screens, id: \.self) { screen in
                 NavigationLink {
-                    MyToyboxDetailView(screen: screen)
+                    DetailScreen(screen: screen)
                         .navigationTransition(.zoom(sourceID: screen, in: namespace))
                 } label: {
                     RootCell(screen: screen, isScrolling: isScrolling, namespace: namespace)

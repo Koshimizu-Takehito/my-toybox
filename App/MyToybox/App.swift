@@ -1,5 +1,5 @@
-import MyToyboxScreens
-import MyToyboxUI
+import MyToyboxAppScreens
+import RootScreen
 import SwiftUI
 import TagPicker
 
@@ -9,8 +9,7 @@ import TagPicker
 struct App: SwiftUI::App {
     var body: some Scene {
         WindowGroup {
-            RootScreen<Screen>()
-                .rootListStyle(.default)
+            RootScreen<AppScreen>()
                 .rootToolbar(content: TagPicker.init)
         }
     }
@@ -19,6 +18,5 @@ struct App: SwiftUI::App {
 // MARK: - RootScreen
 
 #Preview {
-    RootScreen<Screen>()
-        .rootToolbar(content: TagPicker.init)
+    RootScreen<AppScreen>()
 }
