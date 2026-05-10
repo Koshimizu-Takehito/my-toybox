@@ -18,7 +18,6 @@ Verify under each target's Build Settings → Localization.
 ```
 Packages/Sources/
 ├── MyToyboxCore/Resources/Localizable.xcstrings       # app.*
-├── MyToyboxUI/Resources/Localizable.xcstrings         # app.title
 ├── Screens/TagPicker/Resources/Localizable.xcstrings  # tag.*
 └── Screens/<Name>/Resources/Localizable.xcstrings    # screen.<id>.title / .description
 ```
@@ -42,9 +41,9 @@ in Xcode regenerates the symbol and surfaces compile errors at the call site.
 
 ## Key naming convention
 
-- `app.*` — app-wide UI strings (`MyToyboxCore` / `MyToyboxUI`)
+- `app.*` — app-wide UI strings (`MyToyboxCore`)
 - `tag.*` — tag labels and tag picker UI (`TagPicker`)
 - `screen.<id>.title` / `screen.<id>.description` — per-screen metadata
 
-`<id>` is the lowerCamelCase form of the `Screen` enum case name (without the
+`<id>` is the lowerCamelCase form of the `AppScreen` enum case name (without the
 `Screen` suffix). For example, `case badgeDemoScreen` → `screen.badgeDemo.*`.

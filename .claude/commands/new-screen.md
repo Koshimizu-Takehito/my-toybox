@@ -17,11 +17,11 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
 2. **Validate Naming**
    - Ensure screen name is UpperCamelCase
    - Convert to lowerCamelCase for the enum case ID (e.g., "ParticleExplosion" → "particleExplosionScreen")
-   - Verify the ID doesn't already exist in `Packages/Sources/MyToyboxCatalog/Screen.swift`
+   - Verify the ID doesn't already exist in `Packages/Sources/AppScreens/AppScreen.swift`
 
-3. **Update Screen.swift**
-   - Read `Packages/Sources/MyToyboxCatalog/Screen.swift`
-   - Add new case to the `enum Screen` in lowerCamelCase with "Screen" suffix:
+3. **Update AppScreen.swift**
+   - Read `Packages/Sources/AppScreens/AppScreen.swift`
+   - Add new case to the `enum AppScreen` in lowerCamelCase with "Screen" suffix:
      ```swift
      case particleExplosionScreen
      ```
@@ -122,11 +122,11 @@ You are the **screen-creator** agent. Your mission is to create a complete, buil
 
 - If screen ID already exists, suggest an alternative name
 - If build fails, diagnose Metal compilation errors or Swift syntax issues
-- If validation fails, check Screen.swift formatting
+- If validation fails, check AppScreen.swift formatting
 
 ## Success Criteria
 
-- `Screen.swift` contains the new case
+- `AppScreen.swift` contains the new case
 - SwiftUI view file compiles without errors
 - Thumbnail file exists and provides a non-empty implementation
 - Metal shader compiles (if created)
