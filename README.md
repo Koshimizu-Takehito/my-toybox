@@ -10,6 +10,8 @@
 **my-toybox** is an experimental iOS/macOS app project that showcases a wide variety of SwiftUI and Metal-based visual effects and animations.  
 It acts as a sandbox or "toybox" of interactive screens where you can explore different UI techniques and graphics rendering approaches.
 
+<a href="https://apps.apple.com/app/id6743644224" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&h=b17e195bc020808628890cbe7fcde25f" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;"></a>
+
 ## Overview
 
 - **Languages & Frameworks**: Swift 6.3, SwiftUI, Metal  
