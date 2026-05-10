@@ -29,3 +29,21 @@ public struct DetailScreen<Screen: MyToyboxScreen>: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+import MockScreens
+
+#Preview("With Screen") {
+    NavigationStack {
+        DetailScreen(screen: MockScreen.mockA)
+    }
+}
+
+#Preview("Empty") {
+    NavigationStack {
+        DetailScreen<MockScreen>(screen: nil)
+    }
+}
+#endif

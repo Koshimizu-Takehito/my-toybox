@@ -43,3 +43,13 @@ private extension RootScreen {
         #endif
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+import MockScreens
+
+#Preview {
+    RootScreen<MockScreen>()
+}
+#endif

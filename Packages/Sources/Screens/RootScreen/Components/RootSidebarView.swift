@@ -68,3 +68,25 @@ private extension RootSidebarView {
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+import MockScreens
+
+#Preview("Compact") {
+    NavigationStack {
+        RootSidebarView(screens: MockScreen.allCases)
+            .environment(\.rootCellStyle, .previewLeading)
+            .preferredColorScheme(.dark)
+    }
+}
+
+#Preview("Split") {
+    @Previewable @State var selection: MockScreen? = .mockA
+    NavigationStack {
+        RootSidebarView(screens: MockScreen.allCases, selection: $selection)
+            .preferredColorScheme(.dark)
+    }
+}
+#endif

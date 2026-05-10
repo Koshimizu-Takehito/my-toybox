@@ -20,3 +20,14 @@ struct RootCompactView<Screen: MyToyboxScreen>: View {
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+import MockScreens
+
+#Preview {
+    RootCompactView(screens: MockScreen.allCases)
+        .preferredColorScheme(.dark)
+}
+#endif

@@ -1,4 +1,4 @@
-import MyToyboxAppScreens
+import AppScreens
 import RootScreen
 import SwiftUI
 import TagPicker

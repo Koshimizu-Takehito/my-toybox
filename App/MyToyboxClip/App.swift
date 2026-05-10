@@ -1,4 +1,4 @@
-import MyToyboxClipScreens
+import ClipScreens
 import RootScreen
 import SwiftUI
 
