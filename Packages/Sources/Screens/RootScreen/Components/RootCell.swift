@@ -89,3 +89,31 @@ private extension RootCell {
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+import MockScreens
+
+#Preview("Text Only") {
+    List {
+        RootCell(screen: MockScreen.mockA, isScrolling: false)
+    }
+    .environment(\.rootCellStyle, .textOnly)
+    .preferredColorScheme(.dark)
+}
+
+#Preview("Preview Leading") {
+    struct Container: View {
+        @Namespace var namespace
+        var body: some View {
+            List {
+                RootCell(screen: MockScreen.mockA, isScrolling: false, namespace: namespace)
+            }
+            .environment(\.rootCellStyle, .previewLeading)
+            .preferredColorScheme(.dark)
+        }
+    }
+    return Container()
+}
+#endif

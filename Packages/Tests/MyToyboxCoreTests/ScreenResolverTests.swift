@@ -1,6 +1,6 @@
 import Foundation
+import MyToyboxAppScreens
 @testable import MyToyboxCore
-import MyToyboxScreens
 import Testing
 
 @Suite struct ScreenResolverTests {

@@ -33,3 +33,15 @@ struct RootSplitView<Screen: MyToyboxScreen>: View {
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+import MockScreens
+
+#Preview {
+    @Previewable @State var selection: MockScreen? = .mockA
+    RootSplitView(screens: MockScreen.allCases, selection: $selection)
+        .preferredColorScheme(.dark)
+}
+#endif

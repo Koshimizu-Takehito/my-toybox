@@ -16,16 +16,16 @@ let package = Package(
             targets: ["MyToyboxCore"]
         ),
         .library(
-            name: "MyToyboxClipScreens",
-            targets: ["MyToyboxClipScreens"]
+            name: "ClipScreens",
+            targets: ["ClipScreens"]
         ),
         .library(
             name: "TagPicker",
             targets: ["TagPicker"]
         ),
         .library(
-            name: "MyToyboxAppScreens",
-            targets: ["MyToyboxAppScreens"]
+            name: "AppScreens",
+            targets: ["AppScreens"]
         ),
         .library(
             name: "PlatformSupport",
@@ -70,7 +70,10 @@ let package = Package(
         // MARK: - DetailScreen
         .target(
             name: "DetailScreen",
-            dependencies: ["MyToyboxCore"],
+            dependencies: [
+                "MyToyboxCore",
+                "MockScreens",
+            ],
             path: "Sources/Screens/DetailScreen",
             resources: [.process("Resources")]
         ),
@@ -78,9 +81,24 @@ let package = Package(
         // MARK: - RootScreen
         .target(
             name: "RootScreen",
-            dependencies: ["MyToyboxCore", "DetailScreen"],
+            dependencies: [
+                "MyToyboxCore",
+                "DetailScreen",
+                "MockScreens",
+            ],
             path: "Sources/Screens/RootScreen",
             resources: [.process("Resources")]
+        ),
+
+        // MARK: - MockScreens
+        .target(
+            name: "MockScreens",
+            dependencies: [
+                "MyToyboxCore",
+                .product(name: "MetadatasMacros", package: "MetadatasMacros"),
+                .product(name: "ScreenMacros", package: "ScreenMacros"),
+            ],
+            path: "Sources/MockScreens"
         ),
 
         // MARK: - Screen Modules
@@ -621,9 +639,9 @@ let package = Package(
             resources: [.process("Resources")]
         ),
 
-        // MARK: - MyToyboxClipScreens
+        // MARK: - ClipScreens
         .target(
-            name: "MyToyboxClipScreens",
+            name: "ClipScreens",
             dependencies: [
                 "MyToyboxCore",
                 "RootScreen",
@@ -639,7 +657,7 @@ let package = Package(
                 .product(name: "MetadatasMacros", package: "MetadatasMacros"),
                 .product(name: "ScreenMacros", package: "ScreenMacros"),
             ],
-            path: "Sources/MyToyboxClipScreens"
+            path: "Sources/ClipScreens"
         ),
 
 
@@ -653,9 +671,9 @@ let package = Package(
             resources: [.process("Resources")]
         ),
 
-        // MARK: - MyToyboxAppScreens
+        // MARK: - AppScreens
         .target(
-            name: "MyToyboxAppScreens",
+            name: "AppScreens",
             dependencies: [
                 "MyToyboxCore",
                 "RootScreen",
@@ -744,7 +762,7 @@ let package = Package(
                 .product(name: "MetadatasMacros", package: "MetadatasMacros"),
                 .product(name: "ScreenMacros", package: "ScreenMacros"),
             ],
-            path: "Sources/MyToyboxAppScreens"
+            path: "Sources/AppScreens"
         ),
 
         // MARK: - Plugins
@@ -757,7 +775,7 @@ let package = Package(
         // MARK: - Tests
         .testTarget(
             name: "MyToyboxCoreTests",
-            dependencies: ["MyToyboxCore", "MyToyboxAppScreens", "RootScreen"],
+            dependencies: ["MyToyboxCore", "AppScreens", "RootScreen"],
             path: "Tests/MyToyboxCoreTests"
         ),
     ]

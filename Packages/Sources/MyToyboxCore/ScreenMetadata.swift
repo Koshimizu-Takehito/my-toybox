@@ -41,5 +41,7 @@ public extension ScreenMetadata {
     }
 
     @ViewBuilder
-    static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {}
+    static func thumbnail(isScrolling _: Bool, time _: TimeInterval) -> some View {
+        Rectangle().foregroundStyle(Color.black.gradient)
+    }
 }
