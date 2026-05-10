@@ -4,6 +4,7 @@
 ![Swift](https://img.shields.io/badge/swift-6.3-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
+[![App Clip](https://img.shields.io/badge/App%20Clip-Instant-000000?logo=apple&logoColor=white)](https://appclip.apple.com/id?p=com.takehito.koshimizu.MyToybox.MyToyboxClip)
 
 ![Simulator Screenshot - iPad Pro 13-inch (M4) - 2025-05-11 at 15 32 02](https://github.com/user-attachments/assets/8b5ecc14-1224-4de7-9160-622aee2fb723)
 
@@ -11,6 +12,8 @@
 It acts as a sandbox or "toybox" of interactive screens where you can explore different UI techniques and graphics rendering approaches.
 
 <a href="https://apps.apple.com/app/id6743644224" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&h=b17e195bc020808628890cbe7fcde25f" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;"></a>
+
+> 📎 [Try it instantly with App Clip (iOS only)](https://appclip.apple.com/id?p=com.takehito.koshimizu.MyToybox.MyToyboxClip)
 
 ## Overview
 
