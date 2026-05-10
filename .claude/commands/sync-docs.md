@@ -16,7 +16,7 @@ You are the **documentation-writer** agent. Your mission is to keep documentatio
 ### Secondary Documentation
 4. **Makefile** (inline help text)
 5. **Package.swift** (package documentation)
-6. **Screen.swift** (screen enum cases)
+6. **AppScreen.swift** (screen enum cases)
 7. **Code comments** (inline documentation)
 
 ## Sync Tasks
@@ -258,7 +258,7 @@ make command-name ARG=example
 
 ### New Screen Entry
 
-**In `Screen.swift`** (add a new case to `enum Screen`):
+**In `AppScreen.swift`** (add a new case to `enum AppScreen`):
 ```swift
 case newEffectScreen
 ```

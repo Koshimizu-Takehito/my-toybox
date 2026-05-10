@@ -1,16 +1,16 @@
 # Screen Validator
 
-Validate `Screen.swift` case names and synchronization with screen implementations.
+Validate `AppScreen.swift` case names and synchronization with screen implementations.
 
 ## Task
 
-You are the **screen-validator** agent. Your mission is to ensure `Screen.swift` is valid, all screen case names are correctly formatted, and implementations exist for all declared screens.
+You are the **screen-validator** agent. Your mission is to ensure `AppScreen.swift` is valid, all screen case names are correctly formatted, and implementations exist for all declared screens.
 
 ## Validation Steps
 
 ### 1. Screen Case Name Validation
-- Read `Packages/Sources/MyToyboxCatalog/Screen.swift`
-- For each `case` in `enum Screen`:
+- Read `Packages/Sources/AppScreens/AppScreen.swift`
+- For each `case` in `enum AppScreen`:
   - **Format Check**: Case name must be a valid Swift identifier
     - Regex: `^[a-zA-Z_][a-zA-Z0-9_]*$`
     - Must be lowerCamelCase
@@ -23,7 +23,7 @@ You are the **screen-validator** agent. Your mission is to ensure `Screen.swift`
 - Warn if tags are empty, but do not treat as an error
 
 ### 3. Implementation Validation
-For each case in `Screen`, verify the corresponding implementation exists:
+For each case in `AppScreen`, verify the corresponding implementation exists:
 
 **Case to File Mapping**:
 - Case: `gameOfLifeScreen` → File: `Packages/Sources/Screens/GameOfLife/GameOfLifeScreen.swift`
@@ -44,16 +44,16 @@ For each screen, verify a `+Thumbnail.swift` file exists:
 - The default implementation in `ScreenMetadata` returns an empty view — all screens should override it
 
 ### 5. Orphan Detection
-Find screen implementations without `Screen` enum entries:
+Find screen implementations without `AppScreen` enum entries:
 - Scan `Packages/Sources/Screens/` for all subdirectories
-- For each directory, check if a corresponding case exists in `Screen.swift`
+- For each directory, check if a corresponding case exists in `AppScreen.swift`
 - Report any orphaned implementations
 
 ### 6. Run Official Validation Script
 ```bash
 bash Scripts/check_screen_sync.sh
 ```
-This script validates that all case names in `Screen.swift` are valid Swift identifiers and unique.
+This script validates that all case names in `AppScreen.swift` are valid Swift identifiers and unique.
 
 ## Common Issues and Fixes
 
@@ -70,12 +70,12 @@ This script validates that all case names in `Screen.swift` are valid Swift iden
 **Fix**: Rename one to a unique identifier
 
 ### Issue: Implementation File Missing
-**Example**: `Screen.swift` has `case newEffectScreen` but no corresponding Swift file
+**Example**: `AppScreen.swift` has `case newEffectScreen` but no corresponding Swift file
 **Fix**: Either remove the case or create the implementation file
 
 ### Issue: Orphaned Implementation
-**Example**: `Packages/Sources/Screens/UnusedEffect/` exists but no case in `Screen.swift`
-**Fix**: Add case to `Screen.swift` or remove the directory
+**Example**: `Packages/Sources/Screens/UnusedEffect/` exists but no case in `AppScreen.swift`
+**Fix**: Add case to `AppScreen.swift` or remove the directory
 
 ## Validation Report Format
 
@@ -83,7 +83,7 @@ This script validates that all case names in `Screen.swift` are valid Swift iden
 # Screen Validation Report
 
 ## Summary
-- Total screens in Screen.swift: X
+- Total screens in AppScreen.swift: X
 - Valid entries: Y
 - Issues found: Z
 
@@ -100,7 +100,7 @@ This script validates that all case names in `Screen.swift` are valid Swift iden
 ✗ missingScreen    → Missing/MissingScreen.swift NOT FOUND
 
 ## Orphaned Implementations
-✗ OrphanedEffect/OrphanedEffectScreen.swift - No Screen enum case
+✗ OrphanedEffect/OrphanedEffectScreen.swift - No AppScreen enum case
 
 ## Recommendations
 1. Fix invalid case name: invalid-screen → invalidScreen
@@ -110,19 +110,19 @@ This script validates that all case names in `Screen.swift` are valid Swift iden
 
 ## Steps to Execute
 
-1. **Read Screen.swift** — Count cases
+1. **Read AppScreen.swift** — Count cases
 2. **Validate Each Case** — Check name format, find implementation and thumbnail
-3. **Scan for Orphans** — List all screen directories, cross-reference with `Screen.swift`
+3. **Scan for Orphans** — List all screen directories, cross-reference with `AppScreen.swift`
 4. **Run Official Script** — `bash Scripts/check_screen_sync.sh`
 5. **Generate Report** — Summarize findings with actionable recommendations
 
 ## Success Criteria
 
-- All cases in `Screen.swift` are valid Swift identifiers
+- All cases in `AppScreen.swift` are valid Swift identifiers
 - All case names are unique
 - All implementations exist
 - All screens have a non-empty thumbnail override
 - No orphaned implementations (or documented as intentional)
 - `check_screen_sync.sh` passes without errors
 
-Begin validation by reading `Screen.swift` and running through the checklist.
+Begin validation by reading `AppScreen.swift` and running through the checklist.
