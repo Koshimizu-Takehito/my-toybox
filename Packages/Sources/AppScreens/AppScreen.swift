@@ -80,7 +80,11 @@ import Screen_TileAnimation
 import Screen_TileAnimation3D
 import Screen_UnevenRoundedRectangle1
 import Screen_UnevenRoundedRectangle2
+#if os(iOS)
 import Screen_ViewcontrollerRepresentable
+#elseif os(macOS)
+import Screen_ViewcontrollerRepresentable_macOS
+#endif
 import Screen_Visualeffect
 import Screen_VoronoiDiagram
 import Screen_WaveCircle

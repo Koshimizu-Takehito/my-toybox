@@ -58,7 +58,9 @@ private extension RootSidebarView {
             List(screens, id: \.self) { screen in
                 NavigationLink {
                     DetailScreen(screen: screen)
+                        #if os(iOS)
                         .navigationTransition(.zoom(sourceID: screen, in: namespace))
+                        #endif
                 } label: {
                     RootCell(screen: screen, isScrolling: isScrolling, namespace: namespace)
                 }
