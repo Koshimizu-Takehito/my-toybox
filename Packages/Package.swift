@@ -613,6 +613,14 @@ let package = Package(
             resources: [.process("Resources")]
         ),
         .target(
+            name: "Screen_ViewcontrollerRepresentable_macOS",
+            dependencies: [
+                "MyToyboxCore",
+            ],
+            path: "Sources/Screens/ViewcontrollerRepresentable_macOS",
+            resources: [.process("Resources")]
+        ),
+        .target(
             name: "Screen_Visualeffect",
             dependencies: ["MyToyboxCore"],
             path: "Sources/Screens/Visualeffect",
@@ -753,7 +761,8 @@ let package = Package(
                 "Screen_TileAnimation3D",
                 "Screen_UnevenRoundedRectangle1",
                 "Screen_UnevenRoundedRectangle2",
-                "Screen_ViewcontrollerRepresentable",
+                .target(name: "Screen_ViewcontrollerRepresentable", condition: .when(platforms: [.iOS])),
+                .target(name: "Screen_ViewcontrollerRepresentable_macOS", condition: .when(platforms: [.macOS])),
                 "Screen_Visualeffect",
                 "Screen_VoronoiDiagram",
                 "Screen_WaveCircle",
@@ -783,5 +792,11 @@ let package = Package(
 
 // Xcode Previews requires each target to be a library product.
 package.products += package.targets
-    .filter { $0.name.hasPrefix("Screen_") }
+    .filter {
+        $0.name.hasPrefix("Screen_")
+            && ![
+                "Screen_ViewcontrollerRepresentable",
+                "Screen_ViewcontrollerRepresentable_macOS",
+            ].contains($0.name)
+    }
     .map { .library(name: $0.name, targets: [$0.name]) }

@@ -26,7 +26,9 @@ public struct DetailScreen<Screen: MyToyboxScreen>: View {
                     .navigationTitle(.appTitle)
             }
         }
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }
 

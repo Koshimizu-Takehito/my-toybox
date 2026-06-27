@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.viewControllerRepresentable.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hosted AppKit content loaded from a macOS XIB"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AppKit の画面を XIB から読み込み、SwiftUI に埋め込む"
+          }
+        }
+      }
+    },
+    "screen.viewControllerRepresentable.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NSViewControllerRepresentable"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AppKit連携（Representable）"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
