@@ -24,8 +24,10 @@ extension MazeGeneratorScreen {
             .onChange(of: viewModel.isGenerating) { _, isGenerating in
                 if !isGenerating {
                     Task {
-                        try await Task.sleep(for: .milliseconds(600))
-                        viewID = .init()
+                        do {
+                            try await Task.sleep(for: .milliseconds(600))
+                            viewID = .init()
+                        } catch {}
                     }
                 }
             }

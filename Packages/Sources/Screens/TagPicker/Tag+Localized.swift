@@ -6,8 +6,10 @@ extension Tag {
         switch self {
         case .layout:
             .tagLayout
+
         case .animation:
             .tagAnimation
+
         case .metal:
             .tagMetal
         }

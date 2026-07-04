@@ -83,6 +83,7 @@ public struct RealTimeMosicScreen: View {
                 ProgressView {
                     Text(verbatim: "Loading Video")
                 }
+
             case let .failed(message):
                 VStack(spacing: 12) {
                     Image(systemName: "exclamationmark.triangle")

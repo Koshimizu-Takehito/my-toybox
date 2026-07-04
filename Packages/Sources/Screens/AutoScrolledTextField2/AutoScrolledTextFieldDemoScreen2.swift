@@ -71,11 +71,13 @@ struct AutoScrolledTextField2: View {
             .onChange(of: focused) { _, focused in
                 if focused {
                     Task {
-                        // Wait for the keyboard animation to finish before scrolling.
-                        try await Task.sleep(nanoseconds: 300_000_000)
-                        withAnimation(.snappy) {
-                            scrollView.scrollTo(buttonID, anchor: .bottom)
-                        }
+                        do {
+                            // Wait for the keyboard animation to finish before scrolling.
+                            try await Task.sleep(nanoseconds: 300_000_000)
+                            withAnimation(.snappy) {
+                                scrollView.scrollTo(buttonID, anchor: .bottom)
+                            }
+                        } catch {}
                     }
                 }
             }
