@@ -70,7 +70,7 @@ private struct Particle {
     }
 
     /// 粒子の幾何と位相はインデックスから決定
-    static func makeParticles(count: Int) -> [Particle] {
+    static func makeParticles(count: Int) -> [Self] {
         let golden = Double.pi * (3 - sqrt(5))
         let n = Double(max(count, 1))
         return (0 ..< count).map { index in
@@ -86,7 +86,7 @@ private struct Particle {
             let phase = i * 1.618 * (2.0 * .pi / 5.0)
             let speedT = 0.5 + 0.5 * sin(i * 2.718)
             let speed = 0.8 + 1.6 * speedT
-            return Particle(xRatio: xRatio, yRatio: yRatio, diameterRatio: diameterRatio, phase: phase, speed: speed)
+            return Self(xRatio: xRatio, yRatio: yRatio, diameterRatio: diameterRatio, phase: phase, speed: speed)
         }
     }
 }

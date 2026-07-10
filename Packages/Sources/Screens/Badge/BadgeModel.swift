@@ -14,8 +14,10 @@ final class BadgeModel {
         switch number {
         case 0 ... 999:
             number.formatted()
+
         case 1000...:
             "+999"
+
         default:
             nil
         }
