@@ -27,6 +27,7 @@
           "name" : "Polygon 2"
         },
         {
+          "glass" : true,
           "image-name" : "Polygon 1.svg",
           "name" : "Polygon 1"
         }
