@@ -37,13 +37,30 @@ public struct RectangleAnimationScreen: View {
                     viewModel.updateRects()
                 }
             }
-            .onAppear {
-                viewModel.setup(size: geometry.size)
+            .task(id: geometry.size) {
+                await setup(size: geometry.size)
             }
-            .id(geometry.size)
             .background(Color(red: 0.137, green: 0.137, blue: 0.137))
             .backgroundExtensionEffect()
         }
+    }
+
+    /// Lays out the rectangles for the given size.
+    ///
+    /// The first layout runs immediately. Subsequent layouts are debounced so that
+    /// a live resize (e.g. folding / unfolding the device) does not rerun the
+    /// expensive placement on every frame; the task is cancelled when the size
+    /// changes again before the delay elapses.
+    private func setup(size: CGSize) async {
+        guard size.width > 0, size.height > 0 else { return }
+        if !viewModel.rects.isEmpty {
+            do {
+                try await Task.sleep(for: .milliseconds(150))
+            } catch {
+                return
+            }
+        }
+        viewModel.setup(size: size)
     }
 }
 

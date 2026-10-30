@@ -31,13 +31,15 @@ public struct RealTimeMosicScreen: View {
     /// The size of the content area used to normalize the drag position.
     @State private var size: CGSize = .zero
 
-    /// The current horizontal offset of the mosaic split bar, in points.
+    /// The current horizontal position of the mosaic split bar,
+    /// as a fraction of the content width in the range `-0.5...0.5`.
     ///
-    /// This value is relative to the center of the content area.
-    @State private var barOffset: CGFloat = 0
+    /// This value is relative to the center of the content area and is stored
+    /// as a ratio so that the bar keeps its relative position across resizes.
+    @State private var barRatio: CGFloat = 0
 
-    /// The horizontal offset of the mosaic bar at the start of a drag gesture.
-    @State private var barStartOffset: CGFloat = 0
+    /// The horizontal position ratio of the mosaic bar at the start of a drag gesture.
+    @State private var barStartRatio: CGFloat = 0
 
     public var body: some View {
         screen()
@@ -66,7 +68,7 @@ public struct RealTimeMosicScreen: View {
             Image(decorative: image, scale: 1)
                 .resizable()
                 .scaledToFit()
-                .modifier(MosaicEffect(isOn: isOn, offset: barOffset / max(size.width, 1) + 0.5))
+                .modifier(MosaicEffect(isOn: isOn, offset: barRatio + 0.5))
         } else {
             placeholder()
         }
@@ -114,17 +116,17 @@ public struct RealTimeMosicScreen: View {
                 .frame(width: 2)
                 .padding(.horizontal)
                 .contentShape(.rect)
-                .offset(x: barOffset)
+                .offset(x: barRatio * size.width)
                 .gesture(
                     DragGesture()
                         .onChanged { value in
-                            // Drag from the original offset plus the translation.
-                            barOffset = barStartOffset + value.translation.width
-                            barOffset = min(max(-size.width / 2, barOffset), size.width / 2)
+                            // Drag from the original position plus the normalized translation.
+                            let ratio = barStartRatio + value.translation.width / max(size.width, 1)
+                            barRatio = min(max(-0.5, ratio), 0.5)
                         }
                         .onEnded { _ in
-                            // Persist the offset as the new baseline for the next drag.
-                            barStartOffset = barOffset
+                            // Persist the ratio as the new baseline for the next drag.
+                            barStartRatio = barRatio
                         }
                 )
         }

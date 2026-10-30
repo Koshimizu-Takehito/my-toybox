@@ -81,8 +81,10 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
                                 .onGeometryChange(for: CGRect.self) {
                                     $0.frame(in: .scrollView)
                                 } action: { frame in
-                                    // Detect if this item is centered and set selection
-                                    if abs(frame.origin.x) <= widthPerItem / 2 {
+                                    // Detect if this item is centered and set selection.
+                                    // Skip while the item width is changing (live resize),
+                                    // since the scroll position has not been re-centered yet.
+                                    if widthPerItem == itemWidth, abs(frame.origin.x) <= widthPerItem / 2 {
                                         selection = item
                                     }
                                 }
@@ -94,8 +96,10 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
                                 }
                                 .allowsHitTesting(abs(clampedAngle) < 1)
                         }
-                        .onChange(of: visibleCount, initial: true) { _, _ in
-                            // Scroll selected item into center on mount
+                        .onChange(of: widthPerItem, initial: true) { _, newValue in
+                            itemWidth = newValue
+                            // Scroll selected item into center on mount and whenever the
+                            // item width changes, so resizing keeps the selection centered.
                             if let selection, let index = items.firstIndex(of: selection) {
                                 scrollView.scrollTo(index, anchor: .center)
                             }
@@ -128,9 +132,6 @@ struct HPicker<SelectionValue, Content>: View where SelectionValue: Hashable, Co
                     .stroke(Color(red: 229 / 255, green: 229 / 255, blue: 234 / 255), lineWidth: 4)
                     .scaledToFit()
                     .shadow(radius: 2, x: 0, y: 2)
-            }
-            .onChange(of: widthPerItem, initial: true) { _, newValue in
-                itemWidth = newValue
             }
         }
         .frame(height: itemWidth)
