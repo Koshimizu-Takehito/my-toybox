@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="SampleViewController" customModule="Screen_ViewcontrollerRepresentable_macOS" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="mainView" id="outlet-view"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="mainView">
+            <rect key="frame" x="0.0" y="0.0" width="300" height="120"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="750" editable="NO" bezeled="NO" drawsBackground="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="titleLabel">
+                    <rect key="frame" x="80" y="60" width="140" height="25"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="Hello, world!" id="titleCell">
+                        <font key="font" metaFont="systemBold" size="20"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="750" editable="NO" bezeled="NO" drawsBackground="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="subtitleLabel">
+                    <rect key="frame" x="80" y="30" width="140" height="20"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="Hello, world!" id="subtitleCell">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="titleLabel" firstAttribute="centerX" secondItem="mainView" secondAttribute="centerX" id="cx-title"/>
+                <constraint firstItem="subtitleLabel" firstAttribute="centerX" secondItem="mainView" secondAttribute="centerX" id="cx-subtitle"/>
+                <constraint firstItem="titleLabel" firstAttribute="centerY" secondItem="mainView" secondAttribute="centerY" constant="10" id="cy-title"/>
+                <constraint firstItem="subtitleLabel" firstAttribute="top" secondItem="titleLabel" secondAttribute="bottom" constant="-8" id="top-subtitle"/>
+            </constraints>
+        </customView>
+    </objects>
+</document>

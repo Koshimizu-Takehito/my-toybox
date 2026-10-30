@@ -9,11 +9,9 @@ public struct JuliaSetScreen: View {
 
     @State private var id = UUID()
     public var body: some View {
-        NavigationStack {
-            JuliaSetGestureView(id: $id)
-                .toolbar { barItem }
-                .tint(.white)
-        }
+        JuliaSetGestureView(id: $id)
+            .toolbar { barItem }
+            .tint(.white)
     }
 
     var barItem: some View {
@@ -55,6 +53,7 @@ private struct JuliaSetGestureView: View {
                 Slider(value: $constant.x, in: 0.3504 ... (constant.y - 0.0001))
                 Slider(value: $constant.y, in: 0.3506 ... 0.4)
             }
+            .frame(maxWidth: 400)
             .padding()
         }
         .onChange(of: id) { _, _ in
@@ -139,5 +138,7 @@ struct JuliaSetShaderView: View {
 }
 
 #Preview {
-    JuliaSetScreen()
+    NavigationStack {
+        JuliaSetScreen()
+    }
 }

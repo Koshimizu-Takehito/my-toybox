@@ -4,9 +4,14 @@
 ![Swift](https://img.shields.io/badge/swift-6.3-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
+[![App Clip](https://img.shields.io/badge/App%20Clip-Instant-000000?logo=apple&logoColor=white)](https://appclip.apple.com/id?p=com.takehito.koshimizu.MyToybox.MyToyboxClip)
 
 **my-toybox** は、SwiftUI と Metal を活用したさまざまなアニメーションや描画のサンプルを集めた iOS/macOS アプリプロジェクトです。  
 複数の画面（Screen）が用意されており、各画面では個性的な UI エフェクトやアニメーションを試すことができます。
+
+<a href="https://apps.apple.com/app/id6743644224" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&h=b17e195bc020808628890cbe7fcde25f" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;"></a>
+
+> 📎 [App Clip でインストール不要で試す（iOS のみ）](https://appclip.apple.com/id?p=com.takehito.koshimizu.MyToybox.MyToyboxClip)
 
 ## 概要
 
@@ -22,8 +27,8 @@
 
 ### 🔹 豊富なサンプル画面 (Screen)
 `Packages/Sources/Screens/` 以下の各フォルダに画面モジュールがあり、それぞれが独自のアニメーションや描画ロジックを持ちます。  
-`Packages/Sources/MyToyboxCatalog/Screen.swift` で画面の識別子を一元管理しています。  
-`enum Screen` の case 名は**Swift の識別子として有効な lowerCamelCase（例: `gameOfLifeScreen`）** で記述する必要があります。
+`Packages/Sources/AppScreens/AppScreen.swift` で画面の識別子を一元管理しています。  
+`enum AppScreen` の case 名は**Swift の識別子として有効な lowerCamelCase（例: `gameOfLifeScreen`）** で記述する必要があります。
 
 ### 🔹 SPM ビルドツールプラグイン
 このプロジェクトでは SPM プラグインを使用してビルド時に自動でリソースをコンパイルします：
@@ -32,7 +37,7 @@
 |-----------|------|------|
 | `BuildMetalShaders` | `.metal` ファイル | `default.metallib`（コンパイル済みシェーダー） |
 
-`@Screens` マクロ ([ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)) により、各 `Screen` case が対応する `View` 型に変換されます。
+`@Screens` マクロ ([ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)) により、各 `AppScreen` case が対応する `View` 型に変換されます。
 
 ### 🔹 Metal シェーダーによる表現
 `MosaicShader.metal` や `WaveParticleShader.metal` など、Metal シェーダーファイルを用いたビジュアルエフェクトを多数実装しています。  
@@ -68,12 +73,16 @@ my-toybox/
   │   │   ├─ MyToyboxCore/         # コアプロトコルと共有ユーティリティ
   │   │   │   ├─ ScreenMetadata.swift  # 画面メタデータ＆サムネイルのプロトコル定義
   │   │   │   ├─ Tag.swift             # 画面カテゴリ用 Tag enum
-  │   │   │   └─ ThumbnailView.swift   # サムネイル表示ラッパー
-  │   │   ├─ MyToyboxUI/           # ルートナビゲーション（RootScreen、レイアウト）
-  │   │   ├─ MyToyboxCatalog/      # Screen.swift と全画面モジュールの配線
-  │   │   ├─ MyToyboxClipCatalog/  # App Clip 向け画面カタログ（サブセット）
+  │   │   │   ├─ ThumbnailView.swift   # サムネイル表示ラッパー
+  │   │   │   └─ DeepLinkSheet.swift   # URL ベースのディープリンク処理
+  │   │   ├─ AppScreens/           # AppScreen.swift と全画面モジュールの配線
+  │   │   ├─ ClipScreens/          # App Clip 向け画面カタログ（サブセット）
+  │   │   ├─ MockScreens/          # プレビュー・テスト用モック画面カタログ
+  │   │   ├─ PlatformSupport/      # プラットフォーム抽象化（PlatformViewRepresentable）
   │   │   ├─ MyToyboxMedia/        # シェーダー画面向け共有メディア
   │   │   └─ Screens/              # 画面ごとの SPM モジュール（SwiftUI ＋任意で Metal）
+  │   │       ├─ RootScreen/       # ルートナビゲーション（サイドバー、分割、コンパクトレイアウト）
+  │   │       ├─ DetailScreen/     # 個別画面の詳細ビュー
   │   │       ├─ TagPicker/        # タグフィルター UI（SPM モジュール TagPicker）
   │   │       └─ …                 # その他の画面モジュール（Badge、GameOfLife など）
   │   └─ Tests/
@@ -88,9 +97,9 @@ my-toybox/
 
 **主要ファイル:**
 - `App.swift`: アプリのエントリーポイント。`RootScreen` が初期画面として指定されています。
-- `Packages/Sources/MyToyboxUI/RootScreen.swift`: アプリ起動時に表示される「画面一覧＋詳細表示」のメインビュー。
-- `Packages/Sources/MyToyboxUI/RootScreenModel.swift`: カタログ一覧の取得・タグによるフィルタリングなどを担当。
-- `Packages/Sources/MyToyboxCatalog/Screen.swift`: すべての画面を定義する enum とメタデータを含むファイル。
+- `Packages/Sources/Screens/RootScreen/RootScreen.swift`: アプリ起動時に表示される「画面一覧＋詳細表示」のメインビュー。
+- `Packages/Sources/Screens/RootScreen/RootScreenModel.swift`: カタログ一覧の取得・タグによるフィルタリングなどを担当。
+- `Packages/Sources/AppScreens/AppScreen.swift`: すべての画面を定義する enum とメタデータを含むファイル。
 
 ## インストール & ビルド手順
 

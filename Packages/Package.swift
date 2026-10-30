@@ -16,20 +16,28 @@ let package = Package(
             targets: ["MyToyboxCore"]
         ),
         .library(
-            name: "MyToyboxClipScreens",
-            targets: ["MyToyboxClipScreens"]
-        ),
-        .library(
-            name: "MyToyboxUI",
-            targets: ["MyToyboxUI"]
+            name: "ClipScreens",
+            targets: ["ClipScreens"]
         ),
         .library(
             name: "TagPicker",
             targets: ["TagPicker"]
         ),
         .library(
-            name: "MyToyboxScreens",
-            targets: ["MyToyboxScreens"]
+            name: "AppScreens",
+            targets: ["AppScreens"]
+        ),
+        .library(
+            name: "PlatformSupport",
+            targets: ["PlatformSupport"]
+        ),
+        .library(
+            name: "DetailScreen",
+            targets: ["DetailScreen"]
+        ),
+        .library(
+            name: "RootScreen",
+            targets: ["RootScreen"]
         ),
     ],
     dependencies: [
@@ -43,8 +51,7 @@ let package = Package(
             dependencies: [
                 .product(name: "MetadatasMacros", package: "MetadatasMacros"),
             ],
-            path: "Sources/MyToyboxCore",
-            resources: [.process("Resources")]
+            path: "Sources/MyToyboxCore"
         ),
 
         // MARK: - MyToyboxMedia
@@ -52,6 +59,46 @@ let package = Package(
             name: "MyToyboxMedia",
             path: "Sources/MyToyboxMedia",
             resources: [.process("Resources")]
+        ),
+
+        // MARK: - PlatformSupport
+        .target(
+            name: "PlatformSupport",
+            path: "Sources/PlatformSupport"
+        ),
+
+        // MARK: - DetailScreen
+        .target(
+            name: "DetailScreen",
+            dependencies: [
+                "MyToyboxCore",
+                "MockScreens",
+            ],
+            path: "Sources/Screens/DetailScreen",
+            resources: [.process("Resources")]
+        ),
+
+        // MARK: - RootScreen
+        .target(
+            name: "RootScreen",
+            dependencies: [
+                "MyToyboxCore",
+                "DetailScreen",
+                "MockScreens",
+            ],
+            path: "Sources/Screens/RootScreen",
+            resources: [.process("Resources")]
+        ),
+
+        // MARK: - MockScreens
+        .target(
+            name: "MockScreens",
+            dependencies: [
+                "MyToyboxCore",
+                .product(name: "MetadatasMacros", package: "MetadatasMacros"),
+                .product(name: "ScreenMacros", package: "ScreenMacros"),
+            ],
+            path: "Sources/MockScreens"
         ),
 
         // MARK: - Screen Modules
@@ -230,8 +277,16 @@ let package = Package(
             resources: [.process("Resources")]
         ),
         .target(
+            name: "Screen_GameBoyMosaic",
+            dependencies: ["MyToyboxCore", "MyToyboxMedia"],
+            path: "Sources/Screens/GameBoyMosaic",
+            exclude: ["Shaders"],
+            resources: [.process("Resources")],
+            plugins: [.plugin(name: "BuildMetalShaders")]
+        ),
+        .target(
             name: "Screen_GameOfLife",
-            dependencies: ["MyToyboxCore"],
+            dependencies: ["MyToyboxCore", "PlatformSupport"],
             path: "Sources/Screens/GameOfLife",
             exclude: ["Shaders"],
             resources: [.process("Resources")],
@@ -521,7 +576,7 @@ let package = Package(
         ),
         .target(
             name: "Screen_StableFluid",
-            dependencies: ["MyToyboxCore", "MyToyboxMedia"],
+            dependencies: ["MyToyboxCore", "MyToyboxMedia", "PlatformSupport"],
             path: "Sources/Screens/StableFluid",
             exclude: ["Shaders"],
             resources: [.process("Resources")],
@@ -566,6 +621,14 @@ let package = Package(
             resources: [.process("Resources")]
         ),
         .target(
+            name: "Screen_ViewcontrollerRepresentable_macOS",
+            dependencies: [
+                "MyToyboxCore",
+            ],
+            path: "Sources/Screens/ViewcontrollerRepresentable_macOS",
+            resources: [.process("Resources")]
+        ),
+        .target(
             name: "Screen_Visualeffect",
             dependencies: ["MyToyboxCore"],
             path: "Sources/Screens/Visualeffect",
@@ -592,13 +655,12 @@ let package = Package(
             resources: [.process("Resources")]
         ),
 
-        // MARK: - MyToyboxClipScreens
+        // MARK: - ClipScreens
         .target(
-            name: "MyToyboxClipScreens",
+            name: "ClipScreens",
             dependencies: [
                 "MyToyboxCore",
-                "MyToyboxUI",
-                "Screen_Badge",
+                "RootScreen",
                 "Screen_StableFluid",
                 "Screen_FlowDistortion",
                 "Screen_KuwaharaFilter",
@@ -611,18 +673,9 @@ let package = Package(
                 .product(name: "MetadatasMacros", package: "MetadatasMacros"),
                 .product(name: "ScreenMacros", package: "ScreenMacros"),
             ],
-            path: "Sources/MyToyboxClipScreens"
+            path: "Sources/ClipScreens"
         ),
 
-        // MARK: - MyToyboxUI
-        .target(
-            name: "MyToyboxUI",
-            dependencies: [
-                "MyToyboxCore",
-            ],
-            path: "Sources/MyToyboxUI",
-            resources: [.process("Resources")]
-        ),
 
         // MARK: - TagPicker
         .target(
@@ -634,12 +687,12 @@ let package = Package(
             resources: [.process("Resources")]
         ),
 
-        // MARK: - MyToyboxScreens
+        // MARK: - AppScreens
         .target(
-            name: "MyToyboxScreens",
+            name: "AppScreens",
             dependencies: [
                 "MyToyboxCore",
-                "MyToyboxUI",
+                "RootScreen",
                 "Screen_AppleLogo",
                 "Screen_ArchimedesSpiral",
                 "Screen_AuthCode",
@@ -665,6 +718,7 @@ let package = Package(
                 "Screen_FlipTransition",
                 "Screen_FlowDistortion",
                 "Screen_FlowLayout",
+                "Screen_GameBoyMosaic",
                 "Screen_GameOfLife",
                 "Screen_GradientAnimation",
                 "Screen_GradientPolygon",
@@ -716,7 +770,8 @@ let package = Package(
                 "Screen_TileAnimation3D",
                 "Screen_UnevenRoundedRectangle1",
                 "Screen_UnevenRoundedRectangle2",
-                "Screen_ViewcontrollerRepresentable",
+                .target(name: "Screen_ViewcontrollerRepresentable", condition: .when(platforms: [.iOS])),
+                .target(name: "Screen_ViewcontrollerRepresentable_macOS", condition: .when(platforms: [.macOS])),
                 "Screen_Visualeffect",
                 "Screen_VoronoiDiagram",
                 "Screen_WaveCircle",
@@ -725,7 +780,7 @@ let package = Package(
                 .product(name: "MetadatasMacros", package: "MetadatasMacros"),
                 .product(name: "ScreenMacros", package: "ScreenMacros"),
             ],
-            path: "Sources/MyToyboxScreens"
+            path: "Sources/AppScreens"
         ),
 
         // MARK: - Plugins
@@ -738,7 +793,7 @@ let package = Package(
         // MARK: - Tests
         .testTarget(
             name: "MyToyboxCoreTests",
-            dependencies: ["MyToyboxCore", "MyToyboxScreens"],
+            dependencies: ["MyToyboxCore", "AppScreens", "RootScreen"],
             path: "Tests/MyToyboxCoreTests"
         ),
     ]
@@ -746,5 +801,11 @@ let package = Package(
 
 // Xcode Previews requires each target to be a library product.
 package.products += package.targets
-    .filter { $0.name.hasPrefix("Screen_") }
+    .filter {
+        $0.name.hasPrefix("Screen_")
+            && ![
+                "Screen_ViewcontrollerRepresentable",
+                "Screen_ViewcontrollerRepresentable_macOS",
+            ].contains($0.name)
+    }
     .map { .library(name: $0.name, targets: [$0.name]) }

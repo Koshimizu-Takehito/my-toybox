@@ -11,9 +11,7 @@ public struct HomeIconDemoScreen: View {
     public init() {}
 
     public var body: some View {
-        NavigationStack {
-            HomeIconView()
-        }
+        HomeIconView()
     }
 }
 
@@ -53,21 +51,28 @@ struct HomeIconView: View {
 
 // MARK: - IconModifier
 
+/// Renders the content as a square app icon that scales with its grid cell,
+/// so the 4 × 4 grid fits narrow detail columns as well as wide screens.
 struct IconModifier<S: ShapeStyle>: ViewModifier {
     var style: S
 
     func body(content: Content) -> some View {
-        content
-            .font(.largeTitle)
-            .foregroundStyle(.white)
-            .frame(width: 70, height: 70)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .scaledToFit()
-            .background(style)
-            .clipShape(.rect(cornerRadius: 9))
-            .padding(1)
-            .background(.white.secondary)
-            .clipShape(.rect(cornerRadius: 10))
+        Color.clear
+            .frame(maxWidth: 96)
+            .aspectRatio(1, contentMode: .fit)
+            .overlay {
+                GeometryReader { proxy in
+                    let side = proxy.size.width
+                    let shape = RoundedRectangle(cornerRadius: side * 0.22, style: .continuous)
+                    content
+                        .font(.system(size: side * 0.45))
+                        .foregroundStyle(.white)
+                        .frame(width: side, height: side)
+                        .background(style, in: shape)
+                        .overlay(shape.strokeBorder(.white.secondary, lineWidth: 1))
+                }
+            }
+            .frame(maxWidth: .infinity)
             .padding(10)
     }
 }
@@ -153,5 +158,7 @@ private struct JiggleView<Content: View>: View, Animatable {
 // MARK: - Preview
 
 #Preview {
-    HomeIconDemoScreen()
+    NavigationStack {
+        HomeIconDemoScreen()
+    }
 }

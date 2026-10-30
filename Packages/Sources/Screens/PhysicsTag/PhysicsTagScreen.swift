@@ -22,28 +22,31 @@ public struct PhysicsTagScreen: View {
     @Environment(\.colorScheme) var colorScheme
 
     public var body: some View {
-        SpriteView(scene: scene)
-            .backgroundExtensionEffect()
-            .overlay(alignment: .topTrailing) {
-                VStack(alignment: .leading, spacing: 10) {
-                    Toggle(isOn: $usesDeviceMotion) {
-                        Text(verbatim: "Motion")
-                    }
-                    Button {
-                        scene.resetSimulation()
-                    } label: {
-                        Label {
-                            Text(verbatim: "Reset")
-                        } icon: {
-                            Image(systemName: "arrow.counterclockwise")
-                        }
+        // Keep the controls as a sibling of the scene instead of an overlay: on iOS 18 the
+        // `backgroundExtensionEffect` fallback ignores the safe area, which would push an
+        // overlay under the status bar.
+        ZStack(alignment: .topTrailing) {
+            SpriteView(scene: scene)
+                .backgroundExtensionEffect()
+            VStack(alignment: .leading, spacing: 10) {
+                Toggle(isOn: $usesDeviceMotion) {
+                    Text(verbatim: "Motion")
+                }
+                Button {
+                    scene.resetSimulation()
+                } label: {
+                    Label {
+                        Text(verbatim: "Reset")
+                    } icon: {
+                        Image(systemName: "arrow.counterclockwise")
                     }
                 }
-                .fixedSize()
-                .padding()
-                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
-                .padding()
             }
+            .fixedSize()
+            .padding()
+            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+            .padding()
+        }
             .onChange(of: usesDeviceMotion) { _, newValue in
                 scene.usesDeviceMotion = newValue
             }

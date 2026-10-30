@@ -16,40 +16,38 @@ public struct ReverseListScreen: View {
     @State private var items = [Item()]
 
     public var body: some View {
-        NavigationStack {
-            List(items) { item in
-                RowContent(item: item)
-                    .listRowSeparator(.hidden)
-                    // Flip the row content
-                    .rotationEffect(.radians(.pi))
-            }
-            // Flip the entire list
-            .rotationEffect(.radians(.pi))
-            .scrollIndicators(.hidden)
-            .animation(.default, value: items)
-            .listStyle(.plain)
-            .toolbar {
-                // Adds a new item to the top of the list (bottom of UI)
-                Button {
-                    items.insert(Item(), at: 0)
-                } label: {
-                    Label {
-                        Text(verbatim: "plus")
-                    } icon: {
-                        Image(systemName: "plus")
-                    }
+        List(items) { item in
+            RowContent(item: item)
+                .listRowSeparator(.hidden)
+                // Flip the row content
+                .rotationEffect(.radians(.pi))
+        }
+        // Flip the entire list
+        .rotationEffect(.radians(.pi))
+        .scrollIndicators(.hidden)
+        .animation(.default, value: items)
+        .listStyle(.plain)
+        .toolbar {
+            // Adds a new item to the top of the list (bottom of UI)
+            Button {
+                items.insert(Item(), at: 0)
+            } label: {
+                Label {
+                    Text(verbatim: "plus")
+                } icon: {
+                    Image(systemName: "plus")
                 }
-                // Removes the first item (top of data, bottom of UI)
-                Button {
-                    if !items.isEmpty {
-                        items.removeFirst()
-                    }
-                } label: {
-                    Label {
-                        Text(verbatim: "minus")
-                    } icon: {
-                        Image(systemName: "minus")
-                    }
+            }
+            // Removes the first item (top of data, bottom of UI)
+            Button {
+                if !items.isEmpty {
+                    items.removeFirst()
+                }
+            } label: {
+                Label {
+                    Text(verbatim: "minus")
+                } icon: {
+                    Image(systemName: "minus")
                 }
             }
         }
@@ -97,5 +95,7 @@ private struct Item: Identifiable, Hashable {
 }
 
 #Preview {
-    ReverseListScreen()
+    NavigationStack {
+        ReverseListScreen()
+    }
 }

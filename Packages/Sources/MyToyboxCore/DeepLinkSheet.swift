@@ -1,9 +1,8 @@
-import MyToyboxCore
 import SwiftUI
 
 // MARK: - Route sheet presentation
 
-extension View {
+public extension View {
     /// Presents a routed destination as a sheet when a deep link or
     /// Universal Link is received.
     func deepLinkSheet<Screen: MyToyboxScreen>(
@@ -32,6 +31,8 @@ private struct DeepLinkSheet<Screen: MyToyboxScreen, ScreenContent: View>: ViewM
                 NavigationStack {
                     screenContent(screen)
                 }
+                // Use the larger page size on regular width (e.g. an unfolded iPhone Duo or iPad).
+                .presentationSizing(.page)
             }
     }
 }

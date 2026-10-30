@@ -8,17 +8,16 @@ import SwiftUI
 /// to a SwiftUI `View`, a set of `ScreenMetadata` (title, description, tags),
 /// and a thumbnail preview. The `@Screens` and `@Metadatas` macros generate
 /// the required implementations automatically.
-@MainActor
 public protocol MyToyboxScreen<RawValue, AllCases, ID>: View, RawRepresentable, CaseIterable, Hashable, Identifiable, Sendable, ScreenMetadata
-    where AllCases == [Self], RawValue == String, ID == String
+    where AllCases == [Self], RawValue == String
 {
     /// The stable identifier derived from the enum case's raw value.
-    var id: String { get }
+    var id: ID { get }
 
     /// A type-erased thumbnail view used in list cells.
     var thumbnail: AnyView { get }
 }
 
-public extension MyToyboxScreen {
+public extension MyToyboxScreen where RawValue == String, ID == RawValue {
     nonisolated var id: String { rawValue }
 }

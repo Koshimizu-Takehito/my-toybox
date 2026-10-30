@@ -1,22 +1,22 @@
 import SwiftUI
 
 extension EnvironmentValues {
-    /// The list style injected into root list views via ``View/rootListStyle(_:)``.
-    @Entry var rootListStyle: RootListStyle = .default
+    /// The list style injected into root list views via ``View/rootScreenStyle(_:)``.
+    @Entry var rootScreenStyle: RootListStyle = .default
 }
 
 public extension View {
     /// Sets the visual style applied to root list views within this view hierarchy.
-    func rootListStyle(_ style: RootListStyle) -> some View {
-        environment(\.rootListStyle, style)
+    func rootScreenStyle(_ style: RootListStyle) -> some View {
+        environment(\.rootScreenStyle, style)
     }
 }
 
 // MARK: - RootListStyle
 
-/// Visual configuration for the root screen list (background gradient and separator tint).
+/// Visual configuration for the root screen list (background gradient, separator tint and selection highlight).
 ///
-/// Pass a preset or a custom instance via ``View/rootListStyle(_:)`` to
+/// Pass a preset or a custom instance via ``View/rootScreenStyle(_:)`` to
 /// theme the sidebar/compact list without touching the list implementation.
 public struct RootListStyle {
     /// A closure that produces the full-bleed background view drawn behind the list.
@@ -25,9 +25,17 @@ public struct RootListStyle {
     /// The color applied to list row separators, or `nil` to use the system default.
     public var separatorTint: Color?
 
-    public init(separatorTint: Color? = nil, @ViewBuilder background: @escaping () -> some View = EmptyView.init) {
+    /// The fill of the highlight drawn behind the selected row in split layout.
+    public var selectionTint: Color
+
+    public init(
+        separatorTint: Color? = nil,
+        selectionTint: Color = .white.opacity(0.18),
+        @ViewBuilder background: @escaping () -> some View = EmptyView.init
+    ) {
         self.background = { AnyView(background()) }
         self.separatorTint = separatorTint
+        self.selectionTint = selectionTint
     }
 }
 

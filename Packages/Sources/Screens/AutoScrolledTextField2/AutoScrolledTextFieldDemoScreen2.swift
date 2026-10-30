@@ -37,9 +37,12 @@ struct AutoScrolledTextField2: View {
         ScrollViewReader { scrollView in
             ScrollView {
                 VStack(alignment: .leading) {
-                    // Spacer to simulate content above the text field.
+                    // Spacer to simulate content above the text field,
+                    // sized to the screen so short (landscape) screens behave the same.
                     Color.clear
-                        .frame(height: 400)
+                        .containerRelativeFrame(.vertical) { height, _ in
+                            height * 0.5
+                        }
 
                     // Email input field.
                     TextField(text: $email) {
@@ -71,11 +74,13 @@ struct AutoScrolledTextField2: View {
             .onChange(of: focused) { _, focused in
                 if focused {
                     Task {
-                        // Wait for the keyboard animation to finish before scrolling.
-                        try await Task.sleep(nanoseconds: 300_000_000)
-                        withAnimation(.snappy) {
-                            scrollView.scrollTo(buttonID, anchor: .bottom)
-                        }
+                        do {
+                            // Wait for the keyboard animation to finish before scrolling.
+                            try await Task.sleep(nanoseconds: 300_000_000)
+                            withAnimation(.snappy) {
+                                scrollView.scrollTo(buttonID, anchor: .bottom)
+                            }
+                        } catch {}
                     }
                 }
             }

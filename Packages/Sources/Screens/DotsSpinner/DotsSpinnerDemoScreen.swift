@@ -10,15 +10,16 @@ final class DotsSpinnerModel {
     ]
 
     var count: Int
-    var width: Double
+    /// The spinner size as a fraction of the shorter side of the canvas.
+    var scale: Double
 
     var colors: [Color] {
         Array(Self.colors[0 ..< min(count, Self.colors.count)])
     }
 
-    init(count: Int = 5, width: Double = 340) {
+    init(count: Int = 5, scale: Double = 0.8) {
         self.count = count
-        self.width = width
+        self.scale = scale
     }
 }
 
@@ -31,10 +32,9 @@ public struct DotsSpinnerDemoScreen: View {
     public init() {}
 
     public var body: some View {
-        VStack {
-            Spacer()
+        CanvasControlsStack {
             DotsSpinnerView(model: model)
-            Spacer()
+        } controls: {
             DotsSpinnerControl(model: model)
         }
     }
@@ -48,8 +48,8 @@ struct DotsSpinnerControl: View {
     var body: some View {
         VStack {
             HStack {
-                Text(verbatim: "Width")
-                Slider(value: $model.width.animation(), in: 50 ... 340)
+                Text(verbatim: "Size")
+                Slider(value: $model.scale.animation(), in: 0.15 ... 1)
             }
             Divider()
             Stepper(value: $model.count, in: 1 ... DotsSpinnerModel.colors.count) {
@@ -59,7 +59,6 @@ struct DotsSpinnerControl: View {
         .padding()
         .background(.ultraThinMaterial)
         .clipShape(.rect(cornerRadius: 12))
-        .padding()
     }
 }
 
@@ -71,7 +70,9 @@ struct DotsSpinnerView: View {
     var body: some View {
         let colors = model.colors
         GeometryReader { geometry in
-            let side = geometry.size.width
+            // Capped at the size used before the canvas became proportional, so large
+            // iPad and Mac windows do not draw an oversized blurred spinner every frame.
+            let side = min(model.scale * min(geometry.size.width, geometry.size.height), 340)
             TimelineView(.animation) { context in
                 let phase = 3 * context.date
                     .timeIntervalSinceReferenceDate
@@ -80,9 +81,8 @@ struct DotsSpinnerView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(.rect(cornerRadius: 0.25 * side))
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .scaledToFit()
-        .frame(width: model.width)
     }
 }
 

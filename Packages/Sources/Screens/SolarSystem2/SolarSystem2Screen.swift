@@ -13,20 +13,21 @@ public struct SolarSystem2Screen: View {
     @State private var faith = 0.0
 
     public var body: some View {
-        // The main container overlays multiple views:
-        // 1. Planet orbit paths (OrbitsView)
-        // 2. Planet animations (SolarSystemView in TimelineView)
-        // 3. Slider control for changing the "faith" parameter
-        ZStack {
-            // Draws orbital paths that morph based on "faith"
-            OrbitsView(faith: faith)
+        // The canvas overlays the orbit paths (OrbitsView) and the planet
+        // animations (SolarSystemView in TimelineView). The "faith" slider sits
+        // beside or below it so it never covers the orbits.
+        CanvasControlsStack {
+            ZStack {
+                // Draws orbital paths that morph based on "faith"
+                OrbitsView(faith: faith)
 
-            // Continuously animates the solar system over time
-            TimelineView(.animation) {
-                let time = $0.date.timeIntervalSince(start) / 10
-                SolarSystemView(faith: faith, time: time)
+                // Continuously animates the solar system over time
+                TimelineView(.animation) {
+                    let time = $0.date.timeIntervalSince(start) / 10
+                    SolarSystemView(faith: faith, time: time)
+                }
             }
-
+        } controls: {
             // Slider to interactively adjust the "faith" value
             FaithSlider(faith: $faith)
         }
@@ -64,9 +65,6 @@ private struct FaithSlider: View {
             .foregroundStyle(.white) // White text color
             .monospacedDigit() // Monospaced digits for stable layout
         }
-        // Position the slider at the bottom of the screen
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-        .padding()
     }
 }
 

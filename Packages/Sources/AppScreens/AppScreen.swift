@@ -1,6 +1,6 @@
 import MetadatasMacros
 import MyToyboxCore
-import MyToyboxUI
+import RootScreen
 import ScreenMacros
 import SwiftUI
 
@@ -29,6 +29,7 @@ import Screen_EnumPicker
 import Screen_FlipTransition
 import Screen_FlowDistortion
 import Screen_FlowLayout
+import Screen_GameBoyMosaic
 import Screen_GameOfLife
 import Screen_GradientAnimation
 import Screen_GradientPolygon
@@ -80,18 +81,22 @@ import Screen_TileAnimation
 import Screen_TileAnimation3D
 import Screen_UnevenRoundedRectangle1
 import Screen_UnevenRoundedRectangle2
+#if os(iOS)
 import Screen_ViewcontrollerRepresentable
+#elseif os(macOS)
+import Screen_ViewcontrollerRepresentable_macOS
+#endif
 import Screen_Visualeffect
 import Screen_VoronoiDiagram
 import Screen_WaveCircle
 import Screen_WaveParticle
 import Screen_WavingText
 
-// MARK: - Screen
+// MARK: - AppScreen
 
 @Screens
 @Metadatas
-public enum Screen: String, MyToyboxScreen {
+public enum AppScreen: String, MyToyboxScreen {
     case strokeModifierDemoScreen
     case rippleScreen
     case stableFluidScreen
@@ -103,6 +108,7 @@ public enum Screen: String, MyToyboxScreen {
     case radialLayoutScreen
     case flowDistortionScreen
     case gameOfLifeScreen
+    case gameBoyMosaicScreen
     case multiHelixScreen
     case kuwaharaScreen
     case badgeDemoScreen
@@ -181,5 +187,5 @@ public enum Screen: String, MyToyboxScreen {
 // MARK: - Preview
 
 #Preview {
-    RootScreen<Screen>()
+    RootScreen<AppScreen>()
 }

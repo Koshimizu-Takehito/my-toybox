@@ -1,4 +1,7 @@
 {
+  "features" : [
+    "refractivity"
+  ],
   "fill" : {
     "linear-gradient" : [
       "display-p3:0.46667,0.54902,1.00000,1.00000",
@@ -17,8 +20,10 @@
   },
   "groups" : [
     {
+      "blur-material" : null,
       "layers" : [
         {
+          "glass" : true,
           "image-name" : "Polygon 2.svg",
           "name" : "Polygon 2"
         },
@@ -27,10 +32,16 @@
           "name" : "Polygon 1"
         }
       ],
+      "refractivity" : {
+        "depth" : 0,
+        "enabled" : true,
+        "strength" : 0.5
+      },
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.5
       },
+      "specular" : true,
       "translucency" : {
         "enabled" : true,
         "value" : 0.5

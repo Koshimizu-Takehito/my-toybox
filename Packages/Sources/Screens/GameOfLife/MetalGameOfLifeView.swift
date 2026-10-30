@@ -2,6 +2,7 @@ import Metal
 import MetalKit
 import MyToyboxCore
 import Observation
+import PlatformSupport
 import simd
 import SwiftUI
 

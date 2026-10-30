@@ -17,29 +17,26 @@ public struct ColorSchemeAnimationScreen: View {
     @Environment(\.colorScheme) private var colorScheme
 
     public var body: some View {
-        NavigationStack {
-            Form {
-                Toggle(isOn: $isDarkModeOn) {
-                    Text(verbatim: "Dark Mode")
-                }
-                .listRowBackground(rowBackground)
+        Form {
+            Toggle(isOn: $isDarkModeOn) {
+                Text(verbatim: "Dark Mode")
             }
-            .scrollContentBackground(.hidden) // Hides the default form background
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(background)
-            .navigationTitle(Text(verbatim: "Color Scheme"))
-            .environment(\.colorScheme, currentScheme) // Updates the environment manually
-            .preferredColorScheme(currentScheme) // Also sets it for the current view
-            .onChange(of: colorScheme, initial: true) { _, value in
-                // Syncs the toggle with the actual system color scheme
-                isDarkModeOn = value == .dark
-            }
-            .task(id: isDarkModeOn) {
-                // Adds a slight delay before applying the color scheme change
-                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-                withAnimation(.smooth(duration: 1.0)) {
-                    currentScheme = isDarkModeOn ? .dark : .light
-                }
+            .listRowBackground(rowBackground)
+        }
+        .scrollContentBackground(.hidden) // Hides the default form background
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(background)
+        .environment(\.colorScheme, currentScheme) // Updates the environment manually
+        .preferredColorScheme(currentScheme) // Also sets it for the current view
+        .onChange(of: colorScheme, initial: true) { _, value in
+            // Syncs the toggle with the actual system color scheme
+            isDarkModeOn = value == .dark
+        }
+        .task(id: isDarkModeOn) {
+            // Adds a slight delay before applying the color scheme change
+            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+            withAnimation(.smooth(duration: 1.0)) {
+                currentScheme = isDarkModeOn ? .dark : .light
             }
         }
     }
@@ -67,5 +64,7 @@ public struct ColorSchemeAnimationScreen: View {
 
 /// SwiftUI preview for the screen.
 #Preview {
-    ColorSchemeAnimationScreen()
+    NavigationStack {
+        ColorSchemeAnimationScreen()
+    }
 }

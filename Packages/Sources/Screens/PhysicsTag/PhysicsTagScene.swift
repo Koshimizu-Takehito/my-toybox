@@ -61,6 +61,7 @@ extension PhysicsTagScene {
         super.didChangeSize(oldSize)
         guard oldSize != size else { return }
         updatePhysicsBounds()
+        containTagsInPhysicsBounds()
         spawnTagsIfLayoutReady()
     }
 
@@ -81,10 +82,29 @@ fileprivate extension PhysicsTagScene {
         guard !motionManager.isDeviceMotionActive else { return }
         motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
         motionManager.startDeviceMotionUpdates(to: .main) { [weak self] motion, _ in
-            guard let gravity = motion?.gravity else { return }
-            self?.physicsWorld.gravity = CGVector(dx: gravity.x * 9.8, dy: gravity.y * 9.8)
+            guard let self, let gravity = motion?.gravity else { return }
+            physicsWorld.gravity = Self.sceneGravity(
+                x: gravity.x * 9.8,
+                y: gravity.y * 9.8,
+                orientation: view?.window?.windowScene?.effectiveGeometry.interfaceOrientation ?? .portrait
+            )
         }
         #endif
+    }
+
+    /// Converts gravity from CoreMotion's device coordinates (portrait-fixed)
+    /// into the scene's coordinates, which follow the interface orientation.
+    static func sceneGravity(x: Double, y: Double, orientation: UIInterfaceOrientation) -> CGVector {
+        switch orientation {
+        case .landscapeRight:
+            CGVector(dx: -y, dy: x)
+        case .landscapeLeft:
+            CGVector(dx: y, dy: -x)
+        case .portraitUpsideDown:
+            CGVector(dx: -x, dy: -y)
+        default:
+            CGVector(dx: x, dy: y)
+        }
     }
 }
 
@@ -382,14 +402,42 @@ extension PhysicsTagScene {
     }
 
     /// Clamps the node's center inside the physics world (`edgeLoop`). Accounts for the rotated AABB.
-    private func clampedPosition(_ position: CGPoint, nodeSize: CGSize, rotation: CGFloat) -> CGPoint {
+    ///
+    /// - Parameter maxY: The top edge to clamp against. Defaults to the visible area's top.
+    private func clampedPosition(
+        _ position: CGPoint,
+        nodeSize: CGSize,
+        rotation: CGFloat,
+        maxY: CGFloat? = nil
+    ) -> CGPoint {
         let c = abs(cos(rotation))
         let s = abs(sin(rotation))
         let hw = (nodeSize.width * c + nodeSize.height * s) / 2
         let hh = (nodeSize.width * s + nodeSize.height * c) / 2
         let x = min(max(position.x, hw), size.width - hw)
-        let y = min(max(position.y, hh), size.height - hh)
+        let y = min(max(position.y, hh), (maxY ?? size.height) - hh)
         return CGPoint(x: x, y: y)
+    }
+}
+
+// MARK: - Resize
+
+extension PhysicsTagScene {
+    /// Moves tags that ended up outside the new `edgeLoop` after a resize back inside it.
+    ///
+    /// Without this, a shrinking scene (e.g. folding the device) leaves tags outside the
+    /// edge loop, where they fall forever or get stuck on the wrong side of the wall.
+    /// Tags still waiting in the spawn buffer above the visible area are kept there.
+    func containTagsInPhysicsBounds() {
+        let maxY = physicsWorldTotalHeight()
+        enumerateChildNodes(withName: Self.tagNodeName) { [self] node, _ in
+            guard let node = node as? SKSpriteNode else { return }
+            let clamped = clampedPosition(node.position, nodeSize: node.size, rotation: node.zRotation, maxY: maxY)
+            guard clamped != node.position else { return }
+            node.position = clamped
+            node.physicsBody?.velocity = .zero
+            node.physicsBody?.angularVelocity = 0
+        }
     }
 }
 

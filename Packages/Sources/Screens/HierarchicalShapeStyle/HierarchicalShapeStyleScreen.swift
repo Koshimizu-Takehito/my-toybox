@@ -8,14 +8,28 @@ public struct HierarchicalShapeStyleScreen: View {
     public init() {}
 
     public var body: some View {
-        VStack {
-            TextSampleView(style: .foreground)
-            TextSampleView(style: .mint)
-            TextSampleView(style: linearGradient)
+        // Picks the largest arrangement that fits: three blocks stacked on tall
+        // screens, side by side on wide ones, and smaller text on short ones.
+        ViewThatFits {
+            VStack { samples }
+                .font(.largeTitle)
+            HStack(alignment: .top, spacing: 24) { samples }
+                .font(.title2)
+            VStack { samples }
+                .font(.title)
+            VStack { samples }
+                .font(.title3)
         }
-        .font(.largeTitle)
         .fontWeight(.heavy)
         .fontDesign(.monospaced)
+        .padding()
+    }
+
+    @ViewBuilder
+    private var samples: some View {
+        TextSampleView(style: .foreground)
+        TextSampleView(style: .mint)
+        TextSampleView(style: linearGradient)
     }
 
     var linearGradient: LinearGradient {
@@ -39,6 +53,8 @@ private struct TextSampleView<Style: ShapeStyle>: View {
             Text(verbatim: "1234567890")
                 .foregroundStyle(.quaternary)
         }
+        .lineLimit(1)
+        .minimumScaleFactor(0.5)
         .foregroundStyle(style)
     }
 }

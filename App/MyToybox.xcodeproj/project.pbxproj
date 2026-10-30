@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A2AAF0B2EE4036F00CAF02D /* MyToyboxScreens in Frameworks */ = {isa = PBXBuildFile; productRef = 3A2AAF0A2EE4036F00CAF02D /* MyToyboxScreens */; };
-		3AD51D3E2FAA050100E4F166 /* MyToyboxUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3AD51D3D2FAA050100E4F166 /* MyToyboxUI */; };
-		3AD51D402FAA050C00E4F166 /* MyToyboxUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3AD51D3F2FAA050C00E4F166 /* MyToyboxUI */; };
-		7B40C1FE2F0A100100A0A001 /* MyToyboxClipScreens in Frameworks */ = {isa = PBXBuildFile; productRef = 7B40C1FD2F0A100100A0A001 /* MyToyboxClipScreens */; };
+		3A875CF22FB021FE00F18F2D /* AppScreens in Frameworks */ = {isa = PBXBuildFile; productRef = 3A875CF12FB021FE00F18F2D /* AppScreens */; };
+		3A875CF42FB0220800F18F2D /* ClipScreens in Frameworks */ = {isa = PBXBuildFile; productRef = 3A875CF32FB0220800F18F2D /* ClipScreens */; };
+		3AFB23ED2FAEEC4600C78D45 /* RootScreen in Frameworks */ = {isa = PBXBuildFile; productRef = 3AFB23EC2FAEEC4600C78D45 /* RootScreen */; };
+		3AFB23EF2FAEEC4F00C78D45 /* RootScreen in Frameworks */ = {isa = PBXBuildFile; productRef = 3AFB23EE2FAEEC4F00C78D45 /* RootScreen */; };
 		AABB00012FAB000100000001 /* TagPicker in Frameworks */ = {isa = PBXBuildFile; productRef = AABB00002FAB000100000001 /* TagPicker */; };
-		AABB00042FAB000100000001 /* MyToyboxClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 7B40C1F22F0A100100A0A001 /* MyToyboxClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AABB00042FAB000100000001 /* MyToyboxClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 7B40C1F22F0A100100A0A001 /* MyToyboxClip.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,9 +62,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A2AAF0B2EE4036F00CAF02D /* MyToyboxScreens in Frameworks */,
 				AABB00012FAB000100000001 /* TagPicker in Frameworks */,
-				3AD51D402FAA050C00E4F166 /* MyToyboxUI in Frameworks */,
+				3A875CF22FB021FE00F18F2D /* AppScreens in Frameworks */,
+				3AFB23ED2FAEEC4600C78D45 /* RootScreen in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,8 +72,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B40C1FE2F0A100100A0A001 /* MyToyboxClipScreens in Frameworks */,
-				3AD51D3E2FAA050100E4F166 /* MyToyboxUI in Frameworks */,
+				3A875CF42FB0220800F18F2D /* ClipScreens in Frameworks */,
+				3AFB23EF2FAEEC4F00C78D45 /* RootScreen in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,9 +128,9 @@
 			);
 			name = MyToybox;
 			packageProductDependencies = (
-				3A2AAF0A2EE4036F00CAF02D /* MyToyboxScreens */,
 				AABB00002FAB000100000001 /* TagPicker */,
-				3AD51D3F2FAA050C00E4F166 /* MyToyboxUI */,
+				3AFB23EC2FAEEC4600C78D45 /* RootScreen */,
+				3A875CF12FB021FE00F18F2D /* AppScreens */,
 			);
 			productName = MyToybox;
 			productReference = 3A682A8F2D8D471000B110AC /* Toybox.app */;
@@ -153,8 +153,8 @@
 			);
 			name = MyToyboxClip;
 			packageProductDependencies = (
-				7B40C1FD2F0A100100A0A001 /* MyToyboxClipScreens */,
-				3AD51D3D2FAA050100E4F166 /* MyToyboxUI */,
+				3AFB23EE2FAEEC4F00C78D45 /* RootScreen */,
+				3A875CF32FB0220800F18F2D /* ClipScreens */,
 			);
 			productName = MyToyboxClip;
 			productReference = 7B40C1F22F0A100100A0A001 /* MyToyboxClip.app */;
@@ -168,7 +168,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 2640;
+				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					3A682A8E2D8D471000B110AC = {
 						CreatedOnToolsVersion = 16.2;
@@ -302,7 +302,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -367,7 +367,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -528,7 +528,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = "non-global";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Osize";
@@ -577,23 +576,21 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3A2AAF0A2EE4036F00CAF02D /* MyToyboxScreens */ = {
+		3A875CF12FB021FE00F18F2D /* AppScreens */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3A2AAF072EE4036F00CAF02D /* XCLocalSwiftPackageReference "../Packages" */;
-			productName = MyToyboxScreens;
+			productName = AppScreens;
 		};
-		3AD51D3D2FAA050100E4F166 /* MyToyboxUI */ = {
+		3A875CF32FB0220800F18F2D /* ClipScreens */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = MyToyboxUI;
+			productName = ClipScreens;
 		};
-		3AD51D3F2FAA050C00E4F166 /* MyToyboxUI */ = {
+		3AFB23EC2FAEEC4600C78D45 /* RootScreen */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = MyToyboxUI;
+			productName = RootScreen;
 		};
-		7B40C1FD2F0A100100A0A001 /* MyToyboxClipScreens */ = {
+		3AFB23EE2FAEEC4F00C78D45 /* RootScreen */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3A2AAF072EE4036F00CAF02D /* XCLocalSwiftPackageReference "../Packages" */;
-			productName = MyToyboxClipScreens;
+			productName = RootScreen;
 		};
 		AABB00002FAB000100000001 /* TagPicker */ = {
 			isa = XCSwiftPackageProductDependency;

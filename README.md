@@ -4,11 +4,16 @@
 ![Swift](https://img.shields.io/badge/swift-6.3-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
+[![App Clip](https://img.shields.io/badge/App%20Clip-Instant-000000?logo=apple&logoColor=white)](https://appclip.apple.com/id?p=com.takehito.koshimizu.MyToybox.MyToyboxClip)
 
 ![Simulator Screenshot - iPad Pro 13-inch (M4) - 2025-05-11 at 15 32 02](https://github.com/user-attachments/assets/8b5ecc14-1224-4de7-9160-622aee2fb723)
 
 **my-toybox** is an experimental iOS/macOS app project that showcases a wide variety of SwiftUI and Metal-based visual effects and animations.  
 It acts as a sandbox or "toybox" of interactive screens where you can explore different UI techniques and graphics rendering approaches.
+
+<a href="https://apps.apple.com/app/id6743644224" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&h=b17e195bc020808628890cbe7fcde25f" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;"></a>
+
+> 📎 [Try it instantly with App Clip (iOS only)](https://appclip.apple.com/id?p=com.takehito.koshimizu.MyToybox.MyToyboxClip)
 
 ## Overview
 
@@ -18,14 +23,14 @@ It acts as a sandbox or "toybox" of interactive screens where you can explore di
 - **Recommended**: Xcode 26.4.1 or later  
 
 The app displays a list of sample screens (referred to as "screens") on launch. Each screen demonstrates a unique animation or visual effect.  
-Screens are loaded dynamically from the `Screen` enum and rendered using SwiftUI and, in some cases, custom Metal shaders.
+Screens are loaded dynamically from the `AppScreen` enum and rendered using SwiftUI and, in some cases, custom Metal shaders.
 
 ## Key Features
 
 ### 🔹 Dozens of Sample Screens
 Each screen lives under `Packages/Sources/Screens/<ScreenName>/` and showcases a specific animation, layout, or rendering technique.  
-The screen list is defined in `Packages/Sources/MyToyboxCatalog/Screen.swift`.  
-Each case name in `enum Screen` **must be a valid Swift identifier in lowerCamelCase (e.g. `gameOfLifeScreen`)**.
+The screen list is defined in `Packages/Sources/AppScreens/AppScreen.swift`.  
+Each case name in `enum AppScreen` **must be a valid Swift identifier in lowerCamelCase (e.g. `gameOfLifeScreen`)**.
 
 ### 🔹 SPM Build Tool Plugins
 This project uses SPM plugins to automatically compile resources during build:
@@ -34,7 +39,7 @@ This project uses SPM plugins to automatically compile resources during build:
 |--------|-------|--------|
 | `BuildMetalShaders` | `.metal` files | `default.metallib` (compiled shaders) |
 
-The `@Screens` macro ([ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)) converts each `Screen` case into a corresponding `View` type.
+The `@Screens` macro ([ScreenMacros](https://github.com/Koshimizu-Takehito/ScreenMacros)) converts each `AppScreen` case into a corresponding `View` type.
 
 ### 🔹 Metal Shaders
 Some effects (like mosaic or particle waves) are implemented with `.metal` shader files using SwiftUI's shader support.
@@ -69,12 +74,16 @@ my-toybox/
   │   │   ├─ MyToyboxCore/         # Core protocols and shared utilities
   │   │   │   ├─ ScreenMetadata.swift  # Protocol defining screen metadata & thumbnail
   │   │   │   ├─ Tag.swift             # Tag enum for screen categorization
-  │   │   │   └─ ThumbnailView.swift   # Reusable thumbnail view wrapper
-  │   │   ├─ MyToyboxUI/           # Root navigation shell (RootScreen, layouts)
-  │   │   ├─ MyToyboxCatalog/      # Screen.swift enum; wires all screen modules
-  │   │   ├─ MyToyboxClipCatalog/  # App Clip screen catalog (subset)
+  │   │   │   ├─ ThumbnailView.swift   # Reusable thumbnail view wrapper
+  │   │   │   └─ DeepLinkSheet.swift   # URL-based deep link handling
+  │   │   ├─ AppScreens/           # AppScreen.swift enum; wires all screen modules
+  │   │   ├─ ClipScreens/          # App Clip screen catalog (subset)
+  │   │   ├─ MockScreens/          # Mock screen catalog for previews/testing
+  │   │   ├─ PlatformSupport/      # Platform abstraction (PlatformViewRepresentable)
   │   │   ├─ MyToyboxMedia/        # Shared media for shader-based screens
   │   │   └─ Screens/              # One SPM module per screen (SwiftUI + optional Metal)
+  │   │       ├─ RootScreen/       # Root navigation shell (sidebar, split, compact layouts)
+  │   │       ├─ DetailScreen/     # Detail view for individual screens
   │   │       ├─ TagPicker/        # Tag filter UI (SPM module TagPicker)
   │   │       └─ …                 # Other screen modules (Badge, GameOfLife, …)
   │   └─ Tests/
@@ -89,9 +98,9 @@ my-toybox/
 
 **Key Files:**
 - `App.swift`: The app's `@main` entry point, launching the `RootScreen`.
-- `Packages/Sources/MyToyboxUI/RootScreen.swift`: The master-detail view listing all available screens.
-- `Packages/Sources/MyToyboxUI/RootScreenModel.swift`: Handles sidebar selection and tag filtering state for the catalog.
-- `Packages/Sources/MyToyboxCatalog/Screen.swift`: Enum defining all available screens with their metadata.
+- `Packages/Sources/Screens/RootScreen/RootScreen.swift`: The master-detail view listing all available screens.
+- `Packages/Sources/Screens/RootScreen/RootScreenModel.swift`: Handles sidebar selection and tag filtering state for the catalog.
+- `Packages/Sources/AppScreens/AppScreen.swift`: Enum defining all available screens with their metadata.
 
 ## Getting Started
 

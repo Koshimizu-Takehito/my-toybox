@@ -1,3 +1,4 @@
+import DetailScreen
 import MyToyboxCore
 import SwiftUI
 
@@ -7,11 +8,13 @@ import SwiftUI
 ///
 /// - On regular width, it uses `RootSplitView`.
 /// - On compact width (iPhone), it uses `RootCompactView`.
+/// - Both layouts share `selection`, so the presented screen survives
+///   size-class changes such as folding or unfolding a foldable iPhone.
 /// - It injects shared tag selection state into child views.
 public struct RootScreen<Screen: MyToyboxScreen>: View {
     /// The view model that loads and filters available screens.
     @State private var viewModel = RootScreenModel<Screen>()
-    /// The selected screen used by split layout.
+    /// The screen the user is viewing, shared by the split and compact layouts.
     @State private var selection: Screen?
     /// The current horizontal size class for adaptive routing.
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -20,7 +23,7 @@ public struct RootScreen<Screen: MyToyboxScreen>: View {
 
     public var body: some View {
         contentView
-            .deepLinkSheet(content: MyToyboxDetailView<Screen>.init)
+            .deepLinkSheet(content: DetailScreen<Screen>.init)
             // Force dark mode appearance 😎
             .preferredColorScheme(.dark)
             .environment(viewModel.tags)
@@ -33,7 +36,7 @@ private extension RootScreen {
         let filteredScreens = viewModel.filteredScreens()
         #if os(iOS)
         if horizontalSizeClass == .compact {
-            RootCompactView(screens: filteredScreens)
+            RootCompactView(screens: filteredScreens, selection: $selection)
         } else {
             RootSplitView(screens: filteredScreens, selection: $selection)
         }
@@ -42,3 +45,13 @@ private extension RootScreen {
         #endif
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+import MockScreens
+
+#Preview {
+    RootScreen<MockScreen>()
+}
+#endif

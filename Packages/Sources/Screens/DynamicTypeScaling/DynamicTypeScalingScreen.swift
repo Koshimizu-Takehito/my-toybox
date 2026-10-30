@@ -13,13 +13,25 @@ public struct DynamicTypeScalingScreen: View {
     @State private var dynamicTypeSizeIndex: Double = 3.0
 
     public var body: some View {
-        VStack {
-            // Scaled metric values rendered under the selected dynamic type size
-            ScaledMetrics()
-                .environment(\.dynamicTypeSize, .allCases[Int(dynamicTypeSizeIndex)])
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
-                .contentTransition(.numericText())
+        CanvasControlsStack(canvasAspectRatio: nil) {
+            // Scaled metric values rendered under the selected dynamic type size.
+            // They scroll when the rows outgrow a short (landscape) screen.
+            ScrollView {
+                ScaledMetrics()
+                    .environment(\.dynamicTypeSize, .allCases[Int(dynamicTypeSizeIndex)])
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .contentTransition(.numericText())
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .defaultScrollAnchor(.center)
+        } controls: {
+            controls
+        }
+        .font(.system(size: 30).monospacedDigit().bold())
+    }
 
+    private var controls: some View {
+        VStack {
             // Displays the name of the current `DynamicTypeSize`
             Text(String(describing: DynamicTypeSize.allCases[Int(dynamicTypeSizeIndex)]))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -28,8 +40,6 @@ public struct DynamicTypeScalingScreen: View {
             // Slider to adjust the dynamic type size index
             Slider(value: $dynamicTypeSizeIndex.animation(), in: 0 ... 11)
         }
-        .font(.system(size: 30).monospacedDigit().bold())
-        .padding()
     }
 }
 

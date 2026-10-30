@@ -12,19 +12,21 @@ public struct WaveCircleScreen: View {
     @State private var percent = 0.50
 
     public var body: some View {
-        VStack {
+        CanvasControlsStack {
             // A view that renders the animated wave within a circle.
-            WaveCircleAnimationView(percent: percent)
-                .font(.system(size: 60).monospacedDigit())
-                .fontWeight(.bold)
-                .fontDesign(.rounded)
-
+            // The label scales with the circle so it fits small and large canvases alike.
+            GeometryReader { geometry in
+                WaveCircleAnimationView(percent: percent)
+                    .font(.system(size: 0.18 * min(geometry.size.width, geometry.size.height)).monospacedDigit())
+                    .fontWeight(.bold)
+                    .fontDesign(.rounded)
+            }
+        } controls: {
             // A slider to change the percentage value interactively.
             Slider(value: $percent.animation(), in: 0 ... 1, step: 0.01)
         }
         .foregroundStyle(.tint)
         .tint(.blue)
-        .padding()
     }
 }
 

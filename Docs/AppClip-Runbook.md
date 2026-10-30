@@ -15,7 +15,7 @@
 - `RouteID`: external route identifier passed between app layers.
 - `RouteCatalog`: single source of truth for clip items and route availability.
 - `RouteRootScreen`: public clip entry view for both App Clip and full app fallback presentation.
-- `Screen` remains internal to `MyToyboxCatalog` and must never be referenced in `App/*`.
+- `AppScreen` remains internal to `AppScreens` and must never be referenced in `App/*`.
 
 ## Invocation Sources
 - App Clip Code

@@ -25,7 +25,7 @@ namespace SmoothMin2d {
 namespace SmoothMin2d {
     [[ stitchable ]] half4 main(float2 position, half4 color, float4 box, float sec, float k) {
         // Normalize pixel coordinates to [-1, 1], adjusting for aspect ratio.
-        float2 pos = -1.0 + 2.0 * (position + box.xy) / box.zw;
+        float2 pos = -1.0 + 2.0 * (position - box.xy) / box.zw;
         if (box.z < box.w) {
             pos.y = pos.y * box.w / box.z;
         } else {

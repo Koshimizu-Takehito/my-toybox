@@ -8,33 +8,61 @@ public struct TileAnimationScreen: View {
     public init() {}
 
     @State private var viewModel: ViewModel?
+    @State private var lineWidth: Double = 16
+    /// The latest measured size, which drives the debounced grid setup.
+    @State private var size = CGSize.zero
 
     public var body: some View {
-        if let viewModel {
-            ContentView(viewModel: viewModel, lineWidth: 16)
-                .backgroundExtensionEffect()
-                .id([viewModel.row, viewModel.column])
-        } else {
-            Color.clear
-                .backgroundExtensionEffect()
-                .onGeometryChange(for: CGSize.self, of: \.size) { _, size in
-                    setup(with: size)
-                }
+        Group {
+            if let viewModel {
+                ContentView(viewModel: viewModel, lineWidth: lineWidth)
+                    .id([viewModel.row, viewModel.column])
+            } else {
+                Color.clear
+            }
+        }
+        // Measure the full available area rather than the aspect-fit grid.
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .backgroundExtensionEffect()
+        .onGeometryChange(for: CGSize.self, of: \.size) { _, size in
+            self.size = size
+        }
+        .task(id: size) {
+            await setup(with: size)
         }
     }
 
-    private func setup(with size: CGSize) {
-        if size == .zero {
-            return
-        } else if size.height > size.width {
-            let column = 8
-            let row = Int(Double(column) * size.height / size.width)
-            viewModel = ViewModel(row: row, column: column)
+    /// Recomputes the grid dimensions for the given size.
+    ///
+    /// The view model is rebuilt only when the row or column count changes,
+    /// so the animation state survives live resizes that keep the same grid.
+    /// The first setup runs immediately; later ones are debounced so dragging a
+    /// Mac window or a Stage Manager edge does not restart the animation on
+    /// every frame. The task is cancelled when the size changes again first.
+    private func setup(with size: CGSize) async {
+        guard size.width > 0, size.height > 0 else { return }
+        if viewModel != nil {
+            do {
+                try await Task.sleep(for: .milliseconds(150))
+            } catch {
+                return
+            }
+        }
+        let row: Int
+        let column: Int
+        if size.height > size.width {
+            column = 8
+            row = Int(Double(column) * size.height / size.width)
         } else {
-            let row = 8
-            let column = Int(Double(row) * size.width / size.height)
+            row = 8
+            column = Int(Double(row) * size.width / size.height)
+        }
+        if viewModel?.row != row || viewModel?.column != column {
             viewModel = ViewModel(row: row, column: column)
         }
+        // Scale the stroke with the tile size (16pt for a 50pt tile).
+        let tileSize = min(size.width / Double(column), size.height / Double(row))
+        lineWidth = tileSize * 0.32
     }
 }
 

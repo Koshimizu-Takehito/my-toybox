@@ -15,7 +15,7 @@
 - `RouteID`: アプリ間で受け渡す外部向けルート識別子
 - `RouteCatalog`: クリップアイテムとルート可否のSSOT（Single Source of Truth）
 - `RouteRootScreen`: App Clip と、フルアプリ側のフォールバック表示の両方で利用する公開エントリビュー
-- `Screen` は `MyToyboxCatalog` 内部（internal）のままであり、`App/*` から参照してはならない
+- `AppScreen` は `AppScreens` 内部（internal）のままであり、`App/*` から参照してはならない
 
 ## 呼び出し元
 - App Clip Code
