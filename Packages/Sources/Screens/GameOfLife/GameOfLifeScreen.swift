@@ -45,9 +45,7 @@ public struct GameOfLifeScreen: View {
                 .padding()
         }
         .monospacedDigit()
-        .navigationTitle(Text(verbatim: "Conway's Game of Life"))
         .toolbar(content: toolbar)
-        .toolbarTitleDisplayMode(.inlineLarge)
         .tint(.blue)
     }
 

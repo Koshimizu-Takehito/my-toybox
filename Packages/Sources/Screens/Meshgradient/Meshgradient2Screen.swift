@@ -25,35 +25,33 @@ public struct Meshgradient2Screen: View {
     @State private var toolbarHidden = false
 
     public var body: some View {
-        NavigationStack {
-            ZStack {
-                MeshView(
-                    id: $id,
-                    isDotsHidden: $isDotsHidden,
-                    offsets: $offsets,
-                    width: colors.count,
-                    height: colors.count,
-                    colors: colors
-                )
-                .hueRotation(.radians(angle))
+        ZStack {
+            MeshView(
+                id: $id,
+                isDotsHidden: $isDotsHidden,
+                offsets: $offsets,
+                width: colors.count,
+                height: colors.count,
+                colors: colors
+            )
+            .hueRotation(.radians(angle))
+        }
+        .onTapGesture {
+            withAnimation {
+                toolbarHidden.toggle()
             }
-            .onTapGesture {
-                withAnimation {
-                    toolbarHidden.toggle()
-                }
-            }
-            .toolbar {
-                toolbarItems()
-            }
-            .tint(.white)
-            .fontWeight(.semibold)
-            .background {
-                Color.black
-                    .backgroundExtensionEffect()
-            }
-            .onChange(of: colors.count) { _, _ in
-                offsets = [CGSize](repeating: .zero, count: colors.count * colors.count)
-            }
+        }
+        .toolbar {
+            toolbarItems()
+        }
+        .tint(.white)
+        .fontWeight(.semibold)
+        .background {
+            Color.black
+                .backgroundExtensionEffect()
+        }
+        .onChange(of: colors.count) { _, _ in
+            offsets = [CGSize](repeating: .zero, count: colors.count * colors.count)
         }
     }
 
@@ -81,8 +79,6 @@ public struct Meshgradient2Screen: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
             HStack {
-                Spacer()
-                    .frame(maxWidth: .infinity)
                 Button {
                     withAnimation {
                         isDotsHidden.toggle()
@@ -101,7 +97,10 @@ public struct Meshgradient2Screen: View {
             .opacity(toolbarHidden ? 0 : 1)
         }
         ToolbarItem(placement: .bottomBar) {
+            // Bottom bar items size to fit, so give the slider an explicit width.
             Slider(value: $angle, in: -(.pi) ... .pi)
+                .frame(width: 240)
+                .padding(.horizontal)
                 .opacity(toolbarHidden ? 0 : 1)
         }
     }
@@ -267,7 +266,9 @@ private extension SIMD2<Float> {
 }
 
 #Preview {
-    Meshgradient2Screen()
+    NavigationStack {
+        Meshgradient2Screen()
+    }
 }
 
 #elseif os(macOS)

@@ -9,11 +9,9 @@ public struct JuliaSetScreen: View {
 
     @State private var id = UUID()
     public var body: some View {
-        NavigationStack {
-            JuliaSetGestureView(id: $id)
-                .toolbar { barItem }
-                .tint(.white)
-        }
+        JuliaSetGestureView(id: $id)
+            .toolbar { barItem }
+            .tint(.white)
     }
 
     var barItem: some View {
@@ -139,5 +137,7 @@ struct JuliaSetShaderView: View {
 }
 
 #Preview {
-    JuliaSetScreen()
+    NavigationStack {
+        JuliaSetScreen()
+    }
 }

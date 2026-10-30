@@ -20,54 +20,51 @@ public struct DateformatStyleScreen: View {
     @State private var selectedCalendar: CalendarName = .gregorian
 
     public var body: some View {
-        NavigationStack {
-            List {
-                // Output preview
-                Section {
-                    DateCell($sampleDate, style: fullStyle)
-                    DateCell($sampleDate, style: compactStyle)
-                } header: {
-                    Text(verbatim: "出力")
-                }
-
-                // Calendar selection
-                Section {
-                    ForEach(CalendarName.allCases, id: \.self) {
-                        SelectionCell($selectedCalendar, value: $0)
-                    }
-                } header: {
-                    Text(verbatim: "暦法")
-                }
-
-                // Locale (language) selection
-                Section {
-                    ForEach(LanguageCode.allCases, id: \.self) {
-                        SelectionCell($selectedLanguage, value: $0)
-                    }
-                } header: {
-                    Text(verbatim: "ロケール")
-                }
-
-                // Time zone selection
-                Section {
-                    ForEach(TimeZoneID.allCases, id: \.self) {
-                        SelectionCell($selectedTimeZone, value: $0)
-                    }
-                } header: {
-                    Text(verbatim: "タイムゾーン")
-                }
+        List {
+            // Output preview
+            Section {
+                DateCell($sampleDate, style: fullStyle)
+                DateCell($sampleDate, style: compactStyle)
+            } header: {
+                Text(verbatim: "出力")
             }
-            // Apply selected values into the environment
-            .environment(\.locale, Locale(identifier: selectedLanguage.rawValue))
-            .environment(\.timeZone, TimeZone(selectedTimeZone))
-            .environment(\.calendar, Calendar(identifier: selectedCalendar.identifier))
-            .animation(.default, value: sampleDate)
-            .animation(.default, value: selectedLanguage)
-            .animation(.default, value: selectedTimeZone)
-            .animation(.default, value: selectedCalendar)
-            .tint(.orange)
-            .navigationTitle(Text(verbatim: "Date Format Style"))
+
+            // Calendar selection
+            Section {
+                ForEach(CalendarName.allCases, id: \.self) {
+                    SelectionCell($selectedCalendar, value: $0)
+                }
+            } header: {
+                Text(verbatim: "暦法")
+            }
+
+            // Locale (language) selection
+            Section {
+                ForEach(LanguageCode.allCases, id: \.self) {
+                    SelectionCell($selectedLanguage, value: $0)
+                }
+            } header: {
+                Text(verbatim: "ロケール")
+            }
+
+            // Time zone selection
+            Section {
+                ForEach(TimeZoneID.allCases, id: \.self) {
+                    SelectionCell($selectedTimeZone, value: $0)
+                }
+            } header: {
+                Text(verbatim: "タイムゾーン")
+            }
         }
+        // Apply selected values into the environment
+        .environment(\.locale, Locale(identifier: selectedLanguage.rawValue))
+        .environment(\.timeZone, TimeZone(selectedTimeZone))
+        .environment(\.calendar, Calendar(identifier: selectedCalendar.identifier))
+        .animation(.default, value: sampleDate)
+        .animation(.default, value: selectedLanguage)
+        .animation(.default, value: selectedTimeZone)
+        .animation(.default, value: selectedCalendar)
+        .tint(.orange)
     }
 
     /// A verbose date and time format.
@@ -215,5 +212,7 @@ private extension TimeZone {
 // MARK: - Preview
 
 #Preview {
-    DateformatStyleScreen()
+    NavigationStack {
+        DateformatStyleScreen()
+    }
 }
