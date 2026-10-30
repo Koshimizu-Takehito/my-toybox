@@ -36,33 +36,32 @@ public struct KuwaharaScreen: View {
     @State private var blend: Double = 1.0
 
     public var body: some View {
-        VStack {
-            Spacer()
+        CanvasControlsStack(canvasAspectRatio: nil) {
             contentView()
-            Spacer()
+        } controls: {
             controlPanel()
         }
-        .padding()
     }
 
     @ViewBuilder
     private func contentView() -> some View {
-        // Shows a filtered image (top) and the original (bottom) for side-by-side comparison.
-        // The filtered image uses the custom Kuwahara layer shader with the current
-        // `radius` and `blend` values.
-        VStack {
-            Spacer()
-            Image("waterwheel", bundle: MyToyboxMedia.bundle)
-                .resizable()
-                .scaledToFit()
-                .layerEffect(.kuwahara(radius: radius, blend: blend), maxSampleOffset: .zero)
-            Text(verbatim: "Kuwahara filter")
-            Spacer()
-            Image("waterwheel", bundle: MyToyboxMedia.bundle)
-                .resizable()
-                .scaledToFit()
-            Text(verbatim: "Original")
-            Spacer()
+        // Shows a filtered image and the original for comparison, lined up along
+        // the longer side of the canvas. The filtered image uses the custom Kuwahara
+        // layer shader with the current `radius` and `blend` values.
+        LongAxisStack {
+            VStack {
+                Image("waterwheel", bundle: MyToyboxMedia.bundle)
+                    .resizable()
+                    .scaledToFit()
+                    .layerEffect(.kuwahara(radius: radius, blend: blend), maxSampleOffset: .zero)
+                Text(verbatim: "Kuwahara filter")
+            }
+            VStack {
+                Image("waterwheel", bundle: MyToyboxMedia.bundle)
+                    .resizable()
+                    .scaledToFit()
+                Text(verbatim: "Original")
+            }
         }
         .font(.footnote)
     }

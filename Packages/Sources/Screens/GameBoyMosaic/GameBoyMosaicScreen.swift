@@ -17,17 +17,15 @@ public struct GameBoyMosaicScreen: View {
     @State private var state = MosaicState()
 
     public var body: some View {
-        VStack {
-            Spacer()
+        CanvasControlsStack(canvasAspectRatio: nil) {
             ContentView(state: state) {
                 Image("waterwheel", bundle: MyToyboxMedia.bundle)
                     .resizable()
                     .scaledToFit()
             }
-            Spacer()
+        } controls: {
             ControlPanel(state: $state)
         }
-        .padding()
     }
 }
 
@@ -36,18 +34,16 @@ private struct ContentView<Content: View>: View {
     var content: () -> Content
 
     var body: some View {
-        VStack {
-            Spacer()
-
-            content().gameBoyMosaic(size: state.cellSize, count: state.colorCount)
-            Text(verbatim: "Mosaic")
-
-            Spacer()
-
-            content()
-            Text(verbatim: "Original")
-
-            Spacer()
+        // Mosaic and original line up along the longer side of the canvas.
+        LongAxisStack {
+            VStack {
+                content().gameBoyMosaic(size: state.cellSize, count: state.colorCount)
+                Text(verbatim: "Mosaic")
+            }
+            VStack {
+                content()
+                Text(verbatim: "Original")
+            }
         }
         .font(.footnote)
     }

@@ -41,14 +41,14 @@ public struct MultiHelixScreen: View {
     .map(Gradient.init)
 
     public var body: some View {
-        VStack {
+        CanvasControlsStack(canvasAspectRatio: 3 / 2) {
             // The animated preview. Only the first `laneCount` lanes are used.
             MultiHelixAnimationView(
                 marbleCount: marbleCount,
                 lanes: Array(gradientLanes[0 ..< laneCount])
             )
             .border(.cyan)
-
+        } controls: {
             Stepper(value: $marbleCount, in: 1 ... 20) {
                 Text(verbatim: "marbles: \(marbleCount)")
             }
@@ -57,7 +57,6 @@ public struct MultiHelixScreen: View {
                 Text(verbatim: "lanes: \(laneCount)")
             }
         }
-        .padding()
     }
 }
 

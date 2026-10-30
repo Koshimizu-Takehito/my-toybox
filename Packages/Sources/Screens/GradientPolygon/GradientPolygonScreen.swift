@@ -17,13 +17,13 @@ public struct GradientPolygonScreen: View {
     @State private var roundness: Double = 0.5
 
     public var body: some View {
-        VStack {
+        CanvasControlsStack {
             // Display the gradient-filled polygon.
             PolygonShape(vertex: vertex, roundness: roundness)
                 .fill(Self.gradient)
                 .scaledToFit()
                 .id(vertex) // Forces redraw when vertex count changes
-
+        } controls: {
             VStack {
                 // Vertex count adjustment.
                 Stepper(value: $vertex, in: 3 ... 9) {
@@ -41,7 +41,6 @@ public struct GradientPolygonScreen: View {
                 }
             }
         }
-        .padding()
         .animation(.default, value: roundness)
         .animation(.default, value: vertex)
     }

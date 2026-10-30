@@ -12,7 +12,7 @@ public struct FlowDistortionScreen: View {
     @State private var model = Model()
 
     public var body: some View {
-        VStack {
+        CanvasControlsStack {
             TimelineView(.animation) { context in
                 let time = context.date.timeIntervalSince(start)
                 Image("waterwheel", bundle: MyToyboxMedia.bundle)
@@ -20,8 +20,8 @@ public struct FlowDistortionScreen: View {
                     .aspectRatio(1, contentMode: .fit)
                     .layerEffect(shader(time: time), maxSampleOffset: .zero)
             }
+        } controls: {
             Control(model: $model.animation())
-                .padding()
         }
     }
 
