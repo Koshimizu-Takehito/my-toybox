@@ -1,2 +1,6 @@
 force(true)
 skip_binary_upload(true)
+precheck_include_in_app_purchases(false)
+run_precheck_before_submit(true)
+# Release manually from App Store Connect after approval.
+automatic_release(false)

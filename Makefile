@@ -1,4 +1,4 @@
-.PHONY: clean xcode-deep-clean help new-screen open setup sync lint lint-fix lint-strict format format-check fix fastlane-setup metadata-pull metadata-push metadata-precheck
+.PHONY: clean xcode-deep-clean help new-screen open setup sync lint lint-fix lint-strict format format-check fix fastlane-setup metadata-pull metadata-push metadata-precheck submit-preflight submit-review
 
 # Auto-load local environment variables (e.g. ASC_KEY_ID, ASC_ISSUER_ID)
 # from `.env` if present. `.env` is gitignored; copy `.env.template` to start.
@@ -34,6 +34,9 @@ help:
 	@echo "  make metadata-pull                 - Pull latest metadata & screenshots from ASC"
 	@echo "  make metadata-precheck             - Validate local metadata without uploading"
 	@echo "  make metadata-push                 - Upload metadata, screenshots, and release notes to ASC"
+	@echo "  make metadata-push VERSION=1.3.0   - Same, creating that App Store version if needed"
+	@echo "  make submit-preflight VERSION=1.3.0 - Check age rating / App Clip prerequisites (read-only)"
+	@echo "  make submit-review VERSION=1.3.0 BUILD=63 - Submit an uploaded (Xcode Cloud) build for review"
 	@echo ""
 	@echo "Note: Metal shaders are automatically compiled by SPM plugins during build."
 
@@ -137,8 +140,28 @@ metadata-pull: ## Pull latest metadata & screenshots from App Store Connect
 metadata-precheck: ## Validate local metadata without uploading
 	@bundle exec fastlane precheck_metadata
 
-metadata-push: ## Upload metadata, screenshots, and release notes (no binary)
-	@bundle exec fastlane push
+# VERSION / BUILD pick an App Store version and build, so accept them only from
+# the command line: a value inherited from the shell or `.env` stops the target.
+define require_cli_origin
+@test "$(origin $(1))" = "undefined" -o "$(origin $(1))" = "command line" || \
+	(echo "❌ $(1) comes from the $(origin $(1)); pass it on the command line instead (make $@ $(1)=...)" && exit 1)
+endef
+
+metadata-push: ## Upload metadata, screenshots, and release notes (no binary); VERSION=x.y.z creates that version
+	$(call require_cli_origin,VERSION)
+	@bundle exec fastlane push $(if $(VERSION),version:$(VERSION))
+
+submit-preflight: ## Check age rating and App Clip prerequisites without changing ASC (VERSION=x.y.z)
+	$(call require_cli_origin,VERSION)
+	@test -n "$(VERSION)" || (echo "❌ VERSION is not set (e.g. VERSION=1.3.0)" && exit 1)
+	@bundle exec fastlane submit_review_preflight version:$(VERSION)
+
+submit-review: ## Submit an uploaded build for App Store review (VERSION=x.y.z BUILD=n)
+	$(call require_cli_origin,VERSION)
+	$(call require_cli_origin,BUILD)
+	@test -n "$(VERSION)" || (echo "❌ VERSION is not set (e.g. VERSION=1.3.0)" && exit 1)
+	@test -n "$(BUILD)"   || (echo "❌ BUILD is not set (the Xcode Cloud build number)" && exit 1)
+	@bundle exec fastlane submit_review version:$(VERSION) build:$(BUILD)
 
 # ============================================================================
 # Clean build artifacts

@@ -1,3 +1,5 @@
+require File.expand_path("asc_helper", __dir__)
+
 default_platform(:ios)
 
 platform :ios do
@@ -41,17 +43,55 @@ platform :ios do
   end
 
   desc "Upload metadata, screenshots, and release notes (no binary)"
-  lane :push do
+  desc "Pass `version:` to create that App Store version on ASC if it doesn't exist yet"
+  lane :push do |options|
+    # Shared deliver options (force, no binary, precheck, manual release) live in the Deliverfile.
     deliver(
-      skip_binary_upload: true,
+      app_version: options[:version],
       skip_metadata: false,
       skip_screenshots: false,
-      force: true,
-      precheck_include_in_app_purchases: false,
-      run_precheck_before_submit: true,
       submit_for_review: false,
-      automatic_release: false,
     )
+  end
+
+  desc "Check submission prerequisites (age rating, App Clip default experience) without changing ASC"
+  desc "Usage: fastlane submit_review_preflight version:1.3.0"
+  lane :submit_review_preflight do |options|
+    UI.user_error!("Pass `version:` (e.g. 1.3.0).") if options[:version].to_s.empty?
+
+    app_id = ASCHelper.app_id
+    ASCHelper.warn_unanswered_age_rating(app_id: app_id)
+    ASCHelper.ensure_app_clip_default_experience!(app_id: app_id, version_string: options[:version].to_s, dry_run: true)
+  end
+
+  desc "Attach an uploaded build (e.g. from Xcode Cloud) to the version and submit it for review"
+  desc "Copies the previous App Clip default experience if needed and explains ASC's rejection reasons"
+  desc "Usage: fastlane submit_review version:1.3.0 build:63"
+  lane :submit_review do |options|
+    UI.user_error!("Pass `version:` (e.g. 1.3.0).") if options[:version].to_s.empty?
+    UI.user_error!("Pass `build:` (the build number uploaded by Xcode Cloud).") if options[:build].to_s.empty?
+
+    version = options[:version].to_s
+    app_id = ASCHelper.app_id
+    ASCHelper.warn_unanswered_age_rating(app_id: app_id)
+    ASCHelper.ensure_app_clip_default_experience!(app_id: app_id, version_string: version)
+
+    begin
+      deliver(
+        app_version: version,
+        build_number: options[:build].to_s,
+        skip_metadata: true,
+        skip_screenshots: true,
+        submit_for_review: true,
+        submission_information: {
+          add_id_info_uses_idfa: false,
+        },
+      )
+    rescue Spaceship::UnexpectedResponse
+      # ASC rejected an API call (e.g. the review item); show its per-field reasons.
+      ASCHelper.explain_review_submission_errors(app_id: app_id, version_string: version)
+      raise
+    end
   end
 
   desc "Validate local metadata without uploading"
