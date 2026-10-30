@@ -8,6 +8,10 @@ on:
 jobs:
   build-and-test:
     runs-on: xcode-27
+    defaults:
+      run:
+        # Runs as `bash -eo pipefail` so xcodebuild failures are not masked by the formatter pipe
+        shell: bash
     steps:
       - uses: actions/checkout@v7
 
@@ -19,20 +23,17 @@ jobs:
         with:
           xcode-version: '27'
 
-      - name: Install xcpretty
-        run: gem install xcpretty
+      - name: Download Metal Toolchain
+        run: xcodebuild -downloadComponent MetalToolchain
+
+      - name: Install xcbeautify
+        run: command -v xcbeautify || brew install xcbeautify
 
       - name: List available simulators
-        run: xcrun simctl list devices
+        run: xcrun simctl list devices available
 
-      - name: Build with xcodebuild
+      - name: Build and test
         run: |
           xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
             -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
-            CODE_SIGNING_ALLOWED=NO clean build | xcpretty
-
-      - name: Run Xcode tests
-        run: |
-          xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
-            -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
-            CODE_SIGNING_ALLOWED=NO test | xcpretty --test
+            CODE_SIGNING_ALLOWED=NO clean test | xcbeautify
