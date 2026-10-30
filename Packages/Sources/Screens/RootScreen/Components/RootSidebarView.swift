@@ -57,6 +57,12 @@ private extension RootSidebarView {
                 .listRowBackground(rowBackground(isSelected: screen == selection.wrappedValue))
                 #endif
             }
+            #if os(iOS)
+            // The list draws its keyboard focus ring (shown on iPad with a hardware
+            // keyboard) in the tint color. The rounded highlight already marks the
+            // selection, so hide the ring; `focusEffectDisabled()` does not affect it.
+            .tint(.clear)
+            #endif
         } else {
             List(screens, id: \.self) { screen in
                 NavigationLink(value: screen) {
