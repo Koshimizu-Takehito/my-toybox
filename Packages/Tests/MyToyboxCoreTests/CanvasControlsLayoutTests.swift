@@ -45,6 +45,13 @@ import Testing
         #expect(size == CGSize(width: 150, height: 100))
     }
 
+    @Test func fittedSizeRespectsMaxSide() {
+        let square = CanvasControlsLayout.fittedSize(in: CGSize(width: 1400, height: 1000), aspectRatio: 1, maxSide: 960)
+        #expect(square == CGSize(width: 960, height: 960))
+        let free = CanvasControlsLayout.fittedSize(in: CGSize(width: 1400, height: 800), aspectRatio: nil, maxSide: 960)
+        #expect(free == CGSize(width: 960, height: 800))
+    }
+
     @Test func sideBySideControlsWidthIsClamped() {
         #expect(CanvasControlsLayout.sideBySideControlsWidth(for: 400, controlsWidth: 260 ... 400) == 260)
         #expect(CanvasControlsLayout.sideBySideControlsWidth(for: 1200, controlsWidth: 260 ... 400) == 400)

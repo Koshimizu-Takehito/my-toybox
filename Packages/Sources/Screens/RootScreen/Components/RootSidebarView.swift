@@ -29,7 +29,7 @@ struct RootSidebarView<Screen: MyToyboxScreen>: View {
             .onScrollPhaseChange { _, newPhase in
                 isScrolling = newPhase.isScrolling
             }
-            .listStyle(.plain)
+            .modifier(RootListStyleModifier(isSidebar: selection != nil))
             .toolbar { rootToolbar }
         #if os(iOS)
             .scrollContentBackground(.hidden)
@@ -51,9 +51,11 @@ private extension RootSidebarView {
                 NavigationLink(value: screen) {
                     RootCell(screen: screen, isScrolling: isScrolling)
                 }
+                #if os(iOS)
                 // The rounded selection highlight separates rows, like a system sidebar.
                 .listRowSeparator(.hidden)
                 .listRowBackground(rowBackground(isSelected: screen == selection.wrappedValue))
+                #endif
             }
         } else {
             List(screens, id: \.self) { screen in
@@ -82,6 +84,29 @@ private extension RootSidebarView {
     }
 }
 
+// MARK: - RootListStyleModifier
+
+/// Applies the list style for the current platform and layout.
+///
+/// macOS uses the native sidebar style so selection follows the system accent color.
+/// iOS keeps a plain list drawn over the gradient background.
+private struct RootListStyleModifier: ViewModifier {
+    /// Whether the list is the sidebar of a split layout.
+    let isSidebar: Bool
+
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        if isSidebar {
+            content.listStyle(.sidebar)
+        } else {
+            content.listStyle(.plain)
+        }
+        #else
+        content.listStyle(.plain)
+        #endif
+    }
+}
+
 // MARK: - Preview
 
 #if DEBUG
@@ -90,6 +115,7 @@ import MockScreens
 #Preview("Compact") {
     NavigationStack {
         RootSidebarView(screens: MockScreen.allCases)
+            .environment(\.rootCellStyle, .previewLeading)
             .preferredColorScheme(.dark)
     }
 }

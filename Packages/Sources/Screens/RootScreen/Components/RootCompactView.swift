@@ -21,6 +21,8 @@ struct RootCompactView<Screen: MyToyboxScreen>: View {
     var body: some View {
         NavigationStack(path: path) {
             RootSidebarView(screens: screens)
+                // Compact layouts keep the richer row style with leading previews.
+                .environment(\.rootCellStyle, .previewLeading)
         }
     }
 

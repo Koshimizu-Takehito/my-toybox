@@ -31,6 +31,11 @@ public struct CanvasControlsLayout: Layout {
     public var spacing: CGFloat?
     /// The allowed width of the controls. Its upper bound also caps stacked controls.
     public var controlsWidth: ClosedRange<CGFloat>
+    /// The largest side of the canvas, or `nil` for no limit.
+    ///
+    /// Screens that run a shader every frame set this so large iPad and Mac
+    /// windows do not multiply the rendering cost.
+    public var maxCanvasSide: CGFloat?
 
     /// The largest share of the height that stacked controls may take before they scroll.
     static let maxStackedControlsShare: CGFloat = 0.5
@@ -40,11 +45,13 @@ public struct CanvasControlsLayout: Layout {
     public init(
         canvasAspectRatio: CGFloat? = 1,
         spacing: CGFloat? = nil,
-        controlsWidth: ClosedRange<CGFloat> = 260 ... 400
+        controlsWidth: ClosedRange<CGFloat> = 260 ... 400,
+        maxCanvasSide: CGFloat? = nil
     ) {
         self.canvasAspectRatio = canvasAspectRatio
         self.spacing = spacing
         self.controlsWidth = controlsWidth
+        self.maxCanvasSide = maxCanvasSide
     }
 
     public func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout Void) -> CGSize {
@@ -59,7 +66,11 @@ public struct CanvasControlsLayout: Layout {
         let spacing = resolvedSpacing(subviews)
         let controlsWidth = min(width, controlsWidth.upperBound)
         let controlsHeight = subviews[1].sizeThatFits(ProposedViewSize(width: controlsWidth, height: nil)).height
-        let canvasHeight = canvasAspectRatio.map { width / $0 } ?? width
+        let canvasHeight = Self.fittedSize(
+            in: CGSize(width: width, height: canvasAspectRatio.map { width / $0 } ?? width),
+            aspectRatio: canvasAspectRatio,
+            maxSide: maxCanvasSide
+        ).height
         return CGSize(width: width, height: canvasHeight + spacing + controlsHeight)
     }
 
@@ -84,11 +95,12 @@ public struct CanvasControlsLayout: Layout {
             stackedControlsHeight: stackedControlsHeight,
             spacing: spacing,
             canvasAspectRatio: canvasAspectRatio,
-            controlsWidth: controlsWidth
+            controlsWidth: controlsWidth,
+            maxCanvasSide: maxCanvasSide
         ) {
         case .stacked:
             let area = CGSize(width: bounds.width, height: max(bounds.height - stackedControlsHeight - spacing, 0))
-            let canvasSize = Self.fittedSize(in: area, aspectRatio: canvasAspectRatio)
+            let canvasSize = Self.fittedSize(in: area, aspectRatio: canvasAspectRatio, maxSide: maxCanvasSide)
             // Center the canvas and the controls as one group.
             let top = bounds.minY + (bounds.height - canvasSize.height - spacing - stackedControlsHeight) / 2
             canvas.place(
@@ -105,7 +117,7 @@ public struct CanvasControlsLayout: Layout {
         case .sideBySide:
             let columnWidth = Self.sideBySideControlsWidth(for: bounds.width, controlsWidth: controlsWidth)
             let area = CGSize(width: max(bounds.width - columnWidth - spacing, 0), height: bounds.height)
-            let canvasSize = Self.fittedSize(in: area, aspectRatio: canvasAspectRatio)
+            let canvasSize = Self.fittedSize(in: area, aspectRatio: canvasAspectRatio, maxSide: maxCanvasSide)
             let leading = bounds.minX + (bounds.width - canvasSize.width - spacing - columnWidth) / 2
             canvas.place(
                 at: CGPoint(x: leading, y: bounds.midY),
@@ -136,18 +148,20 @@ extension CanvasControlsLayout {
     ///   - spacing: The distance between the canvas and the controls.
     ///   - canvasAspectRatio: The canvas width-to-height ratio, or `nil` to compare plain areas.
     ///   - controlsWidth: The allowed width of the controls.
+    ///   - maxCanvasSide: The largest side of the canvas, or `nil` for no limit.
     static func arrangement(
         in size: CGSize,
         stackedControlsHeight: CGFloat,
         spacing: CGFloat,
         canvasAspectRatio: CGFloat?,
-        controlsWidth: ClosedRange<CGFloat>
+        controlsWidth: ClosedRange<CGFloat>,
+        maxCanvasSide: CGFloat? = nil
     ) -> Arrangement {
         let stackedArea = CGSize(width: size.width, height: max(size.height - stackedControlsHeight - spacing, 0))
         let columnWidth = sideBySideControlsWidth(for: size.width, controlsWidth: controlsWidth)
         let sideBySideArea = CGSize(width: max(size.width - columnWidth - spacing, 0), height: size.height)
-        let stacked = visibleArea(of: fittedSize(in: stackedArea, aspectRatio: canvasAspectRatio))
-        let sideBySide = visibleArea(of: fittedSize(in: sideBySideArea, aspectRatio: canvasAspectRatio))
+        let stacked = visibleArea(of: fittedSize(in: stackedArea, aspectRatio: canvasAspectRatio, maxSide: maxCanvasSide))
+        let sideBySide = visibleArea(of: fittedSize(in: sideBySideArea, aspectRatio: canvasAspectRatio, maxSide: maxCanvasSide))
         return sideBySide > stacked ? .sideBySide : .stacked
     }
 
@@ -156,16 +170,28 @@ extension CanvasControlsLayout {
         min(max(width * sideBySideControlsShare, controlsWidth.lowerBound), controlsWidth.upperBound)
     }
 
-    /// The largest size with `aspectRatio` that fits in `area`, or `area` itself when the ratio is `nil`.
-    static func fittedSize(in area: CGSize, aspectRatio: CGFloat?) -> CGSize {
-        guard let aspectRatio, aspectRatio > 0, area.width > 0, area.height > 0 else {
-            return area
-        }
-        if area.width / area.height > aspectRatio {
-            return CGSize(width: area.height * aspectRatio, height: area.height)
+    /// The largest size with `aspectRatio` that fits in `area`, or `area` itself when the ratio is `nil`,
+    /// scaled down so its longer side does not exceed `maxSide`.
+    static func fittedSize(in area: CGSize, aspectRatio: CGFloat?, maxSide: CGFloat? = nil) -> CGSize {
+        let size: CGSize
+        if let aspectRatio, aspectRatio > 0, area.width > 0, area.height > 0 {
+            if area.width / area.height > aspectRatio {
+                size = CGSize(width: area.height * aspectRatio, height: area.height)
+            } else {
+                size = CGSize(width: area.width, height: area.width / aspectRatio)
+            }
         } else {
-            return CGSize(width: area.width, height: area.width / aspectRatio)
+            size = area
         }
+        guard let maxSide, maxSide > 0 else {
+            return size
+        }
+        if aspectRatio == nil {
+            // A canvas without a fixed shape is capped on each side independently.
+            return CGSize(width: min(size.width, maxSide), height: min(size.height, maxSide))
+        }
+        let scale = min(1, maxSide / max(size.width, size.height, 1))
+        return CGSize(width: size.width * scale, height: size.height * scale)
     }
 
     private static func visibleArea(of size: CGSize) -> CGFloat {
@@ -194,15 +220,21 @@ public struct CanvasControlsStack<Canvas: View, Controls: View>: View {
     /// - Parameters:
     ///   - canvasAspectRatio: The width-to-height ratio of the canvas, or `nil` when it fills any shape.
     ///   - spacing: The distance between the canvas and the controls, or `nil` for the system spacing.
+    ///   - maxCanvasSide: The largest side of the canvas, or `nil` for no limit.
     ///   - canvas: The visual content.
     ///   - controls: The controls that drive the canvas.
     public init(
         canvasAspectRatio: CGFloat? = 1,
         spacing: CGFloat? = nil,
+        maxCanvasSide: CGFloat? = nil,
         @ViewBuilder canvas: () -> Canvas,
         @ViewBuilder controls: () -> Controls
     ) {
-        self.layout = CanvasControlsLayout(canvasAspectRatio: canvasAspectRatio, spacing: spacing)
+        self.layout = CanvasControlsLayout(
+            canvasAspectRatio: canvasAspectRatio,
+            spacing: spacing,
+            maxCanvasSide: maxCanvasSide
+        )
         self.canvas = canvas()
         self.controls = controls()
     }
