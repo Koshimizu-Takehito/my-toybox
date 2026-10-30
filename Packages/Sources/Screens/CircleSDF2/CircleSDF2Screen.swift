@@ -14,9 +14,17 @@ public struct CircleSDF2Screen: View {
     public var body: some View {
         ZStack {
             // Only the shader extends under the bars; the controls stay inside the safe area.
-            Rectangle()
-                .colorEffect(.circleSDF2(time: time, k: k))
-                .backgroundExtensionEffect()
+            GeometryReader { geometry in
+                // The visible area, in the coordinates of the full-bleed rectangle below,
+                // so a floating sidebar or the home indicator does not shift the circles.
+                let visibleRect = CGRect(
+                    origin: CGPoint(x: geometry.safeAreaInsets.leading, y: 0),
+                    size: geometry.size
+                )
+                Rectangle()
+                    .colorEffect(.circleSDF2(time: time, k: k, in: visibleRect))
+                    .ignoresSafeArea(edges: .all.subtracting(.top))
+            }
 
             VStack {
                 Button(action: reset) {
@@ -43,9 +51,11 @@ public struct CircleSDF2Screen: View {
 }
 
 extension Shader {
-    static func circleSDF2(time: TimeInterval, k: Double) -> Shader {
+    /// - Parameter rect: The area the circles are laid out in, or `nil` for the view's bounds.
+    static func circleSDF2(time: TimeInterval, k: Double, in rect: CGRect? = nil) -> Shader {
         let function = ShaderFunction(library: .screenModule, name: "CircleSDF2Shader::main")
-        return function(.boundingRect, .float(time), .float(k))
+        let box: Shader.Argument = rect.map { .float4($0.minX, $0.minY, $0.width, $0.height) } ?? .boundingRect
+        return function(box, .float(time), .float(k))
     }
 }
 

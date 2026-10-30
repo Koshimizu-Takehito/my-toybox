@@ -11,7 +11,7 @@ public struct GameOfLifeScreen: View {
     @State private var viewModel = GameOfLifeViewModel()
 
     public var body: some View {
-        CanvasControlsStack {
+        CanvasControlsStack(maxCanvasSide: 960) {
             GeometryReader { geometry in
                 // Metal 描画
                 MetalGameOfLifeView(viewModel: viewModel)

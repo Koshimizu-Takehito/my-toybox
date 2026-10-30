@@ -28,7 +28,7 @@ public struct StableFluidScreen: View {
     @State private var viewModel = StableFluidViewModel()
 
     public var body: some View {
-        CanvasControlsStack {
+        CanvasControlsStack(maxCanvasSide: 960) {
             GeometryReader { geometry in
                 MetalStableFluidView(viewModel: viewModel)
                     .gesture(brushGesture(size: geometry.size))

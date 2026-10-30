@@ -1,12 +1,39 @@
 import MyToyboxCore
 import SwiftUI
 
+// MARK: - RootCellStyle
+
+/// Visual variants for a root list row.
+///
+/// The style controls whether the cell shows a leading preview thumbnail
+/// or renders as text-only.
+enum RootCellStyle {
+    /// Text-focused row style without a leading preview.
+    case textOnly
+    /// Row style that shows a leading preview thumbnail.
+    case previewLeading
+
+    /// Returns whether the style renders a leading preview.
+    var showsLeadingPreview: Bool {
+        switch self {
+        case .textOnly:
+            false
+
+        case .previewLeading:
+            true
+        }
+    }
+}
+
+/// Environment value used by `RootCell` to resolve its visual style.
+extension EnvironmentValues {
+    /// The current style applied to root list cells.
+    @Entry var rootCellStyle: RootCellStyle = .textOnly
+}
+
 // MARK: - RootCell
 
 /// A single row view used by the root screen list.
-///
-/// Every row shows a leading preview thumbnail. When `namespace` is provided,
-/// the thumbnail also acts as the source of the zoom navigation transition.
 struct RootCell<Screen: MyToyboxScreen>: View {
     /// The screen metadata source for thumbnail and labels.
     let screen: Screen
@@ -16,6 +43,8 @@ struct RootCell<Screen: MyToyboxScreen>: View {
     var namespace: Namespace.ID?
     /// Baseline row height used for square thumbnail sizing.
     @Environment(\.defaultMinListRowHeight) private var defaultMinListRowHeight
+    /// The style context that controls whether a leading preview is shown.
+    @Environment(\.rootCellStyle) private var style
 
     init(screen: Screen, isScrolling: Bool, namespace: Namespace.ID? = nil) {
         self.screen = screen
@@ -37,29 +66,24 @@ struct RootCell<Screen: MyToyboxScreen>: View {
 private extension RootCell {
     @ViewBuilder
     var thumbnailView: some View {
-        let thumbnail = ZStack {
-            Color.clear
-            screen.thumbnail
-                .environment(\.isScrolling, isScrolling)
-        }
-        .background(.black.gradient)
-        .frame(width: defaultMinListRowHeight, height: defaultMinListRowHeight)
-        .clipShape(.rect(cornerRadius: 8))
-
-        if let namespace {
-            thumbnail
-                .matchedTransitionSource(id: screen, in: namespace)
-        } else {
-            thumbnail
+        if style.showsLeadingPreview, let namespace {
+            ZStack {
+                Color.clear
+                screen.thumbnail
+                    .environment(\.isScrolling, isScrolling)
+            }
+            .background(.black.gradient)
+            .frame(width: defaultMinListRowHeight, height: defaultMinListRowHeight)
+            .clipShape(.rect(cornerRadius: 8))
+            .matchedTransitionSource(id: screen, in: namespace)
         }
     }
 
     var labelView: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading) {
             Text(screen.title)
                 .font(.body)
                 .fontWeight(.semibold)
-                .lineLimit(1)
             Text(screen.description)
                 .font(.subheadline)
                 .foregroundStyle(.foreground.secondary)
@@ -73,20 +97,22 @@ private extension RootCell {
 #if DEBUG
 import MockScreens
 
-#Preview("Without Transition Source") {
+#Preview("Text Only") {
     List {
         RootCell(screen: MockScreen.mockA, isScrolling: false)
     }
+    .environment(\.rootCellStyle, .textOnly)
     .preferredColorScheme(.dark)
 }
 
-#Preview("With Transition Source") {
+#Preview("Preview Leading") {
     struct Container: View {
         @Namespace var namespace
         var body: some View {
             List {
                 RootCell(screen: MockScreen.mockA, isScrolling: false, namespace: namespace)
             }
+            .environment(\.rootCellStyle, .previewLeading)
             .preferredColorScheme(.dark)
         }
     }

@@ -70,7 +70,9 @@ struct DotsSpinnerView: View {
     var body: some View {
         let colors = model.colors
         GeometryReader { geometry in
-            let side = model.scale * min(geometry.size.width, geometry.size.height)
+            // Capped at the size used before the canvas became proportional, so large
+            // iPad and Mac windows do not draw an oversized blurred spinner every frame.
+            let side = min(model.scale * min(geometry.size.width, geometry.size.height), 340)
             TimelineView(.animation) { context in
                 let phase = 3 * context.date
                     .timeIntervalSinceReferenceDate

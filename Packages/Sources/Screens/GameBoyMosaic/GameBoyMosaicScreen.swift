@@ -17,7 +17,7 @@ public struct GameBoyMosaicScreen: View {
     @State private var state = MosaicState()
 
     public var body: some View {
-        CanvasControlsStack(canvasAspectRatio: nil) {
+        CanvasControlsStack(canvasAspectRatio: nil, maxCanvasSide: 960) {
             ContentView(state: state) {
                 Image("waterwheel", bundle: MyToyboxMedia.bundle)
                     .resizable()

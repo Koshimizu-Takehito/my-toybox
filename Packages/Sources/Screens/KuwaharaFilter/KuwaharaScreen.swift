@@ -36,7 +36,7 @@ public struct KuwaharaScreen: View {
     @State private var blend: Double = 1.0
 
     public var body: some View {
-        CanvasControlsStack(canvasAspectRatio: nil) {
+        CanvasControlsStack(canvasAspectRatio: nil, maxCanvasSide: 960) {
             contentView()
         } controls: {
             controlPanel()

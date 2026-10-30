@@ -9,6 +9,8 @@ public struct TileAnimationScreen: View {
 
     @State private var viewModel: ViewModel?
     @State private var lineWidth: Double = 16
+    /// The latest measured size, which drives the debounced grid setup.
+    @State private var size = CGSize.zero
 
     public var body: some View {
         Group {
@@ -23,7 +25,10 @@ public struct TileAnimationScreen: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .backgroundExtensionEffect()
         .onGeometryChange(for: CGSize.self, of: \.size) { _, size in
-            setup(with: size)
+            self.size = size
+        }
+        .task(id: size) {
+            await setup(with: size)
         }
     }
 
@@ -31,8 +36,18 @@ public struct TileAnimationScreen: View {
     ///
     /// The view model is rebuilt only when the row or column count changes,
     /// so the animation state survives live resizes that keep the same grid.
-    private func setup(with size: CGSize) {
+    /// The first setup runs immediately; later ones are debounced so dragging a
+    /// Mac window or a Stage Manager edge does not restart the animation on
+    /// every frame. The task is cancelled when the size changes again first.
+    private func setup(with size: CGSize) async {
         guard size.width > 0, size.height > 0 else { return }
+        if viewModel != nil {
+            do {
+                try await Task.sleep(for: .milliseconds(150))
+            } catch {
+                return
+            }
+        }
         let row: Int
         let column: Int
         if size.height > size.width {

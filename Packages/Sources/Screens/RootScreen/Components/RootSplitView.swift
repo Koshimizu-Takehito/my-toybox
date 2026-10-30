@@ -19,11 +19,26 @@ struct RootSplitView<Screen: MyToyboxScreen>: View {
     var body: some View {
         NavigationSplitView {
             RootSidebarView(screens: screens, selection: displayedSelection)
+            #if os(macOS)
+                .navigationSplitViewColumnWidth(min: 200, ideal: 240, max: 320)
+            #else
                 .navigationSplitViewColumnWidth(min: 280, ideal: 320, max: 380)
+            #endif
         } detail: {
             NavigationStack {
-                DetailScreen(screen: displayedSelection.wrappedValue)
-                    .toolbarTitleDisplayMode(.inline)
+                if screens.isEmpty {
+                    // The tag filter hides every screen, so there is nothing to select.
+                    ContentUnavailableView {
+                        Label {
+                            Text("root.noMatchingScreens", bundle: .module)
+                        } icon: {
+                            Image(systemName: "line.3.horizontal.decrease.circle")
+                        }
+                    }
+                } else {
+                    DetailScreen(screen: displayedSelection.wrappedValue)
+                        .toolbarTitleDisplayMode(.inline)
+                }
             }
         }
     }

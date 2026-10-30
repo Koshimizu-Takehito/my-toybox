@@ -12,7 +12,7 @@ public struct FlowDistortionScreen: View {
     @State private var model = Model()
 
     public var body: some View {
-        CanvasControlsStack {
+        CanvasControlsStack(maxCanvasSide: 960) {
             TimelineView(.animation) { context in
                 let time = context.date.timeIntervalSince(start)
                 Image("waterwheel", bundle: MyToyboxMedia.bundle)
