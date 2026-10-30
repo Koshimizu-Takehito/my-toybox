@@ -16,7 +16,8 @@ public struct RingSliderScreen: View {
                 .hueRotation(.degrees(360 * ratio))
                 .backgroundExtensionEffect()
             RingSlider(ratio: $ratio)
-                .frame(width: 300)
+                .frame(maxWidth: 300, maxHeight: 300)
+                .padding()
             Button {
                 reset()
             } label: {

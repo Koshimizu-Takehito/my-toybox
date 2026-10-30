@@ -23,7 +23,8 @@ public struct ViewcontrollerRepresentableScreen: View {
         VStack {
             // Embed the custom UIViewController into SwiftUI with layout constraints.
             ViewControllerRepresentable(SampleViewController())
-                .fixedSize()
+                // Wrap to the available width; only the height hugs the content.
+                .fixedSize(horizontal: false, vertical: true)
                 .padding()
                 .background(Color.blue.secondary)
                 .clipShape(.rect(cornerRadius: 10))

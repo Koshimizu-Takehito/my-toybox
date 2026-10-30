@@ -68,12 +68,10 @@ private struct CardSide: View {
     var text: String
 
     var body: some View {
-        Rectangle()
-            // Create a rounded rectangle shape for the card
-            .clipShape(.rect(cornerSize: CGSize(width: 30, height: 30 / 0.6)))
-            // Slightly flatten the card for a card-like aspect ratio
-            .scaleEffect(y: 0.6)
+        RoundedRectangle(cornerRadius: 30)
             .foregroundStyle(.background)
+            // A card-like aspect ratio that keeps its full size on short screens
+            .aspectRatio(5 / 3, contentMode: .fit)
             .overlay {
                 Text(text)
                     .font(.title)
@@ -81,7 +79,6 @@ private struct CardSide: View {
                     .foregroundStyle(.foreground)
             }
             .shadow(color: .gray, radius: 10)
-            .scaledToFit()
             .padding()
             .frame(maxWidth: 500)
     }

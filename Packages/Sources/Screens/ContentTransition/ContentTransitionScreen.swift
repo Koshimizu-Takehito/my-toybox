@@ -8,6 +8,16 @@ public struct ContentTransitionScreen: View {
     @State private var rating: Double = 0
 
     public var body: some View {
+        // Steps the digits down on narrow columns instead of clipping them.
+        ViewThatFits(in: .horizontal) {
+            counter(fontSize: 80)
+            counter(fontSize: 56)
+            counter(fontSize: 40)
+        }
+        .padding()
+    }
+
+    private func counter(fontSize: CGFloat) -> some View {
         HStack(spacing: 18) {
             Button(
                 action: { withAnimation { rating -= 1 } },
@@ -25,7 +35,7 @@ public struct ContentTransitionScreen: View {
             )
             .disabled(rating >= 10)
         }
-        .font(Font.system(size: 80).monospacedDigit().bold())
+        .font(Font.system(size: fontSize).monospacedDigit().bold())
     }
 }
 

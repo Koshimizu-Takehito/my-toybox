@@ -18,11 +18,10 @@ public struct OrbitingDotsLoaderDemoScreen: View {
     // MARK: Body
 
     public var body: some View {
-        VStack {
-            Spacer()
+        CanvasControlsStack {
             OrbitingDotsLoadingView()
                 .controlSize(controlSize)
-            Spacer()
+        } controls: {
             ControlSizePickerView($controlSize)
         }
     }
@@ -47,7 +46,6 @@ private struct ControlSizePickerView: View {
             }
         }
         .pickerStyle(.palette)
-        .padding()
     }
 }
 
@@ -64,9 +62,20 @@ struct OrbitingDotsLoadingView: View {
     /// Indicates whether the user requested reduced motion.
     @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
 
-    var body: some View {
-        let boxWidth: CGFloat = 150
+    /// The box side at the regular control size, in points.
+    private let boxWidth: CGFloat = 150
 
+    var body: some View {
+        GeometryReader { geometry in
+            loader
+                // Never grow past the available space, so large sizes stay clear of the controls.
+                .scaleEffect(min(scaleFactor(for: controlSize), 0.9 * min(geometry.size.width, geometry.size.height) / boxWidth))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .animation(.default, value: controlSize)
+    }
+
+    private var loader: some View {
         TimelineView(.animation) { context in
             let t = context.date.timeIntervalSinceReferenceDate
             // 3 rad/s, clamped to one full revolution (0 … 2π).
@@ -80,9 +89,6 @@ struct OrbitingDotsLoadingView: View {
         .frame(width: boxWidth, height: boxWidth)
         .background(.ultraThinMaterial)
         .clipShape(.rect(cornerRadius: boxWidth / 5))
-        .scaleEffect(scaleFactor(for: controlSize))
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.default, value: controlSize)
     }
 
     /// Maps each `ControlSize` to a visually pleasing scale factor.

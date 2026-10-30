@@ -8,14 +8,21 @@ public struct KeyframeAnimationScreen: View {
     public init() {}
 
     @State private var trigger = UUID()
+    /// The height available to the screen, used to scale the icon and its jump.
+    @State private var height: CGFloat = 600
 
     public var body: some View {
-        VStack(spacing: 60) {
+        VStack {
             Spacer()
             Image(systemName: "paperplane.fill")
-                .font(.system(size: 80))
+                .font(.system(size: min(80, 0.15 * height)))
                 .foregroundStyle(.orange.gradient)
-                .keyframeAnimator(initialValue: .init(), trigger: trigger, content: content, keyframes: keyframes)
+                .keyframeAnimator(
+                    initialValue: AnimationValues(jumpHeight: min(250, 0.3 * height)),
+                    trigger: trigger,
+                    content: content,
+                    keyframes: keyframes
+                )
             Spacer()
 
             Button(action: launch) {
@@ -27,7 +34,10 @@ public struct KeyframeAnimationScreen: View {
                     .padding(.vertical, 16)
                     .background(.blue, in: .capsule)
             }
-            .padding(.bottom, 40)
+            .padding(.bottom)
+        }
+        .onGeometryChange(for: CGFloat.self, of: \.size.height) { height in
+            self.height = height
         }
     }
 }
@@ -44,8 +54,11 @@ private extension KeyframeAnimationScreen {
         var stretchX = 1.0
         var stretchY = 1.0
         var rotation = Angle.zero
+        /// The vertical offset as a fraction of `jumpHeight` (negative is up).
         var offsetY = 0.0
         var opacity = 1.0
+        /// How far the icon flies up, in points. Not animated.
+        var jumpHeight = 250.0
     }
 
     @ViewBuilder
@@ -54,7 +67,7 @@ private extension KeyframeAnimationScreen {
             .scaleEffect(values.scale)
             .scaleEffect(x: values.stretchX, y: values.stretchY)
             .rotationEffect(values.rotation)
-            .offset(y: values.offsetY)
+            .offset(y: values.offsetY * values.jumpHeight)
             .opacity(values.opacity)
     }
 
@@ -86,9 +99,9 @@ private extension KeyframeAnimationScreen {
         }
         // Vertical motion: launch up, fall, and bounce.
         KeyframeTrack(\.offsetY) {
-            SpringKeyframe(-250, duration: 0.4, spring: .smooth)
+            SpringKeyframe(-1, duration: 0.4, spring: .smooth)
             SpringKeyframe(0, duration: 0.3, spring: .bouncy)
-            SpringKeyframe(-40, duration: 0.2, spring: .smooth)
+            SpringKeyframe(-0.16, duration: 0.2, spring: .smooth)
             SpringKeyframe(0, duration: 0.3, spring: .bouncy)
         }
         // Opacity: quick flash.
