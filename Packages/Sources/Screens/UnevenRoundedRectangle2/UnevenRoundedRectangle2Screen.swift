@@ -10,6 +10,9 @@ import SwiftUI
 public struct UnevenRoundedRectangle2Screen: View {
     public init() {}
 
+    /// The large corner radius, proportional to the cell size so narrow cells keep their shape.
+    @State private var largeRadius: CGFloat = 80
+
     public var body: some View {
         HStack(spacing: 20) {
             // Left column using legacy `Shape`-based API
@@ -20,7 +23,13 @@ public struct UnevenRoundedRectangle2Screen: View {
             VStack(spacing: 20, content: rightColumn)
                 .environment(MyStyle(background: .mint))
         }
-        .padding(20)
+        .padding()
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            let cell = min((proxy.size.width - 20) / 2, (proxy.size.height - 40) / 3)
+            return max(min(80, 0.4 * cell), 0)
+        } action: { radius in
+            largeRadius = radius
+        }
     }
 
     /// Displays `HelloWorld` with traditional clip shapes
@@ -31,7 +40,7 @@ public struct UnevenRoundedRectangle2Screen: View {
         HelloWorld()
             .clipShape(RoundedRectangle(cornerRadius: 20))
         HelloWorld()
-            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 80))
+            .clipShape(UnevenRoundedRectangle(topLeadingRadius: largeRadius))
     }
 
     /// Displays `HelloWorld` with shorthand `.rect(...)` API
@@ -42,7 +51,7 @@ public struct UnevenRoundedRectangle2Screen: View {
         HelloWorld()
             .clipShape(.rect(cornerRadius: 20))
         HelloWorld()
-            .clipShape(.rect(topLeadingRadius: 80))
+            .clipShape(.rect(topLeadingRadius: largeRadius))
     }
 }
 
@@ -56,6 +65,9 @@ private struct HelloWorld: View {
     var body: some View {
         Text(verbatim: "Hello, world!")
             .font(.largeTitle.bold())
+            .lineLimit(1)
+            .minimumScaleFactor(0.5)
+            .padding(.horizontal, 8)
             .foregroundStyle(style.foreground)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(style.background.gradient)

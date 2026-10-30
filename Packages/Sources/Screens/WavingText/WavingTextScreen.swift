@@ -8,11 +8,15 @@ public struct WavingTextScreen: View {
     public init() {}
 
     public var body: some View {
-        WavingText()
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(hue: 220 / 360, saturation: 0.3, brightness: 0.9))
-            .font(.system(size: 40, weight: .bold))
+        GeometryReader { geometry in
+            WavingText()
+                .foregroundStyle(.white)
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                // Keeps the whole line on screen in narrow columns.
+                .font(.system(size: min(40, geometry.size.width / 9), weight: .bold))
+        }
+        .background(Color(hue: 220 / 360, saturation: 0.3, brightness: 0.9))
     }
 }
 

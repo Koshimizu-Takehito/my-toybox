@@ -13,8 +13,10 @@ public struct CircleSDF2Screen: View {
 
     public var body: some View {
         ZStack {
+            // Only the shader extends under the bars; the controls stay inside the safe area.
             Rectangle()
                 .colorEffect(.circleSDF2(time: time, k: k))
+                .backgroundExtensionEffect()
 
             VStack {
                 Button(action: reset) {
@@ -25,14 +27,13 @@ public struct CircleSDF2Screen: View {
                 Slider(value: $time, in: 0 ... (2.0 * .pi))
                 Slider(value: $k, in: 0 ... 0.72)
             }
+            .frame(maxWidth: 400)
             .frame(maxHeight: .infinity, alignment: .bottom)
             .padding()
-            .padding(.bottom)
             .tint(.blue)
         }
         .animation(.default, value: k)
         .animation(.default, value: time)
-        .ignoresSafeArea(edges: .all.subtracting(.top))
     }
 
     private func reset() {

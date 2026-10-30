@@ -44,7 +44,7 @@ public struct ColoredMapScreen: View {
                 .padding()
                 .background(.ultraThinMaterial)
                 .clipShape(.rect(cornerRadius: 16))
-                .padding(.bottom)
+                .frame(maxWidth: 400)
                 .frame(maxHeight: .infinity, alignment: .bottom)
                 .padding()
             }

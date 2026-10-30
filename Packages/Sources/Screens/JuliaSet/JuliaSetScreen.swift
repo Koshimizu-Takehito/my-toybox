@@ -53,6 +53,7 @@ private struct JuliaSetGestureView: View {
                 Slider(value: $constant.x, in: 0.3504 ... (constant.y - 0.0001))
                 Slider(value: $constant.y, in: 0.3506 ... 0.4)
             }
+            .frame(maxWidth: 400)
             .padding()
         }
         .onChange(of: id) { _, _ in

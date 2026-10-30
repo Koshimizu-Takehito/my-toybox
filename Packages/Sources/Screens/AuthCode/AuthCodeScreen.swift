@@ -13,9 +13,10 @@ public struct AuthCodeScreen: View {
     @State private var digits: [Int] = []
 
     public var body: some View {
+        // Stays above the keyboard so the code remains visible on short landscape screens.
         AuthCodeInput(digits: $digits, count: 6)
+            .frame(maxWidth: 480)
             .padding()
-            .ignoresSafeArea(.keyboard)
             .onChange(of: digits) { _, digits in
                 print(digits.map(String.init).joined())
             }

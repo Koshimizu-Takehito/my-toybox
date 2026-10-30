@@ -20,11 +20,15 @@ public struct Motions4Screen: View {
     @State private var progress: Double = 0
 
     public var body: some View {
-        MyGroup {
-            Content01(#colorLiteral(red: 0.8549019608, green: 0.2549019608, blue: 0.4039215686, alpha: 1), #colorLiteral(red: 1, green: 0.8392156863, blue: 0.2235294118, alpha: 1), progress: progress)
-            Content02(#colorLiteral(red: 0.03137254902, green: 0.2392156863, blue: 0.4666666667, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.6862745098, blue: 0, alpha: 1), progress: progress)
-            Content03(#colorLiteral(red: 0.5058823529, green: 0.8117647059, blue: 0.8980392157, alpha: 1), #colorLiteral(red: 0, green: 0.6862745098, blue: 0.3294117647, alpha: 1), progress: progress)
-            Content04(#colorLiteral(red: 0.03137254902, green: 0.2392156863, blue: 0.4666666667, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.6862745098, blue: 0, alpha: 1), progress: progress)
+        GeometryReader { geometry in
+            // Four in a row on wide screens, a 2 × 2 grid otherwise.
+            MyGroup(numberOfColumns: geometry.size.width > 1.6 * geometry.size.height ? 4 : 2) {
+                Content01(#colorLiteral(red: 0.8549019608, green: 0.2549019608, blue: 0.4039215686, alpha: 1), #colorLiteral(red: 1, green: 0.8392156863, blue: 0.2235294118, alpha: 1), progress: progress)
+                Content02(#colorLiteral(red: 0.03137254902, green: 0.2392156863, blue: 0.4666666667, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.6862745098, blue: 0, alpha: 1), progress: progress)
+                Content03(#colorLiteral(red: 0.5058823529, green: 0.8117647059, blue: 0.8980392157, alpha: 1), #colorLiteral(red: 0, green: 0.6862745098, blue: 0.3294117647, alpha: 1), progress: progress)
+                Content04(#colorLiteral(red: 0.03137254902, green: 0.2392156863, blue: 0.4666666667, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.6862745098, blue: 0, alpha: 1), progress: progress)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .animation(animation, value: progress)
         .onAppear { progress = 1 }

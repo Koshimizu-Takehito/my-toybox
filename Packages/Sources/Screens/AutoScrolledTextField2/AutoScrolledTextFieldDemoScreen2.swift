@@ -37,9 +37,12 @@ struct AutoScrolledTextField2: View {
         ScrollViewReader { scrollView in
             ScrollView {
                 VStack(alignment: .leading) {
-                    // Spacer to simulate content above the text field.
+                    // Spacer to simulate content above the text field,
+                    // sized to the screen so short (landscape) screens behave the same.
                     Color.clear
-                        .frame(height: 400)
+                        .containerRelativeFrame(.vertical) { height, _ in
+                            height * 0.5
+                        }
 
                     // Email input field.
                     TextField(text: $email) {

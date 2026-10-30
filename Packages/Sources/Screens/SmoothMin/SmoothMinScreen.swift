@@ -24,7 +24,8 @@ public struct SmoothMinScreen: View {
                 Slider(value: $value, in: 0 ... 1)
                     .tint(.pink)
             }
-            .padding(20)
+            .frame(maxWidth: 400)
+            .padding()
         }
     }
 }

@@ -16,7 +16,8 @@ public struct StrokeModifierDemoScreen: View {
             Image(systemName: "swift")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 256)
+                // Shrinks on short (landscape) or narrow screens instead of overflowing.
+                .frame(maxWidth: 256, maxHeight: 256)
                 .padding(16)
                 .foregroundStyle(
                     .linearGradient(
@@ -27,6 +28,8 @@ public struct StrokeModifierDemoScreen: View {
                 )
             Text(verbatim: "Hello, World!!")
                 .font(.system(size: 56, weight: .bold, design: .default))
+                .lineLimit(1)
+                .minimumScaleFactor(0.4)
                 .foregroundStyle(.foreground)
                 .padding(16)
         }
@@ -36,6 +39,7 @@ public struct StrokeModifierDemoScreen: View {
         .stroke(.cyan, width: 4)
         .stroke(.blue, width: 4)
         .environment(\.colorScheme, .light)
+        .padding()
     }
 }
 

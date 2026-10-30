@@ -11,10 +11,13 @@ public struct ComplexNumberScreen: View {
     @State private var shaderMode: ShaderMode = .domainColoring
 
     public var body: some View {
-        ComplexShaderView(shaderMode: shaderMode, functionIndex: selection.rawValue)
-            .backgroundExtensionEffect()
-            .overlay(content: picker)
-            .toolbar(content: menu)
+        // Only the shader extends under the bars; the picker stays inside the safe area.
+        ZStack {
+            ComplexShaderView(shaderMode: shaderMode, functionIndex: selection.rawValue)
+                .backgroundExtensionEffect()
+            picker()
+        }
+        .toolbar(content: menu)
     }
 
     @ViewBuilder
@@ -29,6 +32,7 @@ public struct ComplexNumberScreen: View {
         }
         .pickerStyle(.segmented)
         .colorScheme(.light)
+        .frame(maxWidth: 480)
         .frame(maxHeight: .infinity, alignment: .bottom)
         .padding()
     }
