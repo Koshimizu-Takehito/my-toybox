@@ -24,7 +24,7 @@ namespace CircleSDF2Shader {
     ///   - k: The smoothing factor for blending.
     [[ stitchable ]] half4 main(float2 position, half4 color, float4 box, float sec, float k) {
         // Normalize the coordinates from [0, screen size] to [-1, 1]
-        float2 pos = -1.0 + 2.0 * (position + box.xy) / box.zw;
+        float2 pos = -1.0 + 2.0 * (position - box.xy) / box.zw;
 
         // Apply aspect ratio correction
         if (box.z < box.w) {
