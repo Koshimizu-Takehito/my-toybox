@@ -3,10 +3,10 @@ Version 1.3.0
 New screen
 • Game Boy Mosaic: Turns the image into a circular-dot mosaic using the original Game Boy's green palette. Adjust the cell size and the number of colors.
 
-Better on foldable iPhone, iPad, and Mac
+Better on foldable iPhone and iPad
 • Folding or unfolding the device now keeps the current screen and its state.
 • Canvas and controls switch between stacked and side-by-side layouts based on the available space, so they fit narrow split views and landscape.
-• The sidebar now shows thumbnails and a clear selection highlight.
+• The selected item in the sidebar is now easier to see.
 
 Other improvements
 • A refreshed app icon.
