@@ -33,6 +33,16 @@ Upload metadata, screenshots, and release notes (no binary)
 
 Pass `version:` to create that App Store version on ASC if it doesn't exist yet
 
+### ios submit_review_preflight
+
+```sh
+[bundle exec] fastlane ios submit_review_preflight
+```
+
+Check submission prerequisites (age rating, App Clip default experience) without changing ASC
+
+Usage: fastlane submit_review_preflight version:1.3.0
+
 ### ios submit_review
 
 ```sh
@@ -41,7 +51,7 @@ Pass `version:` to create that App Store version on ASC if it doesn't exist yet
 
 Attach an uploaded build (e.g. from Xcode Cloud) to the version and submit it for review
 
-Checks age rating answers and copies the previous App Clip default experience if needed
+Copies the previous App Clip default experience if needed and explains ASC's rejection reasons
 
 Usage: fastlane submit_review version:1.3.0 build:63
 
