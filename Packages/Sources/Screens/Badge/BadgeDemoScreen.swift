@@ -10,13 +10,13 @@ public struct BadgeDemoScreen: View {
     public init() {}
 
     public var body: some View {
-        VStack {
+        CanvasControlsStack(canvasAspectRatio: nil) {
             BadgeView(value: model.value)
                 .modifier(BadgeStyleModifier(style: model.style))
-                .frame(maxHeight: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } controls: {
             BadgeControl(model: model)
         }
-        .padding()
         .onAppear {
             model.number = 0
         }

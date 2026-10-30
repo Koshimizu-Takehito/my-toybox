@@ -28,15 +28,13 @@ public struct StableFluidScreen: View {
     @State private var viewModel = StableFluidViewModel()
 
     public var body: some View {
-        VStack(spacing: 16) {
+        CanvasControlsStack {
             GeometryReader { geometry in
                 MetalStableFluidView(viewModel: viewModel)
                     .gesture(brushGesture(size: geometry.size))
             }
-            .scaledToFit()
-
+        } controls: {
             controls
-                .padding(.horizontal)
         }
         .tint(.blue)
     }

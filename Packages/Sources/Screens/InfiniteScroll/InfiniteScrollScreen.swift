@@ -12,13 +12,12 @@ public struct InfiniteScrollScreen: View {
     @State private var viewId = UUID()
 
     public var body: some View {
-        ZStack {
+        CanvasControlsStack(canvasAspectRatio: nil) {
             InfiniteScrollView(items, numberOfDisplays: numberOfDisplays, spacing: spacing) { index in
                 ItemView(number: index)
             }
-            .frame(maxHeight: 300)
             .scrollIndicators(showsIndicator ? .visible : .hidden)
-
+        } controls: {
             VStack(alignment: .trailing, spacing: 16) {
                 Stepper(value: $numberOfDisplays, in: 1 ... 10) {
                     Text(verbatim: "Display Items")
@@ -32,9 +31,7 @@ public struct InfiniteScrollScreen: View {
             }
             .padding()
             .background(.ultraThinMaterial)
-            .clipShape(.rect(cornerRadius: 8))
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-            .padding(.horizontal)
+            .clipShape(.rect(cornerRadius: 12))
         }
         .id(viewId)
     }
@@ -67,28 +64,25 @@ private struct InfiniteScrollView<Item: Hashable, Content: View>: View {
     private var numberOfDisplays: Int
     private var spacing: Double
     private var content: (Item) -> Content
-    @State private var itemWidth: Double = 0.0
-    @State private var containerWidth: Double = 0.0
 
     var body: some View {
-        InfiniteUIScrollView.Representable(items, spacing: spacing) { item in
-            content(item)
-                .frame(width: itemWidth, height: itemWidth)
+        GeometryReader { proxy in
+            let side = itemSide(in: proxy.size)
+            InfiniteUIScrollView.Representable(items, spacing: spacing) { item in
+                content(item)
+                    .frame(width: side, height: side)
+            }
+            .frame(height: side)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .onGeometryChange(for: CGFloat.self, of: \.size.width) { width in
-            containerWidth = width
-            updateItemSize()
-        }
-        .onChange(of: numberOfDisplays, initial: false) { _, _ in
-            updateItemSize()
-        }
-        .frame(height: itemWidth)
     }
 
-    /// Updates the item width based on available container width and number of visible items.
-    private func updateItemSize() {
+    /// The square item side that shows `numberOfDisplays` items across the width
+    /// without growing taller than the container (e.g. a short landscape screen).
+    private func itemSide(in size: CGSize) -> Double {
         let count = Double(max(numberOfDisplays, 1))
-        itemWidth = (containerWidth - (count + 1) * spacing) / count
+        let widthBased = (size.width - (count + 1) * spacing) / count
+        return max(min(widthBased, size.height), 0)
     }
 }
 

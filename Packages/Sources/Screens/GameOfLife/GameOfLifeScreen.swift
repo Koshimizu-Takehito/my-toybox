@@ -11,11 +11,7 @@ public struct GameOfLifeScreen: View {
     @State private var viewModel = GameOfLifeViewModel()
 
     public var body: some View {
-        VStack(spacing: 24) {
-            Text(verbatim: "Number of Cycles: \(viewModel.numberOfCycles)")
-                .font(.headline)
-                .foregroundStyle(.secondary)
-
+        CanvasControlsStack {
             GeometryReader { geometry in
                 // Metal 描画
                 MetalGameOfLifeView(viewModel: viewModel)
@@ -28,6 +24,8 @@ public struct GameOfLifeScreen: View {
                             Text(verbatim: "Interval: \(Int(viewModel.cycleIntervalMS)) ms")
                             Text(verbatim: viewModel.isRunning ? "Running" : "Stopped")
                         }
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                         .monospaced()
                         .font(.caption)
                         .fontWeight(.semibold)
@@ -38,11 +36,9 @@ public struct GameOfLifeScreen: View {
                     .simultaneousGesture(magnifyGesture)
                     .simultaneousGesture(panGesture(size: geometry.size))
             }
-            .scaledToFit()
-
+        } controls: {
             // 操作パネル
             controls
-                .padding()
         }
         .monospacedDigit()
         .toolbar(content: toolbar)
@@ -89,6 +85,10 @@ public struct GameOfLifeScreen: View {
     @ViewBuilder
     private var controls: some View {
         VStack(spacing: 12) {
+            Text(verbatim: "Number of Cycles: \(viewModel.numberOfCycles)")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+
             Picker(selection: $viewModel.size) {
                 ForEach([64, 128, 256, 512, 1024], id: \.self) { n in
                     Text(verbatim: "\(n)").tag(n)

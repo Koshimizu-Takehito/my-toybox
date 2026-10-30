@@ -7,13 +7,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Second control layout for exploring Lissajous curves"
+            "value": "Tune frequencies and phase to trace Lissajous curves"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "別の操作まわりでリサージュ曲線のパラメーターを試す"
+            "value": "周波数と位相を調整してリサージュ曲線を描く"
           }
         }
       }
@@ -24,13 +24,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lissajous Curve 2"
+            "value": "Lissajous Curve 1"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "リサージュ曲線 2"
+            "value": "リサージュ曲線 1"
           }
         }
       }

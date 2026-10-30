@@ -25,14 +25,22 @@ public struct ImplicitEquationScreen: View {
         let a = String(format: "%.1f", radialFreq)
         let b = String(format: "%.1f", mixFreq)
 
-        VStack(alignment: .leading) {
+        CanvasControlsStack {
             // Graphic area with shader
             GeometryReader {
                 Rectangle().fill(style(size: $0.size))
             }
-            .scaledToFit()
             .layerEffect(implicitShader, maxSampleOffset: .zero)
+        } controls: {
+            controls(a: a, b: b)
+        }
+        .contentTransition(.numericText())
+        .animation(.default, value: radialFreq + mixFreq + isoLevel + zoom)
+        .tint(.blue)
+    }
 
+    private func controls(a: String, b: String) -> some View {
+        VStack(alignment: .leading) {
             Text(verbatim: "Implicit Equation Explorer")
                 .font(.headline)
             Text(verbatim: "f(x,y) = sin(\(a)(x²+y²)) - cos(\(b)xy)")
@@ -72,11 +80,6 @@ public struct ImplicitEquationScreen: View {
                 Text(verbatim: "Reset")
             }
         }
-        .contentTransition(.numericText())
-        .animation(.default, value: radialFreq + mixFreq + isoLevel + zoom)
-        .padding()
-        .cornerRadius(10)
-        .tint(.blue)
     }
 
     /// Creates the implicit equation shader with parameters.

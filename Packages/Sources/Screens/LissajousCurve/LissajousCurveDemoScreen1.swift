@@ -50,17 +50,15 @@ public struct LissajousCurveDemoScreen1: View {
     @State private var curve = LissajousCurve1()
 
     public var body: some View {
-        VStack(spacing: 16) {
-            Text(verbatim: "Lissajous Curve")
-                .font(.title)
-                .bold()
+        // The navigation bar already shows the title, so the canvas gets the space instead.
+        CanvasControlsStack {
             LissajousCurveAnimationView1(curve: $curve)
                 .background(.thinMaterial)
                 .clipShape(.rect(cornerRadius: 24))
                 .shadow(radius: 6)
+        } controls: {
             LissajousCurveControlView(curve: $curve)
         }
-        .padding()
     }
 }
 
