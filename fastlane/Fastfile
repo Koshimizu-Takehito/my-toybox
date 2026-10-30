@@ -1,3 +1,5 @@
+require File.expand_path("asc_helper", __dir__)
+
 default_platform(:ios)
 
 platform :ios do
@@ -53,10 +55,15 @@ platform :ios do
   end
 
   desc "Attach an uploaded build (e.g. from Xcode Cloud) to the version and submit it for review"
+  desc "Checks age rating answers and copies the previous App Clip default experience if needed"
   desc "Usage: fastlane submit_review version:1.3.0 build:63"
   lane :submit_review do |options|
     UI.user_error!("Pass `version:` (e.g. 1.3.0).") if options[:version].to_s.empty?
     UI.user_error!("Pass `build:` (the build number uploaded by Xcode Cloud).") if options[:build].to_s.empty?
+
+    app_id = ASCHelper.app_id(CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier))
+    ASCHelper.verify_age_rating_answered!(app_id: app_id)
+    ASCHelper.ensure_app_clip_default_experience!(app_id: app_id, version_string: options[:version].to_s)
 
     deliver(
       app_version: options[:version],

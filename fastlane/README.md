@@ -41,6 +41,8 @@ Pass `version:` to create that App Store version on ASC if it doesn't exist yet
 
 Attach an uploaded build (e.g. from Xcode Cloud) to the version and submit it for review
 
+Checks age rating answers and copies the previous App Clip default experience if needed
+
 Usage: fastlane submit_review version:1.3.0 build:63
 
 ### ios precheck_metadata
