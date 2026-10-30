@@ -38,43 +38,42 @@ struct AutoScrolledTextField: View {
     @Namespace var textFieldID
 
     var body: some View {
-        NavigationStack {
-            ScrollViewReader { scrollProxy in
-                ScrollView {
-                    // Multiline TextField with dynamic vertical sizing.
-                    TextField(text: $text, axis: .vertical) {
-                        Text(verbatim: "Sample")
-                    }
-                    .focused($focused)
-                    .padding()
-                    .id(textFieldID) // Required for scrolling to this field.
+        ScrollViewReader { scrollProxy in
+            ScrollView {
+                // Multiline TextField with dynamic vertical sizing.
+                TextField(text: $text, axis: .vertical) {
+                    Text(verbatim: "Sample")
                 }
-                // When the text changes, determine if the edit was at the end.
-                .onChange(of: text) { oldValue, newValue in
-                    if newValue.isEndEdited(comparedTo: oldValue) {
-                        withAnimation {
-                            // Scrolls to the TextField, anchoring the bottom,
-                            // so the latest content is always visible.
-                            scrollProxy.scrollTo(textFieldID, anchor: .bottom)
-                        }
+                .focused($focused)
+                .padding()
+                .id(textFieldID) // Required for scrolling to this field.
+            }
+            // When the text changes, determine if the edit was at the end.
+            .onChange(of: text) { oldValue, newValue in
+                if newValue.isEndEdited(comparedTo: oldValue) {
+                    withAnimation {
+                        // Scrolls to the TextField, anchoring the bottom,
+                        // so the latest content is always visible.
+                        scrollProxy.scrollTo(textFieldID, anchor: .bottom)
                     }
-                }
-                // On appear, focus the TextField so the keyboard is shown immediately.
-                .onAppear {
-                    focused = true
                 }
             }
-            // Always show the vertical scroll indicator for clarity.
-            .scrollIndicators(.visible, axes: .vertical)
-            .navigationTitle(Text(verbatim: "Scroll to new line"))
+            // On appear, focus the TextField so the keyboard is shown immediately.
+            .onAppear {
+                focused = true
+            }
         }
+        // Always show the vertical scroll indicator for clarity.
+        .scrollIndicators(.visible, axes: .vertical)
     }
 }
 
 // MARK: - Preview
 
 #Preview {
-    AutoScrolledTextFieldDemoScreen()
+    NavigationStack {
+        AutoScrolledTextFieldDemoScreen()
+    }
 }
 
 // MARK: - String
