@@ -87,8 +87,9 @@ platform :ios do
           add_id_info_uses_idfa: false,
         },
       )
-    rescue StandardError => e
-      ASCHelper.explain_review_submission_errors(app_id: app_id, version_string: version) if e.message.include?("not in valid state")
+    rescue Spaceship::UnexpectedResponse
+      # ASC rejected an API call (e.g. the review item); show its per-field reasons.
+      ASCHelper.explain_review_submission_errors(app_id: app_id, version_string: version)
       raise
     end
   end

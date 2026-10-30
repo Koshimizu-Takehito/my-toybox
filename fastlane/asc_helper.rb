@@ -63,9 +63,9 @@ module ASCHelper
   # questions from time to time, so this can't be exhaustive; the authoritative
   # answer comes from `explain_review_submission_errors` when a submission fails.
   def warn_unanswered_age_rating(app_id:)
-    infos = request(:get, "apps/#{app_id}/appInfos")["data"]
-    info = EDITABLE_APP_INFO_STATES.lazy.filter_map { |state| infos.find { |i| i.dig("attributes", "state") == state } }.first ||
-           infos.find { |i| !SUPERSEDED_APP_INFO_STATES.include?(i.dig("attributes", "state")) }
+    info = request(:get, "apps/#{app_id}/appInfos")["data"]
+      .reject { |i| SUPERSEDED_APP_INFO_STATES.include?(i.dig("attributes", "state")) }
+      .min_by { |i| EDITABLE_APP_INFO_STATES.index(i.dig("attributes", "state")) || EDITABLE_APP_INFO_STATES.size }
     return UI.important("No editable app info found; skipped the age rating check.") if info.nil?
 
     attributes = request(:get, "appInfos/#{info["id"]}/ageRatingDeclaration").dig("data", "attributes")
@@ -113,9 +113,10 @@ module ASCHelper
     UI.success("Copied the App Clip default experience of #{source} to #{version_string}.")
   end
 
-  # `deliver` reports a rejected review item only as "not in valid state". Adding
-  # the version to the draft submission again returns the per-field reasons
-  # (meta.associatedErrors); print them so the fix is obvious.
+  # `deliver` reports a rejected review item only by its title. Adding the version
+  # to the draft submission again returns the per-field reasons
+  # (meta.associatedErrors); print them so the fix is obvious. Called while
+  # handling deliver's error, so it never raises and leaves the draft as it was.
   def explain_review_submission_errors(app_id:, version_string:)
     version = app_store_version(app_id: app_id, version_string: version_string)
     submission = request(:get, "apps/#{app_id}/reviewSubmissions?filter[platform]=IOS&filter[state]=READY_FOR_REVIEW")["data"].first
@@ -131,11 +132,19 @@ module ASCHelper
       },
     })
     if res.is_a?(Net::HTTPSuccess)
-      return UI.important("#{version_string} was added to draft review submission #{submission["id"]} without errors this time; it is not submitted yet.")
+      # deliver refuses a draft that already has items, so take this one back out.
+      removed, = raw_request(:delete, "reviewSubmissionItems/#{json.dig("data", "id")}")
+      return UI.important("#{version_string} passed review item checks on retry; run submit_review again.") if removed.is_a?(Net::HTTPSuccess)
+
+      return UI.important("#{version_string} was added to draft review submission #{submission["id"]}. Remove it in App Store Connect before running submit_review again.")
     end
 
-    reasons = (json["errors"] || []).flat_map { |error| (error.dig("meta", "associatedErrors") || {}).flat_map { |path, errors| errors.map { |e| "#{path}: #{e["detail"]}" } } }
-    UI.error("App Store Connect rejected #{version_string} for review:")
+    errors = json["errors"] || []
+    reasons = errors.flat_map { |error| (error.dig("meta", "associatedErrors") || {}).flat_map { |path, items| items.map { |e| "#{path}: #{e["detail"]}" } } }
+    reasons = errors.map { |error| [error["title"], error["detail"]].compact.join(" ") } if reasons.empty?
+    UI.error("App Store Connect did not accept #{version_string} for review (#{res.code}):")
     reasons.each { |reason| UI.error("  - #{reason}") }
+  rescue StandardError => e
+    UI.important("Could not fetch the rejection reasons: #{e.message}. Check the draft review submission in App Store Connect.")
   end
 end
