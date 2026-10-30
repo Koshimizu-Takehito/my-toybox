@@ -14,7 +14,7 @@ public extension View {
 
 // MARK: - RootListStyle
 
-/// Visual configuration for the root screen list (background gradient and separator tint).
+/// Visual configuration for the root screen list (background gradient, separator tint and selection highlight).
 ///
 /// Pass a preset or a custom instance via ``View/rootScreenStyle(_:)`` to
 /// theme the sidebar/compact list without touching the list implementation.
@@ -25,9 +25,17 @@ public struct RootListStyle {
     /// The color applied to list row separators, or `nil` to use the system default.
     public var separatorTint: Color?
 
-    public init(separatorTint: Color? = nil, @ViewBuilder background: @escaping () -> some View = EmptyView.init) {
+    /// The fill of the highlight drawn behind the selected row in split layout.
+    public var selectionTint: Color
+
+    public init(
+        separatorTint: Color? = nil,
+        selectionTint: Color = .white.opacity(0.18),
+        @ViewBuilder background: @escaping () -> some View = EmptyView.init
+    ) {
         self.background = { AnyView(background()) }
         self.separatorTint = separatorTint
+        self.selectionTint = selectionTint
     }
 }
 

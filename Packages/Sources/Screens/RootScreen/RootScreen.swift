@@ -8,11 +8,13 @@ import SwiftUI
 ///
 /// - On regular width, it uses `RootSplitView`.
 /// - On compact width (iPhone), it uses `RootCompactView`.
+/// - Both layouts share `selection`, so the presented screen survives
+///   size-class changes such as folding or unfolding a foldable iPhone.
 /// - It injects shared tag selection state into child views.
 public struct RootScreen<Screen: MyToyboxScreen>: View {
     /// The view model that loads and filters available screens.
     @State private var viewModel = RootScreenModel<Screen>()
-    /// The selected screen used by split layout.
+    /// The screen the user is viewing, shared by the split and compact layouts.
     @State private var selection: Screen?
     /// The current horizontal size class for adaptive routing.
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -34,7 +36,7 @@ private extension RootScreen {
         let filteredScreens = viewModel.filteredScreens()
         #if os(iOS)
         if horizontalSizeClass == .compact {
-            RootCompactView(screens: filteredScreens)
+            RootCompactView(screens: filteredScreens, selection: $selection)
         } else {
             RootSplitView(screens: filteredScreens, selection: $selection)
         }
