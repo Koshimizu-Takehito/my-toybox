@@ -139,13 +139,18 @@ metadata-pull: ## Pull latest metadata & screenshots from App Store Connect
 metadata-precheck: ## Validate local metadata without uploading
 	@bundle exec fastlane precheck_metadata
 
+# VERSION / BUILD are honored only when given on the command line, so a value
+# inherited from the shell or `.env` never targets an unintended App Store version.
+ASC_VERSION := $(if $(filter command line,$(origin VERSION)),$(VERSION))
+ASC_BUILD   := $(if $(filter command line,$(origin BUILD)),$(BUILD))
+
 metadata-push: ## Upload metadata, screenshots, and release notes (no binary); VERSION=x.y.z creates that version
-	@bundle exec fastlane push $(if $(VERSION),version:$(VERSION))
+	@bundle exec fastlane push $(if $(ASC_VERSION),version:$(ASC_VERSION))
 
 submit-review: ## Submit an uploaded build for App Store review (VERSION=x.y.z BUILD=n)
-	@test -n "$(VERSION)" || (echo "❌ VERSION is not set (e.g. VERSION=1.3.0)" && exit 1)
-	@test -n "$(BUILD)"   || (echo "❌ BUILD is not set (the Xcode Cloud build number)" && exit 1)
-	@bundle exec fastlane submit_review version:$(VERSION) build:$(BUILD)
+	@test -n "$(ASC_VERSION)" || (echo "❌ Pass VERSION on the command line (e.g. VERSION=1.3.0)" && exit 1)
+	@test -n "$(ASC_BUILD)"   || (echo "❌ Pass BUILD on the command line (the Xcode Cloud build number)" && exit 1)
+	@bundle exec fastlane submit_review version:$(ASC_VERSION) build:$(ASC_BUILD)
 
 # ============================================================================
 # Clean build artifacts
