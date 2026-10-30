@@ -29,6 +29,7 @@ import Screen_EnumPicker
 import Screen_FlipTransition
 import Screen_FlowDistortion
 import Screen_FlowLayout
+import Screen_GameBoyMosaic
 import Screen_GameOfLife
 import Screen_GradientAnimation
 import Screen_GradientPolygon
@@ -107,6 +108,7 @@ public enum AppScreen: String, MyToyboxScreen {
     case radialLayoutScreen
     case flowDistortionScreen
     case gameOfLifeScreen
+    case gameBoyMosaicScreen
     case multiHelixScreen
     case kuwaharaScreen
     case badgeDemoScreen

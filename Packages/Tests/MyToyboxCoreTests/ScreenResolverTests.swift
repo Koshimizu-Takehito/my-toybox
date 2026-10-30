@@ -1,5 +1,5 @@
+import AppScreens
 import Foundation
-import MyToyboxAppScreens
 @testable import MyToyboxCore
 import Testing
 

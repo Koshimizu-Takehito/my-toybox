@@ -12,14 +12,7 @@
 		3AFB23ED2FAEEC4600C78D45 /* RootScreen in Frameworks */ = {isa = PBXBuildFile; productRef = 3AFB23EC2FAEEC4600C78D45 /* RootScreen */; };
 		3AFB23EF2FAEEC4F00C78D45 /* RootScreen in Frameworks */ = {isa = PBXBuildFile; productRef = 3AFB23EE2FAEEC4F00C78D45 /* RootScreen */; };
 		AABB00012FAB000100000001 /* TagPicker in Frameworks */ = {isa = PBXBuildFile; productRef = AABB00002FAB000100000001 /* TagPicker */; };
-		AABB00042FAB000100000001 /* MyToyboxClip.app in Embed App Clips */ = {
-			isa = PBXBuildFile;
-			fileRef = 7B40C1F22F0A100100A0A001 /* MyToyboxClip.app */;
-			platformFilters = (
-				ios,
-			);
-			settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); };
-		};
+		AABB00042FAB000100000001 /* MyToyboxClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 7B40C1F22F0A100100A0A001 /* MyToyboxClip.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,7 +168,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 2640;
+				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					3A682A8E2D8D471000B110AC = {
 						CreatedOnToolsVersion = 16.2;
@@ -535,7 +528,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = "non-global";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Osize";

@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "screen.gameBoyMosaic.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Circular-dot mosaic in classic Game Boy green. Adjust cell size and color count."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "初代ゲームボーイ風の円形ドットモザイク。セルサイズと色数を調整可能"
+          }
+        }
+      }
+    },
+    "screen.gameBoyMosaic.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Game Boy Mosaic"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲームボーイモザイク"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

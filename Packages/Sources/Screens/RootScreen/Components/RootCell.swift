@@ -18,6 +18,7 @@ enum RootCellStyle {
         switch self {
         case .textOnly:
             false
+
         case .previewLeading:
             true
         }

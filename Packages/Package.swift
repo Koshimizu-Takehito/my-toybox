@@ -277,6 +277,14 @@ let package = Package(
             resources: [.process("Resources")]
         ),
         .target(
+            name: "Screen_GameBoyMosaic",
+            dependencies: ["MyToyboxCore", "MyToyboxMedia"],
+            path: "Sources/Screens/GameBoyMosaic",
+            exclude: ["Shaders"],
+            resources: [.process("Resources")],
+            plugins: [.plugin(name: "BuildMetalShaders")]
+        ),
+        .target(
             name: "Screen_GameOfLife",
             dependencies: ["MyToyboxCore", "PlatformSupport"],
             path: "Sources/Screens/GameOfLife",
@@ -710,6 +718,7 @@ let package = Package(
                 "Screen_FlipTransition",
                 "Screen_FlowDistortion",
                 "Screen_FlowLayout",
+                "Screen_GameBoyMosaic",
                 "Screen_GameOfLife",
                 "Screen_GradientAnimation",
                 "Screen_GradientPolygon",

@@ -24,17 +24,17 @@ make clean
 ```bash
 # Build
 xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
+  -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
   CODE_SIGNING_ALLOWED=NO clean build
 
 # Run all tests
 xcodebuild -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
+  -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
   CODE_SIGNING_ALLOWED=NO test
 
 # Run specific test
 xcodebuild test -workspace MyToybox.xcworkspace -scheme MyToybox \
-  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' \
+  -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
   -only-testing MyToyboxCoreTests/MyToyboxCoreTests/testName \
   CODE_SIGNING_ALLOWED=NO
 ```
