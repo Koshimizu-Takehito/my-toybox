@@ -31,6 +31,10 @@ struct RandomMetaball2DView: View {
     /// An array of scale factors (0 or 1) representing particle visibility.
     @State private var scales: [Double]
 
+    /// The normalized geometry of each particle, generated once so that
+    /// resizing the view rescales the particles instead of rerandomizing them.
+    @State private var particles: [MetaballParticle]
+
     /// A timer that triggers an update cycle every 4 seconds.
     @State private var timer = Timer.publish(every: 4, on: .main, in: .common)
         .autoconnect()
@@ -40,10 +44,11 @@ struct RandomMetaball2DView: View {
     /// - Parameter particleCount: The number of particles to display.
     init(particleCount count: Int) {
         _scales = .init(initialValue: .init(repeating: 0, count: count))
+        _particles = .init(initialValue: (0 ..< count).map { _ in .random() })
     }
 
     var body: some View {
-        RandomMetaballCanvas(scales: scales)
+        RandomMetaballCanvas(scales: scales, particles: particles)
             .onAppear {
                 Task {
                     update()
@@ -78,6 +83,9 @@ struct RandomMetaballCanvas: View {
     /// The current scaling states of all particles.
     var scales: [Double]
 
+    /// The normalized geometry of all particles.
+    var particles: [MetaballParticle]
+
     var body: some View {
         GeometryReader { geometry in
             Canvas { context, size in
@@ -94,22 +102,45 @@ struct RandomMetaballCanvas: View {
                 }
             } symbols: {
                 let size = geometry.size
-                let maxWidth = 0.4 * min(size.width, size.height)
+                let base = min(size.width, size.height)
                 ForEach(scales.indices, id: \.self) { index in
+                    let particle = particles[index]
                     Circle()
                         .frame(
-                            width: .random(in: 10 ... maxWidth),
-                            height: .random(in: 10 ... maxWidth)
+                            width: particle.widthRatio * base,
+                            height: particle.heightRatio * base
                         )
                         .position(
-                            x: .random(in: 0 ... size.width),
-                            y: .random(in: 0 ... size.height)
+                            x: particle.xRatio * size.width,
+                            y: particle.yRatio * size.height
                         )
                         .scaleEffect(scales[index])
                         .tag(index)
                 }
             }
         }
+    }
+}
+
+// MARK: - MetaballParticle
+
+/// The geometry of a single particle, normalized to the canvas size.
+///
+/// Positions are relative to the canvas width / height, and diameters are
+/// relative to the shorter side of the canvas.
+struct MetaballParticle {
+    var xRatio: CGFloat
+    var yRatio: CGFloat
+    var widthRatio: CGFloat
+    var heightRatio: CGFloat
+
+    static func random() -> Self {
+        Self(
+            xRatio: .random(in: 0 ... 1),
+            yRatio: .random(in: 0 ... 1),
+            widthRatio: .random(in: 0.025 ... 0.4),
+            heightRatio: .random(in: 0.025 ... 0.4)
+        )
     }
 }
 

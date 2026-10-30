@@ -10,11 +10,12 @@ public struct TileAnimation3DScreen: View {
 
     @State private var viewModel: ViewModel?
     @State private var lineWidth: Double?
+    @State private var width: Double = 0
 
     public var body: some View {
         Group {
             if let viewModel, let lineWidth {
-                TileAnimation3DScreenContent(viewModel: viewModel, lineWidth: lineWidth)
+                TileAnimation3DScreenContent(viewModel: viewModel, lineWidth: lineWidth, width: width)
                     .id([viewModel.row, viewModel.column])
             } else {
                 Color.clear
@@ -22,8 +23,13 @@ public struct TileAnimation3DScreen: View {
         }
         .onGeometryChange(for: CGSize.self, of: \.size) { _, size in
             let column = 10
-            let row = max(Int(ceil(Double(column) * size.height / size.width)), column)
-            viewModel = ViewModel(row: row, column: column)
+            let row = max(Int(ceil(Double(column) * size.height / max(size.width, 1))), column)
+            // Rebuild the grid only when its dimensions change so the animation
+            // state survives live resizes (e.g. folding / unfolding the device).
+            if viewModel?.row != row || viewModel?.column != column {
+                viewModel = ViewModel(row: row, column: column)
+            }
+            width = size.width
             lineWidth = min(size.height, size.width) / Double(min(row, column)) / 5
         }
         .backgroundExtensionEffect()
@@ -36,6 +42,7 @@ private struct TileAnimation3DScreenContent: View {
     typealias Tile = TileAnimation3DScreen.Tile
     var viewModel: TileAnimation3DScreen.ViewModel
     var lineWidth: Double
+    var width: Double
     @State private var lastUpdateDate = Date.now
 
     var body: some View {
@@ -54,7 +61,7 @@ private struct TileAnimation3DScreenContent: View {
                 }
             }
             .scaledToFit()
-            .padding(.horizontal, -200)
+            .padding(.horizontal, -0.25 * width)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .rotation3DEffect(.radians(0.4 * .pi), axis: (1, 0, 0), anchor: .top)
             .animation(.linear(duration: 1.3), value: viewModel.rotations)

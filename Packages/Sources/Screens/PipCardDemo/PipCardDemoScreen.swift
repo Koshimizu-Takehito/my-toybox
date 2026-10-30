@@ -13,9 +13,11 @@ import SwiftUI
 public struct PipCardDemoScreen: View {
     public init() {}
 
-    /// Persistent offset of the card from the center of the screen.
-    /// This offset accumulates over multiple drags.
-    @State private var cardOffset: CGSize = .zero
+    /// The snap destination the card currently rests at.
+    ///
+    /// The anchor (not a point offset) is persisted so that the card stays
+    /// pinned to the same corner when the container is resized.
+    @State private var anchor: SnapAnchor = .center
 
     /// Temporary offset during an active drag gesture.
     /// This value is only nonzero while the user is dragging.
@@ -29,6 +31,8 @@ public struct PipCardDemoScreen: View {
         GeometryReader { geometry in
             // Define the rectangle representing the full screen in local coordinates.
             let screen = geometry.frame(in: .local)
+            // Recompute the resting offset from the anchor for the current screen size.
+            let cardOffset = offset(for: anchor, in: screen)
 
             CardView()
                 .onGeometryChange(for: CGSize.self, of: \.size) { size in
@@ -50,19 +54,18 @@ public struct PipCardDemoScreen: View {
                         .onEnded { value in
                             // Calculate the final offset based on the drag gesture's total translation.
                             let finalOffset = cardOffset + value.translation
-                            cardOffset = finalOffset
-                            dragOffset = .zero
                             // Estimate the velocity of the drag for an inertia (momentum) effect.
                             let velocity = value.predictedEndTranslation - value.translation
-                            // Compute the snap (destination) offset using the helper method.
-                            let snapped = snappedPosition(
+                            // Compute the snap destination using the helper method.
+                            let snapped = snappedAnchor(
                                 for: finalOffset,
                                 screen: screen,
                                 velocity: velocity
                             )
                             // Animate the card snapping into position with a spring effect.
                             withAnimation(.spring()) {
-                                cardOffset = snapped
+                                anchor = snapped
+                                dragOffset = .zero
                             }
                         }
                 )
@@ -70,15 +73,15 @@ public struct PipCardDemoScreen: View {
         .padding()
     }
 
-    /// Computes the snapped (destination) offset for the card,
-    /// snapping it to the nearest screen corner or center.
+    /// Computes the snap destination for the card,
+    /// choosing the nearest screen corner or center.
     ///
     /// - Parameters:
     ///   - offset: The current offset of the card relative to screen center.
     ///   - screen: The full screen rectangle.
     ///   - velocity: The drag gesture's velocity (for inertia effect).
-    /// - Returns: The snapped offset to animate the card towards.
-    private func snappedPosition(for offset: CGSize, screen: CGRect, velocity: CGSize) -> CGSize {
+    /// - Returns: The anchor to animate the card towards.
+    private func snappedAnchor(for offset: CGSize, screen: CGRect, velocity: CGSize) -> SnapAnchor {
         // Compute the card's actual center on the screen.
         var cardCenter = CGPoint(
             x: screen.midX + offset.width,
@@ -93,24 +96,44 @@ public struct PipCardDemoScreen: View {
         cardCenter.x = min(max(x, -screen.width), screen.width)
         cardCenter.y = min(max(y, -screen.height), screen.height)
 
-        // Define possible snap positions: four corners and the center of the screen.
-        let snapPoints: [CGPoint] = [
-            CGPoint(x: cardRect.midX, y: cardRect.midY), // Top-left
-            CGPoint(x: screen.width - cardRect.midX, y: cardRect.midY), // Top-right
-            CGPoint(x: screen.midX, y: screen.midY), // Center
-            CGPoint(x: cardRect.midX, y: screen.height - cardRect.midY), // Bottom-left
-            CGPoint(x: screen.width - cardRect.midX, y: screen.height - cardRect.midY), // Bottom-right
-        ]
-
         // Find the closest snap point by comparing Euclidean distance.
-        let nearest = snapPoints.min { abs($0 - cardCenter) < abs($1 - cardCenter) }!
-
-        // Return the offset required to move the card to this snap point (relative to screen center).
-        return CGSize(
-            width: nearest.x - screen.midX,
-            height: nearest.y - screen.midY
-        )
+        return SnapAnchor.allCases.min {
+            abs(point(for: $0, in: screen) - cardCenter) < abs(point(for: $1, in: screen) - cardCenter)
+        }!
     }
+
+    /// Returns the card center for the given anchor in the screen's local coordinates.
+    private func point(for anchor: SnapAnchor, in screen: CGRect) -> CGPoint {
+        switch anchor {
+        case .topLeading:
+            CGPoint(x: cardRect.midX, y: cardRect.midY)
+        case .topTrailing:
+            CGPoint(x: screen.width - cardRect.midX, y: cardRect.midY)
+        case .center:
+            CGPoint(x: screen.midX, y: screen.midY)
+        case .bottomLeading:
+            CGPoint(x: cardRect.midX, y: screen.height - cardRect.midY)
+        case .bottomTrailing:
+            CGPoint(x: screen.width - cardRect.midX, y: screen.height - cardRect.midY)
+        }
+    }
+
+    /// Returns the offset from the screen center that places the card at the given anchor.
+    private func offset(for anchor: SnapAnchor, in screen: CGRect) -> CGSize {
+        let point = point(for: anchor, in: screen)
+        return CGSize(width: point.x - screen.midX, height: point.y - screen.midY)
+    }
+}
+
+// MARK: - SnapAnchor
+
+/// The positions the card can snap to: the four corners and the center of the screen.
+private enum SnapAnchor: CaseIterable {
+    case topLeading
+    case topTrailing
+    case center
+    case bottomLeading
+    case bottomTrailing
 }
 
 // MARK: - CardView
