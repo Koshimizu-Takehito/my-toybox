@@ -31,6 +31,18 @@ Download current metadata and screenshots from App Store Connect
 
 Upload metadata, screenshots, and release notes (no binary)
 
+Pass `version:` to create that App Store version on ASC if it doesn't exist yet
+
+### ios submit_review
+
+```sh
+[bundle exec] fastlane ios submit_review
+```
+
+Attach an uploaded build (e.g. from Xcode Cloud) to the version and submit it for review
+
+Usage: fastlane submit_review version:1.3.0 build:63
+
 ### ios precheck_metadata
 
 ```sh
