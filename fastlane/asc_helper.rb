@@ -122,6 +122,14 @@ module ASCHelper
     submission = request(:get, "apps/#{app_id}/reviewSubmissions?filter[platform]=IOS&filter[state]=READY_FOR_REVIEW")["data"].first
     return if submission.nil?
 
+    # deliver adds the item before the final submit; if it is already there, the
+    # failure came from that last step and adding it again would only say "exists".
+    items = request(:get, "reviewSubmissions/#{submission["id"]}/items?include=appStoreVersion")["data"]
+    if items.any? { |item| item.dig("relationships", "appStoreVersion", "data", "id") == version["id"] }
+      return UI.important("#{version_string} is already in draft review submission #{submission["id"]}, so the final submit step failed; see the error above. " \
+                          "Remove the item (or cancel the draft) in App Store Connect before running submit_review again.")
+    end
+
     res, json = raw_request(:post, "reviewSubmissionItems", {
       data: {
         type: "reviewSubmissionItems",
@@ -134,7 +142,7 @@ module ASCHelper
     if res.is_a?(Net::HTTPSuccess)
       # deliver refuses a draft that already has items, so take this one back out.
       removed, = raw_request(:delete, "reviewSubmissionItems/#{json.dig("data", "id")}")
-      return UI.important("#{version_string} passed review item checks on retry; run submit_review again.") if removed.is_a?(Net::HTTPSuccess)
+      return UI.important("#{version_string} passes the review item checks, so the failure happened before submission (e.g. build selection or export compliance); see the error above.") if removed.is_a?(Net::HTTPSuccess)
 
       return UI.important("#{version_string} was added to draft review submission #{submission["id"]}. Remove it in App Store Connect before running submit_review again.")
     end
