@@ -8,7 +8,7 @@ import SwiftUI
 struct RootSplitView<Screen: MyToyboxScreen>: View {
     /// The filtered screens to render in the sidebar.
     private let screens: [Screen]
-    /// The selected screen shown in the detail pane.
+    /// The screen the user picked, shared with the compact layout.
     @Binding private var selection: Screen?
 
     init(screens: [Screen], selection: Binding<Screen?>) {
@@ -18,18 +18,29 @@ struct RootSplitView<Screen: MyToyboxScreen>: View {
 
     var body: some View {
         NavigationSplitView {
-            RootSidebarView(screens: screens, selection: $selection)
+            RootSidebarView(screens: screens, selection: displayedSelection)
+                .navigationSplitViewColumnWidth(min: 280, ideal: 320, max: 380)
         } detail: {
             NavigationStack {
-                DetailScreen(screen: selection)
+                DetailScreen(screen: displayedSelection.wrappedValue)
                     .toolbarTitleDisplayMode(.inline)
             }
         }
-        .onChange(of: screens, initial: true) { _, screens in
+    }
+
+    /// The selection shown by this layout.
+    ///
+    /// Falls back to the first visible screen without writing it back, so the
+    /// compact layout still opens on the list when the user has not picked anything.
+    private var displayedSelection: Binding<Screen?> {
+        Binding {
             if let selection, screens.contains(selection) {
-                return
+                selection
+            } else {
+                screens.first
             }
-            selection = screens.first
+        } set: { screen in
+            selection = screen
         }
     }
 }

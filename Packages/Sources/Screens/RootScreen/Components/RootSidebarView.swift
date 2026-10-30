@@ -51,23 +51,34 @@ private extension RootSidebarView {
                 NavigationLink(value: screen) {
                     RootCell(screen: screen, isScrolling: isScrolling)
                 }
-                .listRowSeparatorTint(rootListStyle.separatorTint)
-                .listRowBackground(Color.clear)
+                // The rounded selection highlight separates rows, like a system sidebar.
+                .listRowSeparator(.hidden)
+                .listRowBackground(rowBackground(isSelected: screen == selection.wrappedValue))
             }
         } else {
             List(screens, id: \.self) { screen in
-                NavigationLink {
-                    DetailScreen(screen: screen)
-                    #if os(iOS)
-                        .navigationTransition(.zoom(sourceID: screen, in: namespace))
-                    #endif
-                } label: {
+                NavigationLink(value: screen) {
                     RootCell(screen: screen, isScrolling: isScrolling, namespace: namespace)
                 }
                 .listRowSeparatorTint(rootListStyle.separatorTint)
                 .listRowBackground(Color.clear)
             }
+            .navigationDestination(for: Screen.self) { screen in
+                DetailScreen(screen: screen)
+                #if os(iOS)
+                    .navigationTransition(.zoom(sourceID: screen, in: namespace))
+                #endif
+            }
         }
+    }
+
+    /// A rounded highlight drawn behind the selected row in split layout.
+    func rowBackground(isSelected: Bool) -> some View {
+        RoundedRectangle(cornerRadius: 12, style: .continuous)
+            .fill(rootListStyle.selectionTint)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 2)
+            .opacity(isSelected ? 1 : 0)
     }
 }
 
@@ -79,7 +90,6 @@ import MockScreens
 #Preview("Compact") {
     NavigationStack {
         RootSidebarView(screens: MockScreen.allCases)
-            .environment(\.rootCellStyle, .previewLeading)
             .preferredColorScheme(.dark)
     }
 }

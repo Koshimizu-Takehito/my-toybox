@@ -92,7 +92,7 @@ private struct PickerPopover: View {
         }
         .animation(.default, value: selectedTags)
         .frame(idealWidth: 300)
-        .padding(.vertical)
+        .padding()
         .background(.ultraThinMaterial)
         .presentationCompactAdaptation(.popover)
     }

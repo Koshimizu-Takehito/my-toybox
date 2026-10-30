@@ -22,8 +22,14 @@ public struct DetailScreen<Screen: MyToyboxScreen>: View {
                 screen
                     .navigationTitle(screen.title)
             } else {
-                Text(.appSelectScreen)
-                    .navigationTitle(.appTitle)
+                ContentUnavailableView {
+                    Label {
+                        Text(.appSelectScreen)
+                    } icon: {
+                        Image(systemName: "square.stack.3d.up")
+                    }
+                }
+                .navigationTitle(.appTitle)
             }
         }
         #if os(iOS)

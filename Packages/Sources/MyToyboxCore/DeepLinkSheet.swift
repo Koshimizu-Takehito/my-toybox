@@ -31,6 +31,8 @@ private struct DeepLinkSheet<Screen: MyToyboxScreen, ScreenContent: View>: ViewM
                 NavigationStack {
                     screenContent(screen)
                 }
+                // Use the larger page size on regular width (e.g. an unfolded iPhone Duo or iPad).
+                .presentationSizing(.page)
             }
     }
 }
