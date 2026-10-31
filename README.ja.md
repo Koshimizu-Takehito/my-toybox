@@ -3,7 +3,7 @@
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS-blue.svg)
 ![Swift](https://img.shields.io/badge/swift-6.3-orange.svg)
 ![MIT](https://img.shields.io/badge/license-MIT-black)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
+[![Ask DeepWiki](https://img.shields.io/badge/Ask-DeepWiki-blue)](https://deepwiki.com/Koshimizu-Takehito/my-toybox)
 [![App Clip](https://img.shields.io/badge/App%20Clip-Instant-000000?logo=apple&logoColor=white)](https://appclip.apple.com/id?p=com.takehito.koshimizu.MyToybox.MyToyboxClip)
 
 **my-toybox** は、SwiftUI と Metal を活用したさまざまなアニメーションや描画のサンプルを集めた iOS/macOS アプリプロジェクトです。  
